@@ -102,6 +102,8 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
                 return new SonoffRfBridgeHandler((Bridge) thing);
             case "32":
                 return new SonoffSwitchPOWR2Handler(thing);
+            case "190":
+                return new SonoffSwitchPOWR3Handler(thing);
             case "59":
                 return new SonoffRGBStripHandler(thing);
             case "66":

@@ -120,7 +120,8 @@ public class SonoffDeviceState {
                             parameters.setSwitch3(switchState);
                             break;
                         default:
-                            logger.warn("Sonoff addon support only devices with at most 4 switches, ignoring switch: " + i);
+                            logger.warn(
+                                    "Sonoff addon support only devices with at most 4 switches, ignoring switch: " + i);
                     }
                 }
             }
@@ -175,7 +176,7 @@ public class SonoffDeviceState {
             }
         }
 
-        if (uiid.equals(15)) {
+        if ((uiid.equals(15)) || (uiid.equals(181))) {
             // api returns a string always
             if (params.get("currentTemperature") != null) {
                 JsonPrimitive p = params.get("currentTemperature").getAsJsonPrimitive();
