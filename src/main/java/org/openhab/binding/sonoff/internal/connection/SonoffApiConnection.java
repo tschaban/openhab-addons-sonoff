@@ -133,11 +133,11 @@ public class SonoffApiConnection {
         logger.debug("Api Login Request:{}", gson.toJson(request));
         try {
             ContentResponse contentResponse = httpClient.newRequest(url).header("accept", "application/json")
-                    .header("Content-Type", "application/json")
-                    .header("X-CK-Appid", this.appId)
+                    .header("Content-Type", "application/json").header("X-CK-Appid", this.appId)
                     .header("X-CK-Nonce", SonoffCommandMessageUtilities.getNonce())
                     .header("Authorization",
-                            "Sign " + new SonoffCommandMessageEncryptionUtilities().getAuthMac(this.appSecret, gson.toJson(request)))
+                            "Sign " + new SonoffCommandMessageEncryptionUtilities().getAuthMac(this.appSecret,
+                                    gson.toJson(request)))
                     .method("POST").content(new StringContentProvider(gson.toJson(request)), "application/json").send();
             if (contentResponse != null) {
                 logger.debug("Api Login Response:{}", contentResponse.getContentAsString());
@@ -231,8 +231,7 @@ public class SonoffApiConnection {
         String url = this.baseUrl + "/v2/device/thing";
         logger.debug("Api Get Device Request for id:{}", deviceid);
         ContentResponse response = httpClient.newRequest(url).header("Content-Type", "application/json")
-                .header("X-CK-Appid", this.appId)
-                .header("X-CK-Nonce", SonoffCommandMessageUtilities.getNonce())
+                .header("X-CK-Appid", this.appId).header("X-CK-Nonce", SonoffCommandMessageUtilities.getNonce())
                 .header("Authorization", "Bearer " + this.at)
                 .content(new StringContentProvider(gson.toJson(request)), "application/json").method("POST").send();
         return response.getContentAsString();
@@ -274,8 +273,7 @@ public class SonoffApiConnection {
         request.getThings().add(thing);
         String url = this.baseUrl + "/v2/device/thing";
         logger.debug("Api Get Device Request for id:{}", deviceid);
-        httpClient.newRequest(url).header("Content-Type", "application/json")
-                .header("X-CK-Appid", this.appId)
+        httpClient.newRequest(url).header("Content-Type", "application/json").header("X-CK-Appid", this.appId)
                 .header("X-CK-Nonce", SonoffCommandMessageUtilities.getNonce())
                 .header("Authorization", "Bearer " + this.at)
                 .content(new StringContentProvider(gson.toJson(request)), "application/json").method("POST")

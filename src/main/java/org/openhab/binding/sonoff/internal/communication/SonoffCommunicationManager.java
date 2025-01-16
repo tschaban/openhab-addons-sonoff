@@ -176,7 +176,8 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
         }
 
         if (message.getCommand().equals("switch") && ((SingleSwitch) message.getParams()).getSwitch() != null
-                || message.getCommand().equals("switches") && !((MultiSwitch) message.getParams()).getSwitches().isEmpty()) {
+                || message.getCommand().equals("switches")
+                        && !((MultiSwitch) message.getParams()).getSwitches().isEmpty()) {
             queue.addFirst(message);
         } else {
             queue.add(message);

@@ -94,6 +94,7 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "5":
                 return new SonoffSwitchPOWHandler(thing);
             case "15":
+            case "181":
                 return new SonoffSwitchTHHandler(thing);
             case "24":
                 return new SonoffGSMSocketHandler(thing);
