@@ -100,6 +100,8 @@ public class SonoffSwitchPOWR2Handler extends SonoffBaseDeviceHandler {
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
         SonoffCommandMessage message = null;
+        logger.debug("########## Command {}",
+                command.toString().toLowerCase() + " doe channelUID " + channelUID.getId());
         if (command instanceof RefreshType) {
             return;
         } else {
@@ -126,6 +128,7 @@ public class SonoffSwitchPOWR2Handler extends SonoffBaseDeviceHandler {
     @Override
     public void updateDevice(SonoffDeviceState newDevice) {
         // Switches
+        logger.debug("############## Upd switch {}", newDevice.getParameters().getSwitch0());
         updateState("switch", newDevice.getParameters().getSwitch0());
         updateState("power", newDevice.getParameters().getPower());
         updateState("voltage", newDevice.getParameters().getVoltage());

@@ -42,6 +42,8 @@ import com.google.gson.JsonArray;
 public class SonoffDeviceStateParameters {
 
     // Parameters
+    // Camera
+    private OnOffType camPower = OnOffType.OFF;
     // Switches
     private OnOffType switch0 = OnOffType.OFF;
     private OnOffType switch1 = OnOffType.OFF;
@@ -102,6 +104,14 @@ public class SonoffDeviceStateParameters {
     private DateTimeType trigTime = new DateTimeType(System.currentTimeMillis() + "");
     private OnOffType motion = OnOffType.OFF;
 
+    public OnOffType getCamPower() {
+        return this.camPower;
+    }
+
+    public void setCamPower(String power) {
+        this.camPower = power.equals("on") ? OnOffType.ON : OnOffType.OFF;
+    }
+
     public OnOffType getSwitch0() {
         return this.switch0;
     }
@@ -139,7 +149,8 @@ public class SonoffDeviceStateParameters {
     }
 
     public void setPower(String power) {
-        this.power = new QuantityType<Power>(Float.parseFloat(power), WATT);
+        this.power = new QuantityType<Power>(Float.parseFloat(power) / 100, WATT);
+        logger.debug("Power set to {}", this.power);
     }
 
     public QuantityType<ElectricPotential> getVoltage() {
@@ -147,7 +158,8 @@ public class SonoffDeviceStateParameters {
     }
 
     public void setVoltage(String voltage) {
-        this.voltage = new QuantityType<ElectricPotential>(Float.parseFloat(voltage), VOLT);
+        this.voltage = new QuantityType<ElectricPotential>(Float.parseFloat(voltage) / 100, VOLT);
+        logger.debug("Voltage set to {}", this.voltage);
     }
 
     public QuantityType<ElectricCurrent> getCurrent() {
@@ -155,7 +167,8 @@ public class SonoffDeviceStateParameters {
     }
 
     public void setCurrent(String current) {
-        this.current = new QuantityType<ElectricCurrent>(Float.parseFloat(current), AMPERE);
+        this.current = new QuantityType<ElectricCurrent>(Float.parseFloat(current) / 100, AMPERE);
+        logger.debug("Current set to {}", this.current);
     }
 
     public QuantityType<ElectricPotential> getBattery() {

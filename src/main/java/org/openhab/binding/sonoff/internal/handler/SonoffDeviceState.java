@@ -61,6 +61,11 @@ public class SonoffDeviceState {
         JsonElement firmware = device.getAsJsonObject("params").get("fwVersion");
         this.fw = firmware != null ? firmware.getAsString() : "Not Applicable";
         this.parameters = new SonoffDeviceStateParameters();
+        logger.debug("-----------------------");
+        logger.debug("Found: {}", this.brand + " Model: " + this.model + " FW: " + this.fw);
+        logger.debug("Name: {}", this.name);
+        logger.debug("UUID: {}", this.uiid);
+        logger.debug("DeviceId: {}", this.deviceid);
         updateState(device);
     }
 
@@ -120,15 +125,20 @@ public class SonoffDeviceState {
                             parameters.setSwitch3(switchState);
                             break;
                         default:
-                            logger.warn("Sonoff addon support only devices with at most 4 switches, ignoring switch: " + i);
+                            logger.warn(
+                                    "Sonoff addon support only devices with at most 4 switches, ignoring switch: " + i);
                     }
                 }
             }
         }
 
-        // Electric
+        // Electric or CAM2
         if (params.get("power") != null) {
-            parameters.setPower(params.get("power").getAsString());
+            if (uiid.equals(256)) {
+                parameters.setCamPower(params.get("power").getAsString());
+            } else {
+                parameters.setPower(params.get("power").getAsString());
+            }
         }
 
         if (params.get("voltage") != null) {

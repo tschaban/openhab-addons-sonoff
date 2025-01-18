@@ -83,6 +83,7 @@ public class SonoffSwitchPOWHandler extends SonoffBaseDeviceHandler {
 
     @Override
     public void cancelTasks() {
+        logger.debug("Stopping tasks for {}", this.deviceid);
         final ScheduledFuture<?> localTask = this.localTask;
         if (localTask != null) {
             localTask.cancel(true);
@@ -93,7 +94,7 @@ public class SonoffSwitchPOWHandler extends SonoffBaseDeviceHandler {
             consumptionTask.cancel(true);
             this.consumptionTask = null;
         }
-        super.cancelTasks();
+        // super.cancelTasks(); // Tschaban: This is not needed as we are not using the super class tasks
     }
 
     @Override
