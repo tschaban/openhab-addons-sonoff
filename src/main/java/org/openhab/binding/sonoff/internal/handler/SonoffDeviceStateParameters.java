@@ -30,6 +30,8 @@ import org.openhab.core.library.types.PercentType;
 import org.openhab.core.library.types.QuantityType;
 import org.openhab.core.library.types.StringType;
 import org.openhab.core.library.unit.SIUnits;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonArray;
 
@@ -40,6 +42,8 @@ import com.google.gson.JsonArray;
  */
 @NonNullByDefault
 public class SonoffDeviceStateParameters {
+
+    private final Logger logger = LoggerFactory.getLogger(SonoffDeviceStateParameters.class);
 
     // Parameters
     // Camera
@@ -58,6 +62,7 @@ public class SonoffDeviceStateParameters {
     private QuantityType<Energy> todayKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
     private QuantityType<Energy> yesterdayKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
     private QuantityType<Energy> sevenKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
+    private QuantityType<Energy> monthKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
     private QuantityType<Energy> thirtyKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
     private QuantityType<Energy> hundredKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
     // Sensors
@@ -150,7 +155,6 @@ public class SonoffDeviceStateParameters {
 
     public void setPower(String power) {
         this.power = new QuantityType<Power>(Float.parseFloat(power) / 100, WATT);
-        logger.debug("Power set to {}", this.power);
     }
 
     public QuantityType<ElectricPotential> getVoltage() {
@@ -159,7 +163,6 @@ public class SonoffDeviceStateParameters {
 
     public void setVoltage(String voltage) {
         this.voltage = new QuantityType<ElectricPotential>(Float.parseFloat(voltage) / 100, VOLT);
-        logger.debug("Voltage set to {}", this.voltage);
     }
 
     public QuantityType<ElectricCurrent> getCurrent() {
@@ -168,7 +171,6 @@ public class SonoffDeviceStateParameters {
 
     public void setCurrent(String current) {
         this.current = new QuantityType<ElectricCurrent>(Float.parseFloat(current) / 100, AMPERE);
-        logger.debug("Current set to {}", this.current);
     }
 
     public QuantityType<ElectricPotential> getBattery() {
@@ -184,7 +186,7 @@ public class SonoffDeviceStateParameters {
     }
 
     public void setTodayKwh(Double total) {
-        this.todayKwh = new QuantityType<Energy>(total, KILOWATT_HOUR);
+        this.todayKwh = new QuantityType<Energy>(total / 100, KILOWATT_HOUR);
     }
 
     public QuantityType<Energy> getYesterdayKwh() {
@@ -193,6 +195,14 @@ public class SonoffDeviceStateParameters {
 
     public void setYesterdayKwh(Double total) {
         this.yesterdayKwh = new QuantityType<Energy>(total, KILOWATT_HOUR);
+    }
+
+    public QuantityType<Energy> getMonthKwh() {
+        return this.monthKwh;
+    }
+
+    public void setMonthKwh(Double total) {
+        this.monthKwh = new QuantityType<Energy>(total / 100, KILOWATT_HOUR);
     }
 
     public QuantityType<Energy> getSevenKwh() {

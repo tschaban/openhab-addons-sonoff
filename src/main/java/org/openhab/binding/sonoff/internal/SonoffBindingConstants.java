@@ -180,7 +180,6 @@ public class SonoffBindingConstants {
 
         deviceTypes.put(190, THING_TYPE_190);
         deviceTypes.put(211, THING_TYPE_211);
-        
 
         return Collections.unmodifiableMap(deviceTypes);
     }

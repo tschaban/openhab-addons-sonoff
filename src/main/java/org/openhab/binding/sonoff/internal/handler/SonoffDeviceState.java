@@ -62,10 +62,9 @@ public class SonoffDeviceState {
         this.fw = firmware != null ? firmware.getAsString() : "Not Applicable";
         this.parameters = new SonoffDeviceStateParameters();
         logger.debug("-----------------------");
-        logger.debug("Found: {}", this.brand + " Model: " + this.model + " FW: " + this.fw);
-        logger.debug("Name: {}", this.name);
-        logger.debug("UUID: {}", this.uiid);
-        logger.debug("DeviceId: {}", this.deviceid);
+        logger.debug("Found: {}", this.name);
+        logger.debug("Hardware: {}", this.brand + " Model: " + this.model + " FW: " + this.fw);
+        logger.debug("UUID: {}", this.uiid + ", DeviceId: " + this.deviceid);
         updateState(device);
     }
 
@@ -151,6 +150,14 @@ public class SonoffDeviceState {
 
         if (params.get("battery") != null) {
             parameters.setBattery(params.get("battery").getAsDouble());
+        }
+
+        if (params.get("dayKwh") != null) {
+            parameters.setTodayKwh(params.get("dayKwh").getAsDouble());
+        }
+
+        if (params.get("monthKwh") != null) {
+            parameters.setMonthKwh(params.get("monthKwh").getAsDouble());
         }
 
         // Energy
