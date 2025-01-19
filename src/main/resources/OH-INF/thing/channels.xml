@@ -1,33 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <thing:thing-descriptions bindingId="sonoff"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
 	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
-	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0
+        https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
-	<channel-type id="switch">
+
+	<channel-type id="electrical-energy">
+		<item-type unitHint="kWh">Number:Energy</item-type>
+		<label>Energy</label>
+		<description>Electrical energy</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="electric-power">
+		<item-type unitHint="W">Number:Power</item-type>
+		<label>Power</label>
+		<description>Electric power</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="electric-current">
+		<item-type unitHint="A">Number:ElectricCurrent</item-type>
+		<label>Current</label>
+		<description>Electric current</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="electric-voltage">
+		<item-type unitHint="V">Number:ElectricPotential</item-type>
+		<label>Voltage</label>
+		<description>Electric voltage</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="power">
 		<item-type>Switch</item-type>
 		<label>Switch</label>
-		<description>Switch</description>
+		<description>Turn a device on/off</description>
 	</channel-type>
-	<channel-type id="switch0">
+
+	<channel-type id="reed-switch">
 		<item-type>Switch</item-type>
-		<label>Switch 0</label>
-		<description>Switch 0</description>
-	</channel-type>
-	<channel-type id="switch1">
-		<item-type>Switch</item-type>
-		<label>Switch 1</label>
-		<description>Switch 1</description>
-	</channel-type>
-	<channel-type id="switch2">
-		<item-type>Switch</item-type>
-		<label>Switch 2</label>
-		<description>Switch 2</description>
-	</channel-type>
-	<channel-type id="switch3">
-		<item-type>Switch</item-type>
-		<label>Switch 3</label>
-		<description>Switch 3</description>
+		<label>Reed switch</label>
+		<description>Open/Close sensor</description>
 	</channel-type>
 
 	<channel-type id="color">
@@ -89,43 +105,6 @@
 		<label>Zigbee LED Status</label>
 		<description>Zigbee LED Status</description>
 	</channel-type>
-	<channel-type id="todayKwh">
-		<item-type>Number</item-type>
-		<label>Todays Energy Usage</label>
-		<description>Todays energy Usage in kwh</description>
-		<state pattern="%.2f %unit%" readOnly="true"/>
-	</channel-type>
-	<channel-type id="monthKwh">
-		<item-type>Number</item-type>
-		<label>Current Month Energy Usage</label>
-		<description>Current month energy Usage in kwh</description>
-		<state pattern="%.2f %unit%" readOnly="true"/>
-	</channel-type>
-	<channel-type id="yesterdayKwh">
-		<item-type>Number:Energy</item-type>
-		<label>Yesterdays Energy Usage</label>
-		<description>Yesterdays energy Usage in kwh</description>
-		<state pattern="%.2f %unit%" readOnly="true"/>
-	</channel-type>
-	<channel-type id="sevenKwh">
-		<item-type>Number:Energy</item-type>
-		<label>Last 7 Days Energy Usage</label>
-		<description>Last 7 Days energy Usage in kwh</description>
-		<state pattern="%.2f %unit%" readOnly="true"/>
-	</channel-type>
-	<channel-type id="thirtyKwh">
-		<item-type>Number:Energy</item-type>
-		<label>Last 30 Days Energy Usage</label>
-		<description>Last 30 Days energy Usage in kwh</description>
-		<state pattern="%.2f %unit%" readOnly="true"/>
-	</channel-type>
-	<channel-type id="hundredKwh">
-		<item-type>Number:Energy</item-type>
-		<label>Last 100 Days Energy Usage</label>
-		<description>Last 100 Days energy Usage in kwh</description>
-		<state pattern="%.2f %unit%" readOnly="true"/>
-	</channel-type>
-
 
 	<channel-type id="button0">
 		<item-type>Switch</item-type>
@@ -188,55 +167,38 @@
 		<description>RF Channel 4 Last Triggered Internally</description>
 	</channel-type>
 
-	<channel-type id="power">
-		<item-type>Number:Power</item-type>
-		<label>Power</label>
-		<description>Power</description>
-		<state pattern="%.2f %unit%" readOnly="true"/>
-	</channel-type>
-	<channel-type id="voltage">
-		<item-type>Number:ElectricPotential</item-type>
-		<label>Voltage</label>
-		<description>Voltage</description>
-		<state pattern="%.2f %unit%" readOnly="true"/>
-	</channel-type>
-	<channel-type id="current">
-		<item-type>Number:ElectricCurrent</item-type>
-		<label>Current</label>
-		<description>Current</description>
-		<state pattern="%.2f %unit%" readOnly="true"/>
-	</channel-type>
-	<channel-type id="cloudOnline">
+	<channel-type id="cloudOnline" advanced="true">
 		<item-type>String</item-type>
 		<label>Cloud Connected</label>
 		<description>Currently has connection to the cloud</description>
 	</channel-type>
-	<channel-type id="localOnline">
+	<channel-type id="localOnline" advanced="true">
 		<item-type>String</item-type>
 		<label>LAN Connected</label>
 		<description>Currently connected to LAN</description>
 	</channel-type>
-	<channel-type id="ipaddress">
+	<channel-type id="ipaddress" advanced="true">
 		<item-type>String</item-type>
-		<label>Local IP Address</label>
-		<description>Local IP Address</description>
+		<label>IP Address</label>
+		<description>Device IP Address</description>
 	</channel-type>
-	<channel-type id="rssi">
+	<channel-type id="rssi" advanced="true">
 		<item-type>Number</item-type>
 		<label>Signal Strength</label>
-		<description>Signal Strength</description>
+		<description>RSSI Signal Strength</description>
 		<state pattern="%.0f %unit%" readOnly="true"/>
 	</channel-type>
+
 	<channel-type id="temperature">
-		<item-type>Number:Temperature</item-type>
+		<item-type unitHint="°C">Number:Temperature</item-type>
 		<label>Temperature</label>
-		<description>Temperature</description>
+		<description>Current temperature</description>
 		<state pattern="%.2f %unit%" readOnly="true"/>
 	</channel-type>
 	<channel-type id="humidity">
-		<item-type>Number:Dimensionless</item-type>
+		<item-type unitHint="%">Number:Dimensionless</item-type>
 		<label>Humidity</label>
-		<description>Humidity</description>
+		<description>Current humidity</description>
 		<state readOnly="true" pattern="%.0f %unit%"/>
 	</channel-type>
 	<channel-type id="mainSwitch">
@@ -260,10 +222,11 @@
 		<label>Motion Alarm Active</label>
 		<description>Motion Alarm Active</description>
 	</channel-type>
+
 	<channel-type id="battery">
 		<item-type>Number:ElectricPotential</item-type>
-		<label>Battery Level</label>
-		<description>Battery Level</description>
+		<label>Batery Voltage</label>
+		<description>Battery voltage</description>
 		<state readOnly="true" pattern="%.3f %unit%"/>
 	</channel-type>
 
