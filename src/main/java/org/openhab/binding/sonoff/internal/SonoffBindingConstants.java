@@ -37,7 +37,7 @@ public class SonoffBindingConstants {
             .of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 181).collect(Collectors.toSet()));
 
     public static final Set<Integer> LAN_OUT = Collections.unmodifiableSet(
-            Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126).collect(Collectors.toSet()));
+            Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126, 181).collect(Collectors.toSet()));
 
     // List of all Thing Type UIDs
     public static final ThingTypeUID THING_TYPE_ACCOUNT = new ThingTypeUID(BINDING_ID, "account");
