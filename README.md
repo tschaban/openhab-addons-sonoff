@@ -1,19 +1,17 @@
-# sonoff Binding
-
-Allows Control/Updates of Ewelink based devices using the cloud and/or LAN.
-
 > [!NOTE]
 > Info about that particular branch
-> * It's maintained by SmartnyDom based on the code by delid4ve and all collegues down the road (. ❛ ᴗ ❛.)👍
+> * It's maintained by SmartnyDom based on the code by [delid4ve](https://github.com/delid4ve/openhab-3.x-sonoff) and all collegues down the road (. ❛ ᴗ ❛.)👍
 > * All enhancments, changes and fixes to the orginal code you can find logged [here](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)
 > * Feel free to report issues for my best effort fixes [here](https://github.com/tschaban/openhab-addons-sonoff/issues)
 > * Newest release [here](https://github.com/tschaban/openhab-addons-sonoff/releases)
+> Devices added
+> * Smart Plug S60TPF, S60TPG WiFi
+> * Smart Switch with electrcity monitoring: POWR316, POWR320, POWCT
 
-#### Devices added 
 
-* Smart Plug S60TPF, S60TPG WiFi
-* Smart Switch with electrcity monitoring: POWR316, POWR320, POWCT
+# sonoff Binding
 
+Allows Control/Updates of Ewelink based devices using the cloud and/or LAN.
 
 ## Supported Things
 
