@@ -4,7 +4,8 @@
 > * All enhancements, changes and fixes to the original code you can find logged [here](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)
 > * Feel free to report issues for my best effort fixes [here](https://github.com/tschaban/openhab-addons-sonoff/issues)
 > * Newest release [here](https://github.com/tschaban/openhab-addons-sonoff/releases)
-> Newly Supported Devices
+> 
+> **Newly Supported Devices**
 > * Smart Plug S60TPF, S60TPG WiFi
 > * Smart Switch with electrcity monitoring: POWR316, POWR320, POWCT
 
