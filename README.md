@@ -2,6 +2,18 @@
 
 Allows Control/Updates of Ewelink based devices using the cloud and/or LAN.
 
+> [!Info about that particular branch]
+> * It's maintained by SmartnyDom based on the code by delid4ve and all collegues down the road (. ❛ ᴗ ❛.)👍
+> * All enhancments, changes and fixes to the orginal code you can find logged [here](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)
+> * Feel free to report issues for my best effort fixes [here](https://github.com/tschaban/openhab-addons-sonoff/issues)
+> * Newest release [here](https://github.com/tschaban/openhab-addons-sonoff/releases)
+
+#### Devices added 
+
+* Smart Plug S60TPF, S60TPG WiFi
+* Smart Switch with electrcity monitoring: POWR316, POWR320, POWCT
+
+
 ## Supported Things
 
 Currently known to support (non exhaustive):
@@ -30,8 +42,6 @@ Currently known to support (non exhaustive):
 * Cloud Only - UUID66: Zigbee Bridge
 * Cloud Only - UUID107: 1 Channel GSM Socket
 * Cloud Only - UUID2026: Zigbee Motion Sensor
-* Smart Plug-In S60TPF, S60TPG
-* Smart Switches with electricity monitoring: POWR316, POWR320, POWCT
 
 ## Setup
 * Add an 'Account' thing and configure.
