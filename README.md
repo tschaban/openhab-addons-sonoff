@@ -2,7 +2,8 @@
 
 Allows Control/Updates of Ewelink based devices using the cloud and/or LAN.
 
-> [!Info about that particular branch]
+> [!NOTE]
+> Info about that particular branch
 > * It's maintained by SmartnyDom based on the code by delid4ve and all collegues down the road (. ❛ ᴗ ❛.)👍
 > * All enhancments, changes and fixes to the orginal code you can find logged [here](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)
 > * Feel free to report issues for my best effort fixes [here](https://github.com/tschaban/openhab-addons-sonoff/issues)
