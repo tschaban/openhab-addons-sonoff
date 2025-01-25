@@ -40,7 +40,6 @@ public class SonoffBindingConstants {
     public static final Set<Integer> LAN_OUT = Collections.unmodifiableSet(
             Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126, 138).collect(Collectors.toSet()));
 
-
     // List of all Thing Type UIDs
     public static final ThingTypeUID THING_TYPE_ACCOUNT = new ThingTypeUID(BINDING_ID, "account");
     public static final ThingTypeUID THING_TYPE_1 = new ThingTypeUID(BINDING_ID, "1"); // S20 , S26 , BASIC , MINI, Mini
@@ -63,7 +62,6 @@ public class SonoffBindingConstants {
     public static final ThingTypeUID THING_TYPE_30 = new ThingTypeUID(BINDING_ID, "30"); // GSM Socket
     public static final ThingTypeUID THING_TYPE_31 = new ThingTypeUID(BINDING_ID, "31"); // GSM Socket
     public static final ThingTypeUID THING_TYPE_32 = new ThingTypeUID(BINDING_ID, "32"); // POWR2
-    public static final ThingTypeUID THING_TYPE_190 = new ThingTypeUID(BINDING_ID, "190"); // POWR3
     public static final ThingTypeUID THING_TYPE_59 = new ThingTypeUID(BINDING_ID, "59"); // LED CONTROLLER
     public static final ThingTypeUID THING_TYPE_66 = new ThingTypeUID(BINDING_ID, "66"); // ZIGBEE Bridge
     public static final ThingTypeUID THING_TYPE_77 = new ThingTypeUID(BINDING_ID, "77"); // MICRO (USB)
@@ -116,7 +114,6 @@ public class SonoffBindingConstants {
 
             THING_TYPE_32, THING_TYPE_59,
 
-
             THING_TYPE_66, THING_TYPE_2026, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER, THING_TYPE_1770, THING_TYPE_ZLIGHT,
             THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
 
@@ -166,7 +163,6 @@ public class SonoffBindingConstants {
         deviceTypes.put(31, THING_TYPE_31);
 
         deviceTypes.put(32, THING_TYPE_32);
-        deviceTypes.put(190, THING_TYPE_190);
         deviceTypes.put(59, THING_TYPE_59);
 
         deviceTypes.put(66, THING_TYPE_66);

@@ -607,66 +607,6 @@
 		</config-description>
 	</thing-type>
 
-
-	<thing-type id="190">
-		<supported-bridge-type-refs>
-			<bridge-type-ref id="account"/>
-		</supported-bridge-type-refs>
-		<label>POWR3</label>
-		<description>1 Channel Relay with Energy Monitoring</description>
-		<channels>
-			<channel id="switch0" typeId="switch0"/>
-			<channel id="current" typeId="current"/>
-			<channel id="voltage" typeId="voltage"/>
-			<channel id="power" typeId="power"/>
-			<channel id="todayKwh" typeId="todayKwh"/>
-			<channel id="yesterdayKwh" typeId="yesterdayKwh"/>
-			<channel id="sevenKwh" typeId="sevenKwh"/>
-			<channel id="thirtyKwh" typeId="thirtyKwh"/>
-			<channel id="hundredKwh" typeId="hundredKwh"/>
-			<channel id="localOnline" typeId="localOnline"/>
-			<channel id="cloudOnline" typeId="cloudOnline"/>
-			<channel id="ipaddress" typeId="ipaddress"/>
-			<channel id="rssi" typeId="rssi"/>
-			<channel id="sled" typeId="sled"/>
-		</channels>
-
-		<representation-property>deviceid</representation-property>
-
-		<config-description>
-			<parameter name="deviceid" type="text" required="true">
-				<label>Device ID</label>
-				<description>Device ID</description>
-			</parameter>
-			<parameter name="consumption" type="boolean" required="true">
-				<label>Enable consumption polling</label>
-				<default>Disabled</default>
-				<options>
-					<option value="true">Enabled</option>
-					<option value="false">Disabled</option>
-				</options>
-			</parameter>
-			<parameter name="consumptionPoll" type="integer" min="10" max="86400" step="1" required="true">
-				<label>Polling Interval For Energy Data</label>
-				<description>Polling Interval for Energy Data from devices such as POW and POWR2</description>
-				<default>3600</default>
-			</parameter>
-			<parameter name="local" type="boolean" required="true">
-				<label>Enable local polling</label>
-				<default>Disabled</default>
-				<options>
-					<option value="true">Enabled</option>
-					<option value="false">Disabled</option>
-				</options>
-			</parameter>
-			<parameter name="localPoll" type="integer" min="10" max="86400" step="1" required="true">
-				<label>Polling Interval for Local Only Mode</label>
-				<description>Polling Interval for Local Only Mode</description>
-				<default>10</default>
-			</parameter>
-		</config-description>
-	</thing-type>
-
 	<thing-type id="77">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
