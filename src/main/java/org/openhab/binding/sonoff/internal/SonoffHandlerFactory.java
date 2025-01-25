@@ -111,8 +111,10 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
                 return new SonoffMagneticSwitchHandler(thing);
             case "104":
                 return new SonoffRGBCCTHandler(thing);
+            case "138":
+                return new SonoffSwitchSingleMiniHandler(thing);
             case "190":
-                return new SonoffSocketS60Handler(thing);
+                return new SonoffSwitchPOWUgradedHandler(thing);
             case "1770":
                 return new SonoffZigbeeDevice1770Handler(thing);
             case "2026":

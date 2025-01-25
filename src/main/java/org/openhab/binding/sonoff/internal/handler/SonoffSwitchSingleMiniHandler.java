@@ -19,7 +19,6 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.sonoff.internal.communication.SonoffCommandMessage;
 import org.openhab.binding.sonoff.internal.config.DeviceConfig;
-import org.openhab.binding.sonoff.internal.dto.commands.Consumption;
 import org.openhab.binding.sonoff.internal.dto.commands.MultiSwitch;
 import org.openhab.binding.sonoff.internal.dto.commands.SLed;
 import org.openhab.core.library.types.StringType;
@@ -30,18 +29,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The {@link SonoffSocketS60Handler} allows the handling of commands and updates to Devices with uuid 190
+ * The {@link SonoffSwitchSingleMiniHandler} allows the handling of commands and updates to Devices with uuid 190
  *
  * @author added by by tschaban based on the David Murton code
  */
 @NonNullByDefault
-public class SonoffSocketS60Handler extends SonoffBaseDeviceHandler {
+public class SonoffSwitchSingleMiniHandler extends SonoffBaseDeviceHandler {
 
-    private final Logger logger = LoggerFactory.getLogger(SonoffSocketS60Handler.class);
+    private final Logger logger = LoggerFactory.getLogger(SonoffSwitchSingleMiniHandler.class);
     private @Nullable ScheduledFuture<?> localTask;
-    private @Nullable ScheduledFuture<?> consumptionTask;
 
-    public SonoffSocketS60Handler(Thing thing) {
+    public SonoffSwitchSingleMiniHandler(Thing thing) {
         super(thing);
     }
 
@@ -52,22 +50,8 @@ public class SonoffSocketS60Handler extends SonoffBaseDeviceHandler {
         SonoffAccountHandler account = this.account;
         if (account != null) {
             String mode = account.getMode();
-            Integer consumptionPoll = config.consumptionPoll;
             Integer localPoll = config.localPoll;
-            Boolean consumption = config.consumption;
             Boolean local = config.local;
-
-            // Task to poll for Consumption Data if we are using the cloud (POW / POWR2)
-            Runnable consumptionData = () -> {
-                if (this.cloud) {
-                    queueMessage(new SonoffCommandMessage("consumption", this.deviceid, false, new Consumption()));
-                }
-            };
-            if (!mode.equals("local") && consumption) {
-                logger.debug("Starting consumption task for {}", this.deviceid);
-                consumptionTask = scheduler.scheduleWithFixedDelay(consumptionData, 10, consumptionPoll,
-                        TimeUnit.SECONDS);
-            }
 
             // Task to poll the lan if we are in local only mode or internet access is blocked (POW / POWR2)
             Runnable localPollData = () -> {
@@ -90,11 +74,6 @@ public class SonoffSocketS60Handler extends SonoffBaseDeviceHandler {
         if (localTask != null) {
             localTask.cancel(true);
             this.localTask = null;
-        }
-        final ScheduledFuture<?> consumptionTask = this.consumptionTask;
-        if (consumptionTask != null) {
-            consumptionTask.cancel(true);
-            this.consumptionTask = null;
         }
     }
 
@@ -133,17 +112,8 @@ public class SonoffSocketS60Handler extends SonoffBaseDeviceHandler {
     public void updateDevice(SonoffDeviceState newDevice) {
         // Switches
         updateState("switch", newDevice.getParameters().getSwitch0());
-        updateState("power", newDevice.getParameters().getPower());
-        updateState("voltage", newDevice.getParameters().getVoltage());
-        updateState("current", newDevice.getParameters().getCurrent());
         updateState("rssi", newDevice.getParameters().getRssi());
         updateState("sled", newDevice.getParameters().getNetworkLED());
-        updateState("todayKwh", newDevice.getParameters().getTodayKwh());
-        // updateState("yesterdayKwh", newDevice.getParameters().getYesterdayKwh());
-        updateState("monthKwh", newDevice.getParameters().getMonthKwh());
-        // updateState("sevenKwh", newDevice.getParameters().getSevenKwh());
-        // updateState("thirtyKwh", newDevice.getParameters().getThirtyKwh());
-        // ("hundredKwh", newDevice.getParameters().getHundredKwh());
         updateState("ipaddress", newDevice.getIpAddress());
         // Connections
         this.cloud = newDevice.getCloud();

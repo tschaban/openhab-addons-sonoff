@@ -11,7 +11,7 @@
 		<label>Color LED Controller</label>
 		<description>Color LED Controller</description>
 		<channels>
-			<channel id="switch" typeId="switch"/>
+			<channel id="switch" typeId="power"/>
 			<channel id="color" typeId="color"/>
 			<channel id="brightness" typeId="brightness"/>
 			<channel id="mode" typeId="mode"/>
@@ -37,7 +37,7 @@
 		<label>RGB-CCT Bulb (B05)</label>
 		<description>RGB-CCT Bulb (B05)</description>
 		<channels>
-			<channel id="switch" typeId="switch"/>
+			<channel id="switch" typeId="power"/>
 			<channel id="lightMode" typeId="lightMode"/>
 			<channel id="brightness" typeId="brightness"/>
 			<channel id="colorTemperature" typeId="colorTemperature"/>
