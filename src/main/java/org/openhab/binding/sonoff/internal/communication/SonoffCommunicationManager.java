@@ -198,17 +198,6 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
      */
     public void sendMessage(SonoffCommandMessage message) {
         // Send Api Device requests
-
-        logger.debug("----------------------------------------");
-        logger.debug("# Sending message for Device: {}", message.getDeviceid());
-        logger.debug("# Sending message for Command: {}", message.getCommand());
-        logger.debug("# Sending message for Sequence: {}", message.getSequence());
-        logger.debug("# Sending message for LanSupported: {}", message.getLanSupported());
-        logger.debug("# Sending message for cloudConnected: {}", cloudConnected ? "Connected" : "Disconnected");
-        logger.debug("# Sending message for Params: {}", gson.toJson(message.getParams()));
-        logger.debug("# Sending message: {}", gson.toJson(message));
-        logger.debug("----------------------------------------");
-
         if (message.getCommand().equals("device") || message.getCommand().equals("devices")) {
             listener.sendApiMessage(message.getDeviceid());
             return;
