@@ -1,18 +1,3 @@
-> [!NOTE]
-> Info about that particular branch
-> * It's maintained by SmartnyDom based on the code by [delid4ve](https://github.com/delid4ve/openhab-3.x-sonoff) and all colleagues down the road (. ❛ ᴗ ❛.)👍
-> * All enhancements, changes and fixes to the original code you can find logged [here](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)
-> * Feel free to report issues for my best effort fixes [here](https://github.com/tschaban/openhab-addons-sonoff/issues)
-> * Newest release [here](https://github.com/tschaban/openhab-addons-sonoff/releases)
-> 
-> **Newly Supported Devices**
-> * SONOFF iPlug Wi-Fi Smart Plug | S60 Series: Models: S60TPF, S60TPG
-> * SONOFF POW Smart Power Meter Switch | Models: POWR316, POWR316D, POWR320D
-> * SONOFF POW Ring Smart Power Meter | Models: POWCT
-> * SONOFF MINI Dry Wi-Fi Smart Switch | Models: MINI-D
-> * SONOFF MINI Wi-Fi Smart Switch | Models: MINI-R4, MINI-R4M
-
-
 # sonoff Binding
 
 Allows Control/Updates of Ewelink based devices using the cloud and/or LAN.
@@ -20,66 +5,107 @@ Allows Control/Updates of Ewelink based devices using the cloud and/or LAN.
 ## Supported Things
 
 Currently known to support (non exhaustive):
-* Mixed Mode - UUID1: S20, S26, Basic, Mini, Mini PciE Card
-* Mixed Mode - UUID2: Unknown Models
-* Mixed Mode - UUID3: Unknown Models
-* Mixed Mode - UUID4: Unknown Models
-* Mixed Mode - UUID5: POW
-* Mixed Mode - UUID6: T11C, TX1C, G1
-* Mixed Mode - UUID7: T12C, TX2C
-* Mixed Mode - UUID8: T13C, TX3C
-* Mixed Mode - UUID9: Unknown Models
-* Mixed Mode - UUID15: TH10, TH16
-* Cloud Only - UUID24: 1 Channel GSM Socket
-* Cloud Only - UUID27: 1 Channel GSM Socket
-* Mixed Mode - UUID28: RFBRIDGE (Only sensors currently supported, awaiting remote logs)
-* Cloud Only - UUID29: 2 Channel GSM Socket
-* Cloud Only - UUID30: 3 Channel GSM Socket
-* Cloud Only - UUID31: 4 Channel GSM Socket
-* Mixed Mode - UUID32: POWR2
-* Mixed Mode - UUID77: MICRO USB
-* Cloud Only - UUID81: 1 Channel GSM Socket
-* Cloud Only - UUID82: 2 Channel GSM Socket
-* Cloud Only - UUID83: 3 Channel GSM Socket
-* Cloud Only - UUID84: 4 Channel GSM Socket
-* Cloud Only - UUID66: Zigbee Bridge
-* Cloud Only - UUID107: 1 Channel GSM Socket
-* Cloud Only - UUID2026: Zigbee Motion Sensor
+
+Mixed Mode - UUID1: S20, S26, Basic, Mini, Mini PciE Card
+
+Mixed Mode - UUID2: Unknown Models
+
+Mixed Mode - UUID3: Unknown Models
+
+Mixed Mode - UUID4: Unknown Models
+
+Mixed Mode - UUID5: POW
+
+Mixed Mode - UUID6: T11C, TX1C, G1
+
+Mixed Mode - UUID7: T12C, TX2C
+
+Mixed Mode - UUID8: T13C, TX3C
+
+Mixed Mode - UUID9: Unknown Models
+
+Mixed Mode - UUID15: TH10, TH16
+
+Cloud Only - UUID24: 1 Channel GSM Socket
+
+Cloud Only - UUID27: 1 Channel GSM Socket
+
+Mixed Mode - UUID28: RFBRIDGE (Only sensors currently supported, awaiting remote logs)
+
+Cloud Only - UUID29: 2 Channel GSM Socket
+
+Cloud Only - UUID30: 3 Channel GSM Socket
+
+Cloud Only - UUID31: 4 Channel GSM Socket
+
+Mixed Mode - UUID32: POWR2
+
+Mixed Mode - UUID77: MICRO USB
+
+Cloud Only - UUID81: 1 Channel GSM Socket
+
+Cloud Only - UUID82: 2 Channel GSM Socket
+
+Cloud Only - UUID83: 3 Channel GSM Socket
+
+Cloud Only - UUID84: 4 Channel GSM Socket
+
+Cloud Only - UUID66: Zigbee Bridge
+
+Cloud Only - UUID107: 1 Channel GSM Socket
+
+Cloud Only - UUID2026: Zigbee Motion Sensor
 
 ## Setup
-* Add an 'Account' thing and configure.
-* email: your ewelink email address
-* password: your ewelink password
-* accessmode: your choice of mode for the binding (local,cloud,mixed)
+
+Add an 'Account' thing and configure.
+
+email: your ewelink email address
+
+password: your ewelink password
+
+accessmode: your choice of mode for the binding (local,cloud,mixed)
 
 The account should now come online.  Run discovery to create the cache required for all devices, you can manually add as text files once this is complete.
+
 Should any devices not be supported please send @delid4ve the file that is generated for the deviceid you want added.
 
 * Please note there is a known bug within openhab if you are using text files.  If on changing a config parameter your devices do not come online then please remove the file file and re-add.  If this does not resaolve the issue you may have to remove and re-add the binding.
 
 ## Discovery
 
-* Once you have initialized the account, run discovery as normal.
-* All devices support automatic discovery and this must be run even if using text based files in order to create a cache.
-* For Sub devices, i.e sensors connected to an RF Bridge or Zigbee bridge, add the main device and then run discovery again to find any connected devices.
+Once you have initialized the account, run discovery as normal.
+
+All devices support automatic discovery and this must be run even if using text based files in order to create a cache.
+
+For Sub devices, i.e sensors connected to an RF Bridge or Zigbee bridge, add the main device and then run discovery again to find any connected devices.
 
 ## Local vs Cloud
 
-* Not all devices support local mode such as the zigbee bridge.
-* If local mode is supported and once initialized, the device can be blocked by your firewall to prevent external access.
-* If you are in mixed mode, locally supported devices can be blocked at your firewall and will use local only mode
+Not all devices support local mode such as the zigbee bridge.
+
+If local mode is supported and once initialized, the device can be blocked by your firewall to prevent external access.
+
+If you are in mixed mode, locally supported devices can be blocked at your firewall and will use local only mode
 
 POW/POWR2 in local mode: 
-* In order to retreive energy data when operating in local only mode there are 2 seperate configuration parameters: (Not required when in LAN Development mode)
-* Enable Local Polling: enable local polling of energy data
-* Polling Interval for Local Only mode: interval in seconds betwen polls
+
+In order to retreive energy data when operating in local only mode there are 2 seperate configuration parameters: (Not required when in LAN Development mode)
+
+Enable Local Polling: enable local polling of energy data
+
+Polling Interval for Local Only mode: interval in seconds betwen polls
 
 POW/POWR2 Consumption:
 
 In order to retreive consumption data (cloud only) there are 2 seperate configuration parameters:
-* Enable consumption polling: on/off
-* Polling interval for consumption data: interval in seconds to retreive the data
-* Please bear in mind that polling for data is a burden on your system resources.  Data such as consumption realy only needs to be fetched every 24 hours (86400 seconds).
+
+Enable consumption polling: on/off
+
+Polling interval for consumption data: interval in seconds to retreive the data
+
+
+Please bear in mind that polling for data is a burden on your system resources.  Data such as consumption realy only needs to be fetched every 24 hours (86400 seconds).
 
 ## Bugs
 
@@ -92,6 +118,7 @@ Please ensure you include the version you are using and any debug log informatio
 ## Thing Configuration
 
 * POW / POWR2 Devices support consumption polling
+
 * Devices listed as Local or Mixed Mode support local polling
 
 ```
