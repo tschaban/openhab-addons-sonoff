@@ -4,10 +4,9 @@
 	xsi:schemaLocation="https://openhab.org/schemas/addon/v1.0.0 https://openhab.org/schemas/addon-1.0.0.xsd">
 
 	<type>binding</type>
-
 	<name>Sonoff binding</name>
 	<description>This is as a binding for Sonoff devices from Itead. This branch is maintained by
-		SmartnyDom. Credits to the
+		SmartnyDom. Crdites to the
 		author and all the contributors. More info: https://s.smartnydom.pl/r/oh-sonoff-binding</description>
 	<connection>hybrid</connection>
 

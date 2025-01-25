@@ -61,6 +61,10 @@ public class SonoffDeviceState {
         JsonElement firmware = device.getAsJsonObject("params").get("fwVersion");
         this.fw = firmware != null ? firmware.getAsString() : "Not Applicable";
         this.parameters = new SonoffDeviceStateParameters();
+        logger.debug("-----------------------");
+        logger.debug("Found: {}", this.name);
+        logger.debug("Hardware: {}", this.brand + " Model: " + this.model + " FW: " + this.fw);
+        logger.debug("UUID: {}", this.uiid + ", DeviceId: " + this.deviceid);
         updateState(device);
     }
 
@@ -127,9 +131,13 @@ public class SonoffDeviceState {
             }
         }
 
-        // Electric
+        // Electric or CAM2
         if (params.get("power") != null) {
-            parameters.setPower(params.get("power").getAsString());
+            if (uiid.equals(256)) {
+                parameters.setCamPower(params.get("power").getAsString());
+            } else {
+                parameters.setPower(params.get("power").getAsString());
+            }
         }
 
         if (params.get("voltage") != null) {
@@ -142,6 +150,14 @@ public class SonoffDeviceState {
 
         if (params.get("battery") != null) {
             parameters.setBattery(params.get("battery").getAsDouble());
+        }
+
+        if (params.get("dayKwh") != null) {
+            parameters.setTodayKwh(params.get("dayKwh").getAsDouble());
+        }
+
+        if (params.get("monthKwh") != null) {
+            parameters.setMonthKwh(params.get("monthKwh").getAsDouble());
         }
 
         // Energy
@@ -176,7 +192,7 @@ public class SonoffDeviceState {
             }
         }
 
-        if ((uiid.equals(15)) || (uiid.equals(181))) {
+        if (uiid.equals(15)) {
             // api returns a string always
             if (params.get("currentTemperature") != null) {
                 JsonPrimitive p = params.get("currentTemperature").getAsJsonPrimitive();

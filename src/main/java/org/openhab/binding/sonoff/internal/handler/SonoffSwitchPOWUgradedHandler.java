@@ -20,8 +20,8 @@ import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.sonoff.internal.communication.SonoffCommandMessage;
 import org.openhab.binding.sonoff.internal.config.DeviceConfig;
 import org.openhab.binding.sonoff.internal.dto.commands.Consumption;
+import org.openhab.binding.sonoff.internal.dto.commands.MultiSwitch;
 import org.openhab.binding.sonoff.internal.dto.commands.SLed;
-import org.openhab.binding.sonoff.internal.dto.commands.SingleSwitch;
 import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
@@ -30,23 +30,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The {@link SonoffSwitchPOWHandler} allows the handling of commands and updates to Devices with uuid 32
+ * The {@link SonoffSwitchPOWUgradedHandler} allows the handling of commands and updates to Devices with uuid 190
  *
- * @author David Murton - Initial contribution
+ * @author added by by tschaban based on the David Murton code
  */
 @NonNullByDefault
-public class SonoffSwitchPOWHandler extends SonoffBaseDeviceHandler {
+public class SonoffSwitchPOWUgradedHandler extends SonoffBaseDeviceHandler {
 
-    private final Logger logger = LoggerFactory.getLogger(SonoffSwitchPOWHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(SonoffSwitchPOWUgradedHandler.class);
     private @Nullable ScheduledFuture<?> localTask;
     private @Nullable ScheduledFuture<?> consumptionTask;
 
-    public SonoffSwitchPOWHandler(Thing thing) {
+    public SonoffSwitchPOWUgradedHandler(Thing thing) {
         super(thing);
     }
 
     @Override
     public void startTasks() {
+        logger.debug("Starting tasks for {}", this.deviceid);
         DeviceConfig config = this.getConfigAs(DeviceConfig.class);
         SonoffAccountHandler account = this.account;
         if (account != null) {
@@ -63,17 +64,18 @@ public class SonoffSwitchPOWHandler extends SonoffBaseDeviceHandler {
                 }
             };
             if (!mode.equals("local") && consumption) {
-                logger.debug("Starting consumption task for {}", config.deviceid);
+                logger.debug("Starting consumption task for {}", this.deviceid);
                 consumptionTask = scheduler.scheduleWithFixedDelay(consumptionData, 10, consumptionPoll,
                         TimeUnit.SECONDS);
             }
 
             // Task to poll the lan if we are in local only mode or internet access is blocked (POW / POWR2)
             Runnable localPollData = () -> {
-                queueMessage(new SonoffCommandMessage("switch", this.deviceid, true, new SingleSwitch()));
+                queueMessage(new SonoffCommandMessage("switches", this.deviceid, isLocalOut ? true : false,
+                        new MultiSwitch()));
             };
             if ((mode.equals("local") || (this.cloud.equals(false) && mode.equals("mixed")))) {
-                if (local) {
+                if (local.equals(true)) {
                     logger.debug("Starting local task for {}", config.deviceid);
                     localTask = scheduler.scheduleWithFixedDelay(localPollData, 10, localPoll, TimeUnit.SECONDS);
                 }
@@ -94,7 +96,6 @@ public class SonoffSwitchPOWHandler extends SonoffBaseDeviceHandler {
             consumptionTask.cancel(true);
             this.consumptionTask = null;
         }
-        // super.cancelTasks(); // Tschaban: This is not needed as we are not using the super class tasks
     }
 
     @Override
@@ -105,9 +106,14 @@ public class SonoffSwitchPOWHandler extends SonoffBaseDeviceHandler {
         } else {
             switch (channelUID.getId()) {
                 case "switch":
-                    SingleSwitch singleSwitch = new SingleSwitch();
-                    singleSwitch.setSwitch(command.toString().toLowerCase());
-                    message = new SonoffCommandMessage("switch", this.deviceid, true, singleSwitch);
+                    MultiSwitch multiSwitch = new MultiSwitch();
+                    MultiSwitch.Switch newSwitch = multiSwitch.new Switch();
+                    Integer outlet = 0;
+                    newSwitch.setOutlet(outlet);
+                    newSwitch.setSwitch(command.toString().toLowerCase());
+                    multiSwitch.getSwitches().add(newSwitch);
+                    message = new SonoffCommandMessage("switches", this.deviceid, isLocalOut ? true : false,
+                            multiSwitch);
                     break;
                 case "sled":
                     SLed sled = new SLed();
@@ -128,13 +134,16 @@ public class SonoffSwitchPOWHandler extends SonoffBaseDeviceHandler {
         // Switches
         updateState("switch", newDevice.getParameters().getSwitch0());
         updateState("power", newDevice.getParameters().getPower());
+        updateState("voltage", newDevice.getParameters().getVoltage());
+        updateState("current", newDevice.getParameters().getCurrent());
         updateState("rssi", newDevice.getParameters().getRssi());
         updateState("sled", newDevice.getParameters().getNetworkLED());
         updateState("todayKwh", newDevice.getParameters().getTodayKwh());
-        updateState("yesterdayKwh", newDevice.getParameters().getYesterdayKwh());
-        updateState("sevenKwh", newDevice.getParameters().getSevenKwh());
-        updateState("thirtyKwh", newDevice.getParameters().getThirtyKwh());
-        updateState("hundredKwh", newDevice.getParameters().getHundredKwh());
+        // updateState("yesterdayKwh", newDevice.getParameters().getYesterdayKwh());
+        updateState("monthKwh", newDevice.getParameters().getMonthKwh());
+        // updateState("sevenKwh", newDevice.getParameters().getSevenKwh());
+        // updateState("thirtyKwh", newDevice.getParameters().getThirtyKwh());
+        // ("hundredKwh", newDevice.getParameters().getHundredKwh());
         updateState("ipaddress", newDevice.getIpAddress());
         // Connections
         this.cloud = newDevice.getCloud();

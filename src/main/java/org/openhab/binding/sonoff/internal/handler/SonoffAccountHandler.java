@@ -167,7 +167,7 @@ public class SonoffAccountHandler extends BaseBridgeHandler
                     // queueMessage(new SonoffCommandMessage(entry.getKey()));
                     // if online send streaming data activation for certain devices
                     Integer uiid = entry.getValue().getUiid();
-                    if (uiid.equals(5) || uiid.equals(32) || uiid.equals(15) || uiid.equals(181) || uiid.equals(190)) {
+                    if (uiid.equals(5) || uiid.equals(32) || uiid.equals(15)) {
                         if (entry.getValue().getCloud()) {
                             UiActive uiActive = new UiActive();
                             uiActive.setUiActive(60);
