@@ -11,7 +11,7 @@
 		<label>S20 , S26 , BASIC , BASICR2 , MINI</label>
 		<description>1 Channel Relay</description>
 		<channels>
-			<channel id="switch" typeId="power"/>
+			<channel id="switch" typeId="switch"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -36,12 +36,8 @@
 		<label>DUALR2</label>
 		<description>DUALR2</description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -66,15 +62,9 @@
 		<label>SOCKET_3 - Please let me know the model</label>
 		<description>SOCKET_3 - Please let me know the model</description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
-			<channel id="switch2" typeId="power">
-				<label>Switch 3</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
+			<channel id="switch2" typeId="switch2"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -99,18 +89,10 @@
 		<label>SOCKET_4 - Please let me know the model</label>
 		<description>SOCKET_4 - Please let me know the model</description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
-			<channel id="switch2" typeId="power">
-				<label>Switch 3</label>
-			</channel>
-			<channel id="switch3" typeId="power">
-				<label>Switch 4</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
+			<channel id="switch2" typeId="switch2"/>
+			<channel id="switch3" typeId="switch3"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -135,23 +117,13 @@
 		<label>POW</label>
 		<description>POW</description>
 		<channels>
-			<channel id="switch" typeId="power"/>
-			<channel id="power" typeId="electric-power"/>
-			<channel id="todayKwh" typeId="electrical-energy">
-				<label>Today's Energy Consumption</label>
-			</channel>
-			<channel id="yesterdayKwh" typeId="electrical-energy">
-				<label>Yesterday's Energy Consumption</label>
-			</channel>
-			<channel id="sevenKwh" typeId="electrical-energy">
-				<label>Last 7 Days Energy Consumption</label>
-			</channel>
-			<channel id="thirtyKwh" typeId="electrical-energy">
-				<label>Last 30 Days Energy Consumption</label>
-			</channel>
-			<channel id="hundredKwh" typeId="electrical-energy">
-				<label>Last 100 Days Energy Consumption</label>
-			</channel>
+			<channel id="switch" typeId="switch"/>
+			<channel id="power" typeId="power"/>
+			<channel id="todayKwh" typeId="todayKwh"/>
+			<channel id="yesterdayKwh" typeId="yesterdayKwh"/>
+			<channel id="sevenKwh" typeId="sevenKwh"/>
+			<channel id="thirtyKwh" typeId="thirtyKwh"/>
+			<channel id="hundredKwh" typeId="hundredKwh"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -202,7 +174,7 @@
 		<label>T11C , TX1C , G1</label>
 		<description>1 Channel Switch</description>
 		<channels>
-			<channel id="switch" typeId="power"/>
+			<channel id="switch" typeId="switch"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -227,12 +199,8 @@
 		<label>T12C , TX2C , G2</label>
 		<description>2 Channel Switch</description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -257,15 +225,9 @@
 		<label>T13C , TX3C , G3</label>
 		<description>3 Channel Switch</description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
-			<channel id="switch2" typeId="power">
-				<label>Switch 3</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
+			<channel id="switch2" typeId="switch2"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -290,18 +252,10 @@
 		<label>SWITCH_4 - Please let me know the model</label>
 		<description>4 Channel Switch</description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
-			<channel id="switch2" typeId="power">
-				<label>Switch 3</label>
-			</channel>
-			<channel id="switch3" typeId="power">
-				<label>Switch 4</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
+			<channel id="switch2" typeId="switch2"/>
+			<channel id="switch3" typeId="switch3"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -326,7 +280,7 @@
 		<label>BASIC</label>
 		<description>1 Channel Relay</description>
 		<channels>
-			<channel id="switch" typeId="power"/>
+			<channel id="switch" typeId="switch"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
 			<channel id="sled" typeId="sled"/>
@@ -349,7 +303,7 @@
 		<label>TH10 , TH16</label>
 		<description>1 Channel Relay with Temperature and Humidity Input</description>
 		<channels>
-			<channel id="switch" typeId="power"/>
+			<channel id="switch" typeId="switch"/>
 			<channel id="sensorType" typeId="sensorType"/>
 			<channel id="temperature" typeId="temperature"/>
 			<channel id="humidity" typeId="humidity"/>
@@ -378,7 +332,7 @@
 		<label>TH16R3</label>
 		<description>1 Channel Relay with Temperature and Humidity Input</description>
 		<channels>
-			<channel id="switch" typeId="power"/>
+			<channel id="switch" typeId="switch"/>
 			<channel id="sensorType" typeId="sensorType"/>
 			<channel id="temperature" typeId="temperature"/>
 			<channel id="humidity" typeId="humidity"/>
@@ -406,7 +360,7 @@
 		<label>1 Way GSM Socket</label>
 		<description>1 Channel Socket</description>
 		<channels>
-			<channel id="switch" typeId="power"/>
+			<channel id="switch" typeId="switch"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
 			<channel id="sled" typeId="sled"/>
@@ -429,7 +383,7 @@
 		<label>1 Way GSM Socket</label>
 		<description>1 Channel Socket</description>
 		<channels>
-			<channel id="switch" typeId="power"/>
+			<channel id="switch" typeId="switch"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
 			<channel id="sled" typeId="sled"/>
@@ -452,12 +406,8 @@
 		<label>2 Way GSM Socket</label>
 		<description>2 channel Socket </description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
 			<channel id="sled" typeId="sled"/>
@@ -480,15 +430,9 @@
 		<label>3 Way GSM Socket</label>
 		<description>3 Channel Socket</description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
-			<channel id="switch2" typeId="power">
-				<label>Switch 3</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
+			<channel id="switch2" typeId="switch2"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
 			<channel id="sled" typeId="sled"/>
@@ -511,18 +455,10 @@
 		<label>4 Way GSM Socket</label>
 		<description>4 Channel Socket</description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
-			<channel id="switch2" typeId="power">
-				<label>Switch 3</label>
-			</channel>
-			<channel id="switch3" typeId="power">
-				<label>Switch 4</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
+			<channel id="switch2" typeId="switch2"/>
+			<channel id="switch3" typeId="switch3"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
 			<channel id="sled" typeId="sled"/>
@@ -545,25 +481,15 @@
 		<label>POWR2</label>
 		<description>1 Channel Relay with Energy Monitoring</description>
 		<channels>
-			<channel id="switch" typeId="power"/>
-			<channel id="current" typeId="electric-current"/>
-			<channel id="voltage" typeId="electric-voltage"/>
-			<channel id="power" typeId="electric-power"/>
-			<channel id="todayKwh" typeId="electrical-energy">
-				<label>Today's Energy Consumption</label>
-			</channel>
-			<channel id="yesterdayKwh" typeId="electrical-energy">
-				<label>Yesterday's Energy Consumption</label>
-			</channel>
-			<channel id="sevenKwh" typeId="electrical-energy">
-				<label>Last 7 Days Energy Consumption</label>
-			</channel>
-			<channel id="thirtyKwh" typeId="electrical-energy">
-				<label>Last 30 Days Energy Consumption</label>
-			</channel>
-			<channel id="hundredKwh" typeId="electrical-energy">
-				<label>Last 100 Days Energy Consumption</label>
-			</channel>
+			<channel id="switch" typeId="switch"/>
+			<channel id="current" typeId="current"/>
+			<channel id="voltage" typeId="voltage"/>
+			<channel id="power" typeId="power"/>
+			<channel id="todayKwh" typeId="todayKwh"/>
+			<channel id="yesterdayKwh" typeId="yesterdayKwh"/>
+			<channel id="sevenKwh" typeId="sevenKwh"/>
+			<channel id="thirtyKwh" typeId="thirtyKwh"/>
+			<channel id="hundredKwh" typeId="hundredKwh"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -614,7 +540,7 @@
 		<label>Micro</label>
 		<description>Micro USB Adaptor</description>
 		<channels>
-			<channel id="switch0" typeId="power"/>
+			<channel id="switch0" typeId="switch0"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -652,7 +578,7 @@
 		<label>Single Switch (unknown model)</label>
 		<description>1 Channel Relay</description>
 		<channels>
-			<channel id="switch0" typeId="power"/>
+			<channel id="switch0" typeId="switch0"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -690,7 +616,7 @@
 		<label>1 Way GSM Socket</label>
 		<description>1 Channel Socket</description>
 		<channels>
-			<channel id="switch" typeId="power"/>
+			<channel id="switch" typeId="switch"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
 			<channel id="sled" typeId="sled"/>
@@ -713,12 +639,8 @@
 		<label>2 Way GSM Socket</label>
 		<description>2 channel Socket </description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
 			<channel id="sled" typeId="sled"/>
@@ -741,15 +663,9 @@
 		<label>3 Way GSM Socket</label>
 		<description>3 Channel Socket</description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
-			<channel id="switch2" typeId="power">
-				<label>Switch 3</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
+			<channel id="switch2" typeId="switch2"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
 			<channel id="sled" typeId="sled"/>
@@ -772,18 +688,10 @@
 		<label>4 Way GSM Socket</label>
 		<description>4 Channel Socket</description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
-			<channel id="switch2" typeId="power">
-				<label>Switch 3</label>
-			</channel>
-			<channel id="switch3" typeId="power">
-				<label>Switch 4</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
+			<channel id="switch2" typeId="switch2"/>
+			<channel id="switch3" typeId="switch3"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
 			<channel id="sled" typeId="sled"/>
@@ -806,7 +714,7 @@
 		<label>1 Way GSM Socket</label>
 		<description>1 Channel Socket</description>
 		<channels>
-			<channel id="switch" typeId="power"/>
+			<channel id="switch" typeId="switch"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
 			<channel id="sled" typeId="sled"/>
@@ -829,12 +737,8 @@
 		<label>DUAL R3</label>
 		<description>DUAL R3</description>
 		<channels>
-			<channel id="switch0" typeId="power">
-				<label>Switch 1</label>
-			</channel>
-			<channel id="switch1" typeId="power">
-				<label>Switch 2</label>
-			</channel>
+			<channel id="switch0" typeId="switch0"/>
+			<channel id="switch1" typeId="switch1"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
@@ -863,81 +767,5 @@
 			</parameter>
 		</config-description>
 	</thing-type>
-
-
-	<thing-type id="138">
-		<supported-bridge-type-refs>
-			<bridge-type-ref id="account"/>
-		</supported-bridge-type-refs>
-		<label>MINI-R4, MINI-R4M, MINI-D</label>
-		<description>SONOFF Extreme MINI Wi-Fi Smart Switch: 1 Channel Relay</description>
-		<channels>
-			<channel id="switch" typeId="power"/>
-			<channel id="localOnline" typeId="localOnline"/>
-			<channel id="cloudOnline" typeId="cloudOnline"/>
-			<channel id="ipaddress" typeId="ipaddress"/>
-			<channel id="rssi" typeId="rssi"/>
-			<channel id="sled" typeId="sled"/>
-		</channels>
-
-		<representation-property>deviceid</representation-property>
-
-		<config-description>
-			<parameter name="deviceid" type="text" required="true">
-				<label>Device ID</label>
-				<description>Device ID</description>
-			</parameter>
-		</config-description>
-	</thing-type>
-
-
-
-	<thing-type id="190">
-		<supported-bridge-type-refs>
-			<bridge-type-ref id="account"/>
-		</supported-bridge-type-refs>
-		<label>S60TPF, S60TPG, POWCT, POWR316, POWR316D, POWR320D</label>
-		<description>SONOFF Smart Power Meter Switch</description>
-		<channels>
-			<channel id="switch" typeId="power"/>
-			<channel id="current" typeId="electric-current"/>
-			<channel id="voltage" typeId="electric-voltage"/>
-			<channel id="power" typeId="electric-power"/>
-			<channel id="todayKwh" typeId="electrical-energy">
-				<label>Today's Energy Consumption</label>
-			</channel>
-			<channel id="monthKwh" typeId="electrical-energy">
-				<label>Monthly Energy Consumption</label>
-			</channel>
-			<channel id="localOnline" typeId="localOnline"/>
-			<channel id="cloudOnline" typeId="cloudOnline"/>
-			<channel id="ipaddress" typeId="ipaddress"/>
-			<channel id="rssi" typeId="rssi"/>
-			<channel id="sled" typeId="sled"/>
-		</channels>
-
-		<representation-property>deviceid</representation-property>
-
-		<config-description>
-			<parameter name="deviceid" type="text" required="true">
-				<label>Device ID</label>
-				<description>DeviceId (can be found in the eWeLink app)</description>
-			</parameter>
-			<parameter name="local" type="boolean" required="true">
-				<label>Electricity data polling</label>
-				<default>true</default>
-				<options>
-					<option value="true">Enabled</option>
-					<option value="false">Disabled</option>
-				</options>
-			</parameter>
-			<parameter name="localPoll" type="integer" min="10" max="86400" step="1" required="true">
-				<label>Electricity data polling interval</label>
-				<description>Polling interval (in seconds)</description>
-				<default>60</default>
-			</parameter>
-		</config-description>
-	</thing-type>
-
 
 </thing:thing-descriptions>

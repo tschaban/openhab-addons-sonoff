@@ -11,7 +11,7 @@
 		<label>Magnetic Switch</label>
 		<description>Magnetic Door Switch</description>
 		<channels>
-			<channel id="switch" typeId="reed-switch"/>
+			<channel id="switch" typeId="switch"/>
 			<channel id="battery" typeId="battery"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
