@@ -192,7 +192,7 @@ public class SonoffDeviceState {
             }
         }
 
-        if (uiid.equals(15)) {
+        if ((uiid.equals(15)) || (uiid.equals(181))) {
             // api returns a string always
             if (params.get("currentTemperature") != null) {
                 JsonPrimitive p = params.get("currentTemperature").getAsJsonPrimitive();
