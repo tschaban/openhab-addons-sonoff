@@ -9,7 +9,7 @@
 > * SONOFF iPlug Wi-Fi Smart Plug | S60 Series: Models: S60TPF, S60TPG
 > * SONOFF POW Smart Power Meter Switch | Models: POWR316, POWR316D, POWR320D
 > * SONOFF POW Ring Smart Power Meter | Models: POWCT
-> * SONOFF MINI Dry Wi-Fi Smart Switch | Models: MINI-D
+> * SONOFF MINI Dry Wi-Fi Smart Switch | Model: MINI-D
 > * SONOFF MINI Wi-Fi Smart Switch | Models: MINI-R4, MINI-R4M
 
 
