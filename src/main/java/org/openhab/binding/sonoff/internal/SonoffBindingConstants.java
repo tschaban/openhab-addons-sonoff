@@ -75,6 +75,12 @@ public class SonoffBindingConstants {
     public static final ThingTypeUID THING_TYPE_126 = new ThingTypeUID(BINDING_ID, "126"); // DUAL R3
     public static final ThingTypeUID THING_TYPE_107 = new ThingTypeUID(BINDING_ID, "107"); // GSM Socket
 
+    public static final ThingTypeUID THING_TYPE_138 = new ThingTypeUID(BINDING_ID, "138"); // MINI-D
+
+    public static final ThingTypeUID THING_TYPE_190 = new ThingTypeUID(BINDING_ID, "190"); // S60x, POWR, POWCT
+    public static final ThingTypeUID THING_TYPE_211 = new ThingTypeUID(BINDING_ID, "211"); // T5-3C-86
+    public static final ThingTypeUID THING_TYPE_256 = new ThingTypeUID(BINDING_ID, "256"); // SlimCAM2
+
     // Zigbee Child Devices
     public static final ThingTypeUID THING_TYPE_2026 = new ThingTypeUID(BINDING_ID, "2026"); // Motion Sensor
     public static final ThingTypeUID THING_TYPE_ZCONTACT = new ThingTypeUID(BINDING_ID, "zcontact"); // Contact Sensor
@@ -106,7 +112,6 @@ public class SonoffBindingConstants {
                     THING_TYPE_28, THING_TYPE_RF1, THING_TYPE_RF2, THING_TYPE_RF3, THING_TYPE_RF4, THING_TYPE_RF6,
 
                     THING_TYPE_32, THING_TYPE_190, THING_TYPE_59,
-
 
             THING_TYPE_66, THING_TYPE_2026, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER, THING_TYPE_1770, THING_TYPE_ZLIGHT,
             THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,

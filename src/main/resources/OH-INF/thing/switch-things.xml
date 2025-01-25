@@ -481,15 +481,25 @@
 		<label>POWR2</label>
 		<description>1 Channel Relay with Energy Monitoring</description>
 		<channels>
-			<channel id="switch" typeId="switch"/>
-			<channel id="current" typeId="current"/>
-			<channel id="voltage" typeId="voltage"/>
-			<channel id="power" typeId="power"/>
-			<channel id="todayKwh" typeId="todayKwh"/>
-			<channel id="yesterdayKwh" typeId="yesterdayKwh"/>
-			<channel id="sevenKwh" typeId="sevenKwh"/>
-			<channel id="thirtyKwh" typeId="thirtyKwh"/>
-			<channel id="hundredKwh" typeId="hundredKwh"/>
+			<channel id="switch" typeId="power"/>
+			<channel id="current" typeId="electric-current"/>
+			<channel id="voltage" typeId="electric-voltage"/>
+			<channel id="power" typeId="electric-power"/>
+			<channel id="todayKwh" typeId="electrical-energy">
+				<label>Today's Energy Consumption</label>
+			</channel>
+			<channel id="yesterdayKwh" typeId="electrical-energy">
+				<label>Yesterday's Energy Consumption</label>
+			</channel>
+			<channel id="sevenKwh" typeId="electrical-energy">
+				<label>Last 7 Days Energy Consumption</label>
+			</channel>
+			<channel id="thirtyKwh" typeId="electrical-energy">
+				<label>Last 30 Days Energy Consumption</label>
+			</channel>
+			<channel id="hundredKwh" typeId="electrical-energy">
+				<label>Last 100 Days Energy Consumption</label>
+			</channel>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
