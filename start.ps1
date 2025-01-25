@@ -1,3 +1,4 @@
+
 clear
 mvn spotless:apply
 mvn clean install -DskipChecks -DskipTests -pl :org.openhab.binding.sonoff
