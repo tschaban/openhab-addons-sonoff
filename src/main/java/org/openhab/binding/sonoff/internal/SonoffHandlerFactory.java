@@ -74,6 +74,7 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "27":
             case "81":
             case "107":
+            case "256":
                 return new SonoffSwitchSingleHandler(thing);
             case "2":
             case "3":
@@ -125,7 +126,8 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "rfremote4":
             case "rfsensor":
                 return new SonoffRfDeviceHandler(thing);
-
+            case "237":
+                return new SonoffGateHandler(thing);
             default:
                 return null;
         }

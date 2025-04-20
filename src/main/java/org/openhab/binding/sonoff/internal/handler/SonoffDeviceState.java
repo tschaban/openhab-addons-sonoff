@@ -131,6 +131,25 @@ public class SonoffDeviceState {
             }
         }
 
+        // Doors
+
+        if (params.has("doorsensors")) {
+
+            JsonObject doors = params.getAsJsonObject("doorsensors");
+
+            if (doors.has("0")) { /* It set the doorSensor as well */
+                parameters.setDoor0(doors.get("0").getAsString());
+            }
+
+            if (doors.has("1")) {
+                parameters.setDoor1(doors.get("1").getAsString());
+            }
+
+            if (doors.has("2")) {
+                parameters.setDoor2(doors.get("2").getAsString());
+            }
+        }
+
         // Electric or CAM2
         if (params.get("power") != null) {
             if (uiid.equals(256)) {

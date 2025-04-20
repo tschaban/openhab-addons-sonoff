@@ -11,6 +11,7 @@
 > * SONOFF POW Ring Smart Power Meter | Models: POWCT
 > * SONOFF MINI Dry Wi-Fi Smart Switch | Model: MINI-D
 > * SONOFF MINI Wi-Fi Smart Switch | Models: MINI-R4, MINI-R4M
+> * SONOFF Smart Gate Controller (Prototype version)
 
 
 # sonoff Binding

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="sonoff"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<thing-type id="237">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>Door Controller</label>
+		<description>Smart Garage Door Controller: SGC100, SGC200, SGC300</description>
+		<channels>
+			<channel id="door0" typeId="door-switch">
+				<label>Door 1</label>
+			</channel>
+			<channel id="door1" typeId="door-switch">
+				<label>Door 2</label>
+			</channel>
+			<channel id="door2" typeId="door-switch">
+				<label>Door 3</label>
+			</channel>
+			<channel id="doorsensor0" typeId="door-contact">
+				<label>Door Sensor 1</label>
+			</channel>
+			<channel id="doorsensor1" typeId="door-contact">
+				<label>Door Sensor 2</label>
+			</channel>
+			<channel id="doorsensor2" typeId="door-contact">
+				<label>Door Sensor 2</label>
+			</channel>
+			<channel id="localOnline" typeId="localOnline"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+		</channels>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+</thing:thing-descriptions>
