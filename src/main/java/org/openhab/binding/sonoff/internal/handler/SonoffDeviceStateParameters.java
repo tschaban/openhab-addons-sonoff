@@ -26,6 +26,7 @@ import org.openhab.core.library.types.DateTimeType;
 import org.openhab.core.library.types.DecimalType;
 import org.openhab.core.library.types.HSBType;
 import org.openhab.core.library.types.OnOffType;
+import org.openhab.core.library.types.OpenClosedType;
 import org.openhab.core.library.types.PercentType;
 import org.openhab.core.library.types.QuantityType;
 import org.openhab.core.library.types.StringType;
@@ -82,6 +83,14 @@ public class SonoffDeviceStateParameters {
     private StringType ltype = new StringType();
     private PercentType whiteBrightness = new PercentType(0);
     private PercentType colorBrightness = new PercentType(0);
+    // DoorSensor
+
+    private OnOffType door0 = OnOffType.OFF;
+    private OnOffType door1 = OnOffType.OFF;
+    private OnOffType door2 = OnOffType.OFF;
+    private OpenClosedType doorSensor0 = OpenClosedType.CLOSED;
+    private OpenClosedType doorSensor1 = OpenClosedType.CLOSED;
+    private OpenClosedType doorSensor2 = OpenClosedType.CLOSED;
 
     // Other
     private OnOffType networkLED = OnOffType.OFF;
@@ -115,6 +124,45 @@ public class SonoffDeviceStateParameters {
 
     public void setCamPower(String power) {
         this.camPower = power.equals("on") ? OnOffType.ON : OnOffType.OFF;
+    }
+
+    public OnOffType getDoor0() {
+        return this.door0;
+    }
+
+    public OnOffType getDoor1() {
+        return this.door1;
+    }
+
+    public OnOffType getDoor2() {
+        return this.door2;
+    }
+
+    public OpenClosedType getDoorSensor0() {
+        return this.doorSensor0;
+    }
+
+    public OpenClosedType getDoorSensor1() {
+        return this.doorSensor1;
+    }
+
+    public OpenClosedType getDoorSensor2() {
+        return this.doorSensor2;
+    }
+
+    public void setDoor0(String door0) {
+        this.door0 = door0.equals("on") ? OnOffType.ON : OnOffType.OFF;
+        this.doorSensor0 = door0.equals("on") ? OpenClosedType.OPEN : OpenClosedType.CLOSED;
+    }
+
+    public void setDoor1(String door1) {
+        this.door1 = door1.equals("on") ? OnOffType.ON : OnOffType.OFF;
+        this.doorSensor1 = door1.equals("on") ? OpenClosedType.OPEN : OpenClosedType.CLOSED;
+    }
+
+    public void setDoor2(String door2) {
+        this.door2 = door2.equals("on") ? OnOffType.ON : OnOffType.OFF;
+        this.doorSensor2 = door2.equals("on") ? OpenClosedType.OPEN : OpenClosedType.CLOSED;
     }
 
     public OnOffType getSwitch0() {

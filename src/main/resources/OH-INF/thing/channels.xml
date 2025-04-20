@@ -5,6 +5,17 @@
 	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0
         https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
+	<channel-type id="door-contact">
+		<item-type>Contact</item-type>
+		<label>Magnetic sensor</label>
+		<description>Open/Close door</description>
+	</channel-type>
+
+	<channel-type id="door-switch">
+		<item-type>Switch</item-type>
+		<label>Door</label>
+		<description>Open/Close door</description>
+	</channel-type>
 
 	<channel-type id="electrical-energy">
 		<item-type unitHint="kWh">Number:Energy</item-type>
