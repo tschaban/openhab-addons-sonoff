@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -265,7 +265,7 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
                     new SonoffCommandMessageEncryptionUtilities().decrypt(device, state.getDeviceKey()),
                     JsonObject.class);
             device.add("params", params);
-            if (ipAddress != "") {
+            if (!ipAddress.equals("")) {
                 device.addProperty("ipaddress", ipAddress);
             }
             logger.trace("LAN message for {} is {}", deviceid, gson.toJson(device));

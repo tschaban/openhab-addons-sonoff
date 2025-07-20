@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -159,8 +159,8 @@ public class SonoffWebSocketConnection {
 
     @OnWebSocketError
     public void onError(Throwable cause) {
-        logger.error("Websocket Error: " + cause.getMessage(), cause);
         String reason = cause.getMessage();
+        logger.error("Websocket Error: {}", reason);
         if (reason != null) {
             onClose(0, reason);
         } else {

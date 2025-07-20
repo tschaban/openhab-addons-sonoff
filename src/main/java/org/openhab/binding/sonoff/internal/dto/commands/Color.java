@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -44,6 +44,22 @@ public class Color extends AbstractCommand<Color> implements Serializable {
 
     public void setColor(ColorObject color) {
         this.color = color;
+    }
+
+    public void setColor(Integer r, Integer g, Integer b) {
+        this.color.r = r;
+        this.color.g = g;
+        this.color.b = b;
+    }
+
+    public Color(Integer r, Integer g, Integer b) {
+        this.color.r = r;
+        this.color.g = g;
+        this.color.b = b;
+    }
+
+    public Color() {
+        this(0, 0, 0);
     }
 
     private static final long serialVersionUID = 5376512912986765998L;
