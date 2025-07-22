@@ -69,6 +69,7 @@ public class SonoffLanConnection {
             }
             listener.lanConnected(true);
         } catch (IOException e) {
+            logger.debug("mDNS service exception", e);
             listener.lanConnected(false);
         }
     }
