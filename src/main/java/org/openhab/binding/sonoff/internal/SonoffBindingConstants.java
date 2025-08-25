@@ -34,11 +34,11 @@ public class SonoffBindingConstants {
     public static final String BINDING_ID = "sonoff";
 
     public static final Set<Integer> LAN_IN = Collections.unmodifiableSet(Stream
-            .of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140, 181, 190, 237, 256)
+            .of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140, 181, 190, 237, 256, 260)
             .collect(Collectors.toSet()));
 
     public static final Set<Integer> LAN_OUT = Collections
-            .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126, 138, 140, 237, 256)
+            .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126, 138, 140, 237, 256, 260)
                     .collect(Collectors.toSet()));
 
     // List of all Thing Type UIDs
@@ -84,6 +84,7 @@ public class SonoffBindingConstants {
     public static final ThingTypeUID THING_TYPE_211 = new ThingTypeUID(BINDING_ID, "211"); // T5-3C-86
     public static final ThingTypeUID THING_TYPE_237 = new ThingTypeUID(BINDING_ID, "237"); // SG200
     public static final ThingTypeUID THING_TYPE_256 = new ThingTypeUID(BINDING_ID, "256"); // SlimCAM2
+    public static final ThingTypeUID THING_TYPE_260 = new ThingTypeUID(BINDING_ID, "260"); // CAM-B1P
 
     // Zigbee Child Devices
     public static final ThingTypeUID THING_TYPE_2026 = new ThingTypeUID(BINDING_ID, "2026"); // Motion Sensor
@@ -122,8 +123,10 @@ public class SonoffBindingConstants {
                     THING_TYPE_ZSWITCH4,
 
                     THING_TYPE_77, THING_TYPE_78, THING_TYPE_81, THING_TYPE_82, THING_TYPE_83, THING_TYPE_84,
-                    THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126, THING_TYPE_138, THING_TYPE_140,
-                    THING_TYPE_190, THING_TYPE_211, THING_TYPE_237, THING_TYPE_256
+
+                    THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126, THING_TYPE_138, THING_TYPE_140, THING_TYPE_190,
+                    THING_TYPE_211, THING_TYPE_237, THING_TYPE_256, THING_TYPE_260
+
 
             ).collect(Collectors.toSet()));
 
@@ -143,8 +146,10 @@ public class SonoffBindingConstants {
                     THING_TYPE_ZSWITCH4,
 
                     THING_TYPE_77, THING_TYPE_78, THING_TYPE_81, THING_TYPE_82, THING_TYPE_83, THING_TYPE_84,
-                    THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126, THING_TYPE_138, THING_TYPE_140,
-                    THING_TYPE_190, THING_TYPE_211, THING_TYPE_237, THING_TYPE_256).collect(Collectors.toSet()));
+
+                    THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126, THING_TYPE_138, THING_TYPE_140, THING_TYPE_190,
+                    THING_TYPE_211, THING_TYPE_237, THING_TYPE_256, THING_TYPE_260).collect(Collectors.toSet()));
+
 
     public static final Map<Integer, ThingTypeUID> createMap() { // thing type denotes number of channels
         Map<Integer, ThingTypeUID> deviceTypes = new HashMap<>();
@@ -190,7 +195,9 @@ public class SonoffBindingConstants {
         deviceTypes.put(190, THING_TYPE_190);
         deviceTypes.put(211, THING_TYPE_211);
         deviceTypes.put(237, THING_TYPE_237);
+
         deviceTypes.put(256, THING_TYPE_256);
+        deviceTypes.put(260, THING_TYPE_260);
 
         return Collections.unmodifiableMap(deviceTypes);
     }

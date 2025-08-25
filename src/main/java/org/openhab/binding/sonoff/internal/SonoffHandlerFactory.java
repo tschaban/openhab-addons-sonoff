@@ -74,7 +74,8 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "27":
             case "81":
             case "107":
-            case "256":
+            case "256": // CAM not supported yet
+            case "260": // CAM not supported yet
                 return new SonoffSwitchSingleHandler(thing);
             case "2":
             case "3":
