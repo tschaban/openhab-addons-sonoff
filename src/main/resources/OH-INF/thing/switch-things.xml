@@ -890,7 +890,36 @@
 		</config-description>
 	</thing-type>
 
+	<thing-type id="140">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>3 Channel Wall Switch</label>
+		<description>3 Channel Wall Switch/Relay based on Bouffalo Lab BL602 (CK-BL602-4SW-HS)</description>
+		<channels>
+			<channel id="switch0" typeId="power">
+				<label>Switch 1</label>
+			</channel>
+			<channel id="switch1" typeId="power">
+				<label>Switch 2</label>
+			</channel>
+			<channel id="switch2" typeId="power">
+				<label>Switch 3</label>
+			</channel>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+		</channels>
 
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
 
 	<thing-type id="190">
 		<supported-bridge-type-refs>

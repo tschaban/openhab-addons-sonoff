@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -34,11 +34,11 @@ public class SonoffBindingConstants {
     public static final String BINDING_ID = "sonoff";
 
     public static final Set<Integer> LAN_IN = Collections.unmodifiableSet(Stream
-            .of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 181, 190, 237, 256, 260)
+            .of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140, 181, 190, 237, 256, 260)
             .collect(Collectors.toSet()));
 
     public static final Set<Integer> LAN_OUT = Collections
-            .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126, 138, 237, 256, 260)
+            .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126, 138, 140, 237, 256, 260)
                     .collect(Collectors.toSet()));
 
     // List of all Thing Type UIDs
@@ -78,6 +78,7 @@ public class SonoffBindingConstants {
     public static final ThingTypeUID THING_TYPE_107 = new ThingTypeUID(BINDING_ID, "107"); // GSM Socket
 
     public static final ThingTypeUID THING_TYPE_138 = new ThingTypeUID(BINDING_ID, "138"); // MINI-D
+    public static final ThingTypeUID THING_TYPE_140 = new ThingTypeUID(BINDING_ID, "140"); // CK-BL602-4SW-HS
 
     public static final ThingTypeUID THING_TYPE_190 = new ThingTypeUID(BINDING_ID, "190"); // S60TPF4
     public static final ThingTypeUID THING_TYPE_211 = new ThingTypeUID(BINDING_ID, "211"); // T5-3C-86
@@ -122,8 +123,10 @@ public class SonoffBindingConstants {
                     THING_TYPE_ZSWITCH4,
 
                     THING_TYPE_77, THING_TYPE_78, THING_TYPE_81, THING_TYPE_82, THING_TYPE_83, THING_TYPE_84,
-                    THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126, THING_TYPE_138, THING_TYPE_190,
+
+                    THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126, THING_TYPE_138, THING_TYPE_140, THING_TYPE_190,
                     THING_TYPE_211, THING_TYPE_237, THING_TYPE_256, THING_TYPE_260
+
 
             ).collect(Collectors.toSet()));
 
@@ -143,8 +146,10 @@ public class SonoffBindingConstants {
                     THING_TYPE_ZSWITCH4,
 
                     THING_TYPE_77, THING_TYPE_78, THING_TYPE_81, THING_TYPE_82, THING_TYPE_83, THING_TYPE_84,
-                    THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126, THING_TYPE_138, THING_TYPE_190,
+
+                    THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126, THING_TYPE_138, THING_TYPE_140, THING_TYPE_190,
                     THING_TYPE_211, THING_TYPE_237, THING_TYPE_256, THING_TYPE_260).collect(Collectors.toSet()));
+
 
     public static final Map<Integer, ThingTypeUID> createMap() { // thing type denotes number of channels
         Map<Integer, ThingTypeUID> deviceTypes = new HashMap<>();
@@ -185,6 +190,8 @@ public class SonoffBindingConstants {
         deviceTypes.put(107, THING_TYPE_107);
         deviceTypes.put(126, THING_TYPE_126);
         deviceTypes.put(138, THING_TYPE_138);
+        deviceTypes.put(140, THING_TYPE_140);
+
         deviceTypes.put(190, THING_TYPE_190);
         deviceTypes.put(211, THING_TYPE_211);
         deviceTypes.put(237, THING_TYPE_237);

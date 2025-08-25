@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -32,7 +32,7 @@ import com.google.gson.JsonPrimitive;
  */
 @NonNullByDefault
 public class SonoffDeviceState {
-    private final Logger logger = LoggerFactory.getLogger(SonoffAccountHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(SonoffDeviceState.class);
 
     // Main Parameters
     private final String deviceKey;
@@ -125,7 +125,8 @@ public class SonoffDeviceState {
                             break;
                         default:
                             logger.warn(
-                                    "Sonoff addon support only devices with at most 4 switches, ignoring switch: " + i);
+                                    "Sonoff addon support only devices with at most 4 switches, ignoring switch: {}",
+                                    i);
                     }
                 }
             }
