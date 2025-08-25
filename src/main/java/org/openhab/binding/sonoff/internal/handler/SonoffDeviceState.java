@@ -61,10 +61,10 @@ public class SonoffDeviceState {
         JsonElement firmware = device.getAsJsonObject("params").get("fwVersion");
         this.fw = firmware != null ? firmware.getAsString() : "Not Applicable";
         this.parameters = new SonoffDeviceStateParameters();
-        logger.debug("-----------------------");
-        logger.debug("Found: {}", this.name);
-        logger.debug("Hardware: {}", this.brand + " Model: " + this.model + " FW: " + this.fw);
-        logger.debug("UUID: {}", this.uiid + ", DeviceId: " + this.deviceid);
+        logger.info("-----------------------");
+        logger.info("Found: {}", this.name);
+        logger.info("Hardware: {}", this.brand + " Model: " + this.model + " FW: " + this.fw);
+        logger.info("UUID: {}", this.uiid + ", DeviceId: " + this.deviceid);
         updateState(device);
     }
 
@@ -152,7 +152,7 @@ public class SonoffDeviceState {
 
         // Electric or CAM2
         if (params.get("power") != null) {
-            if (uiid.equals(256)) {
+            if (uiid.equals(256) || uiid.equals(260)) { // Temporary workaround to be fixed for CAMs
                 parameters.setCamPower(params.get("power").getAsString());
             } else {
                 parameters.setPower(params.get("power").getAsString());
