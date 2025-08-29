@@ -82,12 +82,16 @@ public class SonoffZigbeeBridgeHandler extends SonoffBaseBridgeHandler {
     public JsonArray getSubDevices() {
         JsonArray subDevices = new JsonArray();
         SonoffAccountHandler account = this.account;
+        logger.info("Getting subdevices for zigbee bridge {}", this.deviceid);
         if (account != null) {
             SonoffDeviceState state = account.getState(this.deviceid);
+            logger.info("Got state for zigbee bridge {}", state.getParameters());
             if (state != null) {
                 subDevices = state.getSubDevices();
+                logger.info("Got subdevices for zigbee bridge {}", this.deviceid);
             }
         }
+        logger.info("Returning number of subdevices for zigbee bridge {}", subDevices.size());
         return subDevices;
     }
 

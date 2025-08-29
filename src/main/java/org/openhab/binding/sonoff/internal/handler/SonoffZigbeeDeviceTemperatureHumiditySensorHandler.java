@@ -19,14 +19,15 @@ import org.openhab.core.thing.Thing;
 import org.openhab.core.types.*;
 
 /**
- * The {@link SonoffZigbeeDevice1770Handler} is responsible for updates and handling commands to/from Zigbee Devices
+ * The {@link SonoffZigbeeDeviceTemperatureHumiditySensorHandler} is responsible for updates and handling commands
+ * to/from Zigbee Devices
  *
  * @author David Murton - Initial contribution
  */
 @NonNullByDefault
-public class SonoffZigbeeDevice1770Handler extends SonoffBaseZigbeeHandler {
+public class SonoffZigbeeDeviceTemperatureHumiditySensorHandler extends SonoffBaseZigbeeHandler {
 
-    public SonoffZigbeeDevice1770Handler(Thing thing) {
+    public SonoffZigbeeDeviceTemperatureHumiditySensorHandler(Thing thing) {
         super(thing);
     }
 

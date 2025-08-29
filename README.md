@@ -12,6 +12,8 @@
 > * SONOFF MINI Dry Wi-Fi Smart Switch | Model: MINI-D
 > * SONOFF MINI Wi-Fi Smart Switch | Models: MINI-R4, MINI-R4M
 > * SONOFF Smart Gate Controller (Prototype version)
+> * SONOFF 3 Way Wall Switch | Model; T5-3C
+> * 3 Way Wall Switch | CK-BL602-4SW-HS
 
 
 # sonoff Binding

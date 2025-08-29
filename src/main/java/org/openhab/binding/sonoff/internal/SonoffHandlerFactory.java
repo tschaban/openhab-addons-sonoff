@@ -23,8 +23,8 @@ import org.openhab.binding.sonoff.internal.handler.SonoffAccountHandler;
 import org.openhab.binding.sonoff.internal.handler.SonoffRfBridgeHandler;
 import org.openhab.binding.sonoff.internal.handler.SonoffRfDeviceHandler;
 import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeBridgeHandler;
-import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeDevice1770Handler;
-import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeDevice2026Handler;
+import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeDeviceMotionSensorHandler;
+import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeDeviceTemperatureHumiditySensorHandler;
 import org.openhab.core.io.net.http.HttpClientFactory;
 import org.openhab.core.io.net.http.WebSocketFactory;
 import org.openhab.core.thing.Bridge;
@@ -74,6 +74,8 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "27":
             case "81":
             case "107":
+            case "160":
+            case "209":
             case "256": // CAM not supported yet
             case "260": // CAM not supported yet
                 return new SonoffSwitchSingleHandler(thing);
@@ -92,7 +94,11 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "83":
             case "84":
             case "126":
+            case "161":
+            case "162":
+            case "210":
             case "211":
+            case "212":
                 return new SonoffSwitchMultiHandler(thing);
             case "5":
                 return new SonoffSwitchPOWHandler(thing);
@@ -108,8 +114,10 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "59":
                 return new SonoffRGBStripHandler(thing);
             case "66":
+            case "243":
                 return new SonoffZigbeeBridgeHandler((Bridge) thing);
             case "102":
+            case "7003":
                 return new SonoffMagneticSwitchHandler(thing);
             case "104":
                 return new SonoffRGBCCTHandler(thing);
@@ -117,18 +125,20 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
                 return new SonoffSwitchSingleMiniHandler(thing);
             case "190":
                 return new SonoffSwitchPOWUgradedHandler(thing);
+            case "237":
+                return new SonoffGateHandler(thing);
             case "1770":
-                return new SonoffZigbeeDevice1770Handler(thing);
+            case "7014": // SNZB-02P
+                return new SonoffZigbeeDeviceTemperatureHumiditySensorHandler(thing);
             case "2026":
-                return new SonoffZigbeeDevice2026Handler(thing);
+                return new SonoffZigbeeDeviceMotionSensorHandler(thing);
             case "rfremote1":
             case "rfremote2":
             case "rfremote3":
             case "rfremote4":
             case "rfsensor":
                 return new SonoffRfDeviceHandler(thing);
-            case "237":
-                return new SonoffGateHandler(thing);
+
             default:
                 return null;
         }

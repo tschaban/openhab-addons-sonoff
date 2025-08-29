@@ -8,8 +8,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>Door Controller</label>
-		<description>Smart Garage Door Controller: SGC100, SGC200, SGC300</description>
+		<label>SONOFF Smart Garage Door Controller</label>
+		<description>Models: SGC100, SGC200, SGC300</description>
 		<channels>
 			<channel id="door0" typeId="door-switch">
 				<label>Door 1</label>
