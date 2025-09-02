@@ -8,7 +8,7 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>SONOFF Zigbee Bridge Pro</label>
+		<label>SONOFF Zigbee Bridge</label>
 		<description>Sonoff Zigbee Bridge</description>
 		<channels>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
@@ -25,11 +25,34 @@
 	</bridge-type>
 
 
+	<bridge-type id="168">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Bridge: Pro</label>
+		<description>Model: ZBBridge-P</description>
+		<channels>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+			<channel id="zled" typeId="zled"/>
+		</channels>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</bridge-type>
+
+
+
+
 	<bridge-type id="243">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>SONOFF Zigbee Bridge Ultra</label>
+		<label>SONOFF Zigbee Bridge: Ultra</label>
 		<description>Model: ZBBridge-U</description>
 		<channels>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
@@ -49,6 +72,7 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
 			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Motion Sensor</label>
 		<description>Models: First version</description>
@@ -70,6 +94,7 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
 			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Temperature and Humidity Sensor</label>
 		<description>Model: SNZB-02 (1st version)</description>
@@ -92,14 +117,16 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
 			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Door and Window Sensor</label>
 		<description>Models: SNZB-04P</description>
 		<channels>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
-			<channel id="contact" typeId="door-contact"/>
+			<channel id="contact" typeId="contact"/>
 			<channel id="battery" typeId="battery-level"/>
 			<channel id="trigTime" typeId="trigTime"/>
+			<channel id="rssi" typeId="rssi"/>
 		</channels>
 		<config-description>
 			<parameter name="deviceid" type="text" required="true">
@@ -114,6 +141,7 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
 			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Temperature and Humidity Sensor</label>
 		<description>Models: SNZB-02P, SNZB-02D</description>

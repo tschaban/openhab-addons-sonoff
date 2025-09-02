@@ -30,6 +30,10 @@ import com.google.gson.JsonPrimitive;
  *
  * @author David Murton - Initial contribution
  */
+
+// Purpose: Gets devices states from payload json and set channel states
+// params => payload parameters, parameters => Channels
+
 @NonNullByDefault
 public class SonoffDeviceState {
     private final Logger logger = LoggerFactory.getLogger(SonoffDeviceState.class);
@@ -82,7 +86,7 @@ public class SonoffDeviceState {
             }
         }
         setParameters(device.getAsJsonObject("params"));
-        if (uiid.equals(66) || uiid.equals(243) || uiid.equals(28)) {
+        if (uiid.equals(66) || uiid.equals(168) || uiid.equals(243) || uiid.equals(28)) {
             setSubDevices(device);
         }
         return this;
@@ -129,6 +133,13 @@ public class SonoffDeviceState {
                                     i);
                     }
                 }
+            }
+        }
+
+        // Contact
+        if (params.has("lock")) {
+            if (params.get("lock") != null) {
+                parameters.setContact0(params.get("lock").getAsInt());
             }
         }
 
@@ -335,8 +346,16 @@ public class SonoffDeviceState {
             parameters.setNetworkLED(params.get("sledOnline").getAsString());
         }
 
-        if (params.get("rssi") != null) {
-            parameters.setRssi(params.get("rssi").getAsInt());
+        // For devices use rssi for subdevices (Zigbee) use subDevRssi
+        // @TODO add subdevices IDs gere
+        if (uiid.equals(7003)) {
+            if (params.get("subDevRssi") != null) {
+                parameters.setRssi(params.get("subDevRssi").getAsInt());
+            }
+        } else {
+            if (params.get("rssi") != null) {
+                parameters.setRssi(params.get("rssi").getAsInt());
+            }
         }
 
         if (params.get("zled") != null) {
@@ -474,7 +493,7 @@ public class SonoffDeviceState {
 
     private void setSubDevices(JsonObject device) {
         JsonArray subDevices = null;
-        if (uiid.equals(66) || uiid.equals(243)) {
+        if (uiid.equals(66) || uiid.equals(168) || uiid.equals(243)) {
             if (device.getAsJsonObject("params").getAsJsonArray("subDevices") != null) {
                 subDevices = device.getAsJsonObject("params").getAsJsonArray("subDevices");
             }

@@ -5,6 +5,13 @@
 	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0
         https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
+
+	<channel-type id="contact">
+		<item-type>Contact</item-type>
+		<label>Contact sensor</label>
+		<description>Open/Close sensor</description>
+	</channel-type>
+
 	<channel-type id="door-contact">
 		<item-type>Contact</item-type>
 		<label>Magnetic sensor</label>
@@ -236,14 +243,14 @@
 
 	<channel-type id="battery">
 		<item-type>Number:ElectricPotential</item-type>
-		<label>Batery Voltage</label>
+		<label>Battery Voltage</label>
 		<description>Battery voltage</description>
 		<state readOnly="true" pattern="%.3f %unit%"/>
 	</channel-type>
 
 	<channel-type id="battery-level">
 		<item-type unitHint="%">Number:Dimensionless</item-type>
-		<label>Batery Level</label>
+		<label>Battery Level</label>
 		<description>Battery level</description>
 		<state readOnly="true" pattern="%.0f %unit%"/>
 	</channel-type>

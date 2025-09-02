@@ -10,6 +10,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
+
+// Purpose:Setting a handlers for specific devices
+
 package org.openhab.binding.sonoff.internal;
 
 import static org.openhab.binding.sonoff.internal.SonoffBindingConstants.*;
@@ -114,10 +117,10 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "59":
                 return new SonoffRGBStripHandler(thing);
             case "66":
+            case "168":
             case "243":
                 return new SonoffZigbeeBridgeHandler((Bridge) thing);
             case "102":
-            case "7003":
                 return new SonoffMagneticSwitchHandler(thing);
             case "104":
                 return new SonoffRGBCCTHandler(thing);
@@ -138,7 +141,8 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "rfremote4":
             case "rfsensor":
                 return new SonoffRfDeviceHandler(thing);
-
+            case "7003":
+                return new SonoffZigbeeContactSensorHandler(thing);
             default:
                 return null;
         }
