@@ -4,10 +4,14 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.openhab.addons.bundles</groupId>
+  <parent>
+    <groupId>org.openhab.addons.bundles</groupId>
+    <artifactId>org.openhab.addons.reactor.bundles</artifactId>
+    <version>5.0.2-SNAPSHOT</version>
+    <relativePath></relativePath>
+  </parent>
+
   <artifactId>org.openhab.binding.sonoff</artifactId>
-  <version>5.0.2-SNAPSHOT</version>
-  <packaging>jar</packaging>
 
   <name>openHAB Add-ons :: Bundles :: Sonoff Binding</name>
 
@@ -51,7 +55,7 @@
         <configuration>
           <useModulePath>false</useModulePath>
           <includes>
-            <include>**/SimpleJUnitTest.java</include>
+            <include>**/*Test.java</include>
           </includes>
         </configuration>
       </plugin>
