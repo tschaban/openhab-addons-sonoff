@@ -34,11 +34,22 @@ mvn test -Dtest=SimpleJUnitTest
 mvn test -Dtest="*Test"
 ```
 
-### Verification Script
-Use the provided verification script to check the setup:
+### Verification Scripts
+Use the provided verification scripts to check the setup:
 
+**Linux/macOS (Bash):**
 ```bash
 ./verify-tests.sh
+```
+
+**Windows (PowerShell):**
+```powershell
+.\verify-tests.ps1
+```
+
+**Windows (Command Prompt):**
+```cmd
+verify-tests.bat
 ```
 
 ## Writing Tests
@@ -82,6 +93,29 @@ class MyClassTest {
 - `@AfterEach` - Run after each test method
 - `@BeforeAll` - Run once before all tests (static method)
 - `@AfterAll` - Run once after all tests (static method)
+
+## Cross-Platform Support
+
+### Verification Scripts Available
+- `verify-tests.sh` - Linux/macOS Bash script
+- `verify-tests.ps1` - Windows PowerShell script  
+- `verify-tests.bat` - Windows Command Prompt batch file
+
+### Prerequisites
+- **Java 17+** installed and in PATH
+- **Maven 3.6+** installed and in PATH
+- **Git** (for cloning the repository)
+
+### Platform-Specific Notes
+
+**Windows:**
+- Use PowerShell for the best experience (`.\verify-tests.ps1`)
+- Command Prompt is also supported (`verify-tests.bat`)
+- Ensure Java and Maven are in your system PATH
+
+**Linux/macOS:**
+- Make the script executable: `chmod +x verify-tests.sh`
+- Run with: `./verify-tests.sh`
 
 ## Notes
 
