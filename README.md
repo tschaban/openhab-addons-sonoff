@@ -5,13 +5,24 @@
 > * Feel free to report issues for my best effort fixes [here](https://github.com/tschaban/openhab-addons-sonoff/issues)
 > * Newest release [here](https://github.com/tschaban/openhab-addons-sonoff/releases)
 > 
-> **Newly Supported Devices**
-> * SONOFF iPlug Wi-Fi Smart Plug | S60 Series: Models: S60TPF, S60TPG
-> * SONOFF POW Smart Power Meter Switch | Models: POWR316, POWR316D, POWR320D
-> * SONOFF POW Ring Smart Power Meter | Models: POWCT
-> * SONOFF MINI Dry Wi-Fi Smart Switch | Model: MINI-D
-> * SONOFF MINI Wi-Fi Smart Switch | Models: MINI-R4, MINI-R4M
-> * SONOFF Smart Gate Controller (Prototype version)
+> **Added: SONOFF Supported Devices**
+> * SONOFF WiFi iPlug Smart Plug | S60 Series: Models: S60TPF, S60TPG
+> * SONOFF WiFi POW Smart Power Meter Switch | Models: POWR316, POWR316D, POWR320D
+> * SONOFF WiFi POW Ring Smart Power Meter | Models: POWCT
+> * SONOFF WiFi MINI Dry Smart Switch | Model: MINI-D
+> * SONOFF WiFi MINI Smart Switch | Models: MINI-R4, MINI-R4M
+> * SONOFF WiFi Smart Gate Controller (Prototype device)
+> * SONOFF WiFi SwitchMan 1-3 Channel Switch | Model: M5-1C, M5-2C, M5-3C [Not tested, let me know if it works]
+> * SONOFF WiFi TX ULTIMATE 1-4 Channel Wall Switch | Model: T5-1C, T5-2C, T5-3C, T5-4C [Partially tested, let me know if it works] 
+> * SONOFF Zigbee Bridge | Model: ZB-Bridge-Pro
+> * SONOFF Zigbee Bridge | Model: ZB-Bridge-Ultra
+> * SONOFF Zigbee Sensor: Temp and Humidity | Models: SNZB-02P, SNZB-02D
+> * SONOFF Zigbee Sensor: Door and Window: | Model: SNZB-04P (1st version) [Not tested, let me know if it works]
+
+
+> **Added: GENERIC Devices**
+> * 3 Way Wall Switch | Model: Bouffalo Lab BL602 (CK-BL602-4SW-HS)
+
 
 
 # sonoff Binding

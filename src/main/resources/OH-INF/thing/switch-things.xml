@@ -8,8 +8,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>S20 , S26 , BASIC , BASICR2 , MINI</label>
-		<description>1 Channel Relay</description>
+		<label>SONOFF WiFi 1-Channel Switch/Plug</label>
+		<description>Models: S20, S26, BASIC, BASIC R2, MINI</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="localOnline" typeId="localOnline"/>
@@ -33,8 +33,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>DUALR2</label>
-		<description>DUALR2</description>
+		<label>SONOFF WiFi 2-Channel Switch</label>
+		<description>Model: DUAL R2</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -63,8 +63,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>SOCKET_3 - Please let me know the model</label>
-		<description>SOCKET_3 - Please let me know the model</description>
+		<label>Generic 3-Channel Switch</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -96,8 +96,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>SOCKET_4 - Please let me know the model</label>
-		<description>SOCKET_4 - Please let me know the model</description>
+		<label>Generic 4-Channel Switch</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -132,8 +132,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>POW</label>
-		<description>POW</description>
+		<label>SONOFF WiFi 1-Channel Switch with Energy Monitoring</label>
+		<description>Model: POW (1st version)</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="power" typeId="electric-power"/>
@@ -199,8 +199,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>T11C , TX1C , G1</label>
-		<description>1 Channel Switch</description>
+		<label>SONOFF WiFi 1-Channel Wall Switch</label>
+		<description>Models: T11C, TX1C, G1</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="localOnline" typeId="localOnline"/>
@@ -224,8 +224,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>T12C , TX2C , G2</label>
-		<description>2 Channel Switch</description>
+		<label>SONOFF WiFi 2-Channel Wall Switch</label>
+		<description>Models: T12C, TX2C, G2</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -254,8 +254,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>T13C , TX3C , G3</label>
-		<description>3 Channel Switch</description>
+		<label>SONOFF WiFi 3-Channel Wall Switch </label>
+		<description>Models: T13C, TX3C, G3</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -287,8 +287,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>SWITCH_4 - Please let me know the model</label>
-		<description>4 Channel Switch</description>
+		<label>Generic 4-Channel Wall Switch</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -323,8 +323,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>BASIC</label>
-		<description>1 Channel Relay</description>
+		<label>SONOFF WiFi 1-Channel Switch</label>
+		<description>Model: Basic (Clone)</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
@@ -346,8 +346,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>TH10 , TH16</label>
-		<description>1 Channel Relay with Temperature and Humidity Input</description>
+		<label>SONOFF WiFi 1-Channel Switch with Temperature and Humidity Input</label>
+		<description>Models: TH10, TH16</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="sensorType" typeId="sensorType"/>
@@ -370,13 +370,12 @@
 		</config-description>
 	</thing-type>
 
-
 	<thing-type id="181">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>TH16R3</label>
-		<description>1 Channel Relay with Temperature and Humidity Input</description>
+		<label>SONOFF WiFi 1-Channel Switch with Temperature and Humidity Input</label>
+		<description>Models: THR320D or THR316D</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="sensorType" typeId="sensorType"/>
@@ -403,8 +402,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>1 Way GSM Socket</label>
-		<description>1 Channel Socket</description>
+		<label>Generic GSM/4G 1-Channel Switch</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
@@ -426,8 +425,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>1 Way GSM Socket</label>
-		<description>1 Channel Socket</description>
+		<label>Generic GSM/4G 1-Channel Socket</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
@@ -449,8 +448,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>2 Way GSM Socket</label>
-		<description>2 channel Socket </description>
+		<label>Generic GSM/4G 2-Channel Switch or Plug</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -477,8 +476,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>3 Way GSM Socket</label>
-		<description>3 Channel Socket</description>
+		<label>Generic GSM/4G 3-Channel Switch or Plug</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -508,8 +507,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>4 Way GSM Socket</label>
-		<description>4 Channel Socket</description>
+		<label>Generic GSM/4G 4-Channel Socket</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -542,8 +541,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>POWR2</label>
-		<description>1 Channel Relay with Energy Monitoring</description>
+		<label>SONOFF WiFi 1-Channel Switch with Energy Monitoring</label>
+		<description>Model: POW R2</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="current" typeId="electric-current"/>
@@ -611,8 +610,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>Micro</label>
-		<description>Micro USB Adaptor</description>
+		<label>SONOFF WiFi Micro USB Adaptor</label>
+		<description>Model: Micro WiFi</description>
 		<channels>
 			<channel id="switch0" typeId="power"/>
 			<channel id="localOnline" typeId="localOnline"/>
@@ -649,8 +648,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>Single Switch (unknown model)</label>
-		<description>1 Channel Relay</description>
+		<label>Kingart 1-Channel Switch</label>
+		<description>Model: 1-Relay</description>
 		<channels>
 			<channel id="switch0" typeId="power"/>
 			<channel id="localOnline" typeId="localOnline"/>
@@ -687,8 +686,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>1 Way GSM Socket</label>
-		<description>1 Channel Socket</description>
+		<label>Generic GSM/4G 1-Channel Plug</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
@@ -710,8 +709,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>2 Way GSM Socket</label>
-		<description>2 channel Socket </description>
+		<label>Generic GSM/4G 2-Channel Plug</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -738,8 +737,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>3 Way GSM Socket</label>
-		<description>3 Channel Socket</description>
+		<label>Generic GSM/4G 3-Channel Plug</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -769,8 +768,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>4 Way GSM Socket</label>
-		<description>4 Channel Socket</description>
+		<label>Generic GSM/4G 4-Channel Plug</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -803,8 +802,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>1 Way GSM Socket</label>
-		<description>1 Channel Socket</description>
+		<label>Generic GSM 1-Channel Plug</label>
+		<description>Unknown models</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
@@ -826,8 +825,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>DUAL R3</label>
-		<description>DUAL R3</description>
+		<label>SONOFF WiFi 2-Channel Switch</label>
+		<description>Model: DUAL R3</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -869,8 +868,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>MINI-R4, MINI-R4M, MINI-D</label>
-		<description>SONOFF Extreme MINI Wi-Fi Smart Switch: 1 Channel Relay</description>
+		<label>SONOFF WiFi 1-Channel Switch</label>
+		<description>Models: MINI R3, R4, R4M, D</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="localOnline" typeId="localOnline"/>
@@ -894,8 +893,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>3 Channel Wall Switch</label>
-		<description>3 Channel Wall Switch/Relay based on Bouffalo Lab BL602 (CK-BL602-4SW-HS)</description>
+		<label>Generic 3-Channel Wall Switch</label>
+		<description>Models: Bouffalo Lab BL602 (CK-BL602-4SW-HS)</description>
 		<channels>
 			<channel id="switch0" typeId="power">
 				<label>Switch 1</label>
@@ -921,12 +920,101 @@
 		</config-description>
 	</thing-type>
 
+
+	<thing-type id="160">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF WiFi SwitchMan 1-Channel Wall Switch</label>
+		<description>Models: SwitchMan M5-1C</description>
+		<channels>
+			<channel id="switch" typeId="power"/>
+			<channel id="localOnline" typeId="localOnline"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="ipaddress" typeId="ipaddress"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+		</channels>
+
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="161">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF WiFi SwitchMan 2-Channel Wall Switch</label>
+		<description>Models: SwitchMan M5-2C</description>
+		<channels>
+			<channel id="switch0" typeId="power">
+				<label>Switch 1</label>
+			</channel>
+			<channel id="switch1" typeId="power">
+				<label>Switch 2</label>
+			</channel>
+			<channel id="localOnline" typeId="localOnline"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="ipaddress" typeId="ipaddress"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+		</channels>
+
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="162">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF WiFi SwitchMan 3-Channel Wall Switch</label>
+		<description>Models: SwitchMan M5-2C</description>
+		<channels>
+			<channel id="switch0" typeId="power">
+				<label>Switch 1</label>
+			</channel>
+			<channel id="switch1" typeId="power">
+				<label>Switch 2</label>
+			</channel>
+			<channel id="switch2" typeId="power">
+				<label>Switch 3</label>
+			</channel>
+			<channel id="localOnline" typeId="localOnline"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="ipaddress" typeId="ipaddress"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+		</channels>
+
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
 	<thing-type id="190">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>S60TPF, S60TPG, POWCT, POWR316, POWR316D, POWR320D</label>
-		<description>SONOFF Smart Power Meter Switch</description>
+		<label>SONOFF WiFi 1-Channel Switch/Plug with Energy Monitoring</label>
+		<description>Models: S60TPF, S60TPG, POWCT, POWR316, POWR316D, POWR320D</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="current" typeId="electric-current"/>
@@ -968,5 +1056,128 @@
 		</config-description>
 	</thing-type>
 
+
+	<thing-type id="209">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF WiFi TX ULTIMATE 1-Channel Wall Switch</label>
+		<description>Model: T5-1C</description>
+		<channels>
+			<channel id="switch" typeId="power">
+				<label>Switch 1</label>
+			</channel>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+		</channels>
+
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+
+
+
+	<thing-type id="210">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF WiFi TX ULTIMATE 2-Channel Wall Switch</label>
+		<description>Model: T5-2C</description>
+		<channels>
+			<channel id="switch0" typeId="power">
+				<label>Switch 1</label>
+			</channel>
+			<channel id="switch1" typeId="power">
+				<label>Switch 2</label>
+			</channel>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+		</channels>
+
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+
+	<thing-type id="211">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF WiFi TX ULTIMATE 3-Channel Wall Switch</label>
+		<description>Model: T5-3C</description>
+		<channels>
+			<channel id="switch0" typeId="power">
+				<label>Switch 1</label>
+			</channel>
+			<channel id="switch1" typeId="power">
+				<label>Switch 2</label>
+			</channel>
+			<channel id="switch2" typeId="power">
+				<label>Switch 3</label>
+			</channel>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+		</channels>
+
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+
+	<thing-type id="212">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF WiFi TX ULTIMATE 4-Channel Wall Switch</label>
+		<description>Model: T5-3C</description>
+		<channels>
+			<channel id="switch0" typeId="power">
+				<label>Switch 1</label>
+			</channel>
+			<channel id="switch1" typeId="power">
+				<label>Switch 2</label>
+			</channel>
+			<channel id="switch2" typeId="power">
+				<label>Switch 3</label>
+			</channel>
+			<channel id="switch3" typeId="power">
+				<label>Switch 4</label>
+			</channel>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+		</channels>
+
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
 
 </thing:thing-descriptions>

@@ -8,8 +8,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>CAM Slim Gen2</label>
-		<description>SONOFF CAM Slim Gen2 Smart Home Security Camera (Not supported yet by this binding)</description>
+		<label>SONOFF WiFi Security Camera: Slim CAM2</label>
+		<description>Model: CAM-S2 (NOT SUPPORTED YET)</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="localOnline" typeId="localOnline"/>
@@ -33,8 +33,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>CAM B1P</label>
-		<description>SONOFF CAM Outdoor Smart Security Camera (Not supported yet by this binding)</description>
+		<label>SONOFF WiFi Security Outdoor Camera</label>
+		<description>Model: CAM B1P (NOT SUPPORTED YET)</description>
 		<channels>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>

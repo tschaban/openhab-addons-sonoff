@@ -357,8 +357,11 @@ public class SonoffAccountHandler extends BaseBridgeHandler
         String localAddress = event.getInfo().getInet4Addresses()[0].getHostAddress();
         if (!localAddress.equals("null")) {
             String deviceid = event.getInfo().getPropertyString("id");
-            ipaddresses.put(deviceid, localAddress);
-            logger.debug("Added IP Address {} for device {}", deviceid, localAddress);
+            if (!localAddress.equals(ipaddresses.get(deviceid))) {
+                ipaddresses.put(deviceid, localAddress);
+                logger.debug("Added IP Address {} for device {}", deviceid, localAddress);
+            }
+
         }
     }
 

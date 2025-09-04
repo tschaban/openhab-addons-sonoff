@@ -8,8 +8,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>Color LED Controller</label>
-		<description>Color LED Controller</description>
+		<label>SONOFF Color LED</label>
+		<description>Models: SONOFF Color LED</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="color" typeId="color"/>
@@ -34,8 +34,8 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>RGB-CCT Bulb (B05)</label>
-		<description>RGB-CCT Bulb (B05)</description>
+		<label>SONOFF LED Bulb</label>
+		<description>Model: B02-BL/B05-BL</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="lightMode" typeId="lightMode"/>

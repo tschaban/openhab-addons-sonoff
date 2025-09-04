@@ -19,14 +19,15 @@ import org.openhab.core.thing.Thing;
 import org.openhab.core.types.*;
 
 /**
- * The {@link SonoffZigbeeDevice1770Handler} is responsible for updates and handling commands to/from Zigbee Devices
+ * The {@link SonoffZigbeeContactSensorHandler} allows the handling of commands and updates to Contact Sensor Type
+ * Devices
  *
- * @author David Murton - Initial contribution
+ * @author Tschaban-A - Initial contribution
  */
 @NonNullByDefault
-public class SonoffZigbeeDevice1770Handler extends SonoffBaseZigbeeHandler {
+public class SonoffZigbeeContactSensorHandler extends SonoffBaseZigbeeHandler {
 
-    public SonoffZigbeeDevice1770Handler(Thing thing) {
+    public SonoffZigbeeContactSensorHandler(Thing thing) {
         super(thing);
     }
 
@@ -36,11 +37,13 @@ public class SonoffZigbeeDevice1770Handler extends SonoffBaseZigbeeHandler {
 
     @Override
     public void updateDevice(SonoffDeviceState newDevice) {
-        // Motion
+        // Contact
+        updateState("contact", newDevice.getParameters().getContact0());
+        // Other
+        updateState("rssi", newDevice.getParameters().getRssi());
         updateState("battery", newDevice.getParameters().getBattery());
         updateState("trigTime", newDevice.getParameters().getTrigTime());
-        updateState("temperature", newDevice.getParameters().getTemperature());
-        updateState("humidity", newDevice.getParameters().getHumidity());
+
         // Connections
         this.cloud = newDevice.getCloud();
         updateState("cloudOnline", this.cloud ? new StringType("Connected") : new StringType("Disconnected"));

@@ -5,8 +5,9 @@
 
 	<type>binding</type>
 	<name>Sonoff binding</name>
-	<description>This is a GitHub branch of binding for Sonoff devices from Itead maintained by Smart'nyDom. Credits to the
-		author and all the contributors. More info: https://s.smartnydom.pl/r/oh-sonoff-binding</description>
+	<description>
+		Sonoff binding maintained by SmartnyDom
+	</description>
 	<connection>hybrid</connection>
 
 </addon:addon>

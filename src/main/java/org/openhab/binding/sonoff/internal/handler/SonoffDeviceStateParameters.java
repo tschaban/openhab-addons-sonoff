@@ -84,13 +84,14 @@ public class SonoffDeviceStateParameters {
     private PercentType whiteBrightness = new PercentType(0);
     private PercentType colorBrightness = new PercentType(0);
     // DoorSensor
-
     private OnOffType door0 = OnOffType.OFF;
     private OnOffType door1 = OnOffType.OFF;
     private OnOffType door2 = OnOffType.OFF;
     private OpenClosedType doorSensor0 = OpenClosedType.CLOSED;
     private OpenClosedType doorSensor1 = OpenClosedType.CLOSED;
     private OpenClosedType doorSensor2 = OpenClosedType.CLOSED;
+    // Contact
+    private OpenClosedType contact0 = OpenClosedType.CLOSED;
 
     // Other
     private OnOffType networkLED = OnOffType.OFF;
@@ -163,6 +164,14 @@ public class SonoffDeviceStateParameters {
     public void setDoor2(String door2) {
         this.door2 = door2.equals("on") ? OnOffType.ON : OnOffType.OFF;
         this.doorSensor2 = door2.equals("on") ? OpenClosedType.OPEN : OpenClosedType.CLOSED;
+    }
+
+    public OpenClosedType getContact0() {
+        return this.contact0;
+    }
+
+    public void setContact0(Integer contact0) {
+        this.contact0 = contact0 == 1 ? OpenClosedType.OPEN : OpenClosedType.CLOSED;
     }
 
     public OnOffType getSwitch0() {

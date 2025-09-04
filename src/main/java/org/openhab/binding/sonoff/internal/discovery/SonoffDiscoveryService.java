@@ -177,7 +177,7 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                 Integer uiid = device.get("extra").getAsJsonObject().get("uiid").getAsInt();
                 JsonObject params = device.getAsJsonObject("params");
 
-                logger.info("Discovered device {}", deviceid);
+                logger.debug("Discovered device {}", deviceid);
                 ThingTypeUID thingTypeUid = SonoffBindingConstants.createMap().get(uiid);
                 if (thingTypeUid != null) {
                     ThingUID deviceThing = new ThingUID(thingTypeUid, account.getThing().getUID(), deviceid);
@@ -244,6 +244,8 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                         break;
                     // Zigbee Devices
                     case "66":
+                    case "168":
+                    case "243":
                         SonoffZigbeeBridgeHandler zigbeeBridge = (SonoffZigbeeBridgeHandler) account.getThing()
                                 .getThings().get(i).getHandler();
                         if (zigbeeBridge != null) {
@@ -252,7 +254,6 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                             for (j = 0; j < subDevices.size(); j++) {
                                 JsonObject subDevice = subDevices.get(j).getAsJsonObject();
                                 String subDeviceid = subDevice.get("deviceid").getAsString();
-                                logger.debug("Discovering zigbee device {}", subDeviceid);
                                 Integer subDeviceuiid = subDevice.get("uiid").getAsInt();
                                 // Lookup our device in the main list
                                 for (int k = 0; k < devices.size(); k++) {
