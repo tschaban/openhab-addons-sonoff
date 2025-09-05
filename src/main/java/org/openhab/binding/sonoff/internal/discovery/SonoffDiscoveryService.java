@@ -120,7 +120,13 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
             } catch (Exception e) {
                 logger.debug("Creating the device cache threw an error {}", e.getMessage());
             }
-            JsonObject main = gson.fromJson(response, JsonObject.class);
+            JsonObject main = null;
+            try {
+                main = gson.fromJson(response, JsonObject.class);
+            } catch (Exception e) {
+                logger.debug("Failed to parse JSON response: {}", e.getMessage());
+                return devices;
+            }
             if (main != null) {
                 JsonElement dataElement = main.get("data");
                 if (dataElement == null || !dataElement.isJsonObject()) {
