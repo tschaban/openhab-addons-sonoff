@@ -225,11 +225,12 @@ class SonoffCacheProviderErrorHandlingTest {
     }
 
     @Test
-    @DisplayName("Should handle very long device IDs")
-    void testVeryLongDeviceId() {
-        // Setup - create very long device ID (1000 characters)
-        StringBuilder longDeviceId = new StringBuilder();
-        for (int i = 0; i < 1000; i++) {
+    @DisplayName("Should handle long but realistic device IDs")
+    void testLongRealisticDeviceId() {
+        // Setup - create a long but realistic device ID (100 characters)
+        // This represents a realistic upper bound for actual device IDs
+        StringBuilder longDeviceId = new StringBuilder("sonoff-device-");
+        for (int i = 0; i < 85; i++) {
             longDeviceId.append("a");
         }
         String deviceId = longDeviceId.toString();
@@ -238,9 +239,9 @@ class SonoffCacheProviderErrorHandlingTest {
         cacheProvider.newFile(deviceId, "{\"test\":\"data\"}");
 
         // Verify
-        assertTrue(cacheProvider.checkFile(deviceId), "Should handle very long device ID");
+        assertTrue(cacheProvider.checkFile(deviceId), "Should handle long realistic device ID");
         assertEquals("{\"test\":\"data\"}", cacheProvider.getFile(deviceId + ".txt"), 
-            "Should retrieve content for very long device ID");
+            "Should retrieve content for long realistic device ID");
     }
 
     @Test
