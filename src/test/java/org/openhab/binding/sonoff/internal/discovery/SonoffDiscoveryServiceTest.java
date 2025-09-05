@@ -89,7 +89,8 @@ class SonoffDiscoveryServiceTest {
     private ScheduledExecutorService mockScheduler;
 
     @Mock
-    private ScheduledFuture<?> mockScheduledFuture;
+    @SuppressWarnings("rawtypes")
+    private ScheduledFuture mockScheduledFuture;
 
     @Mock
     private DiscoveryListener mockDiscoveryListener;
@@ -126,8 +127,9 @@ class SonoffDiscoveryServiceTest {
         discoveryService.setThingHandler(mockAccountHandler);
 
         // Setup scheduler mock (lenient to avoid unnecessary stubbing warnings)
-        lenient().when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
-                .thenReturn(mockScheduledFuture);
+        @SuppressWarnings("unchecked")
+        var stub = lenient().when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)));
+        stub.thenReturn(mockScheduledFuture);
 
         // Use reflection to set the scheduler
         try {

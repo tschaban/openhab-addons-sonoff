@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +90,9 @@ class SonoffDiscoveryServiceIntegrationTest {
     @Mock
     private SonoffZigbeeBridgeHandler mockZigbeeBridgeHandler;
 
+    @Mock
+    private DiscoveryListener mockDiscoveryListener;
+
     private SonoffDiscoveryService discoveryService;
     private ThingUID accountThingUID;
     private String testCacheDir;
@@ -124,7 +128,7 @@ class SonoffDiscoveryServiceIntegrationTest {
         discoveryService.setThingHandler(mockAccountHandler);
 
         // Add discovery listener to capture results
-        discoveryService.addDiscoveryListener(new DiscoveryListener() {
+        DiscoveryListener captureListener = new DiscoveryListener() {
             @Override
             public void thingDiscovered(org.openhab.core.config.discovery.DiscoveryService source,
                     DiscoveryResult result) {
@@ -142,7 +146,8 @@ class SonoffDiscoveryServiceIntegrationTest {
                     java.util.Collection<ThingTypeUID> thingTypeUIDs, ThingUID bridgeUID) {
                 // Not used in these tests
             }
-        });
+        };
+        discoveryService.addDiscoveryListener(captureListener);
     }
 
     @AfterEach
