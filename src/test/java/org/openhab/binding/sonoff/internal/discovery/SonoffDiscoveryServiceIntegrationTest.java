@@ -418,7 +418,7 @@ class SonoffDiscoveryServiceIntegrationTest {
 
         JsonObject zigbeeDevice2 = new JsonObject();
         zigbeeDevice2.addProperty("deviceid", "zigbee-motion-1");
-        zigbeeDevice2.addProperty("uiid", 1009);  // Use valid UIID that maps to THING_TYPE_ZSWITCH1
+        zigbeeDevice2.addProperty("uiid", 1009); // Use valid UIID that maps to THING_TYPE_ZSWITCH1
         zigbeeSubDevices.add(zigbeeDevice2);
 
         lenient().when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(zigbeeSubDevices);
@@ -526,7 +526,7 @@ class SonoffDiscoveryServiceIntegrationTest {
     private String createZigbeeBridgeApiResponse() {
         return "{" + "\"data\": {" + "\"thingList\": [" + createDeviceJson("zigbee-bridge", "Zigbee Bridge", 66) + ","
                 + createDeviceJson("zigbee-sensor-1", "Zigbee Sensor", 1000) + ","
-                + createDeviceJson("zigbee-motion-1", "Zigbee Motion", 1009) + "]}}";  // Use valid UIID 1009
+                + createDeviceJson("zigbee-motion-1", "Zigbee Motion", 1009) + "]}}"; // Use valid UIID 1009
     }
 
     private String createMixedBridgeApiResponse() {

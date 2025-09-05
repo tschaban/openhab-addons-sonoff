@@ -482,8 +482,7 @@ class SonoffDiscoveryServiceTest {
         return "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1," + "\"itemData\": {"
                 + "\"deviceid\": \"rfbridge123\"," + "\"name\": \"RF Bridge\"," + "\"brandName\": \"Sonoff\","
                 + "\"productModel\": \"RF_BRIDGE\"," + "\"devicekey\": \"rfkey123\"," + "\"apikey\": \"rfapi123\","
-                + "\"extra\": {\"uiid\": 28}," + "\"params\": {\"fwVersion\": \"1.0.0\"}" + "}"
-                + "}" + "]" + "}" + "}";
+                + "\"extra\": {\"uiid\": 28}," + "\"params\": {\"fwVersion\": \"1.0.0\"}" + "}" + "}" + "]" + "}" + "}";
     }
 
     private void setupRfBridge() {
@@ -513,7 +512,8 @@ class SonoffDiscoveryServiceTest {
         ThingTypeUID zigbeeBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "66");
         lenient().when(zigbeeBridgeThing.getThingTypeUID()).thenReturn(zigbeeBridgeTypeUID);
         lenient().when(zigbeeBridgeThing.getHandler()).thenReturn(mockZigbeeBridgeHandler);
-        lenient().when(zigbeeBridgeThing.getUID()).thenReturn(new ThingUID(zigbeeBridgeTypeUID, accountThingUID, "zigbeebridge"));
+        lenient().when(zigbeeBridgeThing.getUID())
+                .thenReturn(new ThingUID(zigbeeBridgeTypeUID, accountThingUID, "zigbeebridge"));
 
         // Setup Zigbee sub-devices
         JsonArray zigbeeSubDevices = new JsonArray();
