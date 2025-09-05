@@ -127,18 +127,27 @@ class SonoffDiscoveryServiceIntegrationTest {
         discoveryService.setThingHandler(mockAccountHandler);
 
         // Add discovery listener to capture results using mock
-        lenient().doAnswer(invocation -> {
+        doAnswer(invocation -> {
             DiscoveryResult result = invocation.getArgument(1);
             discoveredResults.add(result);
-            discoveryLatch.countDown();
             return null;
         }).when(mockDiscoveryListener).thingDiscovered(any(), any());
-
+        
+        // Register the discovery listener with the discovery service
         discoveryService.addDiscoveryListener(mockDiscoveryListener);
+        
+        // Activate the discovery service
+        discoveryService.activate(null);
     }
 
     @AfterEach
     void tearDown() throws IOException {
+        // Remove discovery listener and deactivate service
+        if (discoveryService != null) {
+            discoveryService.removeDiscoveryListener(mockDiscoveryListener);
+            discoveryService.deactivate();
+        }
+        
         // Clean up test files
         if (Files.exists(Paths.get(testCacheDir))) {
             Files.walk(Paths.get(testCacheDir)).sorted((a, b) -> b.compareTo(a)).map(Path::toFile)
@@ -502,10 +511,14 @@ class SonoffDiscoveryServiceIntegrationTest {
 
     private void runFullDiscovery() {
         try {
-            // Use reflection to call the private discover method
-            java.lang.reflect.Method discoverMethod = discoveryService.getClass().getDeclaredMethod("discover");
-            discoverMethod.setAccessible(true);
-            discoverMethod.invoke(discoveryService);
+            // Clear previous results
+            discoveredResults.clear();
+            
+            // Call the public startScan method which properly triggers discovery
+            discoveryService.startScan();
+            
+            // Wait a reasonable time for discovery to complete
+            Thread.sleep(2000);
         } catch (Exception e) {
             fail("Failed to run discovery: " + e.getMessage());
         }
