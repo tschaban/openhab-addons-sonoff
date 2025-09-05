@@ -102,10 +102,13 @@ class SonoffCacheProviderErrorHandlingTest {
     @Test
     @DisplayName("Should handle null content in newFile")
     void testNewFileWithNullContent() {
-        // Execute & Verify - should not throw exception
+        // Execute & Verify - should not throw exception (method returns early)
         assertDoesNotThrow(() -> {
             cacheProvider.newFile("test-device", null);
         }, "Should handle null content gracefully");
+        
+        // Verify no file was created
+        assertFalse(cacheProvider.checkFile("test-device"), "Should not create file with null content");
     }
 
     @Test
@@ -182,10 +185,12 @@ class SonoffCacheProviderErrorHandlingTest {
         when(mockGson.fromJson(anyString(), eq(JsonObject.class)))
             .thenThrow(new JsonSyntaxException("Invalid JSON"));
 
-        // Execute & Verify - should not throw exception
-        assertDoesNotThrow(() -> {
-            cacheProvider.getStates();
+        // Execute & Verify - should not throw exception and return empty map
+        Map<String, SonoffDeviceState> result = assertDoesNotThrow(() -> {
+            return cacheProvider.getStates();
         }, "Should handle Gson exceptions gracefully");
+        
+        assertTrue(result.isEmpty(), "Should return empty map when JSON parsing fails");
     }
 
     @Test
@@ -199,29 +204,28 @@ class SonoffCacheProviderErrorHandlingTest {
         when(mockGson.fromJson(anyString(), eq(JsonObject.class)))
             .thenThrow(new JsonSyntaxException("Invalid JSON"));
 
-        // Execute & Verify - should not throw exception
-        assertDoesNotThrow(() -> {
-            SonoffDeviceState result = cacheProvider.getState(deviceId);
-            assertNull(result, "Should return null when Gson throws exception");
+        // Execute & Verify - should not throw exception and return null
+        SonoffDeviceState result = assertDoesNotThrow(() -> {
+            return cacheProvider.getState(deviceId);
         }, "Should handle Gson exceptions gracefully");
+        
+        assertNull(result, "Should return null when Gson throws exception");
     }
 
     @Test
     @DisplayName("Should handle null Gson in getStates")
     void testGetStatesWithNullGson() {
-        // Execute & Verify - should throw NullPointerException
-        assertThrows(NullPointerException.class, () -> {
-            cacheProviderWithoutGson.getStates();
-        }, "Should throw NullPointerException when Gson is null");
+        // Execute & Verify - should return empty map when Gson is null
+        Map<String, SonoffDeviceState> result = cacheProviderWithoutGson.getStates();
+        assertTrue(result.isEmpty(), "Should return empty map when Gson is null");
     }
 
     @Test
     @DisplayName("Should handle null Gson in getState")
     void testGetStateWithNullGson() {
-        // Execute & Verify - should throw NullPointerException
-        assertThrows(NullPointerException.class, () -> {
-            cacheProviderWithoutGson.getState("test-device");
-        }, "Should throw NullPointerException when Gson is null");
+        // Execute & Verify - should return null when Gson is null
+        SonoffDeviceState result = cacheProviderWithoutGson.getState("test-device");
+        assertNull(result, "Should return null when Gson is null");
     }
 
     @Test
@@ -304,6 +308,7 @@ class SonoffCacheProviderErrorHandlingTest {
         // Setup - delete the cache directory
         if (Files.exists(Paths.get(testCacheDir))) {
             Files.walk(Paths.get(testCacheDir))
+                .sorted((a, b) -> b.compareTo(a)) // Delete files before directories
                 .map(Path::toFile)
                 .forEach(File::delete);
         }
@@ -311,7 +316,7 @@ class SonoffCacheProviderErrorHandlingTest {
         // Execute - operations should still work (directory should be recreated)
         cacheProvider.newFile("test-device", "{\"test\":\"data\"}");
 
-        // Verify
+        // Verify - directory should be recreated and file should exist
         assertTrue(Files.exists(Paths.get(testCacheDir)), "Cache directory should be recreated");
         assertTrue(cacheProvider.checkFile("test-device"), "Should create file after recreating directory");
     }
