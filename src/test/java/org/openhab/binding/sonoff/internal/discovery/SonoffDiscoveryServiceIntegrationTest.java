@@ -378,7 +378,7 @@ class SonoffDiscoveryServiceIntegrationTest {
         Bridge zigbeeBridge = createMockZigbeeBridge();
         things.add(zigbeeBridge);
 
-        when(mockAccountThing.getThings()).thenReturn(things);
+        lenient().when(mockAccountThing.getThings()).thenReturn(things);
     }
 
     private void setupRfBridgeWithMultipleDevices() {
@@ -399,8 +399,8 @@ class SonoffDiscoveryServiceIntegrationTest {
         rfDevice2.addProperty("remote_type", "2");
         rfSubDevices.add(rfDevice2);
 
-        when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);
-        when(mockAccountThing.getThings()).thenReturn(things);
+        lenient().when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);
+        lenient().when(mockAccountThing.getThings()).thenReturn(things);
     }
 
     private void setupZigbeeBridgeWithMultipleDevices() {
@@ -418,11 +418,11 @@ class SonoffDiscoveryServiceIntegrationTest {
 
         JsonObject zigbeeDevice2 = new JsonObject();
         zigbeeDevice2.addProperty("deviceid", "zigbee-motion-1");
-        zigbeeDevice2.addProperty("uiid", 1001);
+        zigbeeDevice2.addProperty("uiid", 1009);  // Use valid UIID that maps to THING_TYPE_ZSWITCH1
         zigbeeSubDevices.add(zigbeeDevice2);
 
-        when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(zigbeeSubDevices);
-        when(mockAccountThing.getThings()).thenReturn(things);
+        lenient().when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(zigbeeSubDevices);
+        lenient().when(mockAccountThing.getThings()).thenReturn(things);
     }
 
     private void setupMixedBridgeEnvironment() {
@@ -446,7 +446,7 @@ class SonoffDiscoveryServiceIntegrationTest {
         rfDevice2.addProperty("remote_type", "2");
         rfSubDevices.add(rfDevice2);
 
-        when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);
+        lenient().when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);
 
         // Setup Zigbee sub-devices
         JsonArray zigbeeSubDevices = new JsonArray();
@@ -457,11 +457,11 @@ class SonoffDiscoveryServiceIntegrationTest {
 
         JsonObject zigbeeDevice2 = new JsonObject();
         zigbeeDevice2.addProperty("deviceid", "zigbee-contact-1");
-        zigbeeDevice2.addProperty("uiid", 1001);
+        zigbeeDevice2.addProperty("uiid", 1009);
         zigbeeSubDevices.add(zigbeeDevice2);
 
-        when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(zigbeeSubDevices);
-        when(mockAccountThing.getThings()).thenReturn(things);
+        lenient().when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(zigbeeSubDevices);
+        lenient().when(mockAccountThing.getThings()).thenReturn(things);
     }
 
     private Bridge createMockRfBridge() {
@@ -469,10 +469,10 @@ class SonoffDiscoveryServiceIntegrationTest {
         ThingTypeUID rfBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "28");
         ThingUID rfBridgeUID = new ThingUID(rfBridgeTypeUID, accountThingUID, "rf-bridge");
 
-        when(rfBridge.getThingTypeUID()).thenReturn(rfBridgeTypeUID);
-        when(rfBridge.getUID()).thenReturn(rfBridgeUID);
-        when(rfBridge.getHandler()).thenReturn(mockRfBridgeHandler);
-        when(mockRfBridgeHandler.getThing()).thenReturn(rfBridge);
+        lenient().when(rfBridge.getThingTypeUID()).thenReturn(rfBridgeTypeUID);
+        lenient().when(rfBridge.getUID()).thenReturn(rfBridgeUID);
+        lenient().when(rfBridge.getHandler()).thenReturn(mockRfBridgeHandler);
+        lenient().when(mockRfBridgeHandler.getThing()).thenReturn(rfBridge);
 
         return rfBridge;
     }
@@ -482,10 +482,10 @@ class SonoffDiscoveryServiceIntegrationTest {
         ThingTypeUID zigbeeBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "66");
         ThingUID zigbeeBridgeUID = new ThingUID(zigbeeBridgeTypeUID, accountThingUID, "zigbee-bridge");
 
-        when(zigbeeBridge.getThingTypeUID()).thenReturn(zigbeeBridgeTypeUID);
-        when(zigbeeBridge.getUID()).thenReturn(zigbeeBridgeUID);
-        when(zigbeeBridge.getHandler()).thenReturn(mockZigbeeBridgeHandler);
-        when(mockZigbeeBridgeHandler.getThing()).thenReturn(zigbeeBridge);
+        lenient().when(zigbeeBridge.getThingTypeUID()).thenReturn(zigbeeBridgeTypeUID);
+        lenient().when(zigbeeBridge.getUID()).thenReturn(zigbeeBridgeUID);
+        lenient().when(zigbeeBridge.getHandler()).thenReturn(mockZigbeeBridgeHandler);
+        lenient().when(mockZigbeeBridgeHandler.getThing()).thenReturn(zigbeeBridge);
 
         return zigbeeBridge;
     }
@@ -526,14 +526,14 @@ class SonoffDiscoveryServiceIntegrationTest {
     private String createZigbeeBridgeApiResponse() {
         return "{" + "\"data\": {" + "\"thingList\": [" + createDeviceJson("zigbee-bridge", "Zigbee Bridge", 66) + ","
                 + createDeviceJson("zigbee-sensor-1", "Zigbee Sensor", 1000) + ","
-                + createDeviceJson("zigbee-motion-1", "Zigbee Motion", 1001) + "]}}";
+                + createDeviceJson("zigbee-motion-1", "Zigbee Motion", 1009) + "]}}";  // Use valid UIID 1009
     }
 
     private String createMixedBridgeApiResponse() {
         return "{" + "\"data\": {" + "\"thingList\": [" + createDeviceJson("rf-bridge", "RF Bridge", 28) + ","
                 + createDeviceJson("zigbee-bridge", "Zigbee Bridge", 66) + ","
                 + createDeviceJson("zigbee-temp-1", "Zigbee Temperature", 1000) + ","
-                + createDeviceJson("zigbee-contact-1", "Zigbee Contact", 1001) + "]}}";
+                + createDeviceJson("zigbee-contact-1", "Zigbee Contact", 1009) + "]}}";
     }
 
     private String createSimpleApiResponse() {

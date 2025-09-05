@@ -356,8 +356,17 @@ class SonoffDiscoveryServiceTest {
         // Setup RF bridge
         setupRfBridge();
 
-        // Execute discovery
-        runDiscoveryWithMockData();
+        // Execute discovery with RF bridge in API response
+        try {
+            when(mockApiConnection.createCache()).thenReturn(createMockApiResponseWithRfBridge());
+
+            // Use reflection to call the private discover method
+            java.lang.reflect.Method discoverMethod = discoveryService.getClass().getDeclaredMethod("discover");
+            discoverMethod.setAccessible(true);
+            discoverMethod.invoke(discoveryService);
+        } catch (Exception e) {
+            fail("Failed to run discovery: " + e.getMessage());
+        }
 
         // Verify RF sub-devices were discovered
         ArgumentCaptor<DiscoveryResult> resultCaptor = ArgumentCaptor.forClass(DiscoveryResult.class);
@@ -469,13 +478,21 @@ class SonoffDiscoveryServiceTest {
                 + "\"params\": {\"fwVersion\": \"1.0.0\"}" + "}" + "}" + "]" + "}" + "}";
     }
 
+    private String createMockApiResponseWithRfBridge() {
+        return "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1," + "\"itemData\": {"
+                + "\"deviceid\": \"rfbridge123\"," + "\"name\": \"RF Bridge\"," + "\"brandName\": \"Sonoff\","
+                + "\"productModel\": \"RF_BRIDGE\"," + "\"devicekey\": \"rfkey123\"," + "\"apikey\": \"rfapi123\","
+                + "\"extra\": {\"uiid\": 28}," + "\"params\": {\"fwVersion\": \"1.0.0\"}" + "}"
+                + "}" + "]" + "}" + "}";
+    }
+
     private void setupRfBridge() {
         // Create RF bridge thing
         Bridge rfBridgeThing = mock(Bridge.class);
         ThingTypeUID rfBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "28");
-        when(rfBridgeThing.getThingTypeUID()).thenReturn(rfBridgeTypeUID);
-        when(rfBridgeThing.getHandler()).thenReturn(mockRfBridgeHandler);
-        when(rfBridgeThing.getUID()).thenReturn(new ThingUID(rfBridgeTypeUID, accountThingUID, "rfbridge"));
+        lenient().when(rfBridgeThing.getThingTypeUID()).thenReturn(rfBridgeTypeUID);
+        lenient().when(rfBridgeThing.getHandler()).thenReturn(mockRfBridgeHandler);
+        lenient().when(rfBridgeThing.getUID()).thenReturn(new ThingUID(rfBridgeTypeUID, accountThingUID, "rfbridge"));
 
         // Setup RF sub-devices
         JsonArray rfSubDevices = new JsonArray();
@@ -484,8 +501,8 @@ class SonoffDiscoveryServiceTest {
         rfDevice.addProperty("remote_type", "4"); // Use type 4 which maps to THING_TYPE_RF1
         rfSubDevices.add(rfDevice);
 
-        when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);
-        when(mockRfBridgeHandler.getThing()).thenReturn(rfBridgeThing);
+        lenient().when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);
+        lenient().when(mockRfBridgeHandler.getThing()).thenReturn(rfBridgeThing);
 
         childThings.add(rfBridgeThing);
     }
@@ -494,9 +511,9 @@ class SonoffDiscoveryServiceTest {
         // Create Zigbee bridge thing
         Bridge zigbeeBridgeThing = mock(Bridge.class);
         ThingTypeUID zigbeeBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "66");
-        when(zigbeeBridgeThing.getThingTypeUID()).thenReturn(zigbeeBridgeTypeUID);
-        when(zigbeeBridgeThing.getHandler()).thenReturn(mockZigbeeBridgeHandler);
-        when(zigbeeBridgeThing.getUID()).thenReturn(new ThingUID(zigbeeBridgeTypeUID, accountThingUID, "zigbeebridge"));
+        lenient().when(zigbeeBridgeThing.getThingTypeUID()).thenReturn(zigbeeBridgeTypeUID);
+        lenient().when(zigbeeBridgeThing.getHandler()).thenReturn(mockZigbeeBridgeHandler);
+        lenient().when(zigbeeBridgeThing.getUID()).thenReturn(new ThingUID(zigbeeBridgeTypeUID, accountThingUID, "zigbeebridge"));
 
         // Setup Zigbee sub-devices
         JsonArray zigbeeSubDevices = new JsonArray();
@@ -505,8 +522,8 @@ class SonoffDiscoveryServiceTest {
         zigbeeDevice.addProperty("uiid", 1000);
         zigbeeSubDevices.add(zigbeeDevice);
 
-        when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(zigbeeSubDevices);
-        when(mockZigbeeBridgeHandler.getThing()).thenReturn(zigbeeBridgeThing);
+        lenient().when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(zigbeeSubDevices);
+        lenient().when(mockZigbeeBridgeHandler.getThing()).thenReturn(zigbeeBridgeThing);
 
         childThings.add(zigbeeBridgeThing);
     }
