@@ -21,7 +21,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -33,7 +32,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -46,7 +44,6 @@ import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeBridgeHandler;
 import org.openhab.core.OpenHAB;
 import org.openhab.core.config.discovery.DiscoveryListener;
 import org.openhab.core.config.discovery.DiscoveryResult;
-import org.openhab.core.config.discovery.DiscoveryResultFlag;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.ThingUID;
@@ -101,29 +98,30 @@ class SonoffDiscoveryServiceIntegrationTest {
         discoveryService = new SonoffDiscoveryService();
         discoveredResults = new ArrayList<>();
         discoveryLatch = new CountDownLatch(1);
-        
+
         // Setup temporary directory for cache
         testCacheDir = tempDir.resolve("sonoff").toString();
-        
+
         // Setup account thing UID
         accountThingUID = new ThingUID(SonoffBindingConstants.THING_TYPE_ACCOUNT, "integration-test");
-        
+
         // Setup mock account handler
         when(mockAccountHandler.getThing()).thenReturn(mockAccountThing);
         when(mockAccountThing.getUID()).thenReturn(accountThingUID);
         when(mockAccountHandler.getConnectionManager()).thenReturn(mockConnectionManager);
-        
+
         // Setup mock connection manager
         when(mockConnectionManager.getApi()).thenReturn(mockApiConnection);
         when(mockConnectionManager.getMode()).thenReturn("cloud");
-        
+
         // Set the account handler
         discoveryService.setThingHandler(mockAccountHandler);
-        
+
         // Add discovery listener to capture results
         discoveryService.addDiscoveryListener(new DiscoveryListener() {
             @Override
-            public void thingDiscovered(org.openhab.core.config.discovery.DiscoveryService source, DiscoveryResult result) {
+            public void thingDiscovered(org.openhab.core.config.discovery.DiscoveryService source,
+                    DiscoveryResult result) {
                 discoveredResults.add(result);
                 discoveryLatch.countDown();
             }
@@ -134,7 +132,7 @@ class SonoffDiscoveryServiceIntegrationTest {
             }
 
             @Override
-            public void removeOlderResults(org.openhab.core.config.discovery.DiscoveryService source, long timestamp, 
+            public void removeOlderResults(org.openhab.core.config.discovery.DiscoveryService source, long timestamp,
                     java.util.Collection<ThingTypeUID> thingTypeUIDs, ThingUID bridgeUID) {
                 // Not used in these tests
             }
@@ -145,10 +143,8 @@ class SonoffDiscoveryServiceIntegrationTest {
     void tearDown() throws IOException {
         // Clean up test files
         if (Files.exists(Paths.get(testCacheDir))) {
-            Files.walk(Paths.get(testCacheDir))
-                .sorted((a, b) -> b.compareTo(a))
-                .map(Path::toFile)
-                .forEach(File::delete);
+            Files.walk(Paths.get(testCacheDir)).sorted((a, b) -> b.compareTo(a)).map(Path::toFile)
+                    .forEach(File::delete);
         }
     }
 
@@ -158,20 +154,20 @@ class SonoffDiscoveryServiceIntegrationTest {
         // Setup
         setupComplexDeviceHierarchy();
         when(mockApiConnection.createCache()).thenReturn(createComplexApiResponse());
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             List<JsonObject> devices = discoveryService.createCache(createMockThingsList());
-            
+
             // Verify cache creation
             assertFalse(devices.isEmpty(), "Should discover devices");
             assertEquals(4, devices.size(), "Should discover 4 main devices");
-            
+
             // Verify cache files were created
             assertTrue(Files.exists(Paths.get(testCacheDir)), "Cache directory should be created");
-            
+
             // Verify device states were added
             verify(mockAccountHandler, times(4)).addState(anyString());
         }
@@ -183,26 +179,24 @@ class SonoffDiscoveryServiceIntegrationTest {
         // Setup
         setupRfBridgeWithMultipleDevices();
         when(mockApiConnection.createCache()).thenReturn(createRfBridgeApiResponse());
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute discovery
             runFullDiscovery();
-            
+
             // Verify RF bridge and sub-devices were discovered
             assertTrue(discoveredResults.size() >= 3, "Should discover RF bridge and sub-devices");
-            
+
             // Verify RF bridge device
             boolean foundRfBridge = discoveredResults.stream()
-                .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("28"));
+                    .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("28"));
             assertTrue(foundRfBridge, "Should discover RF bridge");
-            
+
             // Verify RF sub-devices
-            long rfSubDevices = discoveredResults.stream()
-                .filter(result -> result.getBridgeUID() != null)
-                .filter(result -> result.getBridgeUID().getThingTypeUID().getId().equals("28"))
-                .count();
+            long rfSubDevices = discoveredResults.stream().filter(result -> result.getBridgeUID() != null)
+                    .filter(result -> result.getBridgeUID().getThingTypeUID().getId().equals("28")).count();
             assertEquals(2, rfSubDevices, "Should discover 2 RF sub-devices");
         }
     }
@@ -213,26 +207,24 @@ class SonoffDiscoveryServiceIntegrationTest {
         // Setup
         setupZigbeeBridgeWithMultipleDevices();
         when(mockApiConnection.createCache()).thenReturn(createZigbeeBridgeApiResponse());
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute discovery
             runFullDiscovery();
-            
+
             // Verify Zigbee bridge and sub-devices were discovered
             assertTrue(discoveredResults.size() >= 3, "Should discover Zigbee bridge and sub-devices");
-            
+
             // Verify Zigbee bridge device
             boolean foundZigbeeBridge = discoveredResults.stream()
-                .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("66"));
+                    .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("66"));
             assertTrue(foundZigbeeBridge, "Should discover Zigbee bridge");
-            
+
             // Verify Zigbee sub-devices
-            long zigbeeSubDevices = discoveredResults.stream()
-                .filter(result -> result.getBridgeUID() != null)
-                .filter(result -> result.getBridgeUID().getThingTypeUID().getId().equals("66"))
-                .count();
+            long zigbeeSubDevices = discoveredResults.stream().filter(result -> result.getBridgeUID() != null)
+                    .filter(result -> result.getBridgeUID().getThingTypeUID().getId().equals("66")).count();
             assertEquals(2, zigbeeSubDevices, "Should discover 2 Zigbee sub-devices");
         }
     }
@@ -243,30 +235,28 @@ class SonoffDiscoveryServiceIntegrationTest {
         // Setup
         setupMixedBridgeEnvironment();
         when(mockApiConnection.createCache()).thenReturn(createMixedBridgeApiResponse());
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute discovery
             runFullDiscovery();
-            
+
             // Verify both bridge types and their sub-devices
             assertTrue(discoveredResults.size() >= 6, "Should discover both bridges and all sub-devices");
-            
+
             // Verify RF bridge and sub-devices
             boolean foundRfBridge = discoveredResults.stream()
-                .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("28"));
+                    .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("28"));
             assertTrue(foundRfBridge, "Should discover RF bridge");
-            
+
             // Verify Zigbee bridge and sub-devices
             boolean foundZigbeeBridge = discoveredResults.stream()
-                .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("66"));
+                    .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("66"));
             assertTrue(foundZigbeeBridge, "Should discover Zigbee bridge");
-            
+
             // Verify total sub-devices
-            long totalSubDevices = discoveredResults.stream()
-                .filter(result -> result.getBridgeUID() != null)
-                .count();
+            long totalSubDevices = discoveredResults.stream().filter(result -> result.getBridgeUID() != null).count();
             assertEquals(4, totalSubDevices, "Should discover 4 total sub-devices");
         }
     }
@@ -276,21 +266,21 @@ class SonoffDiscoveryServiceIntegrationTest {
     void testDiscoveryWithExistingCache() throws Exception {
         // Setup - create existing cache files
         createExistingCacheFiles();
-        
+
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
-            
+
             // Verify
             assertFalse(devices.isEmpty(), "Should discover devices even with existing cache");
-            
+
             // Verify existing cache files are preserved
-            assertTrue(Files.exists(Paths.get(testCacheDir, "existing-device.txt")), 
-                "Existing cache file should be preserved");
+            assertTrue(Files.exists(Paths.get(testCacheDir, "existing-device.txt")),
+                    "Existing cache file should be preserved");
         }
     }
 
@@ -299,22 +289,22 @@ class SonoffDiscoveryServiceIntegrationTest {
     void testDiscoveryPerformance() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(createLargeDeviceListResponse());
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             long startTime = System.currentTimeMillis();
-            
+
             // Execute
             List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
-            
+
             long endTime = System.currentTimeMillis();
             long duration = endTime - startTime;
-            
+
             // Verify
             assertEquals(10, devices.size(), "Should discover all 10 devices");
             assertTrue(duration < 5000, "Discovery should complete within 5 seconds");
-            
+
             // Verify all devices were processed
             verify(mockAccountHandler, times(10)).addState(anyString());
         }
@@ -325,13 +315,13 @@ class SonoffDiscoveryServiceIntegrationTest {
     void testDiscoveryWithNetworkTimeout() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenThrow(new RuntimeException("Network timeout"));
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
-            
+
             // Verify
             assertTrue(devices.isEmpty(), "Should return empty list on network timeout");
             verify(mockAccountHandler, never()).addState(anyString());
@@ -343,22 +333,22 @@ class SonoffDiscoveryServiceIntegrationTest {
     void testDiscoveryWithCompleteProperties() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(createDetailedDeviceResponse());
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute discovery
             runFullDiscovery();
-            
+
             // Wait for discovery to complete
             assertTrue(discoveryLatch.await(5, TimeUnit.SECONDS), "Discovery should complete within 5 seconds");
-            
+
             // Verify device properties
             assertFalse(discoveredResults.isEmpty(), "Should discover devices");
-            
+
             DiscoveryResult result = discoveredResults.get(0);
             Map<String, Object> properties = result.getProperties();
-            
+
             // Verify all expected properties are present
             assertTrue(properties.containsKey("deviceid"), "Should have deviceid property");
             assertTrue(properties.containsKey("Name"), "Should have Name property");
@@ -369,7 +359,7 @@ class SonoffDiscoveryServiceIntegrationTest {
             assertTrue(properties.containsKey("UIID"), "Should have UIID property");
             assertTrue(properties.containsKey("API Key"), "Should have API Key property");
             assertTrue(properties.containsKey("Connected To SSID"), "Should have SSID property");
-            
+
             // Verify property values
             assertEquals("detailed-device", properties.get("deviceid"));
             assertEquals("Detailed Test Device", properties.get("Name"));
@@ -381,15 +371,15 @@ class SonoffDiscoveryServiceIntegrationTest {
 
     private void setupComplexDeviceHierarchy() {
         List<Thing> things = new ArrayList<>();
-        
+
         // Add RF bridge
         Thing rfBridge = createMockRfBridge();
         things.add(rfBridge);
-        
+
         // Add Zigbee bridge
         Thing zigbeeBridge = createMockZigbeeBridge();
         things.add(zigbeeBridge);
-        
+
         when(mockAccountThing.getThings()).thenReturn(things);
     }
 
@@ -397,20 +387,20 @@ class SonoffDiscoveryServiceIntegrationTest {
         List<Thing> things = new ArrayList<>();
         Thing rfBridge = createMockRfBridge();
         things.add(rfBridge);
-        
+
         // Setup multiple RF sub-devices
         JsonArray rfSubDevices = new JsonArray();
-        
+
         JsonObject rfDevice1 = new JsonObject();
         rfDevice1.addProperty("name", "RF Remote 1");
         rfDevice1.addProperty("remote_type", "1");
         rfSubDevices.add(rfDevice1);
-        
+
         JsonObject rfDevice2 = new JsonObject();
         rfDevice2.addProperty("name", "RF Sensor 1");
         rfDevice2.addProperty("remote_type", "2");
         rfSubDevices.add(rfDevice2);
-        
+
         when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);
         when(mockAccountThing.getThings()).thenReturn(things);
     }
@@ -419,59 +409,59 @@ class SonoffDiscoveryServiceIntegrationTest {
         List<Thing> things = new ArrayList<>();
         Thing zigbeeBridge = createMockZigbeeBridge();
         things.add(zigbeeBridge);
-        
+
         // Setup multiple Zigbee sub-devices
         JsonArray zigbeeSubDevices = new JsonArray();
-        
+
         JsonObject zigbeeDevice1 = new JsonObject();
         zigbeeDevice1.addProperty("deviceid", "zigbee-sensor-1");
         zigbeeDevice1.addProperty("uiid", 1000);
         zigbeeSubDevices.add(zigbeeDevice1);
-        
+
         JsonObject zigbeeDevice2 = new JsonObject();
         zigbeeDevice2.addProperty("deviceid", "zigbee-motion-1");
         zigbeeDevice2.addProperty("uiid", 1001);
         zigbeeSubDevices.add(zigbeeDevice2);
-        
+
         when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(zigbeeSubDevices);
         when(mockAccountThing.getThings()).thenReturn(things);
     }
 
     private void setupMixedBridgeEnvironment() {
         List<Thing> things = new ArrayList<>();
-        
+
         // Add both bridge types
         Thing rfBridge = createMockRfBridge();
         Thing zigbeeBridge = createMockZigbeeBridge();
         things.add(rfBridge);
         things.add(zigbeeBridge);
-        
+
         // Setup RF sub-devices
         JsonArray rfSubDevices = new JsonArray();
         JsonObject rfDevice1 = new JsonObject();
         rfDevice1.addProperty("name", "RF Remote");
         rfDevice1.addProperty("remote_type", "1");
         rfSubDevices.add(rfDevice1);
-        
+
         JsonObject rfDevice2 = new JsonObject();
         rfDevice2.addProperty("name", "RF Sensor");
         rfDevice2.addProperty("remote_type", "2");
         rfSubDevices.add(rfDevice2);
-        
+
         when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);
-        
+
         // Setup Zigbee sub-devices
         JsonArray zigbeeSubDevices = new JsonArray();
         JsonObject zigbeeDevice1 = new JsonObject();
         zigbeeDevice1.addProperty("deviceid", "zigbee-temp-1");
         zigbeeDevice1.addProperty("uiid", 1000);
         zigbeeSubDevices.add(zigbeeDevice1);
-        
+
         JsonObject zigbeeDevice2 = new JsonObject();
         zigbeeDevice2.addProperty("deviceid", "zigbee-contact-1");
         zigbeeDevice2.addProperty("uiid", 1001);
         zigbeeSubDevices.add(zigbeeDevice2);
-        
+
         when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(zigbeeSubDevices);
         when(mockAccountThing.getThings()).thenReturn(things);
     }
@@ -480,12 +470,12 @@ class SonoffDiscoveryServiceIntegrationTest {
         Thing rfBridge = mock(Thing.class);
         ThingTypeUID rfBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "28");
         ThingUID rfBridgeUID = new ThingUID(rfBridgeTypeUID, accountThingUID, "rf-bridge");
-        
+
         when(rfBridge.getThingTypeUID()).thenReturn(rfBridgeTypeUID);
         when(rfBridge.getUID()).thenReturn(rfBridgeUID);
         when(rfBridge.getHandler()).thenReturn(mockRfBridgeHandler);
         when(mockRfBridgeHandler.getThing()).thenReturn(rfBridge);
-        
+
         return rfBridge;
     }
 
@@ -493,12 +483,12 @@ class SonoffDiscoveryServiceIntegrationTest {
         Thing zigbeeBridge = mock(Thing.class);
         ThingTypeUID zigbeeBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "66");
         ThingUID zigbeeBridgeUID = new ThingUID(zigbeeBridgeTypeUID, accountThingUID, "zigbee-bridge");
-        
+
         when(zigbeeBridge.getThingTypeUID()).thenReturn(zigbeeBridgeTypeUID);
         when(zigbeeBridge.getUID()).thenReturn(zigbeeBridgeUID);
         when(zigbeeBridge.getHandler()).thenReturn(mockZigbeeBridgeHandler);
         when(mockZigbeeBridgeHandler.getThing()).thenReturn(zigbeeBridge);
-        
+
         return zigbeeBridge;
     }
 
@@ -508,8 +498,8 @@ class SonoffDiscoveryServiceIntegrationTest {
 
     private void createExistingCacheFiles() throws IOException {
         Files.createDirectories(Paths.get(testCacheDir));
-        Files.write(Paths.get(testCacheDir, "existing-device.txt"), 
-            "{\"deviceid\":\"existing-device\",\"name\":\"Existing Device\"}".getBytes());
+        Files.write(Paths.get(testCacheDir, "existing-device.txt"),
+                "{\"deviceid\":\"existing-device\",\"name\":\"Existing Device\"}".getBytes());
     }
 
     private void runFullDiscovery() {
@@ -526,57 +516,37 @@ class SonoffDiscoveryServiceIntegrationTest {
     // API Response builders
 
     private String createComplexApiResponse() {
-        return "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + createDeviceJson("device1", "Basic Switch", 1)
-            + "," + createDeviceJson("device2", "Dual Switch", 2)
-            + "," + createDeviceJson("rf-bridge", "RF Bridge", 28)
-            + "," + createDeviceJson("zigbee-bridge", "Zigbee Bridge", 66)
-            + "]}}";
+        return "{" + "\"data\": {" + "\"thingList\": [" + createDeviceJson("device1", "Basic Switch", 1) + ","
+                + createDeviceJson("device2", "Dual Switch", 2) + "," + createDeviceJson("rf-bridge", "RF Bridge", 28)
+                + "," + createDeviceJson("zigbee-bridge", "Zigbee Bridge", 66) + "]}}";
     }
 
     private String createRfBridgeApiResponse() {
-        return "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + createDeviceJson("rf-bridge", "RF Bridge", 28)
-            + "]}}";
+        return "{" + "\"data\": {" + "\"thingList\": [" + createDeviceJson("rf-bridge", "RF Bridge", 28) + "]}}";
     }
 
     private String createZigbeeBridgeApiResponse() {
-        return "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + createDeviceJson("zigbee-bridge", "Zigbee Bridge", 66)
-            + "," + createDeviceJson("zigbee-sensor-1", "Zigbee Sensor", 1000)
-            + "," + createDeviceJson("zigbee-motion-1", "Zigbee Motion", 1001)
-            + "]}}";
+        return "{" + "\"data\": {" + "\"thingList\": [" + createDeviceJson("zigbee-bridge", "Zigbee Bridge", 66) + ","
+                + createDeviceJson("zigbee-sensor-1", "Zigbee Sensor", 1000) + ","
+                + createDeviceJson("zigbee-motion-1", "Zigbee Motion", 1001) + "]}}";
     }
 
     private String createMixedBridgeApiResponse() {
-        return "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + createDeviceJson("rf-bridge", "RF Bridge", 28)
-            + "," + createDeviceJson("zigbee-bridge", "Zigbee Bridge", 66)
-            + "," + createDeviceJson("zigbee-temp-1", "Zigbee Temperature", 1000)
-            + "," + createDeviceJson("zigbee-contact-1", "Zigbee Contact", 1001)
-            + "]}}";
+        return "{" + "\"data\": {" + "\"thingList\": [" + createDeviceJson("rf-bridge", "RF Bridge", 28) + ","
+                + createDeviceJson("zigbee-bridge", "Zigbee Bridge", 66) + ","
+                + createDeviceJson("zigbee-temp-1", "Zigbee Temperature", 1000) + ","
+                + createDeviceJson("zigbee-contact-1", "Zigbee Contact", 1001) + "]}}";
     }
 
     private String createSimpleApiResponse() {
-        return "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + createDeviceJson("simple-device", "Simple Device", 1)
-            + "]}}";
+        return "{" + "\"data\": {" + "\"thingList\": [" + createDeviceJson("simple-device", "Simple Device", 1) + "]}}";
     }
 
     private String createLargeDeviceListResponse() {
         StringBuilder response = new StringBuilder("{\"data\":{\"thingList\":[");
         for (int i = 0; i < 10; i++) {
-            if (i > 0) response.append(",");
+            if (i > 0)
+                response.append(",");
             response.append(createDeviceJson("device" + i, "Device " + i, 1));
         }
         response.append("]}}");
@@ -584,41 +554,17 @@ class SonoffDiscoveryServiceIntegrationTest {
     }
 
     private String createDetailedDeviceResponse() {
-        return "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + "{"
-            + "\"itemType\": 1,"
-            + "\"itemData\": {"
-            + "\"deviceid\": \"detailed-device\","
-            + "\"name\": \"Detailed Test Device\","
-            + "\"brandName\": \"Sonoff\","
-            + "\"productModel\": \"BASIC\","
-            + "\"devicekey\": \"detailed-key\","
-            + "\"apikey\": \"detailed-api\","
-            + "\"extra\": {\"uiid\": 1},"
-            + "\"params\": {"
-            + "\"fwVersion\": \"2.0.0\","
-            + "\"ssid\": \"TestNetwork\""
-            + "}"
-            + "}"
-            + "}"
-            + "]}}";
+        return "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1," + "\"itemData\": {"
+                + "\"deviceid\": \"detailed-device\"," + "\"name\": \"Detailed Test Device\","
+                + "\"brandName\": \"Sonoff\"," + "\"productModel\": \"BASIC\"," + "\"devicekey\": \"detailed-key\","
+                + "\"apikey\": \"detailed-api\"," + "\"extra\": {\"uiid\": 1}," + "\"params\": {"
+                + "\"fwVersion\": \"2.0.0\"," + "\"ssid\": \"TestNetwork\"" + "}" + "}" + "}" + "]}}";
     }
 
     private String createDeviceJson(String deviceId, String name, int uiid) {
-        return "{"
-            + "\"itemType\": 1,"
-            + "\"itemData\": {"
-            + "\"deviceid\": \"" + deviceId + "\","
-            + "\"name\": \"" + name + "\","
-            + "\"brandName\": \"Sonoff\","
-            + "\"productModel\": \"TEST\","
-            + "\"devicekey\": \"key-" + deviceId + "\","
-            + "\"apikey\": \"api-" + deviceId + "\","
-            + "\"extra\": {\"uiid\": " + uiid + "},"
-            + "\"params\": {\"fwVersion\": \"1.0.0\"}"
-            + "}"
-            + "}";
+        return "{" + "\"itemType\": 1," + "\"itemData\": {" + "\"deviceid\": \"" + deviceId + "\"," + "\"name\": \""
+                + name + "\"," + "\"brandName\": \"Sonoff\"," + "\"productModel\": \"TEST\"," + "\"devicekey\": \"key-"
+                + deviceId + "\"," + "\"apikey\": \"api-" + deviceId + "\"," + "\"extra\": {\"uiid\": " + uiid + "},"
+                + "\"params\": {\"fwVersion\": \"1.0.0\"}" + "}" + "}";
     }
 }

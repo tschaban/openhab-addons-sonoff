@@ -99,39 +99,40 @@ class SonoffDiscoveryServiceTest {
     @BeforeEach
     void setUp() {
         discoveryService = new SonoffDiscoveryService();
-        
+
         // Setup account thing UID
         accountThingUID = new ThingUID(SonoffBindingConstants.THING_TYPE_ACCOUNT, "test-account");
-        
+
         // Setup child things list
         childThings = new ArrayList<>();
-        
+
         // Setup mock account handler
         when(mockAccountHandler.getThing()).thenReturn(mockAccountThing);
         when(mockAccountThing.getUID()).thenReturn(accountThingUID);
         when(mockAccountThing.getThings()).thenReturn(childThings);
         when(mockAccountHandler.getConnectionManager()).thenReturn(mockConnectionManager);
-        
+
         // Setup mock connection manager
         when(mockConnectionManager.getApi()).thenReturn(mockApiConnection);
         when(mockConnectionManager.getMode()).thenReturn("cloud");
-        
+
         // Set the account handler
         discoveryService.setThingHandler(mockAccountHandler);
-        
+
         // Setup scheduler mock
         when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
-            .thenReturn(mockScheduledFuture);
-        
+                .thenReturn(mockScheduledFuture);
+
         // Use reflection to set the scheduler
         try {
-            java.lang.reflect.Field schedulerField = discoveryService.getClass().getSuperclass().getDeclaredField("scheduler");
+            java.lang.reflect.Field schedulerField = discoveryService.getClass().getSuperclass()
+                    .getDeclaredField("scheduler");
             schedulerField.setAccessible(true);
             schedulerField.set(discoveryService, mockScheduler);
         } catch (Exception e) {
             // Fallback - tests may still work without scheduler mock
         }
-        
+
         // Add discovery listener
         discoveryService.addDiscoveryListener(mockDiscoveryListener);
     }
@@ -140,15 +141,13 @@ class SonoffDiscoveryServiceTest {
     @DisplayName("Should initialize with correct supported thing types")
     void testInitialization() {
         // Verify
-        assertEquals(SonoffBindingConstants.DISCOVERABLE_THING_TYPE_UIDS, 
-            discoveryService.getSupportedThingTypes(),
-            "Should support all discoverable thing types");
-        
-        assertEquals(10, discoveryService.getScanTimeout(),
-            "Should have 10 second scan timeout");
-        
+        assertEquals(SonoffBindingConstants.DISCOVERABLE_THING_TYPE_UIDS, discoveryService.getSupportedThingTypes(),
+                "Should support all discoverable thing types");
+
+        assertEquals(10, discoveryService.getScanTimeout(), "Should have 10 second scan timeout");
+
         assertFalse(discoveryService.isBackgroundDiscoveryEnabled(),
-            "Background discovery should be disabled by default");
+                "Background discovery should be disabled by default");
     }
 
     @Test
@@ -157,19 +156,17 @@ class SonoffDiscoveryServiceTest {
         // Test setting account handler
         SonoffAccountHandler newHandler = mock(SonoffAccountHandler.class);
         discoveryService.setThingHandler(newHandler);
-        assertEquals(newHandler, discoveryService.getThingHandler(),
-            "Should return the set account handler");
-        
+        assertEquals(newHandler, discoveryService.getThingHandler(), "Should return the set account handler");
+
         // Test setting non-account handler
         ThingHandler otherHandler = mock(ThingHandler.class);
         discoveryService.setThingHandler(otherHandler);
         assertEquals(newHandler, discoveryService.getThingHandler(),
-            "Should not change handler when non-account handler is set");
-        
+                "Should not change handler when non-account handler is set");
+
         // Test setting null handler
         discoveryService.setThingHandler(null);
-        assertEquals(newHandler, discoveryService.getThingHandler(),
-            "Should not change handler when null is set");
+        assertEquals(newHandler, discoveryService.getThingHandler(), "Should not change handler when null is set");
     }
 
     @Test
@@ -177,7 +174,7 @@ class SonoffDiscoveryServiceTest {
     void testStartScan() {
         // Execute
         discoveryService.startScan();
-        
+
         // Verify
         verify(mockScheduler).schedule(any(Runnable.class), eq(0L), eq(TimeUnit.SECONDS));
     }
@@ -187,10 +184,10 @@ class SonoffDiscoveryServiceTest {
     void testStopScan() {
         // Setup - start a scan first
         discoveryService.startScan();
-        
+
         // Execute
         discoveryService.stopScan();
-        
+
         // Verify
         verify(mockScheduledFuture).cancel(true);
     }
@@ -200,10 +197,10 @@ class SonoffDiscoveryServiceTest {
     void testStartScanCancelsExisting() {
         // Setup - start first scan
         discoveryService.startScan();
-        
+
         // Execute - start second scan
         discoveryService.startScan();
-        
+
         // Verify - first scan should be cancelled
         verify(mockScheduledFuture).cancel(true);
         verify(mockScheduler, times(2)).schedule(any(Runnable.class), eq(0L), eq(TimeUnit.SECONDS));
@@ -214,10 +211,10 @@ class SonoffDiscoveryServiceTest {
     void testDiscoveryWithNullAccount() {
         // Setup
         discoveryService.setThingHandler(null);
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
-        
+
         // Verify
         assertTrue(devices.isEmpty(), "Should return empty list when account handler is null");
     }
@@ -228,16 +225,16 @@ class SonoffDiscoveryServiceTest {
         // Setup
         String mockApiResponse = createMockApiResponse();
         when(mockApiConnection.createCache()).thenReturn(mockApiResponse);
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertFalse(devices.isEmpty(), "Should discover devices");
         assertEquals(2, devices.size(), "Should discover 2 devices");
-        
+
         // Verify API was called
         verify(mockApiConnection).createCache();
         verify(mockAccountHandler, times(2)).addState(anyString());
@@ -248,12 +245,12 @@ class SonoffDiscoveryServiceTest {
     void testCreateCacheApiError() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenThrow(new RuntimeException("API Error"));
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertTrue(devices.isEmpty(), "Should return empty list when API fails");
         verify(mockApiConnection).createCache();
@@ -265,12 +262,12 @@ class SonoffDiscoveryServiceTest {
         // Setup
         when(mockConnectionManager.getMode()).thenReturn("local");
         when(mockApiConnection.createCache()).thenReturn(createMockApiResponse());
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         discoveryService.createCache(things);
-        
+
         // Verify
         verify(mockApiConnection).login();
         verify(mockApiConnection).createCache();
@@ -282,12 +279,12 @@ class SonoffDiscoveryServiceTest {
         // Setup
         when(mockConnectionManager.getMode()).thenReturn("cloud");
         when(mockApiConnection.createCache()).thenReturn(createMockApiResponse());
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         discoveryService.createCache(things);
-        
+
         // Verify
         verify(mockApiConnection, never()).login();
         verify(mockApiConnection).createCache();
@@ -300,20 +297,19 @@ class SonoffDiscoveryServiceTest {
         String deviceId = "device123";
         Thing existingThing = mock(Thing.class);
         ThingHandler existingHandler = mock(ThingHandler.class);
-        
-        when(existingThing.getConfiguration()).thenReturn(
-            new org.openhab.core.config.core.Configuration(Map.of("deviceid", deviceId))
-        );
+
+        when(existingThing.getConfiguration())
+                .thenReturn(new org.openhab.core.config.core.Configuration(Map.of("deviceid", deviceId)));
         when(existingThing.getHandler()).thenReturn(existingHandler);
-        
+
         List<Thing> things = List.of(existingThing);
-        
+
         String mockApiResponse = createMockApiResponseWithDevice(deviceId);
         when(mockApiConnection.createCache()).thenReturn(mockApiResponse);
-        
+
         // Execute
         discoveryService.createCache(things);
-        
+
         // Verify
         verify(existingHandler).thingUpdated(existingThing);
     }
@@ -323,12 +319,12 @@ class SonoffDiscoveryServiceTest {
     void testCreateCacheMalformedJson() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenReturn("invalid json");
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertTrue(devices.isEmpty(), "Should return empty list for malformed JSON");
     }
@@ -338,12 +334,12 @@ class SonoffDiscoveryServiceTest {
     void testCreateCacheEmptyResponse() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenReturn("");
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertTrue(devices.isEmpty(), "Should return empty list for empty response");
     }
@@ -353,18 +349,18 @@ class SonoffDiscoveryServiceTest {
     void testDiscoverRfSubDevices() {
         // Setup RF bridge
         setupRfBridge();
-        
+
         // Execute discovery
         runDiscoveryWithMockData();
-        
+
         // Verify RF sub-devices were discovered
         ArgumentCaptor<DiscoveryResult> resultCaptor = ArgumentCaptor.forClass(DiscoveryResult.class);
         verify(mockDiscoveryListener, atLeastOnce()).thingDiscovered(eq(discoveryService), resultCaptor.capture());
-        
+
         List<DiscoveryResult> results = resultCaptor.getAllValues();
         boolean foundRfDevice = results.stream()
-            .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("rf-sensor"));
-        
+                .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("rf-sensor"));
+
         assertTrue(foundRfDevice, "Should discover RF sub-devices");
     }
 
@@ -373,18 +369,18 @@ class SonoffDiscoveryServiceTest {
     void testDiscoverZigbeeSubDevices() {
         // Setup Zigbee bridge
         setupZigbeeBridge();
-        
+
         // Execute discovery
         runDiscoveryWithMockData();
-        
+
         // Verify Zigbee sub-devices were discovered
         ArgumentCaptor<DiscoveryResult> resultCaptor = ArgumentCaptor.forClass(DiscoveryResult.class);
         verify(mockDiscoveryListener, atLeastOnce()).thingDiscovered(eq(discoveryService), resultCaptor.capture());
-        
+
         List<DiscoveryResult> results = resultCaptor.getAllValues();
         boolean foundZigbeeDevice = results.stream()
-            .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("zigbee-sensor"));
-        
+                .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("zigbee-sensor"));
+
         assertTrue(foundZigbeeDevice, "Should discover Zigbee sub-devices");
     }
 
@@ -394,18 +390,18 @@ class SonoffDiscoveryServiceTest {
         // Setup
         String mockApiResponse = createMockApiResponseWithUnsupportedDevice();
         when(mockApiConnection.createCache()).thenReturn(mockApiResponse);
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertFalse(devices.isEmpty(), "Should still return devices even if some are unsupported");
-        
+
         // Run discovery to test unsupported device handling
         runDiscoveryWithMockData();
-        
+
         // Should not crash and should log error for unsupported device
     }
 
@@ -422,82 +418,29 @@ class SonoffDiscoveryServiceTest {
     // Helper methods
 
     private String createMockApiResponse() {
-        return "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + "{"
-            + "\"itemType\": 1,"
-            + "\"itemData\": {"
-            + "\"deviceid\": \"device123\","
-            + "\"name\": \"Test Device 1\","
-            + "\"brandName\": \"Sonoff\","
-            + "\"productModel\": \"BASIC\","
-            + "\"devicekey\": \"key123\","
-            + "\"apikey\": \"api123\","
-            + "\"extra\": {\"uiid\": 1},"
-            + "\"params\": {\"fwVersion\": \"1.0.0\", \"ssid\": \"TestWiFi\"}"
-            + "}"
-            + "},"
-            + "{"
-            + "\"itemType\": 1,"
-            + "\"itemData\": {"
-            + "\"deviceid\": \"device456\","
-            + "\"name\": \"Test Device 2\","
-            + "\"brandName\": \"Sonoff\","
-            + "\"productModel\": \"S20\","
-            + "\"devicekey\": \"key456\","
-            + "\"apikey\": \"api456\","
-            + "\"extra\": {\"uiid\": 1},"
-            + "\"params\": {\"fwVersion\": \"1.1.0\"}"
-            + "}"
-            + "}"
-            + "]"
-            + "}"
-            + "}";
+        return "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1," + "\"itemData\": {"
+                + "\"deviceid\": \"device123\"," + "\"name\": \"Test Device 1\"," + "\"brandName\": \"Sonoff\","
+                + "\"productModel\": \"BASIC\"," + "\"devicekey\": \"key123\"," + "\"apikey\": \"api123\","
+                + "\"extra\": {\"uiid\": 1}," + "\"params\": {\"fwVersion\": \"1.0.0\", \"ssid\": \"TestWiFi\"}" + "}"
+                + "}," + "{" + "\"itemType\": 1," + "\"itemData\": {" + "\"deviceid\": \"device456\","
+                + "\"name\": \"Test Device 2\"," + "\"brandName\": \"Sonoff\"," + "\"productModel\": \"S20\","
+                + "\"devicekey\": \"key456\"," + "\"apikey\": \"api456\"," + "\"extra\": {\"uiid\": 1},"
+                + "\"params\": {\"fwVersion\": \"1.1.0\"}" + "}" + "}" + "]" + "}" + "}";
     }
 
     private String createMockApiResponseWithDevice(String deviceId) {
-        return "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + "{"
-            + "\"itemType\": 1,"
-            + "\"itemData\": {"
-            + "\"deviceid\": \"" + deviceId + "\","
-            + "\"name\": \"Test Device\","
-            + "\"brandName\": \"Sonoff\","
-            + "\"productModel\": \"BASIC\","
-            + "\"devicekey\": \"key123\","
-            + "\"apikey\": \"api123\","
-            + "\"extra\": {\"uiid\": 1},"
-            + "\"params\": {\"fwVersion\": \"1.0.0\"}"
-            + "}"
-            + "}"
-            + "]"
-            + "}"
-            + "}";
+        return "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1," + "\"itemData\": {"
+                + "\"deviceid\": \"" + deviceId + "\"," + "\"name\": \"Test Device\"," + "\"brandName\": \"Sonoff\","
+                + "\"productModel\": \"BASIC\"," + "\"devicekey\": \"key123\"," + "\"apikey\": \"api123\","
+                + "\"extra\": {\"uiid\": 1}," + "\"params\": {\"fwVersion\": \"1.0.0\"}" + "}" + "}" + "]" + "}" + "}";
     }
 
     private String createMockApiResponseWithUnsupportedDevice() {
-        return "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + "{"
-            + "\"itemType\": 1,"
-            + "\"itemData\": {"
-            + "\"deviceid\": \"unsupported999\","
-            + "\"name\": \"Unsupported Device\","
-            + "\"brandName\": \"Unknown\","
-            + "\"productModel\": \"UNKNOWN\","
-            + "\"devicekey\": \"key999\","
-            + "\"apikey\": \"api999\","
-            + "\"extra\": {\"uiid\": 999},"
-            + "\"params\": {\"fwVersion\": \"1.0.0\"}"
-            + "}"
-            + "}"
-            + "]"
-            + "}"
-            + "}";
+        return "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1," + "\"itemData\": {"
+                + "\"deviceid\": \"unsupported999\"," + "\"name\": \"Unsupported Device\","
+                + "\"brandName\": \"Unknown\"," + "\"productModel\": \"UNKNOWN\"," + "\"devicekey\": \"key999\","
+                + "\"apikey\": \"api999\"," + "\"extra\": {\"uiid\": 999}," + "\"params\": {\"fwVersion\": \"1.0.0\"}"
+                + "}" + "}" + "]" + "}" + "}";
     }
 
     private void setupRfBridge() {
@@ -507,17 +450,17 @@ class SonoffDiscoveryServiceTest {
         when(rfBridgeThing.getThingTypeUID()).thenReturn(rfBridgeTypeUID);
         when(rfBridgeThing.getHandler()).thenReturn(mockRfBridgeHandler);
         when(rfBridgeThing.getUID()).thenReturn(new ThingUID(rfBridgeTypeUID, accountThingUID, "rfbridge"));
-        
+
         // Setup RF sub-devices
         JsonArray rfSubDevices = new JsonArray();
         JsonObject rfDevice = new JsonObject();
         rfDevice.addProperty("name", "RF Sensor 1");
         rfDevice.addProperty("remote_type", "1");
         rfSubDevices.add(rfDevice);
-        
+
         when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);
         when(mockRfBridgeHandler.getThing()).thenReturn(rfBridgeThing);
-        
+
         childThings.add(rfBridgeThing);
     }
 
@@ -528,24 +471,24 @@ class SonoffDiscoveryServiceTest {
         when(zigbeeBridgeThing.getThingTypeUID()).thenReturn(zigbeeBridgeTypeUID);
         when(zigbeeBridgeThing.getHandler()).thenReturn(mockZigbeeBridgeHandler);
         when(zigbeeBridgeThing.getUID()).thenReturn(new ThingUID(zigbeeBridgeTypeUID, accountThingUID, "zigbeebridge"));
-        
+
         // Setup Zigbee sub-devices
         JsonArray zigbeeSubDevices = new JsonArray();
         JsonObject zigbeeDevice = new JsonObject();
         zigbeeDevice.addProperty("deviceid", "zigbee123");
         zigbeeDevice.addProperty("uiid", 1000);
         zigbeeSubDevices.add(zigbeeDevice);
-        
+
         when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(zigbeeSubDevices);
         when(mockZigbeeBridgeHandler.getThing()).thenReturn(zigbeeBridgeThing);
-        
+
         childThings.add(zigbeeBridgeThing);
     }
 
     private void runDiscoveryWithMockData() {
         try {
             when(mockApiConnection.createCache()).thenReturn(createMockApiResponse());
-            
+
             // Use reflection to call the private discover method
             java.lang.reflect.Method discoverMethod = discoveryService.getClass().getDeclaredMethod("discover");
             discoverMethod.setAccessible(true);

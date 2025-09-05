@@ -41,15 +41,12 @@ import org.openhab.binding.sonoff.internal.handler.SonoffRfBridgeHandler;
 import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeBridgeHandler;
 import org.openhab.core.OpenHAB;
 import org.openhab.core.config.discovery.DiscoveryListener;
-import org.openhab.core.config.discovery.DiscoveryResult;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.ThingUID;
-import org.openhab.core.thing.binding.ThingHandler;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 
 /**
  * Edge case and error handling tests for {@link SonoffDiscoveryService}.
@@ -103,14 +100,14 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         discoveryService = new SonoffDiscoveryService();
         testCacheDir = tempDir.resolve("sonoff").toString();
         accountThingUID = new ThingUID(SonoffBindingConstants.THING_TYPE_ACCOUNT, "edge-test");
-        
+
         // Setup basic mocks
         when(mockAccountHandler.getThing()).thenReturn(mockAccountThing);
         when(mockAccountThing.getUID()).thenReturn(accountThingUID);
         when(mockAccountHandler.getConnectionManager()).thenReturn(mockConnectionManager);
         when(mockConnectionManager.getApi()).thenReturn(mockApiConnection);
         when(mockConnectionManager.getMode()).thenReturn("cloud");
-        
+
         discoveryService.setThingHandler(mockAccountHandler);
         discoveryService.addDiscoveryListener(mockDiscoveryListener);
     }
@@ -118,10 +115,8 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     @AfterEach
     void tearDown() throws IOException {
         if (Files.exists(Paths.get(testCacheDir))) {
-            Files.walk(Paths.get(testCacheDir))
-                .sorted((a, b) -> b.compareTo(a))
-                .map(Path::toFile)
-                .forEach(File::delete);
+            Files.walk(Paths.get(testCacheDir)).sorted((a, b) -> b.compareTo(a)).map(Path::toFile)
+                    .forEach(File::delete);
         }
     }
 
@@ -130,13 +125,13 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     void testNullApiResponse() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(null);
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
-            
+
             // Verify
             assertTrue(devices.isEmpty(), "Should return empty list for null API response");
             verify(mockAccountHandler, never()).addState(anyString());
@@ -148,13 +143,13 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     void testEmptyJsonResponse() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenReturn("{}");
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
-            
+
             // Verify
             assertTrue(devices.isEmpty(), "Should return empty list for empty JSON");
         }
@@ -165,10 +160,10 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     void testJsonMissingDataField() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenReturn("{\"status\":\"ok\"}");
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             assertDoesNotThrow(() -> {
                 List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
@@ -182,10 +177,10 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     void testJsonMissingThingListField() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenReturn("{\"data\":{\"status\":\"ok\"}}");
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             assertDoesNotThrow(() -> {
                 List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
@@ -198,23 +193,15 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     @DisplayName("Should handle devices with missing required fields")
     void testDevicesWithMissingFields() throws Exception {
         // Setup - device missing deviceid
-        String incompleteResponse = "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + "{"
-            + "\"itemType\": 1,"
-            + "\"itemData\": {"
-            + "\"name\": \"Incomplete Device\","
-            + "\"extra\": {\"uiid\": 1}"
-            + "}"
-            + "}"
-            + "]}}";
-        
+        String incompleteResponse = "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1,"
+                + "\"itemData\": {" + "\"name\": \"Incomplete Device\"," + "\"extra\": {\"uiid\": 1}" + "}" + "}"
+                + "]}}";
+
         when(mockApiConnection.createCache()).thenReturn(incompleteResponse);
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             assertDoesNotThrow(() -> {
                 List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
@@ -227,24 +214,15 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     @DisplayName("Should handle devices with null itemType")
     void testDevicesWithNullItemType() throws Exception {
         // Setup
-        String responseWithNullItemType = "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + "{"
-            + "\"itemType\": null,"
-            + "\"itemData\": {"
-            + "\"deviceid\": \"null-type-device\","
-            + "\"name\": \"Null Type Device\","
-            + "\"extra\": {\"uiid\": 1}"
-            + "}"
-            + "}"
-            + "]}}";
-        
+        String responseWithNullItemType = "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": null,"
+                + "\"itemData\": {" + "\"deviceid\": \"null-type-device\"," + "\"name\": \"Null Type Device\","
+                + "\"extra\": {\"uiid\": 1}" + "}" + "}" + "]}}";
+
         when(mockApiConnection.createCache()).thenReturn(responseWithNullItemType);
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             assertDoesNotThrow(() -> {
                 List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
@@ -257,27 +235,18 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     @DisplayName("Should handle devices with non-type-1 itemType")
     void testDevicesWithWrongItemType() throws Exception {
         // Setup
-        String responseWithWrongItemType = "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + "{"
-            + "\"itemType\": 2,"
-            + "\"itemData\": {"
-            + "\"deviceid\": \"wrong-type-device\","
-            + "\"name\": \"Wrong Type Device\","
-            + "\"extra\": {\"uiid\": 1}"
-            + "}"
-            + "}"
-            + "]}}";
-        
+        String responseWithWrongItemType = "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 2,"
+                + "\"itemData\": {" + "\"deviceid\": \"wrong-type-device\"," + "\"name\": \"Wrong Type Device\","
+                + "\"extra\": {\"uiid\": 1}" + "}" + "}" + "]}}";
+
         when(mockApiConnection.createCache()).thenReturn(responseWithWrongItemType);
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
-            
+
             // Verify
             assertTrue(devices.isEmpty(), "Should skip devices with itemType != 1");
         }
@@ -288,7 +257,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     void testRfBridgeWithNullSubDevices() {
         // Setup
         setupRfBridgeWithNullSubDevices();
-        
+
         // Execute
         assertDoesNotThrow(() -> {
             runDiscoveryMethod();
@@ -300,7 +269,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     void testRfBridgeWithEmptySubDevices() {
         // Setup
         setupRfBridgeWithEmptySubDevices();
-        
+
         // Execute
         assertDoesNotThrow(() -> {
             runDiscoveryMethod();
@@ -312,7 +281,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     void testZigbeeBridgeWithNullSubDevices() {
         // Setup
         setupZigbeeBridgeWithNullSubDevices();
-        
+
         // Execute
         assertDoesNotThrow(() -> {
             runDiscoveryMethod();
@@ -324,7 +293,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     void testZigbeeBridgeWithMalformedSubDevices() {
         // Setup
         setupZigbeeBridgeWithMalformedSubDevices();
-        
+
         // Execute
         assertDoesNotThrow(() -> {
             runDiscoveryMethod();
@@ -336,15 +305,15 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     void testBridgeHandlersReturningNull() {
         // Setup
         List<Thing> things = new ArrayList<>();
-        
+
         Thing rfBridge = mock(Thing.class);
         ThingTypeUID rfBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "28");
         when(rfBridge.getThingTypeUID()).thenReturn(rfBridgeTypeUID);
         when(rfBridge.getHandler()).thenReturn(null); // Null handler
         things.add(rfBridge);
-        
+
         when(mockAccountThing.getThings()).thenReturn(things);
-        
+
         // Execute
         assertDoesNotThrow(() -> {
             runDiscoveryMethod();
@@ -357,14 +326,14 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         // Setup
         Thing thingWithNullConfig = mock(Thing.class);
         when(thingWithNullConfig.getConfiguration()).thenReturn(null);
-        
+
         List<Thing> things = List.of(thingWithNullConfig);
-        
+
         when(mockApiConnection.createCache()).thenReturn(createSimpleDeviceResponse());
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             assertDoesNotThrow(() -> {
                 discoveryService.createCache(things);
@@ -377,17 +346,17 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     void testThingsWithMissingDeviceId() throws Exception {
         // Setup
         Thing thingWithoutDeviceId = mock(Thing.class);
-        org.openhab.core.config.core.Configuration config = 
-            new org.openhab.core.config.core.Configuration(Map.of("name", "Test Thing"));
+        org.openhab.core.config.core.Configuration config = new org.openhab.core.config.core.Configuration(
+                Map.of("name", "Test Thing"));
         when(thingWithoutDeviceId.getConfiguration()).thenReturn(config);
-        
+
         List<Thing> things = List.of(thingWithoutDeviceId);
-        
+
         when(mockApiConnection.createCache()).thenReturn(createSimpleDeviceResponse());
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             assertDoesNotThrow(() -> {
                 discoveryService.createCache(things);
@@ -402,12 +371,12 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         Path invalidPath = tempDir.resolve("file.txt");
         Files.write(invalidPath, "content".getBytes());
         String invalidCacheDir = invalidPath.resolve("sonoff").toString();
-        
+
         when(mockApiConnection.createCache()).thenReturn(createSimpleDeviceResponse());
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(invalidPath.toString());
-            
+
             // Execute
             assertDoesNotThrow(() -> {
                 List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
@@ -422,19 +391,20 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         // Setup - create a very large JSON response
         StringBuilder largeResponse = new StringBuilder("{\"data\":{\"thingList\":[");
         for (int i = 0; i < 1000; i++) {
-            if (i > 0) largeResponse.append(",");
+            if (i > 0)
+                largeResponse.append(",");
             largeResponse.append(createDeviceJson("device" + i, "Device " + i, 1));
         }
         largeResponse.append("]}}");
-        
+
         when(mockApiConnection.createCache()).thenReturn(largeResponse.toString());
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
-            
+
             // Verify
             assertEquals(1000, devices.size(), "Should handle large JSON responses");
             verify(mockAccountHandler, times(1000)).addState(anyString());
@@ -445,39 +415,17 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     @DisplayName("Should handle JSON with deeply nested structures")
     void testDeeplyNestedJson() throws Exception {
         // Setup
-        String deeplyNestedResponse = "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + "{"
-            + "\"itemType\": 1,"
-            + "\"itemData\": {"
-            + "\"deviceid\": \"nested-device\","
-            + "\"name\": \"Nested Device\","
-            + "\"extra\": {"
-            + "\"uiid\": 1,"
-            + "\"nested\": {"
-            + "\"level1\": {"
-            + "\"level2\": {"
-            + "\"level3\": \"deep value\""
-            + "}"
-            + "}"
-            + "}"
-            + "},"
-            + "\"params\": {"
-            + "\"complex\": {"
-            + "\"array\": [1, 2, 3],"
-            + "\"object\": {\"key\": \"value\"}"
-            + "}"
-            + "}"
-            + "}"
-            + "}"
-            + "]}}";
-        
+        String deeplyNestedResponse = "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1,"
+                + "\"itemData\": {" + "\"deviceid\": \"nested-device\"," + "\"name\": \"Nested Device\","
+                + "\"extra\": {" + "\"uiid\": 1," + "\"nested\": {" + "\"level1\": {" + "\"level2\": {"
+                + "\"level3\": \"deep value\"" + "}" + "}" + "}" + "}," + "\"params\": {" + "\"complex\": {"
+                + "\"array\": [1, 2, 3]," + "\"object\": {\"key\": \"value\"}" + "}" + "}" + "}" + "}" + "]}}";
+
         when(mockApiConnection.createCache()).thenReturn(deeplyNestedResponse);
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute
             assertDoesNotThrow(() -> {
                 List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
@@ -491,14 +439,14 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     void testConcurrentDiscoveryCalls() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(createSimpleDeviceResponse());
-        
+
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Execute multiple concurrent calls
             List<Thread> threads = new ArrayList<>();
             List<Exception> exceptions = new ArrayList<>();
-            
+
             for (int i = 0; i < 5; i++) {
                 Thread thread = new Thread(() -> {
                     try {
@@ -512,12 +460,12 @@ class SonoffDiscoveryServiceEdgeCaseTest {
                 threads.add(thread);
                 thread.start();
             }
-            
+
             // Wait for all threads to complete
             for (Thread thread : threads) {
                 thread.join(5000); // 5 second timeout
             }
-            
+
             // Verify
             assertTrue(exceptions.isEmpty(), "Should handle concurrent calls without exceptions");
         }
@@ -529,7 +477,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         List<Thing> things = new ArrayList<>();
         Thing rfBridge = createMockRfBridge();
         things.add(rfBridge);
-        
+
         when(mockRfBridgeHandler.getSubDevices()).thenReturn(null);
         when(mockAccountThing.getThings()).thenReturn(things);
     }
@@ -538,7 +486,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         List<Thing> things = new ArrayList<>();
         Thing rfBridge = createMockRfBridge();
         things.add(rfBridge);
-        
+
         when(mockRfBridgeHandler.getSubDevices()).thenReturn(new JsonArray());
         when(mockAccountThing.getThings()).thenReturn(things);
     }
@@ -547,7 +495,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         List<Thing> things = new ArrayList<>();
         Thing zigbeeBridge = createMockZigbeeBridge();
         things.add(zigbeeBridge);
-        
+
         when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(null);
         when(mockAccountThing.getThings()).thenReturn(things);
     }
@@ -556,14 +504,14 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         List<Thing> things = new ArrayList<>();
         Thing zigbeeBridge = createMockZigbeeBridge();
         things.add(zigbeeBridge);
-        
+
         // Create malformed sub-device (missing required fields)
         JsonArray malformedSubDevices = new JsonArray();
         JsonObject malformedDevice = new JsonObject();
         malformedDevice.addProperty("name", "Malformed Device");
         // Missing deviceid and uiid
         malformedSubDevices.add(malformedDevice);
-        
+
         when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(malformedSubDevices);
         when(mockAccountThing.getThings()).thenReturn(things);
     }
@@ -572,12 +520,12 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         Thing rfBridge = mock(Thing.class);
         ThingTypeUID rfBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "28");
         ThingUID rfBridgeUID = new ThingUID(rfBridgeTypeUID, accountThingUID, "rf-bridge");
-        
+
         when(rfBridge.getThingTypeUID()).thenReturn(rfBridgeTypeUID);
         when(rfBridge.getUID()).thenReturn(rfBridgeUID);
         when(rfBridge.getHandler()).thenReturn(mockRfBridgeHandler);
         when(mockRfBridgeHandler.getThing()).thenReturn(rfBridge);
-        
+
         return rfBridge;
     }
 
@@ -585,12 +533,12 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         Thing zigbeeBridge = mock(Thing.class);
         ThingTypeUID zigbeeBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "66");
         ThingUID zigbeeBridgeUID = new ThingUID(zigbeeBridgeTypeUID, accountThingUID, "zigbee-bridge");
-        
+
         when(zigbeeBridge.getThingTypeUID()).thenReturn(zigbeeBridgeTypeUID);
         when(zigbeeBridge.getUID()).thenReturn(zigbeeBridgeUID);
         when(zigbeeBridge.getHandler()).thenReturn(mockZigbeeBridgeHandler);
         when(mockZigbeeBridgeHandler.getThing()).thenReturn(zigbeeBridge);
-        
+
         return zigbeeBridge;
     }
 
@@ -605,26 +553,13 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     }
 
     private String createSimpleDeviceResponse() {
-        return "{"
-            + "\"data\": {"
-            + "\"thingList\": ["
-            + createDeviceJson("simple-device", "Simple Device", 1)
-            + "]}}";
+        return "{" + "\"data\": {" + "\"thingList\": [" + createDeviceJson("simple-device", "Simple Device", 1) + "]}}";
     }
 
     private String createDeviceJson(String deviceId, String name, int uiid) {
-        return "{"
-            + "\"itemType\": 1,"
-            + "\"itemData\": {"
-            + "\"deviceid\": \"" + deviceId + "\","
-            + "\"name\": \"" + name + "\","
-            + "\"brandName\": \"Sonoff\","
-            + "\"productModel\": \"TEST\","
-            + "\"devicekey\": \"key-" + deviceId + "\","
-            + "\"apikey\": \"api-" + deviceId + "\","
-            + "\"extra\": {\"uiid\": " + uiid + "},"
-            + "\"params\": {\"fwVersion\": \"1.0.0\"}"
-            + "}"
-            + "}";
+        return "{" + "\"itemType\": 1," + "\"itemData\": {" + "\"deviceid\": \"" + deviceId + "\"," + "\"name\": \""
+                + name + "\"," + "\"brandName\": \"Sonoff\"," + "\"productModel\": \"TEST\"," + "\"devicekey\": \"key-"
+                + deviceId + "\"," + "\"apikey\": \"api-" + deviceId + "\"," + "\"extra\": {\"uiid\": " + uiid + "},"
+                + "\"params\": {\"fwVersion\": \"1.0.0\"}" + "}" + "}";
     }
 }
