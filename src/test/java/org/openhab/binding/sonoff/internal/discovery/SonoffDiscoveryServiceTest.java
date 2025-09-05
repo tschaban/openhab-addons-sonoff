@@ -127,9 +127,8 @@ class SonoffDiscoveryServiceTest {
         discoveryService.setThingHandler(mockAccountHandler);
 
         // Setup scheduler mock (lenient to avoid unnecessary stubbing warnings)
-        @SuppressWarnings("unchecked")
-        var stub = lenient().when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)));
-        stub.thenReturn(mockScheduledFuture);
+        lenient().doReturn(mockScheduledFuture)
+                .when(mockScheduler).schedule(any(Runnable.class), anyLong(), any(TimeUnit.class));
 
         // Use reflection to set the scheduler
         try {

@@ -127,27 +127,15 @@ class SonoffDiscoveryServiceIntegrationTest {
         // Set the account handler
         discoveryService.setThingHandler(mockAccountHandler);
 
-        // Add discovery listener to capture results
-        DiscoveryListener captureListener = new DiscoveryListener() {
-            @Override
-            public void thingDiscovered(org.openhab.core.config.discovery.DiscoveryService source,
-                    DiscoveryResult result) {
-                discoveredResults.add(result);
-                discoveryLatch.countDown();
-            }
-
-            @Override
-            public void thingRemoved(org.openhab.core.config.discovery.DiscoveryService source, ThingUID thingUID) {
-                // Not used in these tests
-            }
-
-            @Override
-            public void removeOlderResults(org.openhab.core.config.discovery.DiscoveryService source, Instant timestamp,
-                    java.util.Collection<ThingTypeUID> thingTypeUIDs, ThingUID bridgeUID) {
-                // Not used in these tests
-            }
-        };
-        discoveryService.addDiscoveryListener(captureListener);
+        // Add discovery listener to capture results using mock
+        doAnswer(invocation -> {
+            DiscoveryResult result = invocation.getArgument(1);
+            discoveredResults.add(result);
+            discoveryLatch.countDown();
+            return null;
+        }).when(mockDiscoveryListener).thingDiscovered(any(), any());
+        
+        discoveryService.addDiscoveryListener(mockDiscoveryListener);
     }
 
     @AfterEach
