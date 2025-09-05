@@ -14,6 +14,7 @@ package org.openhab.binding.sonoff.internal.discovery;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,12 +103,16 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         testCacheDir = tempDir.resolve("sonoff").toString();
         accountThingUID = new ThingUID(SonoffBindingConstants.THING_TYPE_ACCOUNT, "edge-test");
 
-        // Setup basic mocks
-        when(mockAccountHandler.getThing()).thenReturn(mockAccountThing);
-        when(mockAccountThing.getUID()).thenReturn(accountThingUID);
-        when(mockAccountHandler.getConnectionManager()).thenReturn(mockConnectionManager);
-        when(mockConnectionManager.getApi()).thenReturn(mockApiConnection);
-        when(mockConnectionManager.getMode()).thenReturn("cloud");
+        // Setup basic mocks (lenient to avoid unnecessary stubbing warnings)
+        lenient().when(mockAccountHandler.getThing()).thenReturn(mockAccountThing);
+        lenient().when(mockAccountThing.getUID()).thenReturn(accountThingUID);
+        lenient().when(mockAccountThing.getThings()).thenReturn(new ArrayList<>());
+        lenient().when(mockAccountHandler.getConnectionManager()).thenReturn(mockConnectionManager);
+        lenient().when(mockConnectionManager.getApi()).thenReturn(mockApiConnection);
+        lenient().when(mockConnectionManager.getMode()).thenReturn("cloud");
+        
+        // Setup addState method (lenient to avoid unnecessary stubbing warnings)
+        lenient().doNothing().when(mockAccountHandler).addState(anyString());
 
         discoveryService.setThingHandler(mockAccountHandler);
         discoveryService.addDiscoveryListener(mockDiscoveryListener);

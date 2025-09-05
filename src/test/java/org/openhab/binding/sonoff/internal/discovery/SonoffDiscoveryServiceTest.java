@@ -14,6 +14,7 @@ package org.openhab.binding.sonoff.internal.discovery;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,21 +109,24 @@ class SonoffDiscoveryServiceTest {
         // Setup child things list
         childThings = new ArrayList<>();
 
-        // Setup mock account handler
-        when(mockAccountHandler.getThing()).thenReturn(mockAccountThing);
-        when(mockAccountThing.getUID()).thenReturn(accountThingUID);
-        when(mockAccountThing.getThings()).thenReturn(childThings);
-        when(mockAccountHandler.getConnectionManager()).thenReturn(mockConnectionManager);
+        // Setup mock account handler (lenient to avoid unnecessary stubbing warnings)
+        lenient().when(mockAccountHandler.getThing()).thenReturn(mockAccountThing);
+        lenient().when(mockAccountThing.getUID()).thenReturn(accountThingUID);
+        lenient().when(mockAccountThing.getThings()).thenReturn(childThings);
+        lenient().when(mockAccountHandler.getConnectionManager()).thenReturn(mockConnectionManager);
 
-        // Setup mock connection manager
-        when(mockConnectionManager.getApi()).thenReturn(mockApiConnection);
-        when(mockConnectionManager.getMode()).thenReturn("cloud");
+        // Setup mock connection manager (lenient to avoid unnecessary stubbing warnings)
+        lenient().when(mockConnectionManager.getApi()).thenReturn(mockApiConnection);
+        lenient().when(mockConnectionManager.getMode()).thenReturn("cloud");
+        
+        // Setup addState method (lenient to avoid unnecessary stubbing warnings)
+        lenient().doNothing().when(mockAccountHandler).addState(anyString());
 
         // Set the account handler
         discoveryService.setThingHandler(mockAccountHandler);
 
-        // Setup scheduler mock
-        when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
+        // Setup scheduler mock (lenient to avoid unnecessary stubbing warnings)
+        lenient().when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
                 .thenReturn(mockScheduledFuture);
 
         // Use reflection to set the scheduler
