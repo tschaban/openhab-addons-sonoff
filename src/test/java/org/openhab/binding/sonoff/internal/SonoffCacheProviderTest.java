@@ -67,11 +67,11 @@ class SonoffCacheProviderTest {
     void setUp() {
         // Setup temporary directory for testing
         testCacheDir = tempDir.resolve("sonoff").toString();
-        
+
         // Mock OpenHAB.getUserDataFolder() to return our temp directory
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // Create cache providers
             cacheProvider = new SonoffCacheProvider(mockGson);
             cacheProviderWithoutGson = new SonoffCacheProvider();
@@ -82,9 +82,7 @@ class SonoffCacheProviderTest {
     void tearDown() throws IOException {
         // Clean up test files
         if (Files.exists(Paths.get(testCacheDir))) {
-            Files.walk(Paths.get(testCacheDir))
-                .map(Path::toFile)
-                .forEach(File::delete);
+            Files.walk(Paths.get(testCacheDir)).map(Path::toFile).forEach(File::delete);
         }
     }
 
@@ -117,7 +115,7 @@ class SonoffCacheProviderTest {
         // Verify
         Path expectedFile = Paths.get(testCacheDir, deviceId + ".txt");
         assertTrue(Files.exists(expectedFile), "Device file should be created");
-        
+
         String fileContent = Files.readString(expectedFile);
         assertEquals(deviceData, fileContent, "File content should match input data");
     }
@@ -147,7 +145,7 @@ class SonoffCacheProviderTest {
 
         // Execute - create original file
         cacheProvider.newFile(deviceId, originalData);
-        
+
         // Execute - overwrite with new data
         cacheProvider.newFile(deviceId, updatedData);
 
@@ -163,7 +161,7 @@ class SonoffCacheProviderTest {
         // Setup
         String existingDeviceId = "existing-device";
         String nonExistingDeviceId = "non-existing-device";
-        
+
         // Create a test file
         cacheProvider.newFile(existingDeviceId, "{\"test\":\"data\"}");
 
@@ -179,7 +177,7 @@ class SonoffCacheProviderTest {
         String deviceId = "test-device-003";
         String deviceData = "{\"deviceid\":\"test-device-003\",\"status\":\"online\"}";
         String filename = deviceId + ".txt";
-        
+
         cacheProvider.newFile(deviceId, deviceData);
 
         // Execute
@@ -206,7 +204,7 @@ class SonoffCacheProviderTest {
         cacheProvider.newFile("device1", "{\"deviceid\":\"device1\"}");
         cacheProvider.newFile("device2", "{\"deviceid\":\"device2\"}");
         cacheProvider.newFile("device3", "{\"deviceid\":\"device3\"}");
-        
+
         // Create a non-.txt file that should be ignored
         Files.write(Paths.get(testCacheDir, "ignore.log"), "log content".getBytes());
 
@@ -251,35 +249,29 @@ class SonoffCacheProviderTest {
         // Setup - create valid JSON that won't cause SonoffDeviceState constructor to fail
         String device1Json = createValidDeviceJson("device1", "Device 1");
         String device2Json = createValidDeviceJson("device2", "Device 2");
-        
+
         cacheProvider.newFile("device1", device1Json);
         cacheProvider.newFile("device2", device2Json);
 
         // Mock Gson behavior to return null (simulating parsing failure)
         when(mockGson.fromJson(device1Json, JsonObject.class)).thenReturn(null);
         when(mockGson.fromJson(device2Json, JsonObject.class)).thenReturn(null);
-        
+
         // Execute
         Map<String, SonoffDeviceState> states = cacheProvider.getStates();
 
         // Verify Gson was called correctly
         verify(mockGson).fromJson(device1Json, JsonObject.class);
         verify(mockGson).fromJson(device2Json, JsonObject.class);
-        
+
         // Verify empty map is returned when JSON parsing returns null
         assertTrue(states.isEmpty(), "Should return empty map when JSON parsing returns null");
     }
-    
+
     private String createValidDeviceJson(String deviceId, String name) {
-        return "{" +
-            "\"deviceid\":\"" + deviceId + "\"," +
-            "\"name\":\"" + name + "\"," +
-            "\"devicekey\":\"test-key\"," +
-            "\"brandName\":\"Test Brand\"," +
-            "\"productModel\":\"Test Model\"," +
-            "\"extra\":{\"uiid\":1}," +
-            "\"params\":{\"fwVersion\":\"1.0.0\"}" +
-            "}";
+        return "{" + "\"deviceid\":\"" + deviceId + "\"," + "\"name\":\"" + name + "\"," + "\"devicekey\":\"test-key\","
+                + "\"brandName\":\"Test Brand\"," + "\"productModel\":\"Test Model\"," + "\"extra\":{\"uiid\":1},"
+                + "\"params\":{\"fwVersion\":\"1.0.0\"}" + "}";
     }
 
     @Test
@@ -305,7 +297,7 @@ class SonoffCacheProviderTest {
         // Setup
         String deviceId = "test-device";
         String deviceJson = createValidDeviceJson(deviceId, "Test Device");
-        
+
         cacheProvider.newFile(deviceId, deviceJson);
 
         // Mock Gson behavior to return null (simulating parsing failure)
@@ -335,7 +327,7 @@ class SonoffCacheProviderTest {
         // Setup
         String deviceId = "test-device";
         String invalidJson = "invalid json content";
-        
+
         cacheProvider.newFile(deviceId, invalidJson);
 
         // Mock Gson to return null for invalid JSON
@@ -369,7 +361,7 @@ class SonoffCacheProviderTest {
         // Setup
         String deviceId = "large-device";
         StringBuilder largeContent = new StringBuilder("{\"deviceid\":\"large-device\",\"data\":\"");
-        
+
         // Create large content (10KB)
         for (int i = 0; i < 1000; i++) {
             largeContent.append("0123456789");
@@ -411,7 +403,7 @@ class SonoffCacheProviderTest {
         for (int i = 0; i < threadCount; i++) {
             String deviceId = "concurrent-device-" + i;
             assertTrue(cacheProvider.checkFile(deviceId), "File should exist for device: " + deviceId);
-            
+
             String content = cacheProvider.getFile(deviceId + ".txt");
             assertTrue(content.contains("\"thread\":" + i), "File should contain correct thread data");
         }
@@ -422,21 +414,21 @@ class SonoffCacheProviderTest {
     void testReadOnlyDirectory() throws IOException {
         // This test is platform-dependent and may not work on all systems
         // It's included for completeness but may be skipped on some platforms
-        
+
         File cacheDir = new File(testCacheDir);
         boolean originalWritable = cacheDir.canWrite();
-        
+
         try {
             // Make directory read-only
             cacheDir.setWritable(false);
-            
+
             if (!cacheDir.canWrite()) {
                 // Execute - try to create file in read-only directory
                 cacheProvider.newFile("readonly-test", "{\"test\":\"data\"}");
-                
+
                 // Verify - file should not be created (operation should fail silently)
-                assertFalse(cacheProvider.checkFile("readonly-test"), 
-                    "File should not be created in read-only directory");
+                assertFalse(cacheProvider.checkFile("readonly-test"),
+                        "File should not be created in read-only directory");
             }
         } finally {
             // Restore original permissions

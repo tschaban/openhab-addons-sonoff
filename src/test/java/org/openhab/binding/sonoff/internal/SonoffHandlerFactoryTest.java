@@ -81,7 +81,7 @@ class SonoffHandlerFactoryTest {
     void testConstructor() {
         // Verify that the factory was created successfully
         assertNotNull(factory);
-        
+
         // Verify that the factories were called to get clients
         verify(webSocketFactory).getCommonWebSocketClient();
         verify(httpClientFactory).getCommonHttpClient();
@@ -144,7 +144,7 @@ class SonoffHandlerFactoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"1", "6", "14", "27", "81", "107", "160", "209", "256", "260"})
+    @ValueSource(strings = { "1", "6", "14", "27", "81", "107", "160", "209", "256", "260" })
     @DisplayName("Should create SonoffSwitchSingleHandler for single switch device types")
     void testCreateHandler_SingleSwitchDevices(String deviceId) {
         // Setup
@@ -160,7 +160,8 @@ class SonoffHandlerFactoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"2", "3", "4", "7", "8", "9", "29", "30", "31", "77", "78", "82", "83", "84", "126", "161", "162", "210", "211", "212"})
+    @ValueSource(strings = { "2", "3", "4", "7", "8", "9", "29", "30", "31", "77", "78", "82", "83", "84", "126", "161",
+            "162", "210", "211", "212" })
     @DisplayName("Should create SonoffSwitchMultiHandler for multi switch device types")
     void testCreateHandler_MultiSwitchDevices(String deviceId) {
         // Setup
@@ -191,7 +192,7 @@ class SonoffHandlerFactoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"15", "181"})
+    @ValueSource(strings = { "15", "181" })
     @DisplayName("Should create SonoffSwitchTHHandler for TH device types")
     void testCreateHandler_THDevices(String deviceId) {
         // Setup
@@ -267,7 +268,7 @@ class SonoffHandlerFactoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"66", "168", "243"})
+    @ValueSource(strings = { "66", "168", "243" })
     @DisplayName("Should create SonoffZigbeeBridgeHandler for Zigbee Bridge device types")
     void testCreateHandler_ZigbeeBridge(String deviceId) {
         // Setup
@@ -358,7 +359,7 @@ class SonoffHandlerFactoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"1770", "7014"})
+    @ValueSource(strings = { "1770", "7014" })
     @DisplayName("Should create SonoffZigbeeDeviceTemperatureHumiditySensorHandler for temperature sensor types")
     void testCreateHandler_TemperatureSensors(String deviceId) {
         // Setup
@@ -389,7 +390,7 @@ class SonoffHandlerFactoryTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"rfremote1", "rfremote2", "rfremote3", "rfremote4", "rfsensor"})
+    @ValueSource(strings = { "rfremote1", "rfremote2", "rfremote3", "rfremote4", "rfsensor" })
     @DisplayName("Should create SonoffRfDeviceHandler for RF device types")
     void testCreateHandler_RFDevices(String deviceId) {
         // Setup
@@ -462,8 +463,8 @@ class SonoffHandlerFactoryTest {
         when(mockThing.getThingTypeUID()).thenReturn(differentBindingType);
 
         // First verify that supportsThingType correctly rejects different binding IDs
-        assertFalse(factory.supportsThingType(differentBindingType), 
-            "Factory should not support different binding IDs");
+        assertFalse(factory.supportsThingType(differentBindingType),
+                "Factory should not support different binding IDs");
 
         // Execute createHandler - this tests the internal implementation
         ThingHandler handler = factory.createHandler(mockThing);
@@ -473,7 +474,7 @@ class SonoffHandlerFactoryTest {
         // This test documents that createHandler doesn't validate binding ID internally
         assertNotNull(handler, "createHandler only checks device ID, not binding ID");
         assertEquals("SonoffSwitchSingleHandler", handler.getClass().getSimpleName());
-        
+
         // Note: In OpenHAB framework, supportsThingType() is the proper gatekeeper
         // createHandler() is only called for supported thing types
     }

@@ -77,13 +77,12 @@ class SonoffHandlerFactoryIntegrationTest {
     @DisplayName("Should support all thing types defined in SUPPORTED_THING_TYPE_UIDS")
     void testSupportsAllDefinedThingTypes() {
         Set<ThingTypeUID> supportedTypes = SonoffBindingConstants.SUPPORTED_THING_TYPE_UIDS;
-        
+
         // Verify that the factory supports all defined thing types
         for (ThingTypeUID thingType : supportedTypes) {
-            assertTrue(factory.supportsThingType(thingType), 
-                "Factory should support thing type: " + thingType.getId());
+            assertTrue(factory.supportsThingType(thingType), "Factory should support thing type: " + thingType.getId());
         }
-        
+
         // Verify we have a reasonable number of supported types
         assertTrue(supportedTypes.size() > 30, "Should support more than 30 device types");
     }
@@ -93,10 +92,10 @@ class SonoffHandlerFactoryIntegrationTest {
     void testCreateHandlersForBridgeTypes() {
         // Test account bridge
         testBridgeHandlerCreation("account", "SonoffAccountHandler");
-        
+
         // Test RF bridge
         testBridgeHandlerCreation("28", "SonoffRfBridgeHandler");
-        
+
         // Test Zigbee bridges
         testBridgeHandlerCreation("66", "SonoffZigbeeBridgeHandler");
         testBridgeHandlerCreation("168", "SonoffZigbeeBridgeHandler");
@@ -106,12 +105,12 @@ class SonoffHandlerFactoryIntegrationTest {
     private void testBridgeHandlerCreation(String deviceId, String expectedHandlerClass) {
         ThingTypeUID thingType = new ThingTypeUID("sonoff", deviceId);
         when(mockBridge.getThingTypeUID()).thenReturn(thingType);
-        
+
         ThingHandler handler = factory.createHandler(mockBridge);
-        
+
         assertNotNull(handler, "Handler should be created for bridge type: " + deviceId);
         assertEquals(expectedHandlerClass, handler.getClass().getSimpleName(),
-            "Wrong handler type for bridge: " + deviceId);
+                "Wrong handler type for bridge: " + deviceId);
     }
 
     @Test
@@ -120,11 +119,11 @@ class SonoffHandlerFactoryIntegrationTest {
         // Verify that dependencies are properly injected
         verify(webSocketFactory, times(1)).getCommonWebSocketClient();
         verify(httpClientFactory, times(1)).getCommonHttpClient();
-        
+
         // Test that factory can be created multiple times
         SonoffHandlerFactory secondFactory = new SonoffHandlerFactory(webSocketFactory, httpClientFactory);
         assertNotNull(secondFactory);
-        
+
         // Verify dependencies are called again
         verify(webSocketFactory, times(2)).getCommonWebSocketClient();
         verify(httpClientFactory, times(2)).getCommonHttpClient();
@@ -137,12 +136,12 @@ class SonoffHandlerFactoryIntegrationTest {
         assertThrows(NullPointerException.class, () -> {
             new SonoffHandlerFactory(null, httpClientFactory);
         });
-        
+
         // Test with null HttpClientFactory
         assertThrows(NullPointerException.class, () -> {
             new SonoffHandlerFactory(webSocketFactory, null);
         });
-        
+
         // Test with both null
         assertThrows(NullPointerException.class, () -> {
             new SonoffHandlerFactory(null, null);
@@ -155,15 +154,15 @@ class SonoffHandlerFactoryIntegrationTest {
         // Setup factories to return null
         when(webSocketFactory.getCommonWebSocketClient()).thenReturn(null);
         when(httpClientFactory.getCommonHttpClient()).thenReturn(null);
-        
+
         // Factory creation should still work (null handling is up to handlers)
         SonoffHandlerFactory factoryWithNullClients = new SonoffHandlerFactory(webSocketFactory, httpClientFactory);
         assertNotNull(factoryWithNullClients);
-        
+
         // Test that it can still create non-bridge handlers
         ThingTypeUID thingType = new ThingTypeUID("sonoff", "1");
         when(mockThing.getThingTypeUID()).thenReturn(thingType);
-        
+
         ThingHandler handler = factoryWithNullClients.createHandler(mockThing);
         assertNotNull(handler);
     }
@@ -172,25 +171,26 @@ class SonoffHandlerFactoryIntegrationTest {
     @DisplayName("Should create correct handler types for device categories")
     void testHandlerCreationByCategory() {
         // Test single switch devices
-        String[] singleSwitchIds = {"1", "6", "14", "27", "81", "107", "160", "209", "256", "260"};
+        String[] singleSwitchIds = { "1", "6", "14", "27", "81", "107", "160", "209", "256", "260" };
         for (String id : singleSwitchIds) {
             testDeviceHandlerCreation(id, "SonoffSwitchSingleHandler");
         }
-        
+
         // Test multi switch devices
-        String[] multiSwitchIds = {"2", "3", "4", "7", "8", "9", "29", "30", "31", "77", "78", "82", "83", "84", "126", "161", "162", "210", "211", "212"};
+        String[] multiSwitchIds = { "2", "3", "4", "7", "8", "9", "29", "30", "31", "77", "78", "82", "83", "84", "126",
+                "161", "162", "210", "211", "212" };
         for (String id : multiSwitchIds) {
             testDeviceHandlerCreation(id, "SonoffSwitchMultiHandler");
         }
-        
+
         // Test sensor devices
-        String[] sensorIds = {"1770", "7014"};
+        String[] sensorIds = { "1770", "7014" };
         for (String id : sensorIds) {
             testDeviceHandlerCreation(id, "SonoffZigbeeDeviceTemperatureHumiditySensorHandler");
         }
-        
+
         // Test RF devices
-        String[] rfIds = {"rfremote1", "rfremote2", "rfremote3", "rfremote4", "rfsensor"};
+        String[] rfIds = { "rfremote1", "rfremote2", "rfremote3", "rfremote4", "rfsensor" };
         for (String id : rfIds) {
             testDeviceHandlerCreation(id, "SonoffRfDeviceHandler");
         }
@@ -199,12 +199,12 @@ class SonoffHandlerFactoryIntegrationTest {
     private void testDeviceHandlerCreation(String deviceId, String expectedHandlerClass) {
         ThingTypeUID thingType = new ThingTypeUID("sonoff", deviceId);
         when(mockThing.getThingTypeUID()).thenReturn(thingType);
-        
+
         ThingHandler handler = factory.createHandler(mockThing);
-        
+
         assertNotNull(handler, "Handler should be created for device type: " + deviceId);
         assertEquals(expectedHandlerClass, handler.getClass().getSimpleName(),
-            "Wrong handler type for device: " + deviceId);
+                "Wrong handler type for device: " + deviceId);
     }
 
     @Test
@@ -213,14 +213,14 @@ class SonoffHandlerFactoryIntegrationTest {
         // Test that device IDs are case sensitive
         ThingTypeUID upperCaseType = new ThingTypeUID("sonoff", "ACCOUNT");
         when(mockThing.getThingTypeUID()).thenReturn(upperCaseType);
-        
+
         ThingHandler handler = factory.createHandler(mockThing);
         assertNull(handler, "Should not create handler for uppercase device ID");
-        
+
         // Test mixed case
         ThingTypeUID mixedCaseType = new ThingTypeUID("sonoff", "Account");
         when(mockThing.getThingTypeUID()).thenReturn(mixedCaseType);
-        
+
         handler = factory.createHandler(mockThing);
         assertNull(handler, "Should not create handler for mixed case device ID");
     }
@@ -230,13 +230,13 @@ class SonoffHandlerFactoryIntegrationTest {
     void testSpecialCharacters() {
         // Test device IDs with valid characters but non-existent device types
         // Note: ThingTypeUID validates format, so we test valid formats that don't exist
-        String[] nonExistentIds = {"1a", "a1", "999", "unknown", "test-device"};
-        
+        String[] nonExistentIds = { "1a", "a1", "999", "unknown", "test-device" };
+
         for (String nonExistentId : nonExistentIds) {
             try {
                 ThingTypeUID thingType = new ThingTypeUID("sonoff", nonExistentId);
                 when(mockThing.getThingTypeUID()).thenReturn(thingType);
-                
+
                 ThingHandler handler = factory.createHandler(mockThing);
                 assertNull(handler, "Should not create handler for non-existent device ID: " + nonExistentId);
             } catch (IllegalArgumentException e) {
@@ -251,26 +251,26 @@ class SonoffHandlerFactoryIntegrationTest {
     @DisplayName("Should handle invalid device IDs through ThingTypeUID validation")
     void testInvalidDeviceIds() {
         // Test that ThingTypeUID validation prevents invalid IDs from reaching our factory
-        
+
         // Test empty string - should throw IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> {
             new ThingTypeUID("sonoff", "");
         }, "ThingTypeUID should reject empty device ID");
-        
-        // Test whitespace - should throw IllegalArgumentException  
+
+        // Test whitespace - should throw IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> {
             new ThingTypeUID("sonoff", " ");
         }, "ThingTypeUID should reject whitespace device ID");
-        
+
         // Test invalid characters - should throw IllegalArgumentException
         assertThrows(IllegalArgumentException.class, () -> {
             new ThingTypeUID("sonoff", "1.");
         }, "ThingTypeUID should reject device ID with invalid characters");
-        
+
         // Test that our factory handles valid but non-existent device IDs
         ThingTypeUID nonExistentType = new ThingTypeUID("sonoff", "999");
         when(mockThing.getThingTypeUID()).thenReturn(nonExistentType);
-        
+
         ThingHandler handler = factory.createHandler(mockThing);
         assertNull(handler, "Should not create handler for non-existent device ID");
     }
@@ -280,18 +280,18 @@ class SonoffHandlerFactoryIntegrationTest {
     void testConsistentBehavior() {
         ThingTypeUID thingType = new ThingTypeUID("sonoff", "1");
         when(mockThing.getThingTypeUID()).thenReturn(thingType);
-        
+
         // Create multiple handlers and verify they're all the same type
         for (int i = 0; i < 5; i++) {
             ThingHandler handler = factory.createHandler(mockThing);
             assertNotNull(handler);
             assertEquals("SonoffSwitchSingleHandler", handler.getClass().getSimpleName());
         }
-        
+
         // Test with unsupported type multiple times
         ThingTypeUID unsupportedType = new ThingTypeUID("sonoff", "999");
         when(mockThing.getThingTypeUID()).thenReturn(unsupportedType);
-        
+
         for (int i = 0; i < 5; i++) {
             ThingHandler handler = factory.createHandler(mockThing);
             assertNull(handler);
