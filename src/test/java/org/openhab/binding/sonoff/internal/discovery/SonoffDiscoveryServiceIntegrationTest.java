@@ -133,8 +133,8 @@ class SonoffDiscoveryServiceIntegrationTest {
             }
 
             @Override
-            public void removeOlderResults(org.openhab.core.config.discovery.DiscoveryService source, java.time.Instant timestamp,
-                    java.util.Collection<ThingTypeUID> thingTypeUIDs, ThingUID bridgeUID) {
+            public void removeOlderResults(org.openhab.core.config.discovery.DiscoveryService source,
+                    java.time.Instant timestamp, java.util.Collection<ThingTypeUID> thingTypeUIDs, ThingUID bridgeUID) {
                 // Not used in these tests
             }
         });
