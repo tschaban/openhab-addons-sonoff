@@ -41,6 +41,7 @@ import org.openhab.binding.sonoff.internal.handler.SonoffRfBridgeHandler;
 import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeBridgeHandler;
 import org.openhab.core.OpenHAB;
 import org.openhab.core.config.discovery.DiscoveryListener;
+import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.ThingUID;
@@ -77,7 +78,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
     private SonoffApiConnection mockApiConnection;
 
     @Mock
-    private Thing mockAccountThing;
+    private Bridge mockAccountThing;
 
     @Mock
     private Thing mockChildThing;
@@ -204,7 +205,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
 
             // Execute
             assertDoesNotThrow(() -> {
-                List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
+                discoveryService.createCache(new ArrayList<>());
                 // Should handle gracefully, may or may not include the device
             }, "Should handle devices with missing required fields gracefully");
         }
@@ -370,7 +371,6 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         // Setup - use a path that cannot be created (e.g., under a file)
         Path invalidPath = tempDir.resolve("file.txt");
         Files.write(invalidPath, "content".getBytes());
-        String invalidCacheDir = invalidPath.resolve("sonoff").toString();
 
         when(mockApiConnection.createCache()).thenReturn(createSimpleDeviceResponse());
 
@@ -379,7 +379,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
 
             // Execute
             assertDoesNotThrow(() -> {
-                List<JsonObject> devices = discoveryService.createCache(new ArrayList<>());
+                discoveryService.createCache(new ArrayList<>());
                 // Should handle gracefully even if cache directory cannot be created
             }, "Should handle cache directory creation failure gracefully");
         }
@@ -475,7 +475,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
 
     private void setupRfBridgeWithNullSubDevices() {
         List<Thing> things = new ArrayList<>();
-        Thing rfBridge = createMockRfBridge();
+        Bridge rfBridge = createMockRfBridge();
         things.add(rfBridge);
 
         when(mockRfBridgeHandler.getSubDevices()).thenReturn(null);
@@ -484,7 +484,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
 
     private void setupRfBridgeWithEmptySubDevices() {
         List<Thing> things = new ArrayList<>();
-        Thing rfBridge = createMockRfBridge();
+        Bridge rfBridge = createMockRfBridge();
         things.add(rfBridge);
 
         when(mockRfBridgeHandler.getSubDevices()).thenReturn(new JsonArray());
@@ -493,7 +493,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
 
     private void setupZigbeeBridgeWithNullSubDevices() {
         List<Thing> things = new ArrayList<>();
-        Thing zigbeeBridge = createMockZigbeeBridge();
+        Bridge zigbeeBridge = createMockZigbeeBridge();
         things.add(zigbeeBridge);
 
         when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(null);
@@ -502,7 +502,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
 
     private void setupZigbeeBridgeWithMalformedSubDevices() {
         List<Thing> things = new ArrayList<>();
-        Thing zigbeeBridge = createMockZigbeeBridge();
+        Bridge zigbeeBridge = createMockZigbeeBridge();
         things.add(zigbeeBridge);
 
         // Create malformed sub-device (missing required fields)
@@ -516,8 +516,8 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         when(mockAccountThing.getThings()).thenReturn(things);
     }
 
-    private Thing createMockRfBridge() {
-        Thing rfBridge = mock(Thing.class);
+    private Bridge createMockRfBridge() {
+        Bridge rfBridge = mock(Bridge.class);
         ThingTypeUID rfBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "28");
         ThingUID rfBridgeUID = new ThingUID(rfBridgeTypeUID, accountThingUID, "rf-bridge");
 
@@ -529,8 +529,8 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         return rfBridge;
     }
 
-    private Thing createMockZigbeeBridge() {
-        Thing zigbeeBridge = mock(Thing.class);
+    private Bridge createMockZigbeeBridge() {
+        Bridge zigbeeBridge = mock(Bridge.class);
         ThingTypeUID zigbeeBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "66");
         ThingUID zigbeeBridgeUID = new ThingUID(zigbeeBridgeTypeUID, accountThingUID, "zigbee-bridge");
 

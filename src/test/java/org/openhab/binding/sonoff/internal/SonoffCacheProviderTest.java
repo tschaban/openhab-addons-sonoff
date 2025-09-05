@@ -60,7 +60,6 @@ class SonoffCacheProviderTest {
     private Gson mockGson;
 
     private SonoffCacheProvider cacheProvider;
-    private SonoffCacheProvider cacheProviderWithoutGson;
     private String testCacheDir;
 
     @BeforeEach
@@ -72,9 +71,8 @@ class SonoffCacheProviderTest {
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
 
-            // Create cache providers
+            // Create cache provider
             cacheProvider = new SonoffCacheProvider(mockGson);
-            cacheProviderWithoutGson = new SonoffCacheProvider();
         }
     }
 

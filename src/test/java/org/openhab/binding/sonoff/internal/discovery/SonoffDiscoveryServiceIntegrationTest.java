@@ -44,6 +44,7 @@ import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeBridgeHandler;
 import org.openhab.core.OpenHAB;
 import org.openhab.core.config.discovery.DiscoveryListener;
 import org.openhab.core.config.discovery.DiscoveryResult;
+import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.ThingUID;
@@ -79,7 +80,7 @@ class SonoffDiscoveryServiceIntegrationTest {
     private SonoffApiConnection mockApiConnection;
 
     @Mock
-    private Thing mockAccountThing;
+    private Bridge mockAccountThing;
 
     @Mock
     private SonoffRfBridgeHandler mockRfBridgeHandler;
@@ -132,7 +133,7 @@ class SonoffDiscoveryServiceIntegrationTest {
             }
 
             @Override
-            public void removeOlderResults(org.openhab.core.config.discovery.DiscoveryService source, long timestamp,
+            public void removeOlderResults(org.openhab.core.config.discovery.DiscoveryService source, java.time.Instant timestamp,
                     java.util.Collection<ThingTypeUID> thingTypeUIDs, ThingUID bridgeUID) {
                 // Not used in these tests
             }
@@ -191,7 +192,7 @@ class SonoffDiscoveryServiceIntegrationTest {
 
             // Verify RF bridge device
             boolean foundRfBridge = discoveredResults.stream()
-                    .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("28"));
+                    .anyMatch(result -> result.getThingTypeUID().getId().equals("28"));
             assertTrue(foundRfBridge, "Should discover RF bridge");
 
             // Verify RF sub-devices
@@ -219,7 +220,7 @@ class SonoffDiscoveryServiceIntegrationTest {
 
             // Verify Zigbee bridge device
             boolean foundZigbeeBridge = discoveredResults.stream()
-                    .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("66"));
+                    .anyMatch(result -> result.getThingTypeUID().getId().equals("66"));
             assertTrue(foundZigbeeBridge, "Should discover Zigbee bridge");
 
             // Verify Zigbee sub-devices
@@ -247,12 +248,12 @@ class SonoffDiscoveryServiceIntegrationTest {
 
             // Verify RF bridge and sub-devices
             boolean foundRfBridge = discoveredResults.stream()
-                    .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("28"));
+                    .anyMatch(result -> result.getThingTypeUID().getId().equals("28"));
             assertTrue(foundRfBridge, "Should discover RF bridge");
 
             // Verify Zigbee bridge and sub-devices
             boolean foundZigbeeBridge = discoveredResults.stream()
-                    .anyMatch(result -> result.getThingUID().getThingTypeUID().getId().equals("66"));
+                    .anyMatch(result -> result.getThingTypeUID().getId().equals("66"));
             assertTrue(foundZigbeeBridge, "Should discover Zigbee bridge");
 
             // Verify total sub-devices
@@ -373,11 +374,11 @@ class SonoffDiscoveryServiceIntegrationTest {
         List<Thing> things = new ArrayList<>();
 
         // Add RF bridge
-        Thing rfBridge = createMockRfBridge();
+        Bridge rfBridge = createMockRfBridge();
         things.add(rfBridge);
 
         // Add Zigbee bridge
-        Thing zigbeeBridge = createMockZigbeeBridge();
+        Bridge zigbeeBridge = createMockZigbeeBridge();
         things.add(zigbeeBridge);
 
         when(mockAccountThing.getThings()).thenReturn(things);
@@ -385,7 +386,7 @@ class SonoffDiscoveryServiceIntegrationTest {
 
     private void setupRfBridgeWithMultipleDevices() {
         List<Thing> things = new ArrayList<>();
-        Thing rfBridge = createMockRfBridge();
+        Bridge rfBridge = createMockRfBridge();
         things.add(rfBridge);
 
         // Setup multiple RF sub-devices
@@ -407,7 +408,7 @@ class SonoffDiscoveryServiceIntegrationTest {
 
     private void setupZigbeeBridgeWithMultipleDevices() {
         List<Thing> things = new ArrayList<>();
-        Thing zigbeeBridge = createMockZigbeeBridge();
+        Bridge zigbeeBridge = createMockZigbeeBridge();
         things.add(zigbeeBridge);
 
         // Setup multiple Zigbee sub-devices
@@ -431,8 +432,8 @@ class SonoffDiscoveryServiceIntegrationTest {
         List<Thing> things = new ArrayList<>();
 
         // Add both bridge types
-        Thing rfBridge = createMockRfBridge();
-        Thing zigbeeBridge = createMockZigbeeBridge();
+        Bridge rfBridge = createMockRfBridge();
+        Bridge zigbeeBridge = createMockZigbeeBridge();
         things.add(rfBridge);
         things.add(zigbeeBridge);
 
@@ -466,8 +467,8 @@ class SonoffDiscoveryServiceIntegrationTest {
         when(mockAccountThing.getThings()).thenReturn(things);
     }
 
-    private Thing createMockRfBridge() {
-        Thing rfBridge = mock(Thing.class);
+    private Bridge createMockRfBridge() {
+        Bridge rfBridge = mock(Bridge.class);
         ThingTypeUID rfBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "28");
         ThingUID rfBridgeUID = new ThingUID(rfBridgeTypeUID, accountThingUID, "rf-bridge");
 
@@ -479,8 +480,8 @@ class SonoffDiscoveryServiceIntegrationTest {
         return rfBridge;
     }
 
-    private Thing createMockZigbeeBridge() {
-        Thing zigbeeBridge = mock(Thing.class);
+    private Bridge createMockZigbeeBridge() {
+        Bridge zigbeeBridge = mock(Bridge.class);
         ThingTypeUID zigbeeBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "66");
         ThingUID zigbeeBridgeUID = new ThingUID(zigbeeBridgeTypeUID, accountThingUID, "zigbee-bridge");
 
