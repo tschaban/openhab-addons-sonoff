@@ -132,10 +132,10 @@ class SonoffDiscoveryServiceIntegrationTest {
             discoveredResults.add(result);
             return null;
         }).when(mockDiscoveryListener).thingDiscovered(any(), any());
-        
+
         // Register the discovery listener with the discovery service
         discoveryService.addDiscoveryListener(mockDiscoveryListener);
-        
+
         // Activate the discovery service
         discoveryService.activate(null);
     }
@@ -147,7 +147,7 @@ class SonoffDiscoveryServiceIntegrationTest {
             discoveryService.removeDiscoveryListener(mockDiscoveryListener);
             discoveryService.deactivate();
         }
-        
+
         // Clean up test files
         if (Files.exists(Paths.get(testCacheDir))) {
             Files.walk(Paths.get(testCacheDir)).sorted((a, b) -> b.compareTo(a)).map(Path::toFile)
@@ -513,10 +513,10 @@ class SonoffDiscoveryServiceIntegrationTest {
         try {
             // Clear previous results
             discoveredResults.clear();
-            
+
             // Call the public startScan method which properly triggers discovery
             discoveryService.startScan();
-            
+
             // Wait a reasonable time for discovery to complete
             Thread.sleep(2000);
         } catch (Exception e) {
