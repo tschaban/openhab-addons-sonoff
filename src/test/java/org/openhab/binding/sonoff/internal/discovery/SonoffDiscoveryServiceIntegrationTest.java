@@ -117,7 +117,7 @@ class SonoffDiscoveryServiceIntegrationTest {
         // Setup mock connection manager (lenient to avoid unnecessary stubbing warnings)
         lenient().when(mockConnectionManager.getApi()).thenReturn(mockApiConnection);
         lenient().when(mockConnectionManager.getMode()).thenReturn("cloud");
-        
+
         // Setup addState method (lenient to avoid unnecessary stubbing warnings)
         lenient().doNothing().when(mockAccountHandler).addState(anyString());
 
@@ -139,8 +139,8 @@ class SonoffDiscoveryServiceIntegrationTest {
             }
 
             @Override
-            public void removeOlderResults(org.openhab.core.config.discovery.DiscoveryService source,
-                    Instant timestamp, java.util.Collection<ThingTypeUID> thingTypeUIDs, ThingUID bridgeUID) {
+            public void removeOlderResults(org.openhab.core.config.discovery.DiscoveryService source, Instant timestamp,
+                    java.util.Collection<ThingTypeUID> thingTypeUIDs, ThingUID bridgeUID) {
                 // Not used in these tests
             }
         });

@@ -118,7 +118,7 @@ class SonoffDiscoveryServiceTest {
         // Setup mock connection manager (lenient to avoid unnecessary stubbing warnings)
         lenient().when(mockConnectionManager.getApi()).thenReturn(mockApiConnection);
         lenient().when(mockConnectionManager.getMode()).thenReturn("cloud");
-        
+
         // Setup addState method (lenient to avoid unnecessary stubbing warnings)
         lenient().doNothing().when(mockAccountHandler).addState(anyString());
 

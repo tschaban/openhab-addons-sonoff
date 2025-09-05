@@ -156,30 +156,32 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                                     continue;
                                 }
                                 String deviceid = deviceIdElement.getAsString();
-                            logger.debug("Processing device {}", deviceid);
-                            if (!cacheProvider.checkFile(deviceid)) {
-                                cacheProvider.newFile(deviceid, gson.toJson(device));
-                                account.addState(deviceid);
-                                logger.debug("Cache file and state created for device {} as it was missing", deviceid);
+                                logger.debug("Processing device {}", deviceid);
+                                if (!cacheProvider.checkFile(deviceid)) {
+                                    cacheProvider.newFile(deviceid, gson.toJson(device));
+                                    account.addState(deviceid);
+                                    logger.debug("Cache file and state created for device {} as it was missing",
+                                            deviceid);
 
-                                for (int m = 0; m < things.size(); m++) {
-                                    Thing thing = things.get(m);
-                                    if (thing.getConfiguration() != null) {
-                                        Object configValue = thing.getConfiguration().get("deviceid");
-                                        if (configValue != null) {
-                                            String config = configValue.toString();
-                                            if (config.equals(deviceid)) {
-                                                logger.info("Re-Initializing {} as a thing was already present", deviceid);
-                                                if (thing.getHandler() != null) {
-                                                    thing.getHandler().thingUpdated(thing);
+                                    for (int m = 0; m < things.size(); m++) {
+                                        Thing thing = things.get(m);
+                                        if (thing.getConfiguration() != null) {
+                                            Object configValue = thing.getConfiguration().get("deviceid");
+                                            if (configValue != null) {
+                                                String config = configValue.toString();
+                                                if (config.equals(deviceid)) {
+                                                    logger.info("Re-Initializing {} as a thing was already present",
+                                                            deviceid);
+                                                    if (thing.getHandler() != null) {
+                                                        thing.getHandler().thingUpdated(thing);
+                                                    }
                                                 }
                                             }
                                         }
                                     }
-                                }
 
-                            }
-                            devices.add(device);
+                                }
+                                devices.add(device);
                             }
                         } catch (Exception e) {
                             logger.debug("Error processing device item: {}", e.getMessage());
@@ -212,7 +214,7 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                     if (device == null) {
                         continue;
                     }
-                    
+
                     // Safe deviceid extraction
                     JsonElement deviceIdElement = device.get("deviceid");
                     if (deviceIdElement == null || deviceIdElement.isJsonNull()) {
@@ -220,7 +222,7 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                         continue;
                     }
                     String deviceid = deviceIdElement.getAsString();
-                    
+
                     // Safe uiid extraction
                     JsonElement extraElement = device.get("extra");
                     if (extraElement == null || !extraElement.isJsonObject()) {
@@ -234,11 +236,12 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                         continue;
                     }
                     Integer uiid = uiidElement.getAsInt();
-                    
+
                     // Safe params extraction
                     JsonElement paramsElement = device.get("params");
-                    JsonObject params = (paramsElement != null && paramsElement.isJsonObject()) 
-                        ? paramsElement.getAsJsonObject() : new JsonObject();
+                    JsonObject params = (paramsElement != null && paramsElement.isJsonObject())
+                            ? paramsElement.getAsJsonObject()
+                            : new JsonObject();
 
                     logger.debug("Discovered device {}", deviceid);
                     ThingTypeUID thingTypeUid = SonoffBindingConstants.createMap().get(uiid);
@@ -246,47 +249,49 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                         ThingUID deviceThing = new ThingUID(thingTypeUid, account.getThing().getUID(), deviceid);
                         Map<String, Object> properties = new HashMap<>();
                         properties.put("deviceid", deviceid);
-                        
+
                         // Safe property extraction with defaults
                         JsonElement nameElement = device.get("name");
-                        String name = (nameElement != null && !nameElement.isJsonNull()) 
-                            ? nameElement.getAsString() : "Unknown Device";
+                        String name = (nameElement != null && !nameElement.isJsonNull()) ? nameElement.getAsString()
+                                : "Unknown Device";
                         properties.put("Name", name);
-                        
+
                         JsonElement brandElement = device.get("brandName");
-                        String brand = (brandElement != null && !brandElement.isJsonNull()) 
-                            ? brandElement.getAsString() : "Unknown";
+                        String brand = (brandElement != null && !brandElement.isJsonNull()) ? brandElement.getAsString()
+                                : "Unknown";
                         properties.put("Brand", brand);
-                        
+
                         JsonElement modelElement = device.get("productModel");
-                        String model = (modelElement != null && !modelElement.isJsonNull()) 
-                            ? modelElement.getAsString() : "Unknown";
+                        String model = (modelElement != null && !modelElement.isJsonNull()) ? modelElement.getAsString()
+                                : "Unknown";
                         properties.put("Model", model);
-                        
+
                         JsonElement fwVersionElement = params.get("fwVersion");
                         if (fwVersionElement != null && !fwVersionElement.isJsonNull()) {
                             properties.put("FW Version", fwVersionElement.getAsString());
                         }
-                        
+
                         properties.put("Device ID", deviceid);
-                        
+
                         JsonElement deviceKeyElement = device.get("devicekey");
-                        String deviceKey = (deviceKeyElement != null && !deviceKeyElement.isJsonNull()) 
-                            ? deviceKeyElement.getAsString() : "";
+                        String deviceKey = (deviceKeyElement != null && !deviceKeyElement.isJsonNull())
+                                ? deviceKeyElement.getAsString()
+                                : "";
                         properties.put("Device Key", deviceKey);
-                        
+
                         properties.put("UIID", uiid);
-                        
+
                         JsonElement apiKeyElement = device.get("apikey");
-                        String apiKey = (apiKeyElement != null && !apiKeyElement.isJsonNull()) 
-                            ? apiKeyElement.getAsString() : "";
+                        String apiKey = (apiKeyElement != null && !apiKeyElement.isJsonNull())
+                                ? apiKeyElement.getAsString()
+                                : "";
                         properties.put("API Key", apiKey);
-                        
+
                         JsonElement ssidElement = params.get("ssid");
                         if (ssidElement != null && !ssidElement.isJsonNull()) {
                             properties.put("Connected To SSID", ssidElement.getAsString());
                         }
-                        
+
                         String label = name;
                         thingDiscovered(
                                 DiscoveryResultBuilder.create(deviceThing).withLabel(label).withProperties(properties)
@@ -314,8 +319,8 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                     // RF Devices
                     case "28":
                         try {
-                            SonoffRfBridgeHandler rfBridge = (SonoffRfBridgeHandler) account.getThing().getThings().get(i)
-                                    .getHandler();
+                            SonoffRfBridgeHandler rfBridge = (SonoffRfBridgeHandler) account.getThing().getThings()
+                                    .get(i).getHandler();
                             if (rfBridge != null) {
                                 JsonArray subDevices = rfBridge.getSubDevices();
                                 if (subDevices != null) {
@@ -327,27 +332,31 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                                                 continue;
                                             }
                                             JsonObject subDevice = subDeviceElement.getAsJsonObject();
-                                            
+
                                             JsonElement remoteTypeElement = subDevice.get("remote_type");
                                             if (remoteTypeElement == null || remoteTypeElement.isJsonNull()) {
                                                 continue;
                                             }
                                             Integer type = Integer.parseInt(remoteTypeElement.getAsString());
-                                            
-                                            ThingTypeUID thingTypeUid = SonoffBindingConstants.createSensorMap().get(type);
+
+                                            ThingTypeUID thingTypeUid = SonoffBindingConstants.createSensorMap()
+                                                    .get(type);
                                             if (thingTypeUid != null) {
-                                                ThingUID rfThing = new ThingUID(thingTypeUid, rfBridge.getThing().getUID(), j + "");
+                                                ThingUID rfThing = new ThingUID(thingTypeUid,
+                                                        rfBridge.getThing().getUID(), j + "");
                                                 Map<String, Object> properties = new HashMap<>();
                                                 properties.put("deviceid", j + "");
-                                                
+
                                                 JsonElement nameElement = subDevice.get("name");
-                                                String name = (nameElement != null && !nameElement.isJsonNull()) 
-                                                    ? nameElement.getAsString() : "RF Device " + j;
+                                                String name = (nameElement != null && !nameElement.isJsonNull())
+                                                        ? nameElement.getAsString()
+                                                        : "RF Device " + j;
                                                 properties.put("Name", name);
-                                                
+
                                                 String rfLabel = name;
-                                                thingDiscovered(DiscoveryResultBuilder.create(rfThing).withLabel(rfLabel)
-                                                        .withProperties(properties).withRepresentationProperty("deviceid")
+                                                thingDiscovered(DiscoveryResultBuilder.create(rfThing)
+                                                        .withLabel(rfLabel).withProperties(properties)
+                                                        .withRepresentationProperty("deviceid")
                                                         .withBridge(rfBridge.getThing().getUID()).build());
                                             }
                                         } catch (Exception e) {
@@ -378,19 +387,19 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                                                 continue;
                                             }
                                             JsonObject subDevice = subDeviceElement.getAsJsonObject();
-                                            
+
                                             JsonElement deviceIdElement = subDevice.get("deviceid");
                                             if (deviceIdElement == null || deviceIdElement.isJsonNull()) {
                                                 continue;
                                             }
                                             String subDeviceid = deviceIdElement.getAsString();
-                                            
+
                                             JsonElement uiidElement = subDevice.get("uiid");
                                             if (uiidElement == null || uiidElement.isJsonNull()) {
                                                 continue;
                                             }
                                             Integer subDeviceuiid = uiidElement.getAsInt();
-                                            
+
                                             // Lookup our device in the main list
                                             for (int k = 0; k < devices.size(); k++) {
                                                 try {
@@ -399,69 +408,88 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                                                         continue;
                                                     }
                                                     JsonElement mainDeviceIdElement = mainDevice.get("deviceid");
-                                                    if (mainDeviceIdElement == null || mainDeviceIdElement.isJsonNull()) {
+                                                    if (mainDeviceIdElement == null
+                                                            || mainDeviceIdElement.isJsonNull()) {
                                                         continue;
                                                     }
                                                     if (mainDeviceIdElement.getAsString().equals(subDeviceid)) {
                                                         subDevice = mainDevice;
-                                                        
+
                                                         JsonElement paramsElement = subDevice.get("params");
-                                                        JsonObject subParams = (paramsElement != null && paramsElement.isJsonObject()) 
-                                                            ? paramsElement.getAsJsonObject() : new JsonObject();
-                                                        
-                                                        ThingTypeUID thingTypeUid = SonoffBindingConstants.createZigbeeMap()
-                                                                .get(subDeviceuiid);
+                                                        JsonObject subParams = (paramsElement != null
+                                                                && paramsElement.isJsonObject())
+                                                                        ? paramsElement.getAsJsonObject()
+                                                                        : new JsonObject();
+
+                                                        ThingTypeUID thingTypeUid = SonoffBindingConstants
+                                                                .createZigbeeMap().get(subDeviceuiid);
                                                         if (thingTypeUid != null) {
                                                             ThingUID zigbeeThing = new ThingUID(thingTypeUid,
                                                                     zigbeeBridge.getThing().getUID(), subDeviceid);
                                                             Map<String, Object> properties = new HashMap<>();
                                                             properties.put("deviceid", subDeviceid);
-                                                            
+
                                                             JsonElement nameElement = subDevice.get("name");
-                                                            String name = (nameElement != null && !nameElement.isJsonNull()) 
-                                                                ? nameElement.getAsString() : "Zigbee Device";
+                                                            String name = (nameElement != null
+                                                                    && !nameElement.isJsonNull())
+                                                                            ? nameElement.getAsString()
+                                                                            : "Zigbee Device";
                                                             properties.put("Name", name);
-                                                            
+
                                                             JsonElement brandElement = subDevice.get("brandName");
-                                                            String brand = (brandElement != null && !brandElement.isJsonNull()) 
-                                                                ? brandElement.getAsString() : "Unknown";
+                                                            String brand = (brandElement != null
+                                                                    && !brandElement.isJsonNull())
+                                                                            ? brandElement.getAsString()
+                                                                            : "Unknown";
                                                             properties.put("Brand", brand);
-                                                            
+
                                                             JsonElement modelElement = subDevice.get("productModel");
-                                                            String model = (modelElement != null && !modelElement.isJsonNull()) 
-                                                                ? modelElement.getAsString() : "Unknown";
+                                                            String model = (modelElement != null
+                                                                    && !modelElement.isJsonNull())
+                                                                            ? modelElement.getAsString()
+                                                                            : "Unknown";
                                                             properties.put("Model", model);
-                                                            
+
                                                             JsonElement fwVersionElement = subParams.get("fwVersion");
-                                                            if (fwVersionElement != null && !fwVersionElement.isJsonNull()) {
-                                                                properties.put("FW Version", fwVersionElement.getAsString());
+                                                            if (fwVersionElement != null
+                                                                    && !fwVersionElement.isJsonNull()) {
+                                                                properties.put("FW Version",
+                                                                        fwVersionElement.getAsString());
                                                             }
-                                                            
+
                                                             JsonElement deviceKeyElement = subDevice.get("devicekey");
-                                                            String deviceKey = (deviceKeyElement != null && !deviceKeyElement.isJsonNull()) 
-                                                                ? deviceKeyElement.getAsString() : "";
+                                                            String deviceKey = (deviceKeyElement != null
+                                                                    && !deviceKeyElement.isJsonNull())
+                                                                            ? deviceKeyElement.getAsString()
+                                                                            : "";
                                                             properties.put("Device Key", deviceKey);
-                                                            
+
                                                             properties.put("UIID", subDeviceuiid);
-                                                            
+
                                                             JsonElement apiKeyElement = subDevice.get("apikey");
-                                                            String apiKey = (apiKeyElement != null && !apiKeyElement.isJsonNull()) 
-                                                                ? apiKeyElement.getAsString() : "";
+                                                            String apiKey = (apiKeyElement != null
+                                                                    && !apiKeyElement.isJsonNull())
+                                                                            ? apiKeyElement.getAsString()
+                                                                            : "";
                                                             properties.put("API Key", apiKey);
-                                                            
+
                                                             String label = name;
-                                                            thingDiscovered(DiscoveryResultBuilder.create(zigbeeThing).withLabel(label)
-                                                                    .withProperties(properties).withRepresentationProperty("deviceid")
-                                                                    .withBridge(zigbeeBridge.getThing().getUID()).build());
+                                                            thingDiscovered(DiscoveryResultBuilder.create(zigbeeThing)
+                                                                    .withLabel(label).withProperties(properties)
+                                                                    .withRepresentationProperty("deviceid")
+                                                                    .withBridge(zigbeeBridge.getThing().getUID())
+                                                                    .build());
                                                         }
                                                         break;
                                                     }
                                                 } catch (Exception e) {
-                                                    logger.debug("Error processing main device {}: {}", k, e.getMessage());
+                                                    logger.debug("Error processing main device {}: {}", k,
+                                                            e.getMessage());
                                                 }
                                             }
                                         } catch (Exception e) {
-                                            logger.debug("Error processing Zigbee sub-device {}: {}", j, e.getMessage());
+                                            logger.debug("Error processing Zigbee sub-device {}: {}", j,
+                                                    e.getMessage());
                                         }
                                     }
                                 }
