@@ -391,12 +391,12 @@ class SonoffDiscoveryServiceIntegrationTest {
 
         JsonObject rfDevice1 = new JsonObject();
         rfDevice1.addProperty("name", "RF Remote 1");
-        rfDevice1.addProperty("remote_type", "4"); // Use valid remote_type 4
+        rfDevice1.addProperty("remote_type", "1"); // Use remote_type 1 (maps to THING_TYPE_RF1)
         rfSubDevices.add(rfDevice1);
 
         JsonObject rfDevice2 = new JsonObject();
         rfDevice2.addProperty("name", "RF Sensor 1");
-        rfDevice2.addProperty("remote_type", "6"); // Use valid remote_type 6
+        rfDevice2.addProperty("remote_type", "2"); // Use remote_type 2 (maps to THING_TYPE_RF2)
         rfSubDevices.add(rfDevice2);
 
         lenient().when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);
@@ -438,12 +438,12 @@ class SonoffDiscoveryServiceIntegrationTest {
         JsonArray rfSubDevices = new JsonArray();
         JsonObject rfDevice1 = new JsonObject();
         rfDevice1.addProperty("name", "RF Remote");
-        rfDevice1.addProperty("remote_type", "4"); // Use valid remote_type 4
+        rfDevice1.addProperty("remote_type", "1"); // Use remote_type 1 (maps to THING_TYPE_RF1)
         rfSubDevices.add(rfDevice1);
 
         JsonObject rfDevice2 = new JsonObject();
         rfDevice2.addProperty("name", "RF Sensor");
-        rfDevice2.addProperty("remote_type", "6"); // Use valid remote_type 6
+        rfDevice2.addProperty("remote_type", "2"); // Use remote_type 2 (maps to THING_TYPE_RF2)
         rfSubDevices.add(rfDevice2);
 
         lenient().when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);

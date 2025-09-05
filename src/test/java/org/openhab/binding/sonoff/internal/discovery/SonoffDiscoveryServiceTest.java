@@ -497,7 +497,7 @@ class SonoffDiscoveryServiceTest {
         JsonArray rfSubDevices = new JsonArray();
         JsonObject rfDevice = new JsonObject();
         rfDevice.addProperty("name", "RF Sensor 1");
-        rfDevice.addProperty("remote_type", "4"); // Use type 4 which maps to THING_TYPE_RF1
+        rfDevice.addProperty("remote_type", "1"); // Use type 1 which maps to THING_TYPE_RF1
         rfSubDevices.add(rfDevice);
 
         lenient().when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);
