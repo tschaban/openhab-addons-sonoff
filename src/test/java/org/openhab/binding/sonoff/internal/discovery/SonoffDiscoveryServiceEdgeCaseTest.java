@@ -314,11 +314,11 @@ class SonoffDiscoveryServiceEdgeCaseTest {
 
         Thing rfBridge = mock(Thing.class);
         ThingTypeUID rfBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "28");
-        when(rfBridge.getThingTypeUID()).thenReturn(rfBridgeTypeUID);
-        when(rfBridge.getHandler()).thenReturn(null); // Null handler
+        lenient().when(rfBridge.getThingTypeUID()).thenReturn(rfBridgeTypeUID);
+        lenient().when(rfBridge.getHandler()).thenReturn(null); // Null handler
         things.add(rfBridge);
 
-        when(mockAccountThing.getThings()).thenReturn(things);
+        lenient().when(mockAccountThing.getThings()).thenReturn(things);
 
         // Execute
         assertDoesNotThrow(() -> {
@@ -484,7 +484,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         things.add(rfBridge);
 
         when(mockRfBridgeHandler.getSubDevices()).thenReturn(null);
-        when(mockAccountThing.getThings()).thenReturn(things);
+        lenient().when(mockAccountThing.getThings()).thenReturn(things);
     }
 
     private void setupRfBridgeWithEmptySubDevices() {
@@ -493,7 +493,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         things.add(rfBridge);
 
         when(mockRfBridgeHandler.getSubDevices()).thenReturn(new JsonArray());
-        when(mockAccountThing.getThings()).thenReturn(things);
+        lenient().when(mockAccountThing.getThings()).thenReturn(things);
     }
 
     private void setupZigbeeBridgeWithNullSubDevices() {
@@ -502,7 +502,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         things.add(zigbeeBridge);
 
         when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(null);
-        when(mockAccountThing.getThings()).thenReturn(things);
+        lenient().when(mockAccountThing.getThings()).thenReturn(things);
     }
 
     private void setupZigbeeBridgeWithMalformedSubDevices() {
@@ -518,7 +518,7 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         malformedSubDevices.add(malformedDevice);
 
         when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(malformedSubDevices);
-        when(mockAccountThing.getThings()).thenReturn(things);
+        lenient().when(mockAccountThing.getThings()).thenReturn(things);
     }
 
     private Bridge createMockRfBridge() {
@@ -526,10 +526,10 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         ThingTypeUID rfBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "28");
         ThingUID rfBridgeUID = new ThingUID(rfBridgeTypeUID, accountThingUID, "rf-bridge");
 
-        when(rfBridge.getThingTypeUID()).thenReturn(rfBridgeTypeUID);
-        when(rfBridge.getUID()).thenReturn(rfBridgeUID);
-        when(rfBridge.getHandler()).thenReturn(mockRfBridgeHandler);
-        when(mockRfBridgeHandler.getThing()).thenReturn(rfBridge);
+        lenient().when(rfBridge.getThingTypeUID()).thenReturn(rfBridgeTypeUID);
+        lenient().when(rfBridge.getUID()).thenReturn(rfBridgeUID);
+        lenient().when(rfBridge.getHandler()).thenReturn(mockRfBridgeHandler);
+        lenient().when(mockRfBridgeHandler.getThing()).thenReturn(rfBridge);
 
         return rfBridge;
     }
@@ -539,10 +539,10 @@ class SonoffDiscoveryServiceEdgeCaseTest {
         ThingTypeUID zigbeeBridgeTypeUID = new ThingTypeUID(SonoffBindingConstants.BINDING_ID, "66");
         ThingUID zigbeeBridgeUID = new ThingUID(zigbeeBridgeTypeUID, accountThingUID, "zigbee-bridge");
 
-        when(zigbeeBridge.getThingTypeUID()).thenReturn(zigbeeBridgeTypeUID);
-        when(zigbeeBridge.getUID()).thenReturn(zigbeeBridgeUID);
-        when(zigbeeBridge.getHandler()).thenReturn(mockZigbeeBridgeHandler);
-        when(mockZigbeeBridgeHandler.getThing()).thenReturn(zigbeeBridge);
+        lenient().when(zigbeeBridge.getThingTypeUID()).thenReturn(zigbeeBridgeTypeUID);
+        lenient().when(zigbeeBridge.getUID()).thenReturn(zigbeeBridgeUID);
+        lenient().when(zigbeeBridge.getHandler()).thenReturn(mockZigbeeBridgeHandler);
+        lenient().when(mockZigbeeBridgeHandler.getThing()).thenReturn(zigbeeBridge);
 
         return zigbeeBridge;
     }

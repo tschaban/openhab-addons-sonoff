@@ -89,8 +89,7 @@ class SonoffDiscoveryServiceTest {
     private ScheduledExecutorService mockScheduler;
 
     @Mock
-    @SuppressWarnings("rawtypes")
-    private ScheduledFuture mockScheduledFuture;
+    private ScheduledFuture<?> mockScheduledFuture;
 
     @Mock
     private DiscoveryListener mockDiscoveryListener;
