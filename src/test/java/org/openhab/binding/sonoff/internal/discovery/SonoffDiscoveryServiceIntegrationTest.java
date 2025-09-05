@@ -127,7 +127,7 @@ class SonoffDiscoveryServiceIntegrationTest {
         discoveryService.setThingHandler(mockAccountHandler);
 
         // Add discovery listener to capture results using mock
-        doAnswer(invocation -> {
+        lenient().doAnswer(invocation -> {
             DiscoveryResult result = invocation.getArgument(1);
             discoveredResults.add(result);
             discoveryLatch.countDown();

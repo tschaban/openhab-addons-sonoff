@@ -100,7 +100,6 @@ class SonoffDiscoveryServiceTest {
     private List<Thing> childThings;
 
     @BeforeEach
-    @SuppressWarnings("unchecked")
     void setUp() {
         discoveryService = new SonoffDiscoveryService();
 
@@ -366,7 +365,7 @@ class SonoffDiscoveryServiceTest {
 
         List<DiscoveryResult> results = resultCaptor.getAllValues();
         boolean foundRfDevice = results.stream()
-                .anyMatch(result -> result.getThingTypeUID().getId().equals("rf-sensor"));
+                .anyMatch(result -> result.getThingTypeUID().getId().equals("rfremote1"));
 
         assertTrue(foundRfDevice, "Should discover RF sub-devices");
     }
@@ -377,8 +376,17 @@ class SonoffDiscoveryServiceTest {
         // Setup Zigbee bridge
         setupZigbeeBridge();
 
-        // Execute discovery
-        runDiscoveryWithMockData();
+        // Execute discovery with Zigbee device in API response
+        try {
+            when(mockApiConnection.createCache()).thenReturn(createMockApiResponseWithZigbeeDevice());
+
+            // Use reflection to call the private discover method
+            java.lang.reflect.Method discoverMethod = discoveryService.getClass().getDeclaredMethod("discover");
+            discoverMethod.setAccessible(true);
+            discoverMethod.invoke(discoveryService);
+        } catch (Exception e) {
+            fail("Failed to run discovery: " + e.getMessage());
+        }
 
         // Verify Zigbee sub-devices were discovered
         ArgumentCaptor<DiscoveryResult> resultCaptor = ArgumentCaptor.forClass(DiscoveryResult.class);
@@ -386,7 +394,7 @@ class SonoffDiscoveryServiceTest {
 
         List<DiscoveryResult> results = resultCaptor.getAllValues();
         boolean foundZigbeeDevice = results.stream()
-                .anyMatch(result -> result.getThingTypeUID().getId().equals("zigbee-sensor"));
+                .anyMatch(result -> result.getThingTypeUID().getId().equals("zswitch1"));
 
         assertTrue(foundZigbeeDevice, "Should discover Zigbee sub-devices");
     }
@@ -450,6 +458,17 @@ class SonoffDiscoveryServiceTest {
                 + "}" + "}" + "]" + "}" + "}";
     }
 
+    private String createMockApiResponseWithZigbeeDevice() {
+        return "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1," + "\"itemData\": {"
+                + "\"deviceid\": \"device123\"," + "\"name\": \"Test Device 1\"," + "\"brandName\": \"Sonoff\","
+                + "\"productModel\": \"BASIC\"," + "\"devicekey\": \"key123\"," + "\"apikey\": \"api123\","
+                + "\"extra\": {\"uiid\": 1}," + "\"params\": {\"fwVersion\": \"1.0.0\", \"ssid\": \"TestWiFi\"}" + "}"
+                + "}," + "{" + "\"itemType\": 1," + "\"itemData\": {" + "\"deviceid\": \"zigbee123\","
+                + "\"name\": \"Zigbee Device\"," + "\"brandName\": \"Sonoff\"," + "\"productModel\": \"ZIGBEE\","
+                + "\"devicekey\": \"zigbeekey\"," + "\"apikey\": \"zigbeeapi\"," + "\"extra\": {\"uiid\": 1000},"
+                + "\"params\": {\"fwVersion\": \"1.0.0\"}" + "}" + "}" + "]" + "}" + "}";
+    }
+
     private void setupRfBridge() {
         // Create RF bridge thing
         Bridge rfBridgeThing = mock(Bridge.class);
@@ -462,7 +481,7 @@ class SonoffDiscoveryServiceTest {
         JsonArray rfSubDevices = new JsonArray();
         JsonObject rfDevice = new JsonObject();
         rfDevice.addProperty("name", "RF Sensor 1");
-        rfDevice.addProperty("remote_type", "1");
+        rfDevice.addProperty("remote_type", "4");  // Use type 4 which maps to THING_TYPE_RF1
         rfSubDevices.add(rfDevice);
 
         when(mockRfBridgeHandler.getSubDevices()).thenReturn(rfSubDevices);
