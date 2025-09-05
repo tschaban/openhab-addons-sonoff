@@ -28,7 +28,7 @@
       <version>5.10.1</version>
       <scope>test</scope>
     </dependency>
-    
+
     <!-- Mockito for mocking in tests -->
     <dependency>
       <groupId>org.mockito</groupId>
@@ -36,7 +36,7 @@
       <version>5.7.0</version>
       <scope>test</scope>
     </dependency>
-    
+
     <!-- Mockito JUnit 5 extension -->
     <dependency>
       <groupId>org.mockito</groupId>
@@ -82,7 +82,7 @@
           </systemPropertyVariables>
         </configuration>
       </plugin>
-      
+
       <!-- JaCoCo Plugin for test coverage -->
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -96,10 +96,10 @@
           </execution>
           <execution>
             <id>report</id>
-            <phase>test</phase>
             <goals>
               <goal>report</goal>
             </goals>
+            <phase>test</phase>
           </execution>
         </executions>
       </plugin>
