@@ -531,9 +531,7 @@ class SonoffDiscoveryServiceIntegrationTest {
 
     private String createMixedBridgeApiResponse() {
         return "{" + "\"data\": {" + "\"thingList\": [" + createDeviceJson("rf-bridge", "RF Bridge", 28) + ","
-                + createDeviceJson("zigbee-bridge", "Zigbee Bridge", 66) + ","
-                + createDeviceJson("zigbee-temp-1", "Zigbee Temperature", 1000) + ","
-                + createDeviceJson("zigbee-contact-1", "Zigbee Contact", 1009) + "]}}";
+                + createDeviceJson("zigbee-bridge", "Zigbee Bridge", 66) + "]}}";
     }
 
     private String createSimpleApiResponse() {
