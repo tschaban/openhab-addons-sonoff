@@ -66,7 +66,7 @@ class SonoffCacheProviderIntegrationTest {
         // Setup temporary directory for testing
         testCacheDir = tempDir.resolve("sonoff").toString();
         realGson = new Gson();
-        
+
         // Mock OpenHAB.getUserDataFolder() to return our temp directory
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
@@ -78,9 +78,7 @@ class SonoffCacheProviderIntegrationTest {
     void tearDown() throws IOException {
         // Clean up test files
         if (Files.exists(Paths.get(testCacheDir))) {
-            Files.walk(Paths.get(testCacheDir))
-                .map(Path::toFile)
-                .forEach(File::delete);
+            Files.walk(Paths.get(testCacheDir)).map(Path::toFile).forEach(File::delete);
         }
     }
 
@@ -100,14 +98,15 @@ class SonoffCacheProviderIntegrationTest {
                 try {
                     for (int i = 0; i < operationsPerThread; i++) {
                         String deviceId = "thread" + threadId + "-device" + i;
-                        String deviceData = "{\"deviceid\":\"" + deviceId + "\",\"thread\":" + threadId + ",\"operation\":" + i + "}";
-                        
+                        String deviceData = "{\"deviceid\":\"" + deviceId + "\",\"thread\":" + threadId
+                                + ",\"operation\":" + i + "}";
+
                         // Write file
                         cacheProvider.newFile(deviceId, deviceData);
-                        
+
                         // Check file exists
                         assertTrue(cacheProvider.checkFile(deviceId), "File should exist: " + deviceId);
-                        
+
                         // Read file content
                         String content = cacheProvider.getFile(deviceId + ".txt");
                         assertEquals(deviceData, content, "Content should match for: " + deviceId);
@@ -124,8 +123,7 @@ class SonoffCacheProviderIntegrationTest {
 
         // Verify - check that all files were created correctly
         List<String> allFiles = cacheProvider.getFiles();
-        assertEquals(threadCount * operationsPerThread, allFiles.size(), 
-            "Should have created all expected files");
+        assertEquals(threadCount * operationsPerThread, allFiles.size(), "Should have created all expected files");
     }
 
     @Test
@@ -165,12 +163,12 @@ class SonoffCacheProviderIntegrationTest {
                         for (int i = 0; i < 15; i++) {
                             // Check existing files
                             assertTrue(cacheProvider.checkFile("initial-device-0"), "Initial file should exist");
-                            
+
                             // Create new file
                             String deviceId = "mixed-" + threadId + "-" + i;
                             String deviceData = "{\"deviceid\":\"" + deviceId + "\",\"mixed\":true}";
                             cacheProvider.newFile(deviceId, deviceData);
-                            
+
                             // Read it back
                             String content = cacheProvider.getFile(deviceId + ".txt");
                             assertEquals(deviceData, content, "Content should match");
@@ -205,7 +203,8 @@ class SonoffCacheProviderIntegrationTest {
             executor.submit(() -> {
                 try {
                     String deviceId = "stress-device-" + String.format("%04d", fileIndex);
-                    String deviceData = "{\"deviceid\":\"" + deviceId + "\",\"index\":" + fileIndex + ",\"timestamp\":" + System.currentTimeMillis() + "}";
+                    String deviceData = "{\"deviceid\":\"" + deviceId + "\",\"index\":" + fileIndex + ",\"timestamp\":"
+                            + System.currentTimeMillis() + "}";
                     cacheProvider.newFile(deviceId, deviceData);
                 } finally {
                     latch.countDown();
@@ -225,7 +224,7 @@ class SonoffCacheProviderIntegrationTest {
         for (int i = 0; i < Math.min(100, fileCount); i++) { // Check first 100 files
             String deviceId = "stress-device-" + String.format("%04d", i);
             assertTrue(cacheProvider.checkFile(deviceId), "Stress test file should exist: " + deviceId);
-            
+
             String content = cacheProvider.getFile(deviceId + ".txt");
             assertTrue(content.contains("\"index\":" + i), "File should contain correct index: " + i);
         }
@@ -237,7 +236,7 @@ class SonoffCacheProviderIntegrationTest {
         // Setup - create files with valid JSON
         String device1Json = "{\"deviceid\":\"real-device-1\",\"name\":\"Real Device 1\",\"status\":\"online\",\"params\":{\"switch\":\"on\",\"power\":100}}";
         String device2Json = "{\"deviceid\":\"real-device-2\",\"name\":\"Real Device 2\",\"status\":\"offline\",\"params\":{\"switch\":\"off\",\"power\":0}}";
-        
+
         cacheProvider.newFile("real-device-1", device1Json);
         cacheProvider.newFile("real-device-2", device2Json);
 
@@ -253,7 +252,7 @@ class SonoffCacheProviderIntegrationTest {
         // Test individual file retrieval
         String retrievedJson1 = cacheProvider.getFile("real-device-1.txt");
         String retrievedJson2 = cacheProvider.getFile("real-device-2.txt");
-        
+
         assertEquals(device1Json, retrievedJson1, "Retrieved JSON should match original");
         assertEquals(device2Json, retrievedJson2, "Retrieved JSON should match original");
     }
@@ -265,7 +264,7 @@ class SonoffCacheProviderIntegrationTest {
         String invalidJson1 = "{\"deviceid\":\"invalid-device-1\",\"name\":\"Invalid Device\",}"; // trailing comma
         String invalidJson2 = "{deviceid:\"invalid-device-2\",\"name\":\"Invalid Device\"}"; // unquoted key
         String invalidJson3 = "not json at all";
-        
+
         cacheProvider.newFile("invalid-device-1", invalidJson1);
         cacheProvider.newFile("invalid-device-2", invalidJson2);
         cacheProvider.newFile("invalid-device-3", invalidJson3);
@@ -289,16 +288,16 @@ class SonoffCacheProviderIntegrationTest {
     @DisplayName("Should handle file operations with various file sizes")
     void testVariousFileSizes() throws IOException {
         // Setup - create files of different sizes
-        String[] deviceIds = {"tiny", "small", "medium", "large", "huge"};
-        int[] contentSizes = {10, 100, 1000, 10000, 100000}; // bytes
+        String[] deviceIds = { "tiny", "small", "medium", "large", "huge" };
+        int[] contentSizes = { 10, 100, 1000, 10000, 100000 }; // bytes
 
         for (int i = 0; i < deviceIds.length; i++) {
             StringBuilder content = new StringBuilder("{\"deviceid\":\"" + deviceIds[i] + "\",\"data\":\"");
-            
+
             // Fill with repeated data to reach target size
             int targetSize = contentSizes[i] - 50; // account for JSON structure
             for (int j = 0; j < targetSize; j++) {
-                content.append((char)('A' + (j % 26)));
+                content.append((char) ('A' + (j % 26)));
             }
             content.append("\"}");
 
@@ -308,11 +307,11 @@ class SonoffCacheProviderIntegrationTest {
         // Execute & Verify
         for (String deviceId : deviceIds) {
             assertTrue(cacheProvider.checkFile(deviceId), "File should exist: " + deviceId);
-            
+
             String content = cacheProvider.getFile(deviceId + ".txt");
             assertFalse(content.isEmpty(), "Content should not be empty for: " + deviceId);
-            assertTrue(content.startsWith("{\"deviceid\":\"" + deviceId + "\""), 
-                "Content should start correctly for: " + deviceId);
+            assertTrue(content.startsWith("{\"deviceid\":\"" + deviceId + "\""),
+                    "Content should start correctly for: " + deviceId);
         }
 
         // Verify all files are returned
@@ -334,7 +333,8 @@ class SonoffCacheProviderIntegrationTest {
             final int updateIndex = i;
             executor.submit(() -> {
                 try {
-                    String deviceData = "{\"deviceid\":\"" + deviceId + "\",\"update\":" + updateIndex + ",\"timestamp\":" + System.currentTimeMillis() + "}";
+                    String deviceData = "{\"deviceid\":\"" + deviceId + "\",\"update\":" + updateIndex
+                            + ",\"timestamp\":" + System.currentTimeMillis() + "}";
                     cacheProvider.newFile(deviceId, deviceData);
                 } finally {
                     latch.countDown();
@@ -348,15 +348,15 @@ class SonoffCacheProviderIntegrationTest {
 
         // Verify - file should exist and contain the last update
         assertTrue(cacheProvider.checkFile(deviceId), "Rapidly updated file should exist");
-        
+
         String finalContent = cacheProvider.getFile(deviceId + ".txt");
         assertFalse(finalContent.isEmpty(), "Final content should not be empty");
-        assertTrue(finalContent.contains("\"deviceid\":\"" + deviceId + "\""), 
-            "Final content should contain device ID");
-        
+        assertTrue(finalContent.contains("\"deviceid\":\"" + deviceId + "\""),
+                "Final content should contain device ID");
+
         // The exact update number may vary due to race conditions, but it should be valid JSON
-        assertTrue(finalContent.startsWith("{") && finalContent.endsWith("}"), 
-            "Final content should be valid JSON structure");
+        assertTrue(finalContent.startsWith("{") && finalContent.endsWith("}"),
+                "Final content should be valid JSON structure");
     }
 
     @Test
@@ -376,15 +376,15 @@ class SonoffCacheProviderIntegrationTest {
                 try {
                     for (int i = 0; i < operationsPerThread; i++) {
                         String deviceId = baseDeviceId + "-" + threadId + "-" + i;
-                        String expectedData = "{\"deviceid\":\"" + deviceId + "\",\"thread\":" + threadId + ",\"operation\":" + i + ",\"checksum\":" + (threadId * 1000 + i) + "}";
-                        
+                        String expectedData = "{\"deviceid\":\"" + deviceId + "\",\"thread\":" + threadId
+                                + ",\"operation\":" + i + ",\"checksum\":" + (threadId * 1000 + i) + "}";
+
                         // Write
                         cacheProvider.newFile(deviceId, expectedData);
-                        
+
                         // Immediate read-back verification
                         String readData = cacheProvider.getFile(deviceId + ".txt");
-                        assertEquals(expectedData, readData, 
-                            "Data integrity check failed for " + deviceId);
+                        assertEquals(expectedData, readData, "Data integrity check failed for " + deviceId);
                     }
                 } finally {
                     latch.countDown();
@@ -400,10 +400,11 @@ class SonoffCacheProviderIntegrationTest {
         for (int t = 0; t < threadCount; t++) {
             for (int i = 0; i < operationsPerThread; i++) {
                 String deviceId = baseDeviceId + "-" + t + "-" + i;
-                String expectedData = "{\"deviceid\":\"" + deviceId + "\",\"thread\":" + t + ",\"operation\":" + i + ",\"checksum\":" + (t * 1000 + i) + "}";
-                
+                String expectedData = "{\"deviceid\":\"" + deviceId + "\",\"thread\":" + t + ",\"operation\":" + i
+                        + ",\"checksum\":" + (t * 1000 + i) + "}";
+
                 assertTrue(cacheProvider.checkFile(deviceId), "File should exist: " + deviceId);
-                
+
                 String actualData = cacheProvider.getFile(deviceId + ".txt");
                 assertEquals(expectedData, actualData, "Final integrity check failed for " + deviceId);
             }

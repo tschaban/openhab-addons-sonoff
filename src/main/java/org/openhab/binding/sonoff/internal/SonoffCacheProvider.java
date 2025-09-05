@@ -76,7 +76,7 @@ public class SonoffCacheProvider {
             logger.warn("Cannot create file with null deviceid or content");
             return;
         }
-        
+
         File folder = new File(this.saveFolderName);
         if (!folder.exists()) {
             logger.debug("Folder {} does not exist. Creating folder.", this.saveFolderName);
@@ -175,7 +175,7 @@ public class SonoffCacheProvider {
             logger.warn("Gson is null, cannot parse device states");
             return deviceStates;
         }
-        
+
         List<String> deviceList = getFiles();
         for (int i = 0; i < deviceList.size(); i++) {
             try {
@@ -196,13 +196,13 @@ public class SonoffCacheProvider {
         if (deviceid == null || gson == null) {
             return null;
         }
-        
+
         try {
             String deviceJson = getFile(deviceid + ".txt");
             if (deviceJson.isEmpty()) {
                 return null;
             }
-            
+
             JsonObject device = gson.fromJson(deviceJson, JsonObject.class);
             if (device != null) {
                 return new SonoffDeviceState(device);

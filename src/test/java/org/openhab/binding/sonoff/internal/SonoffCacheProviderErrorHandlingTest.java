@@ -68,11 +68,11 @@ class SonoffCacheProviderErrorHandlingTest {
     void setUp() {
         // Setup temporary directory for testing
         testCacheDir = tempDir.resolve("sonoff").toString();
-        
+
         // Mock OpenHAB.getUserDataFolder() to return our temp directory
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             cacheProvider = new SonoffCacheProvider(mockGson);
             cacheProviderWithoutGson = new SonoffCacheProvider();
         }
@@ -82,9 +82,7 @@ class SonoffCacheProviderErrorHandlingTest {
     void tearDown() throws IOException {
         // Clean up test files
         if (Files.exists(Paths.get(testCacheDir))) {
-            Files.walk(Paths.get(testCacheDir))
-                .map(Path::toFile)
-                .forEach(File::delete);
+            Files.walk(Paths.get(testCacheDir)).map(Path::toFile).forEach(File::delete);
         }
     }
 
@@ -104,7 +102,7 @@ class SonoffCacheProviderErrorHandlingTest {
         assertDoesNotThrow(() -> {
             cacheProvider.newFile("test-device", null);
         }, "Should handle null content gracefully");
-        
+
         // Verify no file was created
         assertFalse(cacheProvider.checkFile("test-device"), "Should not create file with null content");
     }
@@ -180,14 +178,13 @@ class SonoffCacheProviderErrorHandlingTest {
         cacheProvider.newFile("invalid-json-device", "invalid json content");
 
         // Mock Gson to throw JsonSyntaxException
-        when(mockGson.fromJson(anyString(), eq(JsonObject.class)))
-            .thenThrow(new JsonSyntaxException("Invalid JSON"));
+        when(mockGson.fromJson(anyString(), eq(JsonObject.class))).thenThrow(new JsonSyntaxException("Invalid JSON"));
 
         // Execute & Verify - should not throw exception and return empty map
         Map<String, SonoffDeviceState> result = assertDoesNotThrow(() -> {
             return cacheProvider.getStates();
         }, "Should handle Gson exceptions gracefully");
-        
+
         assertTrue(result.isEmpty(), "Should return empty map when JSON parsing fails");
     }
 
@@ -199,14 +196,13 @@ class SonoffCacheProviderErrorHandlingTest {
         cacheProvider.newFile(deviceId, "invalid json content");
 
         // Mock Gson to throw JsonSyntaxException
-        when(mockGson.fromJson(anyString(), eq(JsonObject.class)))
-            .thenThrow(new JsonSyntaxException("Invalid JSON"));
+        when(mockGson.fromJson(anyString(), eq(JsonObject.class))).thenThrow(new JsonSyntaxException("Invalid JSON"));
 
         // Execute & Verify - should not throw exception and return null
         SonoffDeviceState result = assertDoesNotThrow(() -> {
             return cacheProvider.getState(deviceId);
         }, "Should handle Gson exceptions gracefully");
-        
+
         assertNull(result, "Should return null when Gson throws exception");
     }
 
@@ -242,8 +238,8 @@ class SonoffCacheProviderErrorHandlingTest {
 
         // Verify
         assertTrue(cacheProvider.checkFile(deviceId), "Should handle long realistic device ID");
-        assertEquals("{\"test\":\"data\"}", cacheProvider.getFile(deviceId + ".txt"), 
-            "Should retrieve content for long realistic device ID");
+        assertEquals("{\"test\":\"data\"}", cacheProvider.getFile(deviceId + ".txt"),
+                "Should retrieve content for long realistic device ID");
     }
 
     @Test
@@ -251,25 +247,20 @@ class SonoffCacheProviderErrorHandlingTest {
     void testDeviceIdWithSpecialCharacters() {
         // Note: Some characters may be invalid on certain file systems
         // This test documents the behavior rather than enforcing it
-        
-        String[] specialIds = {
-            "device-with-dashes",
-            "device_with_underscores", 
-            "device.with.dots",
-            "device with spaces",
-            "device@with@symbols"
-        };
+
+        String[] specialIds = { "device-with-dashes", "device_with_underscores", "device.with.dots",
+                "device with spaces", "device@with@symbols" };
 
         for (String deviceId : specialIds) {
             try {
                 // Execute
                 cacheProvider.newFile(deviceId, "{\"deviceid\":\"" + deviceId + "\"}");
-                
+
                 // Verify if file was created successfully
                 if (cacheProvider.checkFile(deviceId)) {
                     String content = cacheProvider.getFile(deviceId + ".txt");
-                    assertEquals("{\"deviceid\":\"" + deviceId + "\"}", content, 
-                        "Content should match for device ID: " + deviceId);
+                    assertEquals("{\"deviceid\":\"" + deviceId + "\"}", content,
+                            "Content should match for device ID: " + deviceId);
                 }
             } catch (Exception e) {
                 // Some special characters may cause file system errors
@@ -289,10 +280,10 @@ class SonoffCacheProviderErrorHandlingTest {
         // Execute - try to create new cache provider
         try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
             mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
-            
+
             // This should handle the corrupted directory gracefully
             SonoffCacheProvider corruptedCacheProvider = new SonoffCacheProvider(mockGson);
-            
+
             // Try to perform operations
             assertDoesNotThrow(() -> {
                 corruptedCacheProvider.newFile("test-device", "{\"test\":\"data\"}");
@@ -305,10 +296,8 @@ class SonoffCacheProviderErrorHandlingTest {
     void testMissingCacheDirectory() throws IOException {
         // Setup - delete the cache directory
         if (Files.exists(Paths.get(testCacheDir))) {
-            Files.walk(Paths.get(testCacheDir))
-                .sorted((a, b) -> b.compareTo(a)) // Delete files before directories
-                .map(Path::toFile)
-                .forEach(File::delete);
+            Files.walk(Paths.get(testCacheDir)).sorted((a, b) -> b.compareTo(a)) // Delete files before directories
+                    .map(Path::toFile).forEach(File::delete);
         }
 
         // Execute - operations should still work (directory should be recreated)
@@ -344,7 +333,7 @@ class SonoffCacheProviderErrorHandlingTest {
         // Setup - create various file types
         cacheProvider.newFile("device1", "{\"deviceid\":\"device1\"}");
         cacheProvider.newFile("device2", "{\"deviceid\":\"device2\"}");
-        
+
         // Create non-.txt files
         Files.write(Paths.get(testCacheDir, "config.xml"), "<config></config>".getBytes());
         Files.write(Paths.get(testCacheDir, "data.json"), "{\"data\":\"value\"}".getBytes());
