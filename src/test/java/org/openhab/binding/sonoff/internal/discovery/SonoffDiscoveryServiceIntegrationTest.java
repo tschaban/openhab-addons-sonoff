@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -134,7 +135,7 @@ class SonoffDiscoveryServiceIntegrationTest {
 
             @Override
             public void removeOlderResults(org.openhab.core.config.discovery.DiscoveryService source,
-                    java.time.Instant timestamp, java.util.Collection<ThingTypeUID> thingTypeUIDs, ThingUID bridgeUID) {
+                    Instant timestamp, java.util.Collection<ThingTypeUID> thingTypeUIDs, ThingUID bridgeUID) {
                 // Not used in these tests
             }
         });
@@ -197,7 +198,7 @@ class SonoffDiscoveryServiceIntegrationTest {
 
             // Verify RF sub-devices
             long rfSubDevices = discoveredResults.stream().filter(result -> result.getBridgeUID() != null)
-                    .filter(result -> result.getBridgeUID().getThingTypeUID().getId().equals("28")).count();
+                    .filter(result -> result.getBridgeUID().toString().contains(":28:")).count();
             assertEquals(2, rfSubDevices, "Should discover 2 RF sub-devices");
         }
     }
@@ -225,7 +226,7 @@ class SonoffDiscoveryServiceIntegrationTest {
 
             // Verify Zigbee sub-devices
             long zigbeeSubDevices = discoveredResults.stream().filter(result -> result.getBridgeUID() != null)
-                    .filter(result -> result.getBridgeUID().getThingTypeUID().getId().equals("66")).count();
+                    .filter(result -> result.getBridgeUID().toString().contains(":66:")).count();
             assertEquals(2, zigbeeSubDevices, "Should discover 2 Zigbee sub-devices");
         }
     }

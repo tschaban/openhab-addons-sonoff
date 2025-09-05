@@ -88,7 +88,8 @@ class SonoffDiscoveryServiceTest {
     private ScheduledExecutorService mockScheduler;
 
     @Mock
-    private ScheduledFuture<?> mockScheduledFuture;
+    @SuppressWarnings("rawtypes")
+    private ScheduledFuture mockScheduledFuture;
 
     @Mock
     private DiscoveryListener mockDiscoveryListener;
@@ -122,7 +123,7 @@ class SonoffDiscoveryServiceTest {
 
         // Setup scheduler mock
         when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
-                .thenReturn((ScheduledFuture<?>) mockScheduledFuture);
+                .thenReturn(mockScheduledFuture);
 
         // Use reflection to set the scheduler
         try {
