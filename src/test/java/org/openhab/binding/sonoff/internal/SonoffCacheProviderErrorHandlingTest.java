@@ -59,9 +59,6 @@ class SonoffCacheProviderErrorHandlingTest {
     @Mock
     private Gson mockGson;
 
-    @Mock
-    private JsonObject mockJsonObject;
-
     private SonoffCacheProvider cacheProvider;
     private SonoffCacheProvider cacheProviderWithoutGson;
     private String testCacheDir;

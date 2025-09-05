@@ -59,12 +59,6 @@ class SonoffCacheProviderTest {
     @Mock
     private Gson mockGson;
 
-    @Mock
-    private JsonObject mockJsonObject;
-
-    @Mock
-    private SonoffDeviceState mockDeviceState;
-
     private SonoffCacheProvider cacheProvider;
     private SonoffCacheProvider cacheProviderWithoutGson;
     private String testCacheDir;
@@ -328,10 +322,7 @@ class SonoffCacheProviderTest {
     @Test
     @DisplayName("Should return null for non-existing device state")
     void testGetStateNonExisting() {
-        // Mock Gson to return null for non-existing file
-        when(mockGson.fromJson("", JsonObject.class)).thenReturn(null);
-
-        // Execute
+        // Execute - no mocking needed since file doesn't exist
         SonoffDeviceState state = cacheProvider.getState("non-existing-device");
 
         // Verify
