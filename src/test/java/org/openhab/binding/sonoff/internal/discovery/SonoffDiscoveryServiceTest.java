@@ -89,8 +89,7 @@ class SonoffDiscoveryServiceTest {
     private ScheduledExecutorService mockScheduler;
 
     @Mock
-    @SuppressWarnings("rawtypes")
-    private ScheduledFuture mockScheduledFuture;
+    private ScheduledFuture<?> mockScheduledFuture;
 
     @Mock
     private DiscoveryListener mockDiscoveryListener;
@@ -100,6 +99,7 @@ class SonoffDiscoveryServiceTest {
     private List<Thing> childThings;
 
     @BeforeEach
+    @SuppressWarnings("unchecked")
     void setUp() {
         discoveryService = new SonoffDiscoveryService();
 

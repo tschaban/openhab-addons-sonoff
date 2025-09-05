@@ -138,7 +138,11 @@ class SonoffDiscoveryServiceIntegrationTest {
                 // Not used in these tests
             }
 
-            // removeOlderResults method removed - may not be required in this OpenHAB version
+            @Override
+            public void removeOlderResults(org.openhab.core.config.discovery.DiscoveryService source, Instant timestamp,
+                    java.util.Collection<ThingTypeUID> thingTypeUIDs, ThingUID bridgeUID) {
+                // Not used in these tests
+            }
         });
     }
 
