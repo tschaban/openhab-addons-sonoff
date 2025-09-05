@@ -72,6 +72,15 @@ public class SonoffCacheProvider {
     }
 
     public void newFile(String deviceid, String thing) {
+        File folder = new File(this.saveFolderName);
+        if (!folder.exists()) {
+            logger.debug("Folder {} does not exist. Creating folder.", this.saveFolderName);
+            if (folder.mkdirs()) {
+                logger.debug("Folder {} created successfully.", this.saveFolderName);
+            } else {
+                logger.error("Failed to create folder {}.", this.saveFolderName);
+            }
+        }
         File file = new File(this.saveFolderName, deviceid + ".txt");
         BufferedWriter writer = null;
         logger.debug("Device {}: writing to file {}", deviceid, file.getPath());
@@ -86,6 +95,7 @@ public class SonoffCacheProvider {
                 try {
                     writer.close();
                 } catch (IOException e) {
+                    // Exception ignored during close
                 }
             }
         }
