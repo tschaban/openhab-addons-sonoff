@@ -209,10 +209,9 @@ DateTime    MotionActivated     "PIR Activated"         {channel="sonoff:zmotion
 
 ## 🔧 Development Documentation
 
-For developers working on the Sonoff binding, comprehensive technical documentation is available in the `docs/` directory:
+For developers working on the Sonoff binding, comprehensive technical documentation is available:
 
-- **[Testing Framework](docs/development/testing-framework.md)** - Complete JUnit 5 testing setup with automated scripts
-- **[Component Tests](docs/testing/)** - Detailed test documentation for all major components
+- **[Development Setup Guide](docs/development/setup-guide.md)** - Complete development environment setup and workflow guide
 
 ## 🐛 Bug Reports & Support
 
