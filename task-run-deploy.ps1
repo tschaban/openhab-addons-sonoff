@@ -2,16 +2,21 @@
 # Sonoff Binding Compile and Upload Script
 # Compiles the Sonoff binding and deploys it to OpenHAB
 
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "  Sonoff Binding Compile & Upload" -ForegroundColor Cyan
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host ""
-
 # Configuration
 $projectPath = "D:\Adrian\Projekty\openhab\openhab-addons\bundles\org.openhab.binding.sonoff"
 $jarSourcePath = "D:\Adrian\Projekty\openhab\openhab-addons\bundles\org.openhab.binding.sonoff\target\org.openhab.binding.sonoff-5.0.2-SNAPSHOT.jar"
 $jarDestPath = "O:\configuration\addons\org.openhab.binding.sonoff-5.0.2-SmartnyDom-v0.x.jar"
 $logPath = "O:\configuration\logs\openhab.log"
+
+# Step 1: Clear console for clean output
+clear
+Write-Host "[STEP 1/6] Clearing console for clean output..." -ForegroundColor Yellow
+
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "  Sonoff Binding Compile & Upload" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+
 
 Write-Host "Configuration:" -ForegroundColor Gray
 Write-Host "  Project: $projectPath" -ForegroundColor Gray
@@ -20,8 +25,8 @@ Write-Host "  JAR Destination: $jarDestPath" -ForegroundColor Gray
 Write-Host "  Log File: $logPath" -ForegroundColor Gray
 Write-Host ""
 
-# Step 1: Navigate to project directory
-Write-Host "[STEP 1/6] Navigating to project directory..." -ForegroundColor Yellow
+# Step 2: Navigate to project directory
+Write-Host "[STEP 2/6] Navigating to project directory..." -ForegroundColor Yellow
 Write-Host "Target directory: $projectPath" -ForegroundColor Gray
 
 if (Test-Path $projectPath) {
@@ -36,9 +41,6 @@ if (Test-Path $projectPath) {
 
 Write-Host ""
 
-# Step 2: Clear console for clean output
-Write-Host "[STEP 2/6] Clearing console for clean output..." -ForegroundColor Yellow
-clear
 
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Sonoff Binding Compile & Upload" -ForegroundColor Cyan

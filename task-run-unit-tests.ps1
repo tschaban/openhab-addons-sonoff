@@ -2,13 +2,17 @@
 # Sonoff Binding Unit Test Runner
 # Runs code formatting and unit tests for the Sonoff binding
 
+# Step 1: Clear console for clean output
+clear
+Write-Host "[STEP 1/4] Clearing console for clean output..." -ForegroundColor Yellow
+
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Sonoff Binding Unit Test Runner" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
-# Step 1: Navigate to project directory
-Write-Host "[STEP 1/4] Navigating to project directory..." -ForegroundColor Yellow
+# Step 2: Navigate to project directory
+Write-Host "[STEP 2/4] Navigating to project directory..." -ForegroundColor Yellow
 $projectPath = "D:\Adrian\Projekty\openhab\openhab-addons\bundles\org.openhab.binding.sonoff"
 Write-Host "Target directory: $projectPath" -ForegroundColor Gray
 
@@ -23,10 +27,6 @@ if (Test-Path $projectPath) {
 }
 
 Write-Host ""
-
-# Step 2: Clear console for clean output
-Write-Host "[STEP 2/4] Clearing console for clean output..." -ForegroundColor Yellow
-clear
 
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Sonoff Binding Unit Test Runner" -ForegroundColor Cyan
