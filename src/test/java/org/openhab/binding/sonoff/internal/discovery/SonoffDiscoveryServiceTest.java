@@ -130,12 +130,12 @@ class SonoffDiscoveryServiceTest {
                     .getDeclaredField("scheduler");
             schedulerField.setAccessible(true);
             schedulerField.set(discoveryService, mockScheduler);
-            
+
             // Setup mock scheduler - using doReturn to avoid generic type issues
             @SuppressWarnings("unchecked")
             ScheduledFuture<Object> future = mockScheduledFuture;
-            lenient().doReturn(future)
-                    .when(mockScheduler).schedule(any(Runnable.class), anyLong(), any(TimeUnit.class));
+            lenient().doReturn(future).when(mockScheduler).schedule(any(Runnable.class), anyLong(),
+                    any(TimeUnit.class));
         } catch (Exception e) {
             // Fallback - tests may still work without scheduler mock
         }
@@ -306,7 +306,7 @@ class SonoffDiscoveryServiceTest {
 
         // Test stopScan - should not throw exception
         assertDoesNotThrow(() -> discoveryService.stopScan());
-        
+
         // If scheduler mock is set up, verify interactions
         try {
             verify(mockScheduler).schedule(any(Runnable.class), eq(0L), eq(TimeUnit.SECONDS));
