@@ -48,11 +48,11 @@ jobs:
         cd ../openhab-addons
         
         # Install the parent POM and reactor POMs
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         
         # Install bundles reactor POM
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         
         echo "✅ Parent POM installed successfully"
         

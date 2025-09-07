@@ -38,10 +38,10 @@ jobs:
         git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         cd ../openhab-addons
         echo "📦 Installing root POM..."
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         echo "📦 Installing bundles reactor POM..."
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         cd ${{ github.workspace }}
         echo "✅ OpenHAB parent POM installed successfully"
         
@@ -88,10 +88,10 @@ jobs:
         git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         cd ../openhab-addons
         echo "📦 Installing root POM..."
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         echo "📦 Installing bundles reactor POM..."
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         cd ${{ github.workspace }}
         echo "✅ OpenHAB parent POM installed successfully"
         
@@ -152,10 +152,10 @@ jobs:
         git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         cd ../openhab-addons
         echo "📦 Installing root POM..."
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         echo "📦 Installing bundles reactor POM..."
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         cd ${{ github.workspace }}
         echo "✅ OpenHAB parent POM installed successfully"
         
@@ -198,10 +198,10 @@ jobs:
         git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         cd ../openhab-addons
         echo "📦 Installing root POM..."
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         echo "📦 Installing bundles reactor POM..."
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         cd ${{ github.workspace }}
         echo "✅ OpenHAB parent POM installed successfully"
         
@@ -239,10 +239,10 @@ jobs:
         git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         cd ../openhab-addons
         echo "📦 Installing root POM..."
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         echo "📦 Installing bundles reactor POM..."
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         cd ${{ github.workspace }}
         echo "✅ OpenHAB parent POM installed successfully"
         
@@ -301,10 +301,10 @@ jobs:
         git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         cd ../openhab-addons
         echo "📦 Installing root POM..."
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         echo "📦 Installing bundles reactor POM..."
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         cd ${{ github.workspace }}
         echo "✅ OpenHAB parent POM installed successfully"
         

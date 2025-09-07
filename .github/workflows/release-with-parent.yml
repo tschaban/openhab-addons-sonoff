@@ -52,11 +52,11 @@ jobs:
         # Install parent POMs
         cd ../openhab-addons
         echo "📦 Installing OpenHAB parent POM..."
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         
         echo "📦 Installing bundles reactor POM..."
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         
         cd ${{ github.workspace }}
         echo "✅ Parent POM setup completed"
@@ -139,9 +139,9 @@ jobs:
         echo "🔄 Restoring OpenHAB parent POM..."
         git clone --depth 1 --branch main https://github.com/openhab/openhab-addons.git ../openhab-addons
         cd ../openhab-addons
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
         cd ${{ github.workspace }}
         
     - name: Build final release JAR
