@@ -265,4 +265,3 @@ Write-Host "  - Binding JAR: $jarDestPath" -ForegroundColor White
 Write-Host "  - Log file: $logPath (cleared)" -ForegroundColor White
 Write-Host ""
 Write-Host "Press any key to continue..." -ForegroundColor Gray
-pause

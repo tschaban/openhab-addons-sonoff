@@ -113,4 +113,3 @@ if ($testResult -eq 0) {
 
 Write-Host ""
 Write-Host "Press any key to continue..." -ForegroundColor Gray
-pause
