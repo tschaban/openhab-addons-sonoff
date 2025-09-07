@@ -101,7 +101,7 @@ class SonoffDiscoveryServiceTest {
     void setUp() {
         discoveryService = new SonoffDiscoveryService();
         discoveredResults = new ArrayList<>();
-        
+
         // Setup account thing UID
         accountThingUID = new ThingUID(SonoffBindingConstants.THING_TYPE_ACCOUNT, "test-account");
 
@@ -158,8 +158,7 @@ class SonoffDiscoveryServiceTest {
     void testInitialization() {
         // Verify the discovery service is properly initialized
         assertNotNull(discoveryService);
-        assertEquals(SonoffBindingConstants.DISCOVERABLE_THING_TYPE_UIDS, 
-                     discoveryService.getSupportedThingTypes());
+        assertEquals(SonoffBindingConstants.DISCOVERABLE_THING_TYPE_UIDS, discoveryService.getSupportedThingTypes());
     }
 
     @Test
@@ -196,35 +195,17 @@ class SonoffDiscoveryServiceTest {
 
     // Helper method to create a simple API response
     private String createSimpleApiResponse() {
-        return "{" +
-                "\"data\": {" +
-                "\"thingList\": [" +
-                createDeviceJson("device1", "Test Device", 1) +
-                "]" +
-                "}" +
-                "}";
+        return "{" + "\"data\": {" + "\"thingList\": [" + createDeviceJson("device1", "Test Device", 1) + "]" + "}"
+                + "}";
     }
 
     // Helper method to create device JSON
     private String createDeviceJson(String deviceId, String name, int uiid) {
-        return "{" +
-                "\"itemType\": 1," +
-                "\"itemData\": {" +
-                "\"deviceid\": \"" + deviceId + "\"," +
-                "\"name\": \"" + name + "\"," +
-                "\"brandName\": \"Sonoff\"," +
-                "\"productModel\": \"Test Model\"," +
-                "\"devicekey\": \"test-key\"," +
-                "\"apikey\": \"test-api-key\"," +
-                "\"extra\": {" +
-                "\"uiid\": " + uiid +
-                "}," +
-                "\"params\": {" +
-                "\"fwVersion\": \"1.0.0\"," +
-                "\"ssid\": \"TestWiFi\"" +
-                "}" +
-                "}" +
-                "}";
+        return "{" + "\"itemType\": 1," + "\"itemData\": {" + "\"deviceid\": \"" + deviceId + "\"," + "\"name\": \""
+                + name + "\"," + "\"brandName\": \"Sonoff\"," + "\"productModel\": \"Test Model\","
+                + "\"devicekey\": \"test-key\"," + "\"apikey\": \"test-api-key\"," + "\"extra\": {" + "\"uiid\": "
+                + uiid + "}," + "\"params\": {" + "\"fwVersion\": \"1.0.0\"," + "\"ssid\": \"TestWiFi\"" + "}" + "}"
+                + "}";
     }
 
     // Helper method to create empty API response
@@ -242,13 +223,13 @@ class SonoffDiscoveryServiceTest {
     void testScanTaskLifecycle() {
         // Test startScan
         discoveryService.startScan();
-        
+
         // Verify scheduler was called
         verify(mockScheduler).schedule(any(Runnable.class), eq(0L), eq(TimeUnit.SECONDS));
 
         // Test stopScan
         discoveryService.stopScan();
-        
+
         // Verify task cancellation
         verify(mockScheduledFuture).cancel(true);
     }
@@ -278,7 +259,7 @@ class SonoffDiscoveryServiceTest {
     void testNullAccountHandler() {
         // Set null account handler
         discoveryService.setThingHandler(null);
-        
+
         // Try to start scan - should not throw exception
         assertDoesNotThrow(() -> discoveryService.startScan());
     }
@@ -287,12 +268,11 @@ class SonoffDiscoveryServiceTest {
     @DisplayName("Should validate constructor parameters")
     void testConstructorValidation() {
         SonoffDiscoveryService service = new SonoffDiscoveryService();
-        
+
         // Verify supported thing types are set correctly
         assertNotNull(service.getSupportedThingTypes());
         assertFalse(service.getSupportedThingTypes().isEmpty());
-        assertEquals(SonoffBindingConstants.DISCOVERABLE_THING_TYPE_UIDS, 
-                     service.getSupportedThingTypes());
+        assertEquals(SonoffBindingConstants.DISCOVERABLE_THING_TYPE_UIDS, service.getSupportedThingTypes());
     }
 
     @Test
@@ -301,10 +281,10 @@ class SonoffDiscoveryServiceTest {
         Map<String, Object> config = new HashMap<>();
         config.put("testKey", "testValue");
         config.put("timeout", 30);
-        
+
         // Should not throw exception with various config types
         assertDoesNotThrow(() -> discoveryService.activate(config));
-        
+
         // Test with null values in config
         config.put("nullValue", null);
         assertDoesNotThrow(() -> discoveryService.activate(config));
@@ -316,20 +296,20 @@ class SonoffDiscoveryServiceTest {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenReturn(false);
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertNotNull(devices);
         assertEquals(1, devices.size());
-        
+
         JsonObject device = devices.get(0);
         assertEquals("device1", device.get("deviceid").getAsString());
         assertEquals("Test Device", device.get("name").getAsString());
-        
+
         // Verify cache operations
         verify(mockCacheProvider).checkFile("device1");
         verify(mockCacheProvider).newFile(eq("device1"), anyString());
@@ -341,12 +321,12 @@ class SonoffDiscoveryServiceTest {
     void testCreateCacheWithEmptyResponse() {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(createEmptyApiResponse());
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
@@ -357,12 +337,12 @@ class SonoffDiscoveryServiceTest {
     void testCreateCacheWithMalformedResponse() {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(createMalformedApiResponse());
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
@@ -373,12 +353,12 @@ class SonoffDiscoveryServiceTest {
     void testCreateCacheWithApiException() {
         // Setup
         when(mockApiConnection.createCache()).thenThrow(new RuntimeException("API Error"));
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
@@ -390,12 +370,12 @@ class SonoffDiscoveryServiceTest {
         // Setup
         when(mockConnectionManager.getMode()).thenReturn("local");
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         verify(mockApiConnection).login();
         assertNotNull(devices);
@@ -408,16 +388,16 @@ class SonoffDiscoveryServiceTest {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenReturn(true);
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertNotNull(devices);
         assertEquals(1, devices.size());
-        
+
         // Verify cache file was not created again
         verify(mockCacheProvider).checkFile("device1");
         verify(mockCacheProvider, never()).newFile(anyString(), anyString());
@@ -428,27 +408,17 @@ class SonoffDiscoveryServiceTest {
     @DisplayName("Should handle device with missing required fields")
     void testCreateCacheWithIncompleteDevice() {
         // Setup - device missing deviceid
-        String incompleteResponse = "{" +
-                "\"data\": {" +
-                "\"thingList\": [" +
-                "{" +
-                "\"itemType\": 1," +
-                "\"itemData\": {" +
-                "\"name\": \"Test Device\"," +
-                "\"extra\": {\"uiid\": 1}" +
-                "}" +
-                "}" +
-                "]" +
-                "}" +
-                "}";
-        
+        String incompleteResponse = "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1,"
+                + "\"itemData\": {" + "\"name\": \"Test Device\"," + "\"extra\": {\"uiid\": 1}" + "}" + "}" + "]" + "}"
+                + "}";
+
         when(mockApiConnection.createCache()).thenReturn(incompleteResponse);
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify - device should be skipped
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
@@ -458,28 +428,22 @@ class SonoffDiscoveryServiceTest {
     @DisplayName("Should handle multiple devices in response")
     void testCreateCacheWithMultipleDevices() {
         // Setup
-        String multiDeviceResponse = "{" +
-                "\"data\": {" +
-                "\"thingList\": [" +
-                createDeviceJson("device1", "Device 1", 1) + "," +
-                createDeviceJson("device2", "Device 2", 2) + "," +
-                createDeviceJson("device3", "Device 3", 3) +
-                "]" +
-                "}" +
-                "}";
-        
+        String multiDeviceResponse = "{" + "\"data\": {" + "\"thingList\": ["
+                + createDeviceJson("device1", "Device 1", 1) + "," + createDeviceJson("device2", "Device 2", 2) + ","
+                + createDeviceJson("device3", "Device 3", 3) + "]" + "}" + "}";
+
         when(mockApiConnection.createCache()).thenReturn(multiDeviceResponse);
         when(mockCacheProvider.checkFile(anyString())).thenReturn(false);
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertNotNull(devices);
         assertEquals(3, devices.size());
-        
+
         // Verify all devices were processed
         verify(mockCacheProvider, times(3)).checkFile(anyString());
         verify(mockCacheProvider, times(3)).newFile(anyString(), anyString());
@@ -556,13 +520,8 @@ class SonoffDiscoveryServiceTest {
         when(mockZigbeeBridgeHandler.getSubDevices()).thenReturn(zigbeeSubDevices);
 
         // Setup main device list to include the Zigbee sub-device
-        String zigbeeDeviceResponse = "{" +
-                "\"data\": {" +
-                "\"thingList\": [" +
-                createZigbeeDeviceJson("zigbee-device-1", "Zigbee Sensor", 1000) +
-                "]" +
-                "}" +
-                "}";
+        String zigbeeDeviceResponse = "{" + "\"data\": {" + "\"thingList\": ["
+                + createZigbeeDeviceJson("zigbee-device-1", "Zigbee Sensor", 1000) + "]" + "}" + "}";
         when(mockApiConnection.createCache()).thenReturn(zigbeeDeviceResponse);
 
         // Setup things list with Zigbee bridge
@@ -674,23 +633,10 @@ class SonoffDiscoveryServiceTest {
 
     // Helper method to create Zigbee device JSON
     private String createZigbeeDeviceJson(String deviceId, String name, int uiid) {
-        return "{" +
-                "\"itemType\": 1," +
-                "\"itemData\": {" +
-                "\"deviceid\": \"" + deviceId + "\"," +
-                "\"name\": \"" + name + "\"," +
-                "\"brandName\": \"Sonoff\"," +
-                "\"productModel\": \"Zigbee Model\"," +
-                "\"devicekey\": \"zigbee-key\"," +
-                "\"apikey\": \"zigbee-api-key\"," +
-                "\"extra\": {" +
-                "\"uiid\": " + uiid +
-                "}," +
-                "\"params\": {" +
-                "\"fwVersion\": \"2.0.0\"" +
-                "}" +
-                "}" +
-                "}";
+        return "{" + "\"itemType\": 1," + "\"itemData\": {" + "\"deviceid\": \"" + deviceId + "\"," + "\"name\": \""
+                + name + "\"," + "\"brandName\": \"Sonoff\"," + "\"productModel\": \"Zigbee Model\","
+                + "\"devicekey\": \"zigbee-key\"," + "\"apikey\": \"zigbee-api-key\"," + "\"extra\": {" + "\"uiid\": "
+                + uiid + "}," + "\"params\": {" + "\"fwVersion\": \"2.0.0\"" + "}" + "}" + "}";
     }
 
     @Test
@@ -698,10 +644,10 @@ class SonoffDiscoveryServiceTest {
     void testJsonParsingErrors() {
         // Test with completely invalid JSON
         when(mockApiConnection.createCache()).thenReturn("invalid json");
-        
+
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
     }
@@ -711,10 +657,10 @@ class SonoffDiscoveryServiceTest {
     void testMissingDataField() {
         String responseWithoutData = "{\"status\": \"ok\"}";
         when(mockApiConnection.createCache()).thenReturn(responseWithoutData);
-        
+
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
     }
@@ -724,10 +670,10 @@ class SonoffDiscoveryServiceTest {
     void testMissingThingListField() {
         String responseWithoutThingList = "{\"data\": {\"other\": \"field\"}}";
         when(mockApiConnection.createCache()).thenReturn(responseWithoutThingList);
-        
+
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
     }
@@ -735,25 +681,15 @@ class SonoffDiscoveryServiceTest {
     @Test
     @DisplayName("Should handle null JSON elements")
     void testNullJsonElements() {
-        String responseWithNulls = "{" +
-                "\"data\": {" +
-                "\"thingList\": [" +
-                "null," +
-                "{" +
-                "\"itemType\": 1," +
-                "\"itemData\": null" +
-                "}," +
-                createDeviceJson("valid-device", "Valid Device", 1) +
-                "]" +
-                "}" +
-                "}";
-        
+        String responseWithNulls = "{" + "\"data\": {" + "\"thingList\": [" + "null," + "{" + "\"itemType\": 1,"
+                + "\"itemData\": null" + "}," + createDeviceJson("valid-device", "Valid Device", 1) + "]" + "}" + "}";
+
         when(mockApiConnection.createCache()).thenReturn(responseWithNulls);
         when(mockCacheProvider.checkFile("valid-device")).thenReturn(false);
-        
+
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Should only process the valid device
         assertNotNull(devices);
         assertEquals(1, devices.size());
@@ -763,25 +699,15 @@ class SonoffDiscoveryServiceTest {
     @Test
     @DisplayName("Should handle device with missing extra field")
     void testDeviceWithMissingExtraField() {
-        String deviceWithoutExtra = "{" +
-                "\"data\": {" +
-                "\"thingList\": [" +
-                "{" +
-                "\"itemType\": 1," +
-                "\"itemData\": {" +
-                "\"deviceid\": \"device-no-extra\"," +
-                "\"name\": \"Device Without Extra\"" +
-                "}" +
-                "}" +
-                "]" +
-                "}" +
-                "}";
-        
+        String deviceWithoutExtra = "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1,"
+                + "\"itemData\": {" + "\"deviceid\": \"device-no-extra\"," + "\"name\": \"Device Without Extra\"" + "}"
+                + "}" + "]" + "}" + "}";
+
         when(mockApiConnection.createCache()).thenReturn(deviceWithoutExtra);
-        
+
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Device should be skipped due to missing extra field
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
@@ -790,26 +716,15 @@ class SonoffDiscoveryServiceTest {
     @Test
     @DisplayName("Should handle device with missing uiid field")
     void testDeviceWithMissingUiidField() {
-        String deviceWithoutUiid = "{" +
-                "\"data\": {" +
-                "\"thingList\": [" +
-                "{" +
-                "\"itemType\": 1," +
-                "\"itemData\": {" +
-                "\"deviceid\": \"device-no-uiid\"," +
-                "\"name\": \"Device Without UIID\"," +
-                "\"extra\": {}" +
-                "}" +
-                "}" +
-                "]" +
-                "}" +
-                "}";
-        
+        String deviceWithoutUiid = "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1,"
+                + "\"itemData\": {" + "\"deviceid\": \"device-no-uiid\"," + "\"name\": \"Device Without UIID\","
+                + "\"extra\": {}" + "}" + "}" + "]" + "}" + "}";
+
         when(mockApiConnection.createCache()).thenReturn(deviceWithoutUiid);
-        
+
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Device should be skipped due to missing uiid field
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
@@ -820,9 +735,9 @@ class SonoffDiscoveryServiceTest {
     void testCacheProviderExceptions() {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenThrow(new RuntimeException("Cache error"));
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Should not throw exception even if cache provider fails
         assertDoesNotThrow(() -> {
             List<JsonObject> devices = discoveryService.createCache(things);
@@ -836,9 +751,9 @@ class SonoffDiscoveryServiceTest {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenReturn(false);
         doThrow(new RuntimeException("Handler error")).when(mockAccountHandler).addState("device1");
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Should not throw exception even if account handler fails
         assertDoesNotThrow(() -> {
             List<JsonObject> devices = discoveryService.createCache(things);
@@ -855,19 +770,19 @@ class SonoffDiscoveryServiceTest {
         ThingHandler existingHandler = mock(ThingHandler.class);
         Map<String, Object> config = new HashMap<>();
         config.put("deviceid", "device1");
-        
+
         when(existingThing.getConfiguration()).thenReturn(new Configuration(config));
         when(existingThing.getHandler()).thenReturn(existingHandler);
-        
+
         List<Thing> things = new ArrayList<>();
         things.add(existingThing);
-        
+
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenReturn(false);
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify thing was re-initialized
         verify(existingHandler).thingUpdated(existingThing);
         assertNotNull(devices);
@@ -879,13 +794,13 @@ class SonoffDiscoveryServiceTest {
     void testThingWithNullConfiguration() {
         Thing thingWithNullConfig = mock(Thing.class);
         when(thingWithNullConfig.getConfiguration()).thenReturn(null);
-        
+
         List<Thing> things = new ArrayList<>();
         things.add(thingWithNullConfig);
-        
+
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenReturn(false);
-        
+
         // Should not throw exception
         assertDoesNotThrow(() -> {
             List<JsonObject> devices = discoveryService.createCache(things);
@@ -899,16 +814,16 @@ class SonoffDiscoveryServiceTest {
         Thing thingWithNullHandler = mock(Thing.class);
         Map<String, Object> config = new HashMap<>();
         config.put("deviceid", "device1");
-        
+
         when(thingWithNullHandler.getConfiguration()).thenReturn(new Configuration(config));
         when(thingWithNullHandler.getHandler()).thenReturn(null);
-        
+
         List<Thing> things = new ArrayList<>();
         things.add(thingWithNullHandler);
-        
+
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenReturn(false);
-        
+
         // Should not throw exception
         assertDoesNotThrow(() -> {
             List<JsonObject> devices = discoveryService.createCache(things);
@@ -954,29 +869,24 @@ class SonoffDiscoveryServiceTest {
     @DisplayName("Should handle unsupported device types")
     void testUnsupportedDeviceTypes() {
         // Create device with unsupported UIID
-        String unsupportedDeviceResponse = "{" +
-                "\"data\": {" +
-                "\"thingList\": [" +
-                createDeviceJson("unsupported-device", "Unsupported Device", 9999) +
-                "]" +
-                "}" +
-                "}";
-        
+        String unsupportedDeviceResponse = "{" + "\"data\": {" + "\"thingList\": ["
+                + createDeviceJson("unsupported-device", "Unsupported Device", 9999) + "]" + "}" + "}";
+
         when(mockApiConnection.createCache()).thenReturn(unsupportedDeviceResponse);
         when(mockCacheProvider.checkFile("unsupported-device")).thenReturn(false);
-        
+
         // Mock SonoffBindingConstants.createMap() to return empty map (no support for UIID 9999)
         try (MockedStatic<SonoffBindingConstants> mockedConstants = mockStatic(SonoffBindingConstants.class)) {
             Map<Integer, ThingTypeUID> emptyMap = new HashMap<>();
             Map<Integer, ThingTypeUID> emptyZigbeeMap = new HashMap<>();
             Map<Integer, ThingTypeUID> emptySensorMap = new HashMap<>();
-            
+
             mockedConstants.when(SonoffBindingConstants::createMap).thenReturn(emptyMap);
             mockedConstants.when(SonoffBindingConstants::createZigbeeMap).thenReturn(emptyZigbeeMap);
             mockedConstants.when(SonoffBindingConstants::createSensorMap).thenReturn(emptySensorMap);
 
             List<Thing> things = new ArrayList<>();
-            
+
             // Execute discovery
             try {
                 java.lang.reflect.Method discoverMethod = discoveryService.getClass().getDeclaredMethod("discover");
@@ -996,15 +906,15 @@ class SonoffDiscoveryServiceTest {
     void testCreateNewCacheFile() {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenReturn(false);
-        
+
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify cache file creation
         verify(mockCacheProvider).checkFile("device1");
         verify(mockCacheProvider).newFile(eq("device1"), anyString());
         verify(mockAccountHandler).addState("device1");
-        
+
         assertNotNull(devices);
         assertEquals(1, devices.size());
     }
@@ -1014,15 +924,15 @@ class SonoffDiscoveryServiceTest {
     void testSkipCacheCreationForExistingFile() {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenReturn(true);
-        
+
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify cache file was checked but not created
         verify(mockCacheProvider).checkFile("device1");
         verify(mockCacheProvider, never()).newFile(anyString(), anyString());
         verify(mockAccountHandler, never()).addState(anyString());
-        
+
         // Device should still be included in results
         assertNotNull(devices);
         assertEquals(1, devices.size());
@@ -1033,16 +943,16 @@ class SonoffDiscoveryServiceTest {
     void testCacheProviderFileCheckException() {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenThrow(new RuntimeException("File check failed"));
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Should handle exception gracefully
         assertDoesNotThrow(() -> {
             List<JsonObject> devices = discoveryService.createCache(things);
             assertNotNull(devices);
             assertEquals(1, devices.size());
         });
-        
+
         // Verify file check was attempted
         verify(mockCacheProvider).checkFile("device1");
     }
@@ -1053,16 +963,16 @@ class SonoffDiscoveryServiceTest {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenReturn(false);
         doThrow(new RuntimeException("File creation failed")).when(mockCacheProvider).newFile(anyString(), anyString());
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Should handle exception gracefully
         assertDoesNotThrow(() -> {
             List<JsonObject> devices = discoveryService.createCache(things);
             assertNotNull(devices);
             assertEquals(1, devices.size());
         });
-        
+
         // Verify file creation was attempted
         verify(mockCacheProvider).newFile(eq("device1"), anyString());
     }
@@ -1072,18 +982,17 @@ class SonoffDiscoveryServiceTest {
     void testCacheContentCreation() {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenReturn(false);
-        
+
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify cache file was created with proper JSON content
         verify(mockCacheProvider).newFile(eq("device1"), argThat(jsonContent -> {
             // Verify the JSON content contains expected device data
-            return jsonContent.contains("\"deviceid\":\"device1\"") &&
-                   jsonContent.contains("\"name\":\"Test Device\"") &&
-                   jsonContent.contains("\"uiid\":1");
+            return jsonContent.contains("\"deviceid\":\"device1\"") && jsonContent.contains("\"name\":\"Test Device\"")
+                    && jsonContent.contains("\"uiid\":1");
         }));
-        
+
         assertNotNull(devices);
         assertEquals(1, devices.size());
     }
@@ -1091,41 +1000,36 @@ class SonoffDiscoveryServiceTest {
     @Test
     @DisplayName("Should handle multiple devices with mixed cache states")
     void testMixedCacheStates() {
-        String multiDeviceResponse = "{" +
-                "\"data\": {" +
-                "\"thingList\": [" +
-                createDeviceJson("cached-device", "Cached Device", 1) + "," +
-                createDeviceJson("new-device", "New Device", 2) + "," +
-                createDeviceJson("another-new", "Another New", 3) +
-                "]" +
-                "}" +
-                "}";
-        
+        String multiDeviceResponse = "{" + "\"data\": {" + "\"thingList\": ["
+                + createDeviceJson("cached-device", "Cached Device", 1) + ","
+                + createDeviceJson("new-device", "New Device", 2) + ","
+                + createDeviceJson("another-new", "Another New", 3) + "]" + "}" + "}";
+
         when(mockApiConnection.createCache()).thenReturn(multiDeviceResponse);
-        
+
         // Setup mixed cache states
         when(mockCacheProvider.checkFile("cached-device")).thenReturn(true);
         when(mockCacheProvider.checkFile("new-device")).thenReturn(false);
         when(mockCacheProvider.checkFile("another-new")).thenReturn(false);
-        
+
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify cache operations
         verify(mockCacheProvider).checkFile("cached-device");
         verify(mockCacheProvider).checkFile("new-device");
         verify(mockCacheProvider).checkFile("another-new");
-        
+
         // Only new devices should have cache files created
         verify(mockCacheProvider, never()).newFile(eq("cached-device"), anyString());
         verify(mockCacheProvider).newFile(eq("new-device"), anyString());
         verify(mockCacheProvider).newFile(eq("another-new"), anyString());
-        
+
         // Only new devices should have state added
         verify(mockAccountHandler, never()).addState("cached-device");
         verify(mockAccountHandler).addState("new-device");
         verify(mockAccountHandler).addState("another-new");
-        
+
         assertNotNull(devices);
         assertEquals(3, devices.size());
     }
@@ -1133,27 +1037,19 @@ class SonoffDiscoveryServiceTest {
     @Test
     @DisplayName("Should handle cache operations with null device data")
     void testCacheOperationsWithNullData() {
-        String responseWithNullData = "{" +
-                "\"data\": {" +
-                "\"thingList\": [" +
-                "{" +
-                "\"itemType\": 1," +
-                "\"itemData\": null" +
-                "}" +
-                "]" +
-                "}" +
-                "}";
-        
+        String responseWithNullData = "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1,"
+                + "\"itemData\": null" + "}" + "]" + "}" + "}";
+
         when(mockApiConnection.createCache()).thenReturn(responseWithNullData);
-        
+
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // No cache operations should be performed for null data
         verify(mockCacheProvider, never()).checkFile(anyString());
         verify(mockCacheProvider, never()).newFile(anyString(), anyString());
         verify(mockAccountHandler, never()).addState(anyString());
-        
+
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
     }
@@ -1164,18 +1060,18 @@ class SonoffDiscoveryServiceTest {
         when(mockConnectionManager.getMode()).thenReturn("local");
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenReturn(false);
-        
+
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify login was called for local mode
         verify(mockApiConnection).login();
-        
+
         // Verify cache operations still work in local mode
         verify(mockCacheProvider).checkFile("device1");
         verify(mockCacheProvider).newFile(eq("device1"), anyString());
         verify(mockAccountHandler).addState("device1");
-        
+
         assertNotNull(devices);
         assertEquals(1, devices.size());
     }
@@ -1187,15 +1083,15 @@ class SonoffDiscoveryServiceTest {
         doThrow(new RuntimeException("Login failed")).when(mockApiConnection).login();
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
         when(mockCacheProvider.checkFile("device1")).thenReturn(false);
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Should handle login failure gracefully
         assertDoesNotThrow(() -> {
             List<JsonObject> devices = discoveryService.createCache(things);
             assertNotNull(devices);
         });
-        
+
         verify(mockApiConnection).login();
     }
 }
