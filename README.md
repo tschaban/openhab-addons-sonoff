@@ -207,9 +207,6 @@ For developers working on the Sonoff binding, comprehensive technical documentat
 
 # Full CI/CD pipeline with testing, compilation, and deployment
 .\task-run-deploy.ps1
-
-# Verify testing framework setup
-.\task-verify-test-run.ps1
 ```
 
 ### 🎯 Key Features

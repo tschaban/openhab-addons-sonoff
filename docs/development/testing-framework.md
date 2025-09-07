@@ -67,19 +67,6 @@ src/
 6. Deploy JAR to OpenHAB
 7. Clear OpenHAB logs
 
-#### 3. Test Verification Scripts
-**Purpose:** Verify testing framework setup and configuration
-
-**Windows PowerShell:**
-```powershell
-.\task-verify-test-run.ps1
-```
-
-**Linux/Bash:**
-```bash
-./task-verify-test-run.sh
-```
-
 ### Manual Test Execution
 
 #### In Full OpenHAB Environment
@@ -236,26 +223,26 @@ void testPerformance() {
 
 ## Cross-Platform Support
 
-### Verification Scripts Available
-- `verify-tests.sh` - Linux/macOS Bash script
-- `verify-tests.ps1` - Windows PowerShell script  
-- `verify-tests.bat` - Windows Command Prompt batch file
+### Available Scripts
+- **task-run-unit-tests.ps1** - Windows PowerShell (Enhanced with 4-step progress)
+- **task-run-deploy.ps1** - Windows PowerShell (7-step CI/CD pipeline)
 
 ### Prerequisites
 - **Java 17+** installed and in PATH
 - **Maven 3.6+** installed and in PATH
-- **Git** (for cloning the repository)
+- **Git** (for repository operations)
 
 ### Platform-Specific Notes
 
-**Windows:**
-- Use PowerShell for the best experience (`.\verify-tests.ps1`)
-- Command Prompt is also supported (`verify-tests.bat`)
-- Ensure Java and Maven are in your system PATH
+**Windows (Recommended):**
+- Use PowerShell for full feature support
+- Enhanced scripts with colored output and progress tracking
+- Comprehensive error handling and troubleshooting
+- Timing measurements and performance metrics
 
 **Linux/macOS:**
-- Make the script executable: `chmod +x verify-tests.sh`
-- Run with: `./verify-tests.sh`
+- Full Maven commands work natively
+- Use standard Maven commands: `mvn test`, `mvn spotless:apply`
 
 ## Development Workflow
 
@@ -292,7 +279,6 @@ mvn test
 #### Automated Scripts
 - **task-run-unit-tests.ps1** - Standalone test execution with detailed progress
 - **task-run-deploy.ps1** - Full CI/CD pipeline with testing quality gate
-- **task-verify-test-run.ps1/.sh** - Framework verification and setup validation
 
 #### Quality Gates
 - **Code formatting** must pass (Spotless)
@@ -320,11 +306,6 @@ mvn test
 - **Deployment abortion** if any tests fail
 - **JAR file validation** and deployment verification
 - **OpenHAB log clearing** for clean monitoring
-
-#### task-verify-test-run.ps1/.sh
-- **Framework setup verification**
-- **Cross-platform compatibility**
-- **Dependency checking** (Java, Maven)
 
 ## Test Coverage Summary
 
@@ -370,7 +351,7 @@ The testing framework has evolved significantly from the initial simple setup:
 
 ### Previous State
 - 2 basic test files (SimpleJUnitTest.java, SonoffBindingConstantsTest.java)
-- Basic verification scripts (verify-tests.sh, verify-tests.ps1, verify-tests.bat)
+- Basic verification scripts (no longer needed)
 - Simple JUnit 5 configuration
 
 ### Current State
