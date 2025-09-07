@@ -29,7 +29,7 @@ jobs:
         distribution: 'temurin'
         
     - name: Cache Maven dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-parent-${{ hashFiles('**/pom.xml') }}
@@ -69,7 +69,7 @@ jobs:
         fi
         
     - name: Cache parent POM installation
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2/repository/org/openhab
         key: ${{ runner.os }}-openhab-parent-${{ env.OPENHAB_VERSION }}
@@ -91,7 +91,7 @@ jobs:
         distribution: 'temurin'
         
     - name: Restore Maven dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-parent-${{ hashFiles('**/pom.xml') }}
@@ -100,7 +100,7 @@ jobs:
           ${{ runner.os }}-m2-
           
     - name: Restore parent POM cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2/repository/org/openhab
         key: ${{ runner.os }}-openhab-parent-${{ env.OPENHAB_VERSION }}
@@ -138,7 +138,7 @@ jobs:
         distribution: 'temurin'
         
     - name: Restore Maven dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-parent-${{ hashFiles('**/pom.xml') }}
@@ -147,7 +147,7 @@ jobs:
           ${{ runner.os }}-m2-
           
     - name: Restore parent POM cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2/repository/org/openhab
         key: ${{ runner.os }}-openhab-parent-${{ env.OPENHAB_VERSION }}
@@ -177,7 +177,7 @@ jobs:
         fail-on-error: true
         
     - name: Upload test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: test-results-jdk${{ matrix.java }}
@@ -202,7 +202,7 @@ jobs:
         distribution: 'temurin'
         
     - name: Restore Maven dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-parent-${{ hashFiles('**/pom.xml') }}
@@ -211,7 +211,7 @@ jobs:
           ${{ runner.os }}-m2-
           
     - name: Restore parent POM cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2/repository/org/openhab
         key: ${{ runner.os }}-openhab-parent-${{ env.OPENHAB_VERSION }}
@@ -255,7 +255,7 @@ jobs:
         fi
         
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: sonoff-binding-jar
         path: target/*.jar
@@ -394,7 +394,7 @@ jobs:
         mvn clean package -f pom-standalone.xml -DskipTests
         
     - name: Upload fallback artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: sonoff-binding-fallback-jar
         path: target/*.jar

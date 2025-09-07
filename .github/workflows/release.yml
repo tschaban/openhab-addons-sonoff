@@ -30,7 +30,7 @@ jobs:
         distribution: 'temurin'
         
     - name: Cache Maven dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
@@ -93,7 +93,7 @@ jobs:
         distribution: 'temurin'
         
     - name: Cache Maven dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
@@ -147,12 +147,12 @@ jobs:
         fi
         
     - name: Create Release
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ steps.version.outputs.version }}
-        release_name: Sonoff Binding Smart'nyDom ${{ steps.version.outputs.version }}
+        name: Sonoff Binding Smart'nyDom ${{ steps.version.outputs.version }}
         body: |
           ## 🚀 Sonoff Binding - Smart'nyDom Enhanced Edition ${{ steps.version.outputs.version }}
           
@@ -186,16 +186,8 @@ jobs:
           Based on original work by [delid4ve](https://github.com/delid4ve/openhab-3.x-sonoff)
         draft: false
         prerelease: false
-        
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: target/org.openhab.binding.sonoff-*.jar
-        asset_name: org.openhab.binding.sonoff-${{ steps.version.outputs.version }}-SmartnyDom.jar
-        asset_content_type: application/java-archive
+        files: |
+          target/org.openhab.binding.sonoff-*.jar
 
   post-release:
     name: Post-Release Tasks
