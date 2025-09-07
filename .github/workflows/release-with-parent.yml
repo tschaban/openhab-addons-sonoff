@@ -27,7 +27,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Set up JDK 17
+    - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
         java-version: '21'
@@ -47,7 +47,7 @@ jobs:
         echo "🔄 Setting up OpenHAB parent POM for release..."
         
         # Clone OpenHAB addons repository
-        git clone --depth 1 --branch main https://github.com/openhab/openhab-addons.git ../openhab-addons
+        git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         
         # Install parent POMs
         cd ../openhab-addons
@@ -122,7 +122,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Set up JDK 17
+    - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
         java-version: '21'

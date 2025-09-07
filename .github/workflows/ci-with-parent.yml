@@ -40,7 +40,7 @@ jobs:
     - name: Clone OpenHAB addons repository
       run: |
         echo "🔄 Cloning OpenHAB addons repository for parent POM..."
-        git clone --depth 1 --branch main https://github.com/openhab/openhab-addons.git ../openhab-addons
+        git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         
     - name: Install parent POM to local repository
       run: |
