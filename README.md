@@ -188,6 +188,41 @@ DateTime		MotionActivated		        "PIR Activated"				 	        {channel="sonoff
 
 ## Credits
 
+## Development Documentation
+
+For developers working on the Sonoff binding, comprehensive technical documentation is available in the `docs/` directory:
+
+### 🔧 Development Framework
+- **[Testing Framework](docs/development/testing-framework.md)** - Complete JUnit 5 testing setup with Mockito, automated scripts, and CI/CD integration
+
+### 🧪 Testing Documentation
+- **[Cache Provider Tests](docs/testing/cache-provider-tests.md)** - Unit, integration, and error handling tests for SonoffCacheProvider
+- **[Discovery Service Tests](docs/testing/discovery-service-tests.md)** - Comprehensive testing for device discovery functionality
+- **[Handler Factory Tests](docs/testing/handler-factory-tests.md)** - Unit and integration tests for SonoffHandlerFactory
+
+### 📋 Quick Development Setup
+```bash
+# Run all tests with detailed progress
+.\task-run-unit-tests.ps1
+
+# Full CI/CD pipeline with testing, compilation, and deployment
+.\task-run-deploy.ps1
+
+# Verify testing framework setup
+.\task-verify-test-run.ps1
+```
+
+### 🎯 Key Features
+- **100+ test methods** across 6 comprehensive test classes
+- **Quality gates** that prevent deployment of failing code
+- **Mock-based testing** for reliable unit tests
+- **Integration testing** with real file system operations
+- **Automated scripts** with detailed progress tracking and error handling
+
+---
+
+## Acknowledgments
+
 Huge thanks to the following, this would not be possible without you:
 
 https://github.com/skydiver
