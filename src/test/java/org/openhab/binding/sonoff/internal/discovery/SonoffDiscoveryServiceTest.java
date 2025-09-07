@@ -91,7 +91,7 @@ class SonoffDiscoveryServiceTest {
     private List<DiscoveryResult> discoveredResults;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         discoveryService = new SonoffDiscoveryService();
         discoveredResults = new ArrayList<>();
 
@@ -136,7 +136,7 @@ class SonoffDiscoveryServiceTest {
             ScheduledFuture<Object> future = mockScheduledFuture;
             lenient().doReturn(future).when(mockScheduler).schedule(any(Runnable.class), anyLong(),
                     any(TimeUnit.class));
-        } catch (Exception e) {
+        } catch (NoSuchFieldException | IllegalAccessException | SecurityException e) {
             // Fallback - tests may still work without scheduler mock
         }
 
