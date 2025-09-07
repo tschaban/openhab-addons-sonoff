@@ -229,10 +229,10 @@ public class SonoffBindingConstants {
 
     public static final Map<Integer, ThingTypeUID> createSensorMap() { // thing type denotes number of channels
         Map<Integer, ThingTypeUID> sensorTypes = new HashMap<>();
-        sensorTypes.put(4, THING_TYPE_RF1);
-        sensorTypes.put(4, THING_TYPE_RF2);
-        sensorTypes.put(4, THING_TYPE_RF3);
-        sensorTypes.put(4, THING_TYPE_RF4);
+        sensorTypes.put(1, THING_TYPE_RF1); // It was 4 orginally - why?
+        sensorTypes.put(2, THING_TYPE_RF2); // It was 4 orginally - why?
+        sensorTypes.put(3, THING_TYPE_RF3); // It was 4 orginally - why?
+        sensorTypes.put(4, THING_TYPE_RF4); // It was 4 orginally - why?
         sensorTypes.put(6, THING_TYPE_RF6);
 
         return Collections.unmodifiableMap(sensorTypes);
