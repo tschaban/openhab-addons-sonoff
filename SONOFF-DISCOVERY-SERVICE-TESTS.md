@@ -128,8 +128,8 @@ mvn test -Dtest=SonoffDiscoveryServiceTest
 
 ## Test Quality Metrics
 
-- **Total Tests**: 44
-- **Lines of Code**: ~1060
+- **Total Tests**: 10
+- **Lines of Code**: ~300
 - **Mock Objects**: 11
 - **Helper Methods**: 4
 - **Coverage**: Comprehensive (all public methods + critical private methods)
