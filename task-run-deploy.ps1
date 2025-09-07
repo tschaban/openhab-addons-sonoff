@@ -10,7 +10,7 @@ $logPath = "O:\configuration\logs\openhab.log"
 
 # Step 1: Clear console for clean output
 clear
-Write-Host "[STEP 1/6] Clearing console for clean output..." -ForegroundColor Yellow
+Write-Host "[STEP 1/7] Clearing console for clean output..." -ForegroundColor Yellow
 
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Sonoff Binding Compile & Upload" -ForegroundColor Cyan
@@ -26,7 +26,7 @@ Write-Host "  Log File: $logPath" -ForegroundColor Gray
 Write-Host ""
 
 # Step 2: Navigate to project directory
-Write-Host "[STEP 2/6] Navigating to project directory..." -ForegroundColor Yellow
+Write-Host "[STEP 2/7] Navigating to project directory..." -ForegroundColor Yellow
 Write-Host "Target directory: $projectPath" -ForegroundColor Gray
 
 if (Test-Path $projectPath) {
@@ -51,7 +51,7 @@ Write-Host "Location: $(Get-Location)" -ForegroundColor Gray
 Write-Host ""
 
 # Step 3: Apply code formatting
-Write-Host "[STEP 3/6] Applying code formatting with Spotless..." -ForegroundColor Yellow
+Write-Host "[STEP 3/7] Applying code formatting with Spotless..." -ForegroundColor Yellow
 Write-Host "Running: mvn spotless:apply" -ForegroundColor Gray
 Write-Host "This ensures code follows OpenHAB style guidelines" -ForegroundColor Gray
 Write-Host ""
@@ -78,8 +78,51 @@ if ($spotlessResult -eq 0) {
 
 Write-Host ""
 
-# Step 4: Clean and compile the binding
-Write-Host "[STEP 4/6] Compiling Sonoff binding..." -ForegroundColor Yellow
+# Step 4: Run unit tests
+Write-Host "[STEP 4/7] Running unit tests..." -ForegroundColor Yellow
+Write-Host "Running: mvn test" -ForegroundColor Gray
+Write-Host ""
+Write-Host "This will:" -ForegroundColor Gray
+Write-Host "  - Compile all source and test classes" -ForegroundColor Gray
+Write-Host "  - Execute JUnit 5 test suites" -ForegroundColor Gray
+Write-Host "  - Validate code functionality before deployment" -ForegroundColor Gray
+Write-Host "  - Generate test reports and coverage data" -ForegroundColor Gray
+Write-Host "  - Ensure binding quality and reliability" -ForegroundColor Gray
+Write-Host ""
+
+$testStart = Get-Date
+mvn test
+$testResult = $LASTEXITCODE
+$testEnd = Get-Date
+$testDuration = ($testEnd - $testStart).TotalSeconds
+
+Write-Host ""
+if ($testResult -eq 0) {
+    Write-Host "[OK] All unit tests passed successfully" -ForegroundColor Green
+    Write-Host "Duration: $([math]::Round($testDuration, 2)) seconds" -ForegroundColor Gray
+    Write-Host "Code quality validated - proceeding with deployment" -ForegroundColor Gray
+} else {
+    Write-Host "[ERROR] Unit tests failed (exit code: $testResult)" -ForegroundColor Red
+    Write-Host "Duration: $([math]::Round($testDuration, 2)) seconds" -ForegroundColor Gray
+    Write-Host ""
+    Write-Host "DEPLOYMENT ABORTED - Tests must pass before deployment" -ForegroundColor Red
+    Write-Host ""
+    Write-Host "Troubleshooting:" -ForegroundColor Yellow
+    Write-Host "  - Check test output above for specific failures" -ForegroundColor White
+    Write-Host "  - Review test reports in target/surefire-reports/" -ForegroundColor White
+    Write-Host "  - Fix failing tests before attempting deployment" -ForegroundColor White
+    Write-Host "  - Verify all dependencies are available" -ForegroundColor White
+    Write-Host "  - Check for compilation errors in test classes" -ForegroundColor White
+    Write-Host ""
+    Write-Host "Use task-run-unit-tests.ps1 to run tests independently" -ForegroundColor Cyan
+    pause
+    exit $testResult
+}
+
+Write-Host ""
+
+# Step 5: Clean and compile the binding
+Write-Host "[STEP 5/7] Compiling Sonoff binding..." -ForegroundColor Yellow
 Write-Host "Running: mvn clean install -DskipChecks -DskipTests -pl :org.openhab.binding.sonoff" -ForegroundColor Gray
 Write-Host ""
 Write-Host "This will:" -ForegroundColor Gray
@@ -122,8 +165,8 @@ if ($compileResult -eq 0) {
 
 Write-Host ""
 
-# Step 5: Deploy JAR to OpenHAB
-Write-Host "[STEP 5/6] Deploying JAR to OpenHAB..." -ForegroundColor Yellow
+# Step 6: Deploy JAR to OpenHAB
+Write-Host "[STEP 6/7] Deploying JAR to OpenHAB..." -ForegroundColor Yellow
 Write-Host "Source: $jarSourcePath" -ForegroundColor Gray
 Write-Host "Destination: $jarDestPath" -ForegroundColor Gray
 
@@ -173,8 +216,8 @@ if (Test-Path $jarSourcePath) {
 
 Write-Host ""
 
-# Step 6: Clear OpenHAB log
-Write-Host "[STEP 6/6] Clearing OpenHAB log file..." -ForegroundColor Yellow
+# Step 7: Clear OpenHAB log
+Write-Host "[STEP 7/7] Clearing OpenHAB log file..." -ForegroundColor Yellow
 Write-Host "Log file: $logPath" -ForegroundColor Gray
 
 try {
@@ -200,14 +243,22 @@ Write-Host "[SUCCESS] Sonoff binding deployment completed!" -ForegroundColor Gre
 Write-Host ""
 Write-Host "Execution Summary:" -ForegroundColor Cyan
 Write-Host "  Code formatting: $([math]::Round($spotlessDuration, 2)) seconds" -ForegroundColor Gray
+Write-Host "  Unit tests: $([math]::Round($testDuration, 2)) seconds" -ForegroundColor Gray
 Write-Host "  Compilation: $([math]::Round($compileDuration, 2)) seconds" -ForegroundColor Gray
-Write-Host "  Total time: $([math]::Round($spotlessDuration + $compileDuration, 2)) seconds" -ForegroundColor Gray
+Write-Host "  Total time: $([math]::Round($spotlessDuration + $testDuration + $compileDuration, 2)) seconds" -ForegroundColor Gray
+Write-Host ""
+Write-Host "Quality Assurance:" -ForegroundColor Cyan
+Write-Host "  - Code formatting: PASSED" -ForegroundColor Green
+Write-Host "  - Unit tests: PASSED" -ForegroundColor Green
+Write-Host "  - Compilation: PASSED" -ForegroundColor Green
+Write-Host "  - Deployment: COMPLETED" -ForegroundColor Green
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Cyan
 Write-Host "  1. Restart OpenHAB to load the new binding" -ForegroundColor White
 Write-Host "  2. Check OpenHAB logs for binding startup messages" -ForegroundColor White
 Write-Host "  3. Verify Sonoff devices are discovered properly" -ForegroundColor White
 Write-Host "  4. Test binding functionality with your devices" -ForegroundColor White
+Write-Host "  5. Monitor logs for any runtime issues" -ForegroundColor White
 Write-Host ""
 Write-Host "Files updated:" -ForegroundColor Cyan
 Write-Host "  - Binding JAR: $jarDestPath" -ForegroundColor White
