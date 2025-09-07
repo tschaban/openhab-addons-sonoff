@@ -7,22 +7,22 @@ echo Verifying JUnit 5 test framework setup...
 REM Check if Java is available
 java -version >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ❌ Java is not installed or not in PATH.
+    echo [ERROR] Java is not installed or not in PATH.
     echo Please install Java 17+ and ensure it's in your PATH.
     exit /b 1
 )
-echo ✅ Java is available
+echo [OK] Java is available
 echo Java version:
 java -version
 
 REM Check if Maven is available
 mvn -version >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ❌ Maven is not installed or not in PATH.
+    echo [ERROR] Maven is not installed or not in PATH.
     echo Please install Maven and ensure it's in your PATH.
     exit /b 1
 )
-echo ✅ Maven is available
+echo [OK] Maven is available
 echo Maven version:
 mvn -version
 
@@ -32,21 +32,21 @@ echo Checking if parent POM is available...
 REM Check if parent POM is available
 mvn help:effective-pom -q >nul 2>&1
 if %errorlevel% equ 0 (
-    echo ✅ Parent POM is available. Running full test suite...
+    echo [OK] Parent POM is available. Running full test suite...
     echo.
     echo Running tests...
     mvn test
     if %errorlevel% equ 0 (
-        echo ✅ All tests passed! JUnit 5 framework is properly configured.
+        echo [SUCCESS] All tests passed! JUnit 5 framework is properly configured.
     ) else (
-        echo ❌ Tests failed. Check the output above for details.
+        echo [ERROR] Tests failed. Check the output above for details.
         exit /b 1
     )
 ) else (
-    echo ⚠️  Parent POM not available in current environment.
+    echo [WARNING] Parent POM not available in current environment.
     echo This is expected when running outside the full OpenHAB project.
-    echo ✅ JUnit 5 framework has been properly configured in pom.xml
-    echo ✅ Test classes are available in src/test/java/
+    echo [OK] JUnit 5 framework has been properly configured in pom.xml
+    echo [OK] Test classes are available in src/test/java/
     echo.
     echo To run tests in the full OpenHAB environment:
     echo   mvn test
@@ -63,5 +63,5 @@ if %errorlevel% equ 0 (
 )
 
 echo.
-echo ✅ Verification complete!
+echo [SUCCESS] Verification complete!
 pause
