@@ -4,8 +4,8 @@
 
 # Configuration
 $projectPath = "D:\Adrian\Projekty\openhab\openhab-addons\bundles\org.openhab.binding.sonoff"
-$jarSourcePath = "D:\Adrian\Projekty\openhab\openhab-addons\bundles\org.openhab.binding.sonoff\target\org.openhab.binding.sonoff-5.0.2-SNAPSHOT.jar"
-$jarDestPath = "O:\configuration\addons\org.openhab.binding.sonoff-5.0.2-SmartnyDom-v0.x.jar"
+$jarSourcePath = "D:\Adrian\Projekty\openhab\openhab-addons\bundles\org.openhab.binding.sonoff\target\org.openhab.binding.sonoff-5.0.0-SNAPSHOT.jar"
+$jarDestPath = "O:\configuration\addons\org.openhab.binding.sonoff-5.0.0-SmartnyDom-v0.x.jar"
 $logPath = "O:\configuration\logs\openhab.log"
 
 # Step 1: Clear console for clean output
