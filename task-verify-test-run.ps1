@@ -42,7 +42,8 @@ try {
     $null = mvn help:effective-pom -q 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "[OK] Parent POM is available. Running full test suite..." -ForegroundColor Green
-        
+        Write-Host "Applying code formatting..." -ForegroundColor Cyan
+        mvn spotless:apply
         Write-Host "`nRunning tests..." -ForegroundColor Cyan
         mvn test
         

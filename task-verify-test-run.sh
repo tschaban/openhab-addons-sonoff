@@ -24,6 +24,9 @@ echo "Checking if parent POM is available..."
 mvn help:effective-pom -q > /dev/null 2>&1
 if [ $? -eq 0 ]; then
     echo "[OK] Parent POM is available. Running full test suite..."
+    echo "Applying code formatting..."
+    mvn spotless:apply
+    echo "Running tests..."
     mvn test
     if [ $? -eq 0 ]; then
         echo "[SUCCESS] All tests passed! JUnit 5 framework is properly configured."
