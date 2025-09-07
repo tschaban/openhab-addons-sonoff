@@ -80,7 +80,7 @@ class SonoffDiscoveryServiceTest {
     private ScheduledExecutorService mockScheduler;
 
     @Mock
-    private ScheduledFuture<Object> mockScheduledFuture;
+    private ScheduledFuture<?> mockScheduledFuture;
 
     @Mock
     private DiscoveryListener mockDiscoveryListener;
@@ -112,7 +112,7 @@ class SonoffDiscoveryServiceTest {
 
         // Setup mock scheduler
         lenient().when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
-                .thenReturn((ScheduledFuture<Object>) mockScheduledFuture);
+                .thenReturn(mockScheduledFuture);
 
         // Setup addState method
         lenient().doNothing().when(mockAccountHandler).addState(anyString());
