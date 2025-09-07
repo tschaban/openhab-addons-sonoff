@@ -28,7 +28,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openhab.binding.sonoff.internal.SonoffBindingConstants;
 import org.openhab.binding.sonoff.internal.connection.SonoffApiConnection;
@@ -36,16 +35,13 @@ import org.openhab.binding.sonoff.internal.connection.SonoffConnectionManager;
 import org.openhab.binding.sonoff.internal.handler.SonoffAccountHandler;
 import org.openhab.binding.sonoff.internal.handler.SonoffRfBridgeHandler;
 import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeBridgeHandler;
-import org.openhab.core.config.core.Configuration;
 import org.openhab.core.config.discovery.DiscoveryListener;
 import org.openhab.core.config.discovery.DiscoveryResult;
 import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.Thing;
-import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.ThingUID;
 import org.openhab.core.thing.binding.ThingHandler;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
@@ -97,7 +93,7 @@ class SonoffDiscoveryServiceTest {
     void setUp() {
         discoveryService = new SonoffDiscoveryService();
         discoveredResults = new ArrayList<>();
-        
+
         // Setup account thing UID
         accountThingUID = new ThingUID(SonoffBindingConstants.THING_TYPE_ACCOUNT, "test-account");
 
@@ -150,8 +146,7 @@ class SonoffDiscoveryServiceTest {
     void testInitialization() {
         // Verify the discovery service is properly initialized
         assertNotNull(discoveryService);
-        assertEquals(SonoffBindingConstants.DISCOVERABLE_THING_TYPE_UIDS, 
-                     discoveryService.getSupportedThingTypes());
+        assertEquals(SonoffBindingConstants.DISCOVERABLE_THING_TYPE_UIDS, discoveryService.getSupportedThingTypes());
     }
 
     @Test
@@ -188,35 +183,17 @@ class SonoffDiscoveryServiceTest {
 
     // Helper method to create a simple API response
     private String createSimpleApiResponse() {
-        return "{" +
-                "\"data\": {" +
-                "\"thingList\": [" +
-                createDeviceJson("device1", "Test Device", 1) +
-                "]" +
-                "}" +
-                "}";
+        return "{" + "\"data\": {" + "\"thingList\": [" + createDeviceJson("device1", "Test Device", 1) + "]" + "}"
+                + "}";
     }
 
     // Helper method to create device JSON
     private String createDeviceJson(String deviceId, String name, int uiid) {
-        return "{" +
-                "\"itemType\": 1," +
-                "\"itemData\": {" +
-                "\"deviceid\": \"" + deviceId + "\"," +
-                "\"name\": \"" + name + "\"," +
-                "\"brandName\": \"Sonoff\"," +
-                "\"productModel\": \"Test Model\"," +
-                "\"devicekey\": \"test-key\"," +
-                "\"apikey\": \"test-api-key\"," +
-                "\"extra\": {" +
-                "\"uiid\": " + uiid +
-                "}," +
-                "\"params\": {" +
-                "\"fwVersion\": \"1.0.0\"," +
-                "\"ssid\": \"TestWiFi\"" +
-                "}" +
-                "}" +
-                "}";
+        return "{" + "\"itemType\": 1," + "\"itemData\": {" + "\"deviceid\": \"" + deviceId + "\"," + "\"name\": \""
+                + name + "\"," + "\"brandName\": \"Sonoff\"," + "\"productModel\": \"Test Model\","
+                + "\"devicekey\": \"test-key\"," + "\"apikey\": \"test-api-key\"," + "\"extra\": {" + "\"uiid\": "
+                + uiid + "}," + "\"params\": {" + "\"fwVersion\": \"1.0.0\"," + "\"ssid\": \"TestWiFi\"" + "}" + "}"
+                + "}";
     }
 
     // Helper method to create empty API response
@@ -234,20 +211,20 @@ class SonoffDiscoveryServiceTest {
     void testCreateCacheWithValidResponse() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertNotNull(devices);
         assertEquals(1, devices.size());
-        
+
         JsonObject device = devices.get(0);
         assertEquals("device1", device.get("deviceid").getAsString());
         assertEquals("Test Device", device.get("name").getAsString());
-        
+
         // Verify account handler was called
         verify(mockAccountHandler).addState("device1");
     }
@@ -257,12 +234,12 @@ class SonoffDiscoveryServiceTest {
     void testCreateCacheWithEmptyResponse() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(createEmptyApiResponse());
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
@@ -273,12 +250,12 @@ class SonoffDiscoveryServiceTest {
     void testCreateCacheWithMalformedResponse() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(createMalformedApiResponse());
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
@@ -289,12 +266,12 @@ class SonoffDiscoveryServiceTest {
     void testCreateCacheWithApiException() throws Exception {
         // Setup
         when(mockApiConnection.createCache()).thenThrow(new RuntimeException("API Error"));
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         assertNotNull(devices);
         assertTrue(devices.isEmpty());
@@ -306,12 +283,12 @@ class SonoffDiscoveryServiceTest {
         // Setup
         when(mockConnectionManager.getMode()).thenReturn("local");
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        
+
         List<Thing> things = new ArrayList<>();
-        
+
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
-        
+
         // Verify
         verify(mockApiConnection).login();
         assertNotNull(devices);
@@ -323,13 +300,13 @@ class SonoffDiscoveryServiceTest {
     void testScanTaskLifecycle() throws Exception {
         // Test startScan
         discoveryService.startScan();
-        
+
         // Verify scheduler was called
         verify(mockScheduler).schedule(any(Runnable.class), eq(0L), eq(TimeUnit.SECONDS));
 
         // Test stopScan
         discoveryService.stopScan();
-        
+
         // Verify task cancellation
         verify(mockScheduledFuture).cancel(true);
     }
@@ -339,7 +316,7 @@ class SonoffDiscoveryServiceTest {
     void testNullAccountHandler() throws Exception {
         // Set null account handler
         discoveryService.setThingHandler(null);
-        
+
         // Try to start scan - should not throw exception
         assertDoesNotThrow(() -> discoveryService.startScan());
     }
