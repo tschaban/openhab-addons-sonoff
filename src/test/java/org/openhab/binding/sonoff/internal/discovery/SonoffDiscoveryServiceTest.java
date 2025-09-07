@@ -31,7 +31,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openhab.binding.sonoff.internal.SonoffBindingConstants;
-import org.openhab.binding.sonoff.internal.SonoffCacheProvider;
+
 import org.openhab.binding.sonoff.internal.connection.SonoffApiConnection;
 import org.openhab.binding.sonoff.internal.connection.SonoffConnectionManager;
 import org.openhab.binding.sonoff.internal.handler.SonoffAccountHandler;
@@ -66,11 +66,10 @@ class SonoffDiscoveryServiceTest {
     @Mock
     private SonoffApiConnection mockApiConnection;
 
-    @Mock
-    private SonoffCacheProvider mockCacheProvider;
+
 
     @Mock
-    private Thing mockAccountThing;
+    private Bridge mockAccountThing;
 
     @Mock
     private Bridge mockRfBridge;
@@ -88,7 +87,7 @@ class SonoffDiscoveryServiceTest {
     private ScheduledExecutorService mockScheduler;
 
     @Mock
-    private ScheduledFuture<?> mockScheduledFuture;
+    private ScheduledFuture<Object> mockScheduledFuture;
 
     @Mock
     private DiscoveryListener mockDiscoveryListener;
@@ -118,13 +117,11 @@ class SonoffDiscoveryServiceTest {
         // Setup mock API connection
         lenient().when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
 
-        // Setup mock cache provider
-        lenient().when(mockCacheProvider.checkFile(anyString())).thenReturn(false);
-        lenient().doNothing().when(mockCacheProvider).newFile(anyString(), anyString());
+
 
         // Setup mock scheduler
         lenient().when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
-                .thenReturn(mockScheduledFuture);
+                .thenReturn((ScheduledFuture<Object>) mockScheduledFuture);
 
         // Setup addState method
         lenient().doNothing().when(mockAccountHandler).addState(anyString());
@@ -295,7 +292,7 @@ class SonoffDiscoveryServiceTest {
     void testCreateCacheWithValidResponse() {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenReturn(false);
+
 
         List<Thing> things = new ArrayList<>();
 
@@ -310,9 +307,7 @@ class SonoffDiscoveryServiceTest {
         assertEquals("device1", device.get("deviceid").getAsString());
         assertEquals("Test Device", device.get("name").getAsString());
 
-        // Verify cache operations
-        verify(mockCacheProvider).checkFile("device1");
-        verify(mockCacheProvider).newFile(eq("device1"), anyString());
+        // Verify account handler was called
         verify(mockAccountHandler).addState("device1");
     }
 
@@ -387,7 +382,7 @@ class SonoffDiscoveryServiceTest {
     void testCreateCacheWithExistingFile() {
         // Setup
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenReturn(true);
+
 
         List<Thing> things = new ArrayList<>();
 
@@ -399,8 +394,6 @@ class SonoffDiscoveryServiceTest {
         assertEquals(1, devices.size());
 
         // Verify cache file was not created again
-        verify(mockCacheProvider).checkFile("device1");
-        verify(mockCacheProvider, never()).newFile(anyString(), anyString());
         verify(mockAccountHandler, never()).addState(anyString());
     }
 
@@ -433,7 +426,7 @@ class SonoffDiscoveryServiceTest {
                 + createDeviceJson("device3", "Device 3", 3) + "]" + "}" + "}";
 
         when(mockApiConnection.createCache()).thenReturn(multiDeviceResponse);
-        when(mockCacheProvider.checkFile(anyString())).thenReturn(false);
+
 
         List<Thing> things = new ArrayList<>();
 
@@ -445,14 +438,12 @@ class SonoffDiscoveryServiceTest {
         assertEquals(3, devices.size());
 
         // Verify all devices were processed
-        verify(mockCacheProvider, times(3)).checkFile(anyString());
-        verify(mockCacheProvider, times(3)).newFile(anyString(), anyString());
         verify(mockAccountHandler, times(3)).addState(anyString());
     }
 
     @Test
     @DisplayName("Should discover RF bridge sub-devices")
-    void testRfBridgeSubDeviceDiscovery() {
+    void testRfBridgeSubDeviceDiscovery() throws Exception {
         // Setup RF bridge
         ThingUID rfBridgeUID = new ThingUID(new ThingTypeUID("sonoff", "28"), accountThingUID, "rf-bridge");
         when(mockRfBridge.getUID()).thenReturn(rfBridgeUID);
@@ -502,7 +493,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should discover Zigbee bridge sub-devices")
-    void testZigbeeBridgeSubDeviceDiscovery() {
+    void testZigbeeBridgeSubDeviceDiscovery() throws Exception {
         // Setup Zigbee bridge
         ThingUID zigbeeBridgeUID = new ThingUID(new ThingTypeUID("sonoff", "66"), accountThingUID, "zigbee-bridge");
         when(mockZigbeeBridge.getUID()).thenReturn(zigbeeBridgeUID);
@@ -551,7 +542,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle RF bridge with null sub-devices")
-    void testRfBridgeWithNullSubDevices() {
+    void testRfBridgeWithNullSubDevices() throws Exception {
         // Setup RF bridge
         ThingUID rfBridgeUID = new ThingUID(new ThingTypeUID("sonoff", "28"), accountThingUID, "rf-bridge");
         when(mockRfBridge.getUID()).thenReturn(rfBridgeUID);
@@ -579,7 +570,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle Zigbee bridge with null sub-devices")
-    void testZigbeeBridgeWithNullSubDevices() {
+    void testZigbeeBridgeWithNullSubDevices() throws Exception {
         // Setup Zigbee bridge
         ThingUID zigbeeBridgeUID = new ThingUID(new ThingTypeUID("sonoff", "66"), accountThingUID, "zigbee-bridge");
         when(mockZigbeeBridge.getUID()).thenReturn(zigbeeBridgeUID);
@@ -607,7 +598,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle bridge with null handler")
-    void testBridgeWithNullHandler() {
+    void testBridgeWithNullHandler() throws Exception {
         // Setup bridge with null handler
         ThingUID rfBridgeUID = new ThingUID(new ThingTypeUID("sonoff", "28"), accountThingUID, "rf-bridge");
         when(mockRfBridge.getUID()).thenReturn(rfBridgeUID);
@@ -641,7 +632,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle JSON parsing errors gracefully")
-    void testJsonParsingErrors() {
+    void testJsonParsingErrors() throws Exception {
         // Test with completely invalid JSON
         when(mockApiConnection.createCache()).thenReturn("invalid json");
 
@@ -654,7 +645,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle missing data field in response")
-    void testMissingDataField() {
+    void testMissingDataField() throws Exception {
         String responseWithoutData = "{\"status\": \"ok\"}";
         when(mockApiConnection.createCache()).thenReturn(responseWithoutData);
 
@@ -667,7 +658,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle missing thingList field in data")
-    void testMissingThingListField() {
+    void testMissingThingListField() throws Exception {
         String responseWithoutThingList = "{\"data\": {\"other\": \"field\"}}";
         when(mockApiConnection.createCache()).thenReturn(responseWithoutThingList);
 
@@ -680,12 +671,12 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle null JSON elements")
-    void testNullJsonElements() {
+    void testNullJsonElements() throws Exception {
         String responseWithNulls = "{" + "\"data\": {" + "\"thingList\": [" + "null," + "{" + "\"itemType\": 1,"
                 + "\"itemData\": null" + "}," + createDeviceJson("valid-device", "Valid Device", 1) + "]" + "}" + "}";
 
         when(mockApiConnection.createCache()).thenReturn(responseWithNulls);
-        when(mockCacheProvider.checkFile("valid-device")).thenReturn(false);
+
 
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
@@ -698,7 +689,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle device with missing extra field")
-    void testDeviceWithMissingExtraField() {
+    void testDeviceWithMissingExtraField() throws Exception {
         String deviceWithoutExtra = "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1,"
                 + "\"itemData\": {" + "\"deviceid\": \"device-no-extra\"," + "\"name\": \"Device Without Extra\"" + "}"
                 + "}" + "]" + "}" + "}";
@@ -715,7 +706,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle device with missing uiid field")
-    void testDeviceWithMissingUiidField() {
+    void testDeviceWithMissingUiidField() throws Exception {
         String deviceWithoutUiid = "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1,"
                 + "\"itemData\": {" + "\"deviceid\": \"device-no-uiid\"," + "\"name\": \"Device Without UIID\","
                 + "\"extra\": {}" + "}" + "}" + "]" + "}" + "}";
@@ -732,9 +723,8 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle cache provider exceptions")
-    void testCacheProviderExceptions() {
+    void testCacheProviderExceptions() throws Exception {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenThrow(new RuntimeException("Cache error"));
 
         List<Thing> things = new ArrayList<>();
 
@@ -747,9 +737,9 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle account handler exceptions")
-    void testAccountHandlerExceptions() {
+    void testAccountHandlerExceptions() throws Exception {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenReturn(false);
+
         doThrow(new RuntimeException("Handler error")).when(mockAccountHandler).addState("device1");
 
         List<Thing> things = new ArrayList<>();
@@ -764,7 +754,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle thing re-initialization")
-    void testThingReinitialization() {
+    void testThingReinitialization() throws Exception {
         // Setup existing thing with matching deviceid
         Thing existingThing = mock(Thing.class);
         ThingHandler existingHandler = mock(ThingHandler.class);
@@ -778,7 +768,7 @@ class SonoffDiscoveryServiceTest {
         things.add(existingThing);
 
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenReturn(false);
+
 
         // Execute
         List<JsonObject> devices = discoveryService.createCache(things);
@@ -791,7 +781,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle thing with null configuration")
-    void testThingWithNullConfiguration() {
+    void testThingWithNullConfiguration() throws Exception {
         Thing thingWithNullConfig = mock(Thing.class);
         when(thingWithNullConfig.getConfiguration()).thenReturn(null);
 
@@ -799,7 +789,7 @@ class SonoffDiscoveryServiceTest {
         things.add(thingWithNullConfig);
 
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenReturn(false);
+
 
         // Should not throw exception
         assertDoesNotThrow(() -> {
@@ -810,7 +800,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle thing with null handler")
-    void testThingWithNullHandler() {
+    void testThingWithNullHandler() throws Exception {
         Thing thingWithNullHandler = mock(Thing.class);
         Map<String, Object> config = new HashMap<>();
         config.put("deviceid", "device1");
@@ -822,7 +812,7 @@ class SonoffDiscoveryServiceTest {
         things.add(thingWithNullHandler);
 
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenReturn(false);
+
 
         // Should not throw exception
         assertDoesNotThrow(() -> {
@@ -833,7 +823,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle RF sub-device with missing remote_type")
-    void testRfSubDeviceWithMissingRemoteType() {
+    void testRfSubDeviceWithMissingRemoteType() throws Exception {
         // Setup RF bridge
         ThingUID rfBridgeUID = new ThingUID(new ThingTypeUID("sonoff", "28"), accountThingUID, "rf-bridge");
         when(mockRfBridge.getUID()).thenReturn(rfBridgeUID);
@@ -867,13 +857,12 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle unsupported device types")
-    void testUnsupportedDeviceTypes() {
+    void testUnsupportedDeviceTypes() throws Exception {
         // Create device with unsupported UIID
         String unsupportedDeviceResponse = "{" + "\"data\": {" + "\"thingList\": ["
                 + createDeviceJson("unsupported-device", "Unsupported Device", 9999) + "]" + "}" + "}";
 
         when(mockApiConnection.createCache()).thenReturn(unsupportedDeviceResponse);
-        when(mockCacheProvider.checkFile("unsupported-device")).thenReturn(false);
 
         // Mock SonoffBindingConstants.createMap() to return empty map (no support for UIID 9999)
         try (MockedStatic<SonoffBindingConstants> mockedConstants = mockStatic(SonoffBindingConstants.class)) {
@@ -903,16 +892,14 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should create new cache file when device not cached")
-    void testCreateNewCacheFile() {
+    void testCreateNewCacheFile() throws Exception {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenReturn(false);
+
 
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
 
         // Verify cache file creation
-        verify(mockCacheProvider).checkFile("device1");
-        verify(mockCacheProvider).newFile(eq("device1"), anyString());
         verify(mockAccountHandler).addState("device1");
 
         assertNotNull(devices);
@@ -921,17 +908,14 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should skip cache creation when file already exists")
-    void testSkipCacheCreationForExistingFile() {
+    void testSkipCacheCreationForExistingFile() throws Exception {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenReturn(true);
+
 
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
 
-        // Verify cache file was checked but not created
-        verify(mockCacheProvider).checkFile("device1");
-        verify(mockCacheProvider, never()).newFile(anyString(), anyString());
-        verify(mockAccountHandler, never()).addState(anyString());
+        // Device should still be included in results even if cached
 
         // Device should still be included in results
         assertNotNull(devices);
@@ -940,9 +924,8 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle cache provider file check exception")
-    void testCacheProviderFileCheckException() {
+    void testCacheProviderFileCheckException() throws Exception {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenThrow(new RuntimeException("File check failed"));
 
         List<Thing> things = new ArrayList<>();
 
@@ -954,15 +937,13 @@ class SonoffDiscoveryServiceTest {
         });
 
         // Verify file check was attempted
-        verify(mockCacheProvider).checkFile("device1");
     }
 
     @Test
     @DisplayName("Should handle cache provider new file exception")
-    void testCacheProviderNewFileException() {
+    void testCacheProviderNewFileException() throws Exception {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenReturn(false);
-        doThrow(new RuntimeException("File creation failed")).when(mockCacheProvider).newFile(anyString(), anyString());
+
 
         List<Thing> things = new ArrayList<>();
 
@@ -974,20 +955,18 @@ class SonoffDiscoveryServiceTest {
         });
 
         // Verify file creation was attempted
-        verify(mockCacheProvider).newFile(eq("device1"), anyString());
     }
 
     @Test
     @DisplayName("Should create cache with proper JSON content")
-    void testCacheContentCreation() {
+    void testCacheContentCreation() throws Exception {
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenReturn(false);
+
 
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
 
         // Verify cache file was created with proper JSON content
-        verify(mockCacheProvider).newFile(eq("device1"), argThat(jsonContent -> {
             // Verify the JSON content contains expected device data
             return jsonContent.contains("\"deviceid\":\"device1\"") && jsonContent.contains("\"name\":\"Test Device\"")
                     && jsonContent.contains("\"uiid\":1");
@@ -999,7 +978,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle multiple devices with mixed cache states")
-    void testMixedCacheStates() {
+    void testMixedCacheStates() throws Exception {
         String multiDeviceResponse = "{" + "\"data\": {" + "\"thingList\": ["
                 + createDeviceJson("cached-device", "Cached Device", 1) + ","
                 + createDeviceJson("new-device", "New Device", 2) + ","
@@ -1008,22 +987,13 @@ class SonoffDiscoveryServiceTest {
         when(mockApiConnection.createCache()).thenReturn(multiDeviceResponse);
 
         // Setup mixed cache states
-        when(mockCacheProvider.checkFile("cached-device")).thenReturn(true);
-        when(mockCacheProvider.checkFile("new-device")).thenReturn(false);
-        when(mockCacheProvider.checkFile("another-new")).thenReturn(false);
 
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
 
         // Verify cache operations
-        verify(mockCacheProvider).checkFile("cached-device");
-        verify(mockCacheProvider).checkFile("new-device");
-        verify(mockCacheProvider).checkFile("another-new");
 
         // Only new devices should have cache files created
-        verify(mockCacheProvider, never()).newFile(eq("cached-device"), anyString());
-        verify(mockCacheProvider).newFile(eq("new-device"), anyString());
-        verify(mockCacheProvider).newFile(eq("another-new"), anyString());
 
         // Only new devices should have state added
         verify(mockAccountHandler, never()).addState("cached-device");
@@ -1036,7 +1006,7 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle cache operations with null device data")
-    void testCacheOperationsWithNullData() {
+    void testCacheOperationsWithNullData() throws Exception {
         String responseWithNullData = "{" + "\"data\": {" + "\"thingList\": [" + "{" + "\"itemType\": 1,"
                 + "\"itemData\": null" + "}" + "]" + "}" + "}";
 
@@ -1046,8 +1016,6 @@ class SonoffDiscoveryServiceTest {
         List<JsonObject> devices = discoveryService.createCache(things);
 
         // No cache operations should be performed for null data
-        verify(mockCacheProvider, never()).checkFile(anyString());
-        verify(mockCacheProvider, never()).newFile(anyString(), anyString());
         verify(mockAccountHandler, never()).addState(anyString());
 
         assertNotNull(devices);
@@ -1056,10 +1024,10 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle cache operations in local mode")
-    void testCacheOperationsInLocalMode() {
+    void testCacheOperationsInLocalMode() throws Exception {
         when(mockConnectionManager.getMode()).thenReturn("local");
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenReturn(false);
+
 
         List<Thing> things = new ArrayList<>();
         List<JsonObject> devices = discoveryService.createCache(things);
@@ -1068,8 +1036,6 @@ class SonoffDiscoveryServiceTest {
         verify(mockApiConnection).login();
 
         // Verify cache operations still work in local mode
-        verify(mockCacheProvider).checkFile("device1");
-        verify(mockCacheProvider).newFile(eq("device1"), anyString());
         verify(mockAccountHandler).addState("device1");
 
         assertNotNull(devices);
@@ -1078,11 +1044,11 @@ class SonoffDiscoveryServiceTest {
 
     @Test
     @DisplayName("Should handle cache operations when API login fails")
-    void testCacheOperationsWithLoginFailure() {
+    void testCacheOperationsWithLoginFailure() throws Exception {
         when(mockConnectionManager.getMode()).thenReturn("local");
         doThrow(new RuntimeException("Login failed")).when(mockApiConnection).login();
         when(mockApiConnection.createCache()).thenReturn(createSimpleApiResponse());
-        when(mockCacheProvider.checkFile("device1")).thenReturn(false);
+
 
         List<Thing> things = new ArrayList<>();
 

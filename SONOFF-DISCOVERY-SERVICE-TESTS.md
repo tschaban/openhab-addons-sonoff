@@ -66,10 +66,11 @@ Comprehensive unit test suite for `SonoffDiscoveryService.java` with 44 test met
 - **SonoffAccountHandler** - Main bridge handler providing device access
 - **SonoffConnectionManager** - API and WebSocket connection management
 - **SonoffApiConnection** - HTTP API communication
-- **SonoffCacheProvider** - Device cache file operations
 - **ScheduledExecutorService** - Task scheduling (via reflection)
 - **Bridge handlers** - RF and Zigbee bridge handlers
-- **Thing objects** - OpenHAB thing instances
+- **Bridge objects** - OpenHAB bridge instances (account, RF, Zigbee)
+
+Note: SonoffCacheProvider is not mocked as it's instantiated directly in the service and works with the real file system.
 
 ### Test Data Helpers
 - `createSimpleApiResponse()` - Basic valid API response
@@ -128,8 +129,8 @@ mvn test -Dtest=SonoffDiscoveryServiceTest
 ## Test Quality Metrics
 
 - **Total Tests**: 44
-- **Lines of Code**: ~1200
-- **Mock Objects**: 12
+- **Lines of Code**: ~1060
+- **Mock Objects**: 11
 - **Helper Methods**: 4
 - **Coverage**: Comprehensive (all public methods + critical private methods)
 - **Error Scenarios**: 15+ different error conditions tested
