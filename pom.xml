@@ -17,6 +17,8 @@
   <properties>
     <!-- Set basedirRoot for standalone repository -->
     <basedirRoot>${project.basedir}</basedirRoot>
+    <!-- Skip XML validation for standalone repository -->
+    <skipXmlValidation>true</skipXmlValidation>  
   </properties>
 
   <dependencies>
