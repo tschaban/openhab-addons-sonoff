@@ -54,7 +54,12 @@ jobs:
       run: |
         echo "🔍 Verifying parent POM can be resolved..."
         mvn help:effective-pom -q > /dev/null && echo "✅ Parent POM resolution successful" || echo "❌ Parent POM resolution failed"
-        
+
+    - name: Apply code formatting
+      run: |
+        echo "🔍 Formatting code..."
+        mvn spotless:apply
+       
     - name: Compile addon
       run: |
         echo "🔨 Compiling addon..."
