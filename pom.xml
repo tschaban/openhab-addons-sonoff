@@ -14,6 +14,10 @@
 
   <name>openHAB Add-ons :: Bundles :: Sonoff Binding</name>
 
+  <properties>
+    <!-- Set basedirRoot for standalone repository -->
+    <basedirRoot>${project.basedir}</basedirRoot>
+  </properties>
 
   <dependencies>
     <!-- JUnit 5 for unit testing -->
