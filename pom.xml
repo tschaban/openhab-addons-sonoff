@@ -14,6 +14,11 @@
 
   <name>openHAB Add-ons :: Bundles :: Sonoff Binding</name>
 
+  <properties>
+    <!-- Set basedirRoot for standalone repository -->
+    <basedirRoot>${project.basedir}</basedirRoot>
+  </properties>
+
   <dependencies>
     <!-- JUnit 5 for unit testing -->
     <dependency>
@@ -94,6 +99,31 @@
               <goal>report</goal>
             </goals>
             <phase>test</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Skip directory-maven-plugin for standalone repository -->
+      <plugin>
+        <groupId>org.commonjava.maven.plugins</groupId>
+        <artifactId>directory-maven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>directories</id>
+            <phase>none</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Skip SAT plugin for standalone repository -->
+      <plugin>
+        <groupId>org.openhab.tools.sat</groupId>
+        <artifactId>sat-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>sat-all</id>
+            <phase>none</phase>
           </execution>
         </executions>
       </plugin>
