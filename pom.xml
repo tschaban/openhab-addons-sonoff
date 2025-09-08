@@ -18,7 +18,7 @@
     <!-- Set basedirRoot for standalone repository -->
     <basedirRoot>${project.basedir}</basedirRoot>
     <!-- Skip XML validation for standalone repository -->
-    <skipXmlValidation>true</skipXmlValidation>  
+    <skipXmlValidation>true</skipXmlValidation>
   </properties>
 
   <dependencies>
@@ -128,6 +128,22 @@
             <phase>none</phase>
           </execution>
         </executions>
+      </plugin>
+
+      <!-- Skip XML validation for standalone repository -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>xml-maven-plugin</artifactId>
+        <version>1.1.0</version>
+        <executions>
+          <execution>
+            <id>default</id>
+            <phase>none</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
       </plugin>
     </plugins>
   </build>
