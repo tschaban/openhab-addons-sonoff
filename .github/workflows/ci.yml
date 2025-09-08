@@ -163,4 +163,5 @@ jobs:
     - name: Quick compile test
       run: |
         echo "🔨 Testing compilation on ${{ matrix.os }}..."
+        mvn spotless:apply
         mvn clean compile -q
