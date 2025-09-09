@@ -55,9 +55,9 @@ jobs:
         echo "🔍 Verifying parent POM can be resolved..."
         mvn help:effective-pom -q > /dev/null && echo "✅ Parent POM resolution successful" || echo "❌ Parent POM resolution failed"
 
-    - name: Apply code formatting
+    - name: Apply code formatting for openhab-addons
       run: |
-        echo "🔍 Formatting code..."
+        echo "🔍 Formatting code for the content with no controll over"
         mvn spotless:apply
        
     - name: Compile addon
@@ -162,6 +162,7 @@ jobs:
         
     - name: Quick compile test
       run: |
-        echo "🔨 Testing compilation on ${{ matrix.os }}..."
+        echo "WARNINIG: That temporary code foramtig - that needs to be removed TODO ${{ matrix.os }}..."
         mvn spotless:apply
+        echo "🔨 Testing compilation on ${{ matrix.os }}..."
         mvn clean compile -q
