@@ -17,7 +17,6 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
@@ -32,7 +31,6 @@ import org.openhab.binding.sonoff.internal.communication.SonoffCommandMessage;
 import org.openhab.binding.sonoff.internal.config.DeviceConfig;
 import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.ChannelUID;
-import org.openhab.core.thing.Thing;
 import org.openhab.core.thing.ThingStatus;
 import org.openhab.core.thing.ThingStatusDetail;
 import org.openhab.core.thing.ThingStatusInfo;
@@ -78,12 +76,12 @@ class SonoffBaseBridgeHandlerTest {
         when(mockBridge.getUID()).thenReturn(thingUID);
         when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
         when(mockBridge.getStatusInfo()).thenReturn(mockThingStatusInfo);
-        
+
         // Setup device config
         deviceConfig = new DeviceConfig();
         deviceConfig.deviceid = "test-device-id";
         deviceConfig.local = true;
-        
+
         handler = new TestSonoffBaseBridgeHandler(mockBridge);
         handler.setTestConfig(deviceConfig);
     }
@@ -92,10 +90,10 @@ class SonoffBaseBridgeHandlerTest {
     void testInitialize_WithValidConfiguration_ShouldSetupCorrectly() {
         // Arrange
         setupValidInitialization();
-        
+
         // Act
         handler.initialize();
-        
+
         // Assert
         assertEquals("test-device-id", handler.getDeviceid());
         verify(mockAccountHandler).addDeviceListener("test-device-id", handler);
@@ -105,10 +103,10 @@ class SonoffBaseBridgeHandlerTest {
     void testInitialize_WithNoBridge_ShouldSetOfflineStatus() {
         // Arrange
         handler = new TestSonoffBaseBridgeHandler(null);
-        
+
         // Act
         handler.initialize();
-        
+
         // Assert
         assertEquals(ThingStatus.OFFLINE, handler.lastStatus);
         assertEquals(ThingStatusDetail.CONFIGURATION_ERROR, handler.lastStatusDetail);
@@ -119,10 +117,10 @@ class SonoffBaseBridgeHandlerTest {
     void testInitialize_WithNullDeviceState_ShouldSetOfflineStatus() {
         // Arrange
         when(mockAccountHandler.getState("test-device-id")).thenReturn(null);
-        
+
         // Act
         handler.initialize();
-        
+
         // Assert
         assertEquals(ThingStatus.OFFLINE, handler.lastStatus);
         assertEquals(ThingStatusDetail.CONFIGURATION_ERROR, handler.lastStatusDetail);
@@ -135,10 +133,10 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         when(mockAccountHandler.getMode()).thenReturn("local");
         when(mockDeviceState.getUiid()).thenReturn(999); // Unsupported UIID
-        
+
         // Act
         handler.initialize();
-        
+
         // Assert
         assertEquals(ThingStatus.OFFLINE, handler.lastStatus);
         assertEquals(ThingStatusDetail.COMMUNICATION_ERROR, handler.lastStatusDetail);
@@ -151,14 +149,14 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         when(mockAccountHandler.getMode()).thenReturn("mixed");
         when(mockDeviceState.getUiid()).thenReturn(1); // Assuming 1 is in LAN_IN
-        
+
         // Mock the constants using try-with-resources
         try (MockedStatic<SonoffBindingConstants> mockedConstants = mockStatic(SonoffBindingConstants.class)) {
             mockedConstants.when(() -> SonoffBindingConstants.LAN_IN.contains(1)).thenReturn(true);
-            
+
             // Act
             handler.initialize();
-            
+
             // Assert
             assertTrue(handler.isLocalIn);
         }
@@ -170,14 +168,14 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         when(mockAccountHandler.getMode()).thenReturn("mixed");
         when(mockDeviceState.getUiid()).thenReturn(2); // Assuming 2 is in LAN_OUT
-        
+
         // Mock the constants using try-with-resources
         try (MockedStatic<SonoffBindingConstants> mockedConstants = mockStatic(SonoffBindingConstants.class)) {
             mockedConstants.when(() -> SonoffBindingConstants.LAN_OUT.contains(2)).thenReturn(true);
-            
+
             // Act
             handler.initialize();
-            
+
             // Assert
             assertTrue(handler.isLocalOut);
         }
@@ -191,10 +189,10 @@ class SonoffBaseBridgeHandlerTest {
         handler.taskStarted = true;
         handler.cloud = true;
         handler.local = true;
-        
+
         // Act
         handler.dispose();
-        
+
         // Assert
         verify(mockAccountHandler).removeDeviceListener("test-device-id");
         assertFalse(handler.taskStarted);
@@ -210,10 +208,10 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         handler.initialize();
         when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.ONLINE);
-        
+
         // Act
         handler.bridgeStatusChanged(mockThingStatusInfo);
-        
+
         // Assert
         assertTrue(handler.startTasksCalled);
         assertTrue(handler.taskStarted);
@@ -227,10 +225,10 @@ class SonoffBaseBridgeHandlerTest {
         handler.initialize();
         handler.taskStarted = true;
         when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.OFFLINE);
-        
+
         // Act
         handler.bridgeStatusChanged(mockThingStatusInfo);
-        
+
         // Assert
         assertTrue(handler.cancelTasksCalled);
         assertFalse(handler.taskStarted);
@@ -246,13 +244,13 @@ class SonoffBaseBridgeHandlerTest {
         handler.initialize();
         handler.isLocalIn = true;
         when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.ONLINE);
-        
+
         // Act
         handler.bridgeStatusChanged(mockThingStatusInfo);
-        
+
         // Assert
         verify(mockAccountHandler).addLanService("test-device-id");
-        
+
         // Test offline scenario
         when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.OFFLINE);
         handler.bridgeStatusChanged(mockThingStatusInfo);
@@ -264,10 +262,10 @@ class SonoffBaseBridgeHandlerTest {
         // Arrange
         setupValidInitialization();
         handler.initialize();
-        
+
         // Act
         handler.handleCommand(mockChannelUID, RefreshType.REFRESH);
-        
+
         // Assert
         verify(mockAccountHandler, never()).queueMessage(any());
     }
@@ -279,10 +277,10 @@ class SonoffBaseBridgeHandlerTest {
         handler.initialize();
         when(mockChannelUID.getId()).thenReturn("sled");
         when(mockCommand.toString()).thenReturn("ON");
-        
+
         // Act
         handler.handleCommand(mockChannelUID, mockCommand);
-        
+
         // Assert
         verify(mockAccountHandler).queueMessage(any(SonoffCommandMessage.class));
     }
@@ -293,10 +291,10 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         handler.initialize();
         when(mockChannelUID.getId()).thenReturn("unknown");
-        
+
         // Act
         handler.handleCommand(mockChannelUID, mockCommand);
-        
+
         // Assert
         verify(mockAccountHandler, never()).queueMessage(any());
     }
@@ -307,10 +305,10 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         handler.initialize();
         SonoffCommandMessage message = new SonoffCommandMessage("test-device-id");
-        
+
         // Act
         handler.queueMessage(message);
-        
+
         // Assert
         verify(mockAccountHandler).queueMessage(message);
     }
@@ -320,10 +318,10 @@ class SonoffBaseBridgeHandlerTest {
         // Arrange
         handler.account = null;
         SonoffCommandMessage message = new SonoffCommandMessage("test-device-id");
-        
+
         // Act
         handler.queueMessage(message);
-        
+
         // Assert
         // Should not throw exception and should log debug message
         assertDoesNotThrow(() -> handler.queueMessage(message));
@@ -337,10 +335,10 @@ class SonoffBaseBridgeHandlerTest {
         handler.isLocalIn = true;
         handler.local = true;
         when(mockAccountHandler.getMode()).thenReturn("local");
-        
+
         // Act
         handler.updateStatus();
-        
+
         // Assert
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
     }
@@ -352,10 +350,10 @@ class SonoffBaseBridgeHandlerTest {
         handler.initialize();
         handler.isLocalIn = false;
         when(mockAccountHandler.getMode()).thenReturn("local");
-        
+
         // Act
         handler.updateStatus();
-        
+
         // Assert
         assertEquals(ThingStatus.OFFLINE, handler.lastStatus);
         assertEquals(ThingStatusDetail.COMMUNICATION_ERROR, handler.lastStatusDetail);
@@ -369,10 +367,10 @@ class SonoffBaseBridgeHandlerTest {
         handler.initialize();
         handler.cloud = true;
         when(mockAccountHandler.getMode()).thenReturn("cloud");
-        
+
         // Act
         handler.updateStatus();
-        
+
         // Assert
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
     }
@@ -384,10 +382,10 @@ class SonoffBaseBridgeHandlerTest {
         handler.initialize();
         handler.cloud = false;
         when(mockAccountHandler.getMode()).thenReturn("cloud");
-        
+
         // Act
         handler.updateStatus();
-        
+
         // Assert
         assertEquals(ThingStatus.OFFLINE, handler.lastStatus);
     }
@@ -398,13 +396,13 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         handler.initialize();
         when(mockAccountHandler.getMode()).thenReturn("mixed");
-        
+
         // Test 1: No local support, but cloud available
         handler.isLocalIn = false;
         handler.cloud = true;
         handler.updateStatus();
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
-        
+
         // Test 2: Local support, cloud offline
         handler.isLocalIn = true;
         handler.cloud = false;
@@ -412,14 +410,14 @@ class SonoffBaseBridgeHandlerTest {
         handler.updateStatus();
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
         assertEquals("Cloud Offline", handler.lastStatusDescription);
-        
+
         // Test 3: Local support, local offline
         handler.cloud = true;
         handler.local = false;
         handler.updateStatus();
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
         assertEquals("LAN Offline", handler.lastStatusDescription);
-        
+
         // Test 4: Both offline
         handler.cloud = false;
         handler.local = false;
@@ -432,7 +430,7 @@ class SonoffBaseBridgeHandlerTest {
         // Arrange
         setupValidInitialization();
         handler.initialize();
-        
+
         // Act & Assert
         assertEquals("test-device-id", handler.getDeviceid());
     }
@@ -443,10 +441,10 @@ class SonoffBaseBridgeHandlerTest {
         Map<String, String> properties = new HashMap<>();
         properties.put("key1", "value1");
         properties.put("key2", "value2");
-        
+
         // Act
         handler.setProperties(properties);
-        
+
         // Assert
         assertTrue(handler.propertiesUpdated);
         assertEquals(properties, handler.lastProperties);
@@ -457,7 +455,7 @@ class SonoffBaseBridgeHandlerTest {
         // Arrange
         handler.account = null;
         ThingStatusInfo statusInfo = new ThingStatusInfo(ThingStatus.ONLINE, ThingStatusDetail.NONE, null);
-        
+
         // Act & Assert
         assertDoesNotThrow(() -> handler.bridgeStatusChanged(statusInfo));
     }
@@ -466,10 +464,10 @@ class SonoffBaseBridgeHandlerTest {
     void testUpdateStatus_WithNullAccount_ShouldSetOnlineStatus() {
         // Arrange
         handler.account = null;
-        
+
         // Act
         handler.updateStatus();
-        
+
         // Assert
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
     }
@@ -482,10 +480,10 @@ class SonoffBaseBridgeHandlerTest {
         ChannelUID channelUID = new ChannelUID(thingUID, "unknown-channel");
         Command command = mock(Command.class);
         when(command.toString()).thenReturn("test-command");
-        
+
         // Act
         handler.handleCommand(channelUID, command);
-        
+
         // Assert - Should not throw exception and should log debug message
         assertDoesNotThrow(() -> handler.handleCommand(channelUID, command));
     }
@@ -496,11 +494,11 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.ONLINE);
         handler.taskStarted = true;
-        
+
         // Act
         handler.initialize();
         handler.bridgeStatusChanged(mockThingStatusInfo);
-        
+
         // Assert
         // Should not call startTasks again since taskStarted is already true
         assertTrue(handler.taskStarted);
@@ -513,7 +511,7 @@ class SonoffBaseBridgeHandlerTest {
         when(mockDeviceState.getUiid()).thenReturn(1);
         when(mockDeviceState.getProperties()).thenReturn(new HashMap<>());
         when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.ONLINE);
-        
+
         // Set the configuration
         handler.setTestConfig(deviceConfig);
     }
@@ -522,62 +520,62 @@ class SonoffBaseBridgeHandlerTest {
      * Test implementation of SonoffBaseBridgeHandler for testing purposes
      */
     private static class TestSonoffBaseBridgeHandler extends SonoffBaseBridgeHandler {
-        
+
         // Test tracking fields
         boolean startTasksCalled = false;
         boolean cancelTasksCalled = false;
         boolean updateDeviceCalled = false;
         boolean propertiesUpdated = false;
-        
+
         ThingStatus lastStatus = ThingStatus.UNKNOWN;
         ThingStatusDetail lastStatusDetail = ThingStatusDetail.NONE;
         String lastStatusDescription = "";
         Map<String, String> lastProperties = new HashMap<>();
-        
+
         SonoffDeviceState lastDeviceUpdate;
-        
+
         public TestSonoffBaseBridgeHandler(Bridge thing) {
             super(thing);
         }
-        
+
         @Override
         public void startTasks() {
             startTasksCalled = true;
         }
-        
+
         @Override
         public void cancelTasks() {
             cancelTasksCalled = true;
         }
-        
+
         @Override
         public void updateDevice(SonoffDeviceState newDevice) {
             updateDeviceCalled = true;
             lastDeviceUpdate = newDevice;
         }
-        
+
         @Override
         protected void updateStatus(ThingStatus status) {
             lastStatus = status;
             lastStatusDetail = ThingStatusDetail.NONE;
             lastStatusDescription = "";
         }
-        
+
         @Override
         protected void updateStatus(ThingStatus status, ThingStatusDetail statusDetail, String description) {
             lastStatus = status;
             lastStatusDetail = statusDetail;
             lastStatusDescription = description;
         }
-        
+
         @Override
         protected void updateProperties(Map<String, String> properties) {
             propertiesUpdated = true;
             lastProperties = new HashMap<>(properties);
         }
-        
+
         private DeviceConfig testConfig;
-        
+
         @Override
         public <T> T getConfigAs(Class<T> configurationClass) {
             if (testConfig == null) {
@@ -585,17 +583,17 @@ class SonoffBaseBridgeHandlerTest {
             }
             return configurationClass.cast(testConfig);
         }
-        
+
         // Helper method to set test configuration
         public void setTestConfig(DeviceConfig config) {
             this.testConfig = config;
         }
-        
+
         @Override
         public Bridge getBridge() {
             return (Bridge) getThing();
         }
-        
+
         // Make protected fields accessible for testing
         public void setAccount(SonoffAccountHandler account) {
             this.account = account;
