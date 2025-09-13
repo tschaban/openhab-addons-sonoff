@@ -262,7 +262,7 @@ class SonoffBaseBridgeHandlerIntegrationTest {
         when(mockDeviceState.getUiid()).thenReturn(1);
         when(mockDeviceState.getProperties()).thenReturn(new HashMap<>());
         when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.ONLINE);
-        
+
         // Set up connection states for cloud mode
         handler.cloud = true;
         handler.local = false;
@@ -345,11 +345,22 @@ class SonoffBaseBridgeHandlerIntegrationTest {
         public void setAccount(SonoffAccountHandler account) {
             this.account = account;
         }
-        
+
         // Expose protected fields for testing
-        public boolean getCloud() { return cloud; }
-        public boolean getLocal() { return local; }
-        public boolean getIsLocalIn() { return isLocalIn; }
-        public boolean getTaskStarted() { return taskStarted; }
+        public boolean getCloud() {
+            return cloud;
+        }
+
+        public boolean getLocal() {
+            return local;
+        }
+
+        public boolean getIsLocalIn() {
+            return isLocalIn;
+        }
+
+        public boolean getTaskStarted() {
+            return taskStarted;
+        }
     }
 }
