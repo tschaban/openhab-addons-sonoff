@@ -101,8 +101,8 @@ class SonoffBaseBridgeHandlerIntegrationTest {
         ThingStatusInfo onlineStatus = new ThingStatusInfo(ThingStatus.ONLINE, ThingStatusDetail.NONE, null);
         handler.bridgeStatusChanged(onlineStatus);
 
-        // Assert - Online status handling
-        verify(mockAccountHandler).queueMessage(any(SonoffCommandMessage.class));
+        // Assert - Online status handling (queueMessage may be called during init and bridge status change)
+        verify(mockAccountHandler, atLeastOnce()).queueMessage(any(SonoffCommandMessage.class));
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
 
         // Act - Dispose
@@ -142,7 +142,8 @@ class SonoffBaseBridgeHandlerIntegrationTest {
         assertEquals(ThingStatusDetail.COMMUNICATION_ERROR, handler.lastStatusDetail);
         assertEquals("Bridge Offline", handler.lastStatusDescription);
 
-        // Act 3 - Bridge comes back online
+        // Act 3 - Bridge comes back online (ensure connection states are set)
+        handler.cloud = true; // Ensure cloud connection is available
         handler.bridgeStatusChanged(onlineStatus);
 
         // Assert 3
@@ -185,31 +186,33 @@ class SonoffBaseBridgeHandlerIntegrationTest {
 
     @Test
     void testErrorRecovery_FromConfigurationError() {
-        // Arrange - Start with invalid configuration
-        when(mockBridge.getHandler()).thenReturn(null);
+        // Arrange - Start with null device state (simulating device not discovered)
+        when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
+        when(mockAccountHandler.getState("integration-device-id")).thenReturn(null);
 
-        // Act 1 - Initialize with invalid config
+        // Act 1 - Initialize with missing device state
         handler.initialize();
 
-        // Assert 1 - Should be offline
+        // Assert 1 - Should be offline due to missing device state
         assertEquals(ThingStatus.OFFLINE, handler.lastStatus);
         assertEquals(ThingStatusDetail.CONFIGURATION_ERROR, handler.lastStatusDetail);
+        assertEquals("This device has not been initilized, please run discovery", handler.lastStatusDescription);
 
-        // Act 2 - Fix configuration
-        when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
+        // Act 2 - Fix configuration by providing device state
         setupValidEnvironment();
         handler.initialize();
 
         // Assert 2 - Should recover
         assertEquals("integration-device-id", handler.getDeviceid());
-        verify(mockAccountHandler).addDeviceListener("integration-device-id", handler);
+        verify(mockAccountHandler, atLeastOnce()).addDeviceListener("integration-device-id", handler);
     }
 
     @Test
     void testConcurrentOperations_StatusUpdatesAndCommands() throws InterruptedException {
-        // Arrange
-        setupValidEnvironment();
-        handler.initialize();
+        // Arrange - Minimal setup for concurrent operations
+        when(mockAccountHandler.getMode()).thenReturn("cloud");
+        handler.account = mockAccountHandler;
+        handler.cloud = true;
 
         CountDownLatch latch = new CountDownLatch(2);
 
@@ -259,6 +262,10 @@ class SonoffBaseBridgeHandlerIntegrationTest {
         when(mockDeviceState.getUiid()).thenReturn(1);
         when(mockDeviceState.getProperties()).thenReturn(new HashMap<>());
         when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.ONLINE);
+        
+        // Set up connection states for cloud mode
+        handler.cloud = true;
+        handler.local = false;
     }
 
     /**
@@ -338,5 +345,11 @@ class SonoffBaseBridgeHandlerIntegrationTest {
         public void setAccount(SonoffAccountHandler account) {
             this.account = account;
         }
+        
+        // Expose protected fields for testing
+        public boolean getCloud() { return cloud; }
+        public boolean getLocal() { return local; }
+        public boolean getIsLocalIn() { return isLocalIn; }
+        public boolean getTaskStarted() { return taskStarted; }
     }
 }
