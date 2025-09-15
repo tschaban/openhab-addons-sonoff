@@ -59,10 +59,10 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 Currently known to support (non-exhaustive list):
 
 #### Mixed Mode Support (Local + Cloud)
-- **UUID1:** S20, S26, Basic, Mini, Mini PCIe Card
+- **UUID1:** S20, S26, BasicR1, BasicR2, Mini, Mini PCIe Card
 - **UUID2:** Unknown Models
 - **UUID3:** Unknown Models
-- **UUID4:** Unknown Models
+- **UUID4:** 4CHPROR3
 - **UUID5:** POW
 - **UUID6:** T11C, TX1C, G1
 - **UUID7:** T12C, TX2C
