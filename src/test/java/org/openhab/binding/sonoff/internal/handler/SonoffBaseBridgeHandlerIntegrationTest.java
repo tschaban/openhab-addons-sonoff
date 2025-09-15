@@ -27,9 +27,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.openhab.binding.sonoff.internal.SonoffBindingConstants;
 import org.openhab.binding.sonoff.internal.communication.SonoffCommandMessage;
 import org.openhab.binding.sonoff.internal.config.DeviceConfig;
 import org.openhab.core.thing.Bridge;
@@ -159,19 +157,19 @@ class SonoffBaseBridgeHandlerIntegrationTest {
         lenient().when(mockAccountHandler.getMode()).thenReturn("mixed");
         handler.initialize();
 
-            // Test cloud mode
-            handler.cloud = true;
-            handler.local = false;
-            handler.updateStatus();
-            assertEquals(ThingStatus.ONLINE, handler.lastStatus);
-            assertEquals("LAN Offline", handler.lastStatusDescription);
+        // Test cloud mode
+        handler.cloud = true;
+        handler.local = false;
+        handler.updateStatus();
+        assertEquals(ThingStatus.ONLINE, handler.lastStatus);
+        assertEquals("LAN Offline", handler.lastStatusDescription);
 
-            // Test local mode
-            handler.cloud = false;
-            handler.local = true;
-            handler.updateStatus();
-            assertEquals(ThingStatus.ONLINE, handler.lastStatus);
-            assertEquals("Cloud Offline", handler.lastStatusDescription);
+        // Test local mode
+        handler.cloud = false;
+        handler.local = true;
+        handler.updateStatus();
+        assertEquals(ThingStatus.ONLINE, handler.lastStatus);
+        assertEquals("Cloud Offline", handler.lastStatusDescription);
 
         // Test both online
         handler.cloud = true;

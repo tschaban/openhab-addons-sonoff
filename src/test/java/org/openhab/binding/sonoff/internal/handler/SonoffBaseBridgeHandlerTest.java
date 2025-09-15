@@ -25,9 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.openhab.binding.sonoff.internal.SonoffBindingConstants;
 import org.openhab.binding.sonoff.internal.communication.SonoffCommandMessage;
 import org.openhab.binding.sonoff.internal.config.DeviceConfig;
 import org.openhab.core.thing.Bridge;
@@ -77,7 +75,7 @@ class SonoffBaseBridgeHandlerTest {
         lenient().when(mockBridge.getUID()).thenReturn(new ThingUID("sonoff", "bridge", "test-device"));
         lenient().when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
         lenient().when(mockBridge.getStatusInfo()).thenReturn(mockThingStatusInfo);
-        
+
         thingUID = new ThingUID("sonoff", "bridge", "test-device");
 
         // Setup device config
@@ -258,7 +256,7 @@ class SonoffBaseBridgeHandlerTest {
         // Arrange
         setupValidInitialization();
         handler.initialize();
-        
+
         // Reset mock to clear calls from initialization
         reset(mockAccountHandler);
 
@@ -290,7 +288,7 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         handler.initialize();
         when(mockChannelUID.getId()).thenReturn("unknown");
-        
+
         // Reset mock to clear calls from initialization
         reset(mockAccountHandler);
         // Re-setup account for handler
@@ -518,8 +516,8 @@ class SonoffBaseBridgeHandlerTest {
 
         // Set the configuration
         handler.setTestConfig(deviceConfig);
-        
-        // Note: initialize() calls checkBridge() which calls bridgeStatusChanged() 
+
+        // Note: initialize() calls checkBridge() which calls bridgeStatusChanged()
         // This may trigger queueMessage() calls during initialization
     }
 
