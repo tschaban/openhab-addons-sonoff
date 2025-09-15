@@ -103,8 +103,13 @@ class SonoffBaseBridgeHandlerTest {
 
     @Test
     void testInitialize_WithNoBridge_ShouldSetOfflineStatus() {
-        // Arrange
-        handler = new TestSonoffBaseBridgeHandler(null);
+        // Arrange - Use a test handler that simulates getBridge() returning null
+        handler = new TestSonoffBaseBridgeHandler(mockBridge) {
+            @Override
+            public Bridge getBridge() {
+                return null; // Simulate no bridge scenario
+            }
+        };
         handler.setTestConfig(deviceConfig);
 
         // Act
