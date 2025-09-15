@@ -57,7 +57,7 @@ jobs:
 
     - name: Apply code formatting for openhab-addons
       run: |
-        echo "🔍 Formatting code for the content with no controll over"
+        echo "🎨 Formatting code for the content with no controll over"
         mvn spotless:apply
        
     - name: Compile addon
@@ -162,7 +162,5 @@ jobs:
         
     - name: Quick compile test
       run: |
-        echo "WARNINIG: That temporary code foramtig - that needs to be removed TODO ${{ matrix.os }}..."
-        mvn spotless:apply
         echo "🔨 Testing compilation on ${{ matrix.os }}..."
         mvn clean compile -q
