@@ -15,6 +15,7 @@ package org.openhab.binding.sonoff.internal.handler;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -134,7 +135,7 @@ class SonoffBaseBridgeHandlerTest {
     void testInitialize_WithLocalModeUnsupportedDevice_ShouldSetOfflineStatus() {
         // Arrange
         setupValidInitialization();
-        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("local");
+        lenient().when(mockAccountHandler.getMode()).thenReturn("local");
         lenient().when(mockDeviceState.getUiid()).thenReturn(999); // Unsupported UIID
 
         // Act
@@ -150,7 +151,7 @@ class SonoffBaseBridgeHandlerTest {
     void testInitialize_WithLocalInDevice_ShouldSetLocalInFlag() {
         // Arrange
         setupValidInitialization();
-        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("mixed");
+        lenient().when(mockAccountHandler.getMode()).thenReturn("mixed");
         lenient().when(mockDeviceState.getUiid()).thenReturn(1); // 1 is actually in LAN_IN according to constants
 
         // Act
@@ -164,7 +165,7 @@ class SonoffBaseBridgeHandlerTest {
     void testInitialize_WithLocalOutDevice_ShouldSetLocalOutFlag() {
         // Arrange
         setupValidInitialization();
-        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("mixed");
+        lenient().when(mockAccountHandler.getMode()).thenReturn("mixed");
         lenient().when(mockDeviceState.getUiid()).thenReturn(2); // 2 is actually in LAN_OUT according to constants
 
         // Act
@@ -337,7 +338,7 @@ class SonoffBaseBridgeHandlerTest {
         handler.initialize();
         handler.isLocalIn = true;
         handler.local = true;
-        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("local");
+        lenient().when(mockAccountHandler.getMode()).thenReturn("local");
 
         // Act
         handler.updateStatus();
@@ -352,7 +353,7 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         handler.initialize();
         handler.isLocalIn = false;
-        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("local");
+        lenient().when(mockAccountHandler.getMode()).thenReturn("local");
 
         // Act
         handler.updateStatus();
@@ -510,7 +511,7 @@ class SonoffBaseBridgeHandlerTest {
     private void setupValidInitialization() {
         lenient().when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
         lenient().when(mockAccountHandler.getState("test-device-id")).thenReturn(mockDeviceState);
-        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("cloud");
+        lenient().when(mockAccountHandler.getMode()).thenReturn("cloud");
         lenient().when(mockDeviceState.getUiid()).thenReturn(1);
         lenient().when(mockDeviceState.getProperties()).thenReturn(new HashMap<>());
         lenient().when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.ONLINE);

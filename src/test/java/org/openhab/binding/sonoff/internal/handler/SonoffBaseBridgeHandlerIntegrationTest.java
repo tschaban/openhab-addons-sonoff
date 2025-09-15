@@ -15,6 +15,7 @@ package org.openhab.binding.sonoff.internal.handler;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -254,7 +255,7 @@ class SonoffBaseBridgeHandlerIntegrationTest {
 
     private void setupValidEnvironment() {
         lenient().when(mockAccountHandler.getState("integration-device-id")).thenReturn(mockDeviceState);
-        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("cloud");
+        lenient().when(mockAccountHandler.getMode()).thenReturn("cloud");
         lenient().when(mockDeviceState.getUiid()).thenReturn(1);
         lenient().when(mockDeviceState.getProperties()).thenReturn(new HashMap<>());
         lenient().when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.ONLINE);
