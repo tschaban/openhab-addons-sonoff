@@ -72,10 +72,12 @@ class SonoffBaseBridgeHandlerTest {
 
     @BeforeEach
     void setUp() {
+        // Use lenient mocking to avoid unnecessary stubbing errors
+        lenient().when(mockBridge.getUID()).thenReturn(new ThingUID("sonoff", "bridge", "test-device"));
+        lenient().when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
+        lenient().when(mockBridge.getStatusInfo()).thenReturn(mockThingStatusInfo);
+        
         thingUID = new ThingUID("sonoff", "bridge", "test-device");
-        when(mockBridge.getUID()).thenReturn(thingUID);
-        when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
-        when(mockBridge.getStatusInfo()).thenReturn(mockThingStatusInfo);
 
         // Setup device config
         deviceConfig = new DeviceConfig();
@@ -103,6 +105,7 @@ class SonoffBaseBridgeHandlerTest {
     void testInitialize_WithNoBridge_ShouldSetOfflineStatus() {
         // Arrange
         handler = new TestSonoffBaseBridgeHandler(null);
+        handler.setTestConfig(deviceConfig);
 
         // Act
         handler.initialize();
@@ -116,7 +119,7 @@ class SonoffBaseBridgeHandlerTest {
     @Test
     void testInitialize_WithNullDeviceState_ShouldSetOfflineStatus() {
         // Arrange
-        when(mockAccountHandler.getState("test-device-id")).thenReturn(null);
+        lenient().when(mockAccountHandler.getState("test-device-id")).thenReturn(null);
 
         // Act
         handler.initialize();
@@ -131,8 +134,8 @@ class SonoffBaseBridgeHandlerTest {
     void testInitialize_WithLocalModeUnsupportedDevice_ShouldSetOfflineStatus() {
         // Arrange
         setupValidInitialization();
-        when(mockAccountHandler.getMode()).thenReturn("local");
-        when(mockDeviceState.getUiid()).thenReturn(999); // Unsupported UIID
+        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("local");
+        lenient().when(mockDeviceState.getUiid()).thenReturn(999); // Unsupported UIID
 
         // Act
         handler.initialize();
@@ -147,38 +150,28 @@ class SonoffBaseBridgeHandlerTest {
     void testInitialize_WithLocalInDevice_ShouldSetLocalInFlag() {
         // Arrange
         setupValidInitialization();
-        when(mockAccountHandler.getMode()).thenReturn("mixed");
-        when(mockDeviceState.getUiid()).thenReturn(1); // Assuming 1 is in LAN_IN
+        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("mixed");
+        lenient().when(mockDeviceState.getUiid()).thenReturn(1); // 1 is actually in LAN_IN according to constants
 
-        // Mock the constants using try-with-resources
-        try (MockedStatic<SonoffBindingConstants> mockedConstants = mockStatic(SonoffBindingConstants.class)) {
-            mockedConstants.when(() -> SonoffBindingConstants.LAN_IN.contains(1)).thenReturn(true);
+        // Act
+        handler.initialize();
 
-            // Act
-            handler.initialize();
-
-            // Assert
-            assertTrue(handler.isLocalIn);
-        }
+        // Assert
+        assertTrue(handler.isLocalIn);
     }
 
     @Test
     void testInitialize_WithLocalOutDevice_ShouldSetLocalOutFlag() {
         // Arrange
         setupValidInitialization();
-        when(mockAccountHandler.getMode()).thenReturn("mixed");
-        when(mockDeviceState.getUiid()).thenReturn(2); // Assuming 2 is in LAN_OUT
+        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("mixed");
+        lenient().when(mockDeviceState.getUiid()).thenReturn(2); // 2 is actually in LAN_OUT according to constants
 
-        // Mock the constants using try-with-resources
-        try (MockedStatic<SonoffBindingConstants> mockedConstants = mockStatic(SonoffBindingConstants.class)) {
-            mockedConstants.when(() -> SonoffBindingConstants.LAN_OUT.contains(2)).thenReturn(true);
+        // Act
+        handler.initialize();
 
-            // Act
-            handler.initialize();
-
-            // Assert
-            assertTrue(handler.isLocalOut);
-        }
+        // Assert
+        assertTrue(handler.isLocalOut);
     }
 
     @Test
@@ -344,7 +337,7 @@ class SonoffBaseBridgeHandlerTest {
         handler.initialize();
         handler.isLocalIn = true;
         handler.local = true;
-        when(mockAccountHandler.getMode()).thenReturn("local");
+        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("local");
 
         // Act
         handler.updateStatus();
@@ -359,7 +352,7 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         handler.initialize();
         handler.isLocalIn = false;
-        when(mockAccountHandler.getMode()).thenReturn("local");
+        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("local");
 
         // Act
         handler.updateStatus();
@@ -376,7 +369,7 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         handler.initialize();
         handler.cloud = true;
-        when(mockAccountHandler.getMode()).thenReturn("cloud");
+        lenient().when(mockAccountHandler.getMode()).thenReturn("cloud");
 
         // Act
         handler.updateStatus();
@@ -391,7 +384,7 @@ class SonoffBaseBridgeHandlerTest {
         setupValidInitialization();
         handler.initialize();
         handler.cloud = false;
-        when(mockAccountHandler.getMode()).thenReturn("cloud");
+        lenient().when(mockAccountHandler.getMode()).thenReturn("cloud");
 
         // Act
         handler.updateStatus();
@@ -405,7 +398,7 @@ class SonoffBaseBridgeHandlerTest {
         // Arrange
         setupValidInitialization();
         handler.initialize();
-        when(mockAccountHandler.getMode()).thenReturn("mixed");
+        lenient().when(mockAccountHandler.getMode()).thenReturn("mixed");
 
         // Test 1: No local support, but cloud available
         handler.isLocalIn = false;
@@ -489,7 +482,7 @@ class SonoffBaseBridgeHandlerTest {
         handler.initialize();
         ChannelUID channelUID = new ChannelUID(thingUID, "unknown-channel");
         Command command = mock(Command.class);
-        when(command.toString()).thenReturn("test-command");
+        lenient().when(command.toString()).thenReturn("test-command");
 
         // Act
         handler.handleCommand(channelUID, command);
@@ -515,12 +508,12 @@ class SonoffBaseBridgeHandlerTest {
     }
 
     private void setupValidInitialization() {
-        when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
-        when(mockAccountHandler.getState("test-device-id")).thenReturn(mockDeviceState);
-        when(mockAccountHandler.getMode()).thenReturn("cloud");
-        when(mockDeviceState.getUiid()).thenReturn(1);
-        when(mockDeviceState.getProperties()).thenReturn(new HashMap<>());
-        when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.ONLINE);
+        lenient().when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
+        lenient().when(mockAccountHandler.getState("test-device-id")).thenReturn(mockDeviceState);
+        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("cloud");
+        lenient().when(mockDeviceState.getUiid()).thenReturn(1);
+        lenient().when(mockDeviceState.getProperties()).thenReturn(new HashMap<>());
+        lenient().when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.ONLINE);
 
         // Set the configuration
         handler.setTestConfig(deviceConfig);
@@ -604,7 +597,8 @@ class SonoffBaseBridgeHandlerTest {
 
         @Override
         public Bridge getBridge() {
-            return (Bridge) getThing();
+            Thing thing = getThing();
+            return thing != null ? (Bridge) thing : null;
         }
 
         // Make protected fields accessible for testing

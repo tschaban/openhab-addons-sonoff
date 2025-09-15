@@ -68,9 +68,9 @@ class SonoffBaseBridgeHandlerIntegrationTest {
     @BeforeEach
     void setUp() {
         thingUID = new ThingUID("sonoff", "bridge", "integration-test");
-        when(mockBridge.getUID()).thenReturn(thingUID);
-        when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
-        when(mockBridge.getStatusInfo()).thenReturn(mockThingStatusInfo);
+        lenient().when(mockBridge.getUID()).thenReturn(thingUID);
+        lenient().when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
+        lenient().when(mockBridge.getStatusInfo()).thenReturn(mockThingStatusInfo);
 
         // Setup device config
         deviceConfig = new DeviceConfig();
@@ -155,11 +155,8 @@ class SonoffBaseBridgeHandlerIntegrationTest {
     void testMultiModeOperations_CloudAndLocalTransitions() {
         // Arrange
         setupValidEnvironment();
-        try (MockedStatic<SonoffBindingConstants> mockedConstants = mockStatic(SonoffBindingConstants.class)) {
-            mockedConstants.when(() -> SonoffBindingConstants.LAN_IN.contains(1)).thenReturn(true);
-
-            when(mockAccountHandler.getMode()).thenReturn("mixed");
-            handler.initialize();
+        lenient().when(mockAccountHandler.getMode()).thenReturn("mixed");
+        handler.initialize();
 
             // Test cloud mode
             handler.cloud = true;
@@ -175,20 +172,19 @@ class SonoffBaseBridgeHandlerIntegrationTest {
             assertEquals(ThingStatus.ONLINE, handler.lastStatus);
             assertEquals("Cloud Offline", handler.lastStatusDescription);
 
-            // Test both online
-            handler.cloud = true;
-            handler.local = true;
-            handler.updateStatus();
-            assertEquals(ThingStatus.ONLINE, handler.lastStatus);
-            assertEquals("", handler.lastStatusDescription);
-        }
+        // Test both online
+        handler.cloud = true;
+        handler.local = true;
+        handler.updateStatus();
+        assertEquals(ThingStatus.ONLINE, handler.lastStatus);
+        assertEquals("", handler.lastStatusDescription);
     }
 
     @Test
     void testErrorRecovery_FromConfigurationError() {
         // Arrange - Start with null device state (simulating device not discovered)
-        when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
-        when(mockAccountHandler.getState("integration-device-id")).thenReturn(null);
+        lenient().when(mockBridge.getHandler()).thenReturn(mockAccountHandler);
+        lenient().when(mockAccountHandler.getState("integration-device-id")).thenReturn(null);
 
         // Act 1 - Initialize with missing device state
         handler.initialize();
@@ -210,7 +206,7 @@ class SonoffBaseBridgeHandlerIntegrationTest {
     @Test
     void testConcurrentOperations_StatusUpdatesAndCommands() throws InterruptedException {
         // Arrange - Minimal setup for concurrent operations
-        when(mockAccountHandler.getMode()).thenReturn("cloud");
+        lenient().when(mockAccountHandler.getMode()).thenReturn("cloud");
         handler.account = mockAccountHandler;
         handler.cloud = true;
 
@@ -257,11 +253,11 @@ class SonoffBaseBridgeHandlerIntegrationTest {
     }
 
     private void setupValidEnvironment() {
-        when(mockAccountHandler.getState("integration-device-id")).thenReturn(mockDeviceState);
-        when(mockAccountHandler.getMode()).thenReturn("cloud");
-        when(mockDeviceState.getUiid()).thenReturn(1);
-        when(mockDeviceState.getProperties()).thenReturn(new HashMap<>());
-        when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.ONLINE);
+        lenient().when(mockAccountHandler.getState("integration-device-id")).thenReturn(mockDeviceState);
+        lenient().lenient().when(mockAccountHandler.getMode()).thenReturn("cloud");
+        lenient().when(mockDeviceState.getUiid()).thenReturn(1);
+        lenient().when(mockDeviceState.getProperties()).thenReturn(new HashMap<>());
+        lenient().when(mockThingStatusInfo.getStatus()).thenReturn(ThingStatus.ONLINE);
 
         // Set up connection states for cloud mode
         handler.cloud = true;
