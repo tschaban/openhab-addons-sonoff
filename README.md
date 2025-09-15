@@ -253,4 +253,4 @@ Enhanced and maintained by **[Smart'nyDom](https://github.com/tschaban)** with f
 
 **📄 License:** This project maintains the same license as the original OpenHAB binding.
 
-**🔗 Links:** [Original Repository](https://github.com/delid4ve/openhab-3.x-sonoff) | [Enhanced Repository](https://github.com/tschaban/openhab-addons-sonoff) | [OpenHAB Community](https://community.openhab.org/)
+**🔗 Links:** [Original Repository](https://github.com/delid4ve/openhab-3.x-sonoff) | [Enhanced Repository](https://github.com/tschaban/openhab-addons-sonoff)
