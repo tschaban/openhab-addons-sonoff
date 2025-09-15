@@ -606,9 +606,6 @@ class SonoffBaseBridgeHandlerTest {
             return thing != null ? (Bridge) thing : null;
         }
 
-        // Make protected fields accessible for testing
-        public void setAccount(SonoffAccountHandler account) {
-            this.account = account;
-        }
+        // Note: Protected fields are accessed directly in tests
     }
 }

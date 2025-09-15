@@ -271,13 +271,10 @@ class SonoffBaseBridgeHandlerIntegrationTest {
         // Test tracking fields
         boolean startTasksCalled = false;
         boolean cancelTasksCalled = false;
-        boolean updateDeviceCalled = false;
 
         ThingStatus lastStatus = ThingStatus.UNKNOWN;
         ThingStatusDetail lastStatusDetail = ThingStatusDetail.NONE;
         String lastStatusDescription = "";
-
-        SonoffDeviceState lastDeviceUpdate;
         private DeviceConfig testConfig;
 
         public TestSonoffBaseBridgeHandler(Bridge thing) {
@@ -296,8 +293,7 @@ class SonoffBaseBridgeHandlerIntegrationTest {
 
         @Override
         public void updateDevice(SonoffDeviceState newDevice) {
-            updateDeviceCalled = true;
-            lastDeviceUpdate = newDevice;
+            // Implementation not needed for integration tests
         }
 
         @Override
@@ -336,26 +332,6 @@ class SonoffBaseBridgeHandlerIntegrationTest {
             return (Bridge) getThing();
         }
 
-        // Make protected fields accessible for testing
-        public void setAccount(SonoffAccountHandler account) {
-            this.account = account;
-        }
-
-        // Expose protected fields for testing
-        public boolean getCloud() {
-            return cloud;
-        }
-
-        public boolean getLocal() {
-            return local;
-        }
-
-        public boolean getIsLocalIn() {
-            return isLocalIn;
-        }
-
-        public boolean getTaskStarted() {
-            return taskStarted;
-        }
+        // Note: Protected fields are accessed directly in tests
     }
 }
