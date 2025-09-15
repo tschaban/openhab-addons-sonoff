@@ -31,17 +31,18 @@ This is an enhanced branch of the original Sonoff binding for OpenHAB, featuring
 - 3 Way Wall Switch | Model: Bouffalo Lab BL602 (CK-BL602-4SW-HS)
 
 ### 🔧 Development Enhancements
-- **Comprehensive testing framework** with 100+ test methods
-- **Automated CI/CD scripts** with quality gates
-- **Mock-based unit testing** with Mockito integration
-- **Professional development workflow** with detailed progress tracking
+- **Comprehensive testing framework** with 130+ test methods across 8 test classes
+- **Bridge handler foundation testing** with abstract class coverage
+- **Automated CI/CD scripts** with quality gates and PowerShell automation
+- **Mock-based unit testing** with Mockito integration and lenient mocking
+- **Professional development workflow** with detailed progress tracking and documentation
 
 ## 📋 Quick Links
 
 - **📦 [Latest Release](https://github.com/tschaban/openhab-addons-sonoff/releases)** - Download the newest version
 - **🐛 [Report Issues](https://github.com/tschaban/openhab-addons-sonoff/issues)** - Bug reports and feature requests
 - **📈 [Changelog](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)** - All enhancements and fixes
-- **👨‍💻 [Development Docs](docs/development/testing-framework.md)** - For developers and contributors
+- **👨‍💻 [Development Docs](docs/development/README.md)** - For developers and contributors
 
 ---
 
@@ -211,7 +212,12 @@ DateTime    MotionActivated     "PIR Activated"         {channel="sonoff:zmotion
 
 For developers working on the Sonoff binding, comprehensive technical documentation is available:
 
-- **[Development Setup Guide](docs/development/setup-guide.md)** - Complete development environment setup and workflow guide
+- **[Development Documentation Index](docs/development/README.md)** - Complete development guide with all resources
+- **[Testing Documentation Index](docs/testing/README.md)** - Comprehensive testing framework overview
+- **[Setup Guide](docs/development/setup-guide.md)** - Development environment setup and workflow
+- **[Testing Framework](docs/development/testing-framework.md)** - 8 test classes with 130+ test methods
+- **[CI/CD Automation](docs/development/cicd-automation.md)** - Automated testing and deployment
+- **[PowerShell Scripts](docs/development/powershell-scripts.md)** - Local development automation
 
 ## 🐛 Bug Reports & Support
 
