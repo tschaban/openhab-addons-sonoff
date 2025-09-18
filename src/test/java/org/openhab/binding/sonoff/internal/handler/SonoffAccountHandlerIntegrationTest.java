@@ -355,7 +355,7 @@ class SonoffAccountHandlerIntegrationTest {
 
         try (MockedStatic<SonoffCacheProvider> mockedCacheProvider = mockStatic(SonoffCacheProvider.class)) {
             SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
-            mockedCacheProvider.when(() -> new SonoffCacheProvider(any(Gson.class))).thenReturn(mockCache);
+            mockedCacheProvider.when(() -> new SonoffCacheProvider(notNull())).thenReturn(mockCache);
 
             // Setup cache to return device states
             Map<String, SonoffDeviceState> cachedStates = new HashMap<>();
