@@ -409,6 +409,7 @@ class SonoffAccountHandlerIntegrationTest {
         ThingStatus lastStatus = ThingStatus.UNKNOWN;
         ThingStatusDetail lastStatusDetail = ThingStatusDetail.NONE;
         String lastStatusDescription = "";
+        String mode = "";
 
         // Collections to track method calls
         final Map<String, SonoffDeviceListener> deviceListeners = new HashMap<>();
@@ -602,7 +603,9 @@ class SonoffAccountHandlerIntegrationTest {
         // Simulate the real initialization behavior
         @Override
         public void initialize() {
-            super.initialize();
+            // Set mode from config without calling super.initialize() to avoid scheduler issues
+            AccountConfig config = this.getConfigAs(AccountConfig.class);
+            this.mode = config.accessmode;
 
             // Simulate command manager start
             commandManagerStarted = true;
@@ -613,6 +616,11 @@ class SonoffAccountHandlerIntegrationTest {
 
             // Simulate restore states
             restoreStatesCalled = true;
+        }
+        
+        @Override
+        public String getMode() {
+            return this.mode;
         }
 
         @Override

@@ -822,6 +822,7 @@ class SonoffAccountHandlerTest {
         final java.util.List<String> websocketMessagesReceived = new java.util.ArrayList<>();
         final java.util.List<JsonObject> apiMessagesReceived = new java.util.ArrayList<>();
         String apiKeySet = "";
+        String mode = "";
 
         private AccountConfig testConfig;
 
@@ -880,6 +881,11 @@ class SonoffAccountHandlerTest {
             commandManagerStopped = true;
             commandManagerRunning = false;
             connectionManagerStopped = true;
+        }
+        
+        @Override
+        public String getMode() {
+            return this.mode;
         }
 
         @Override
