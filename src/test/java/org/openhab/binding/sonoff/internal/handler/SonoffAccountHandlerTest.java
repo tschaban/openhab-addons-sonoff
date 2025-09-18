@@ -390,12 +390,10 @@ class SonoffAccountHandlerTest {
         // Arrange
         String deviceId = "test-device-id";
 
-        SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
         try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class, 
                 (mock, context) -> {
-                    // Configure the mock behavior
+                    when(mock.getState(deviceId)).thenReturn(mockDeviceState);
                 })) {
-            when(mockCache.getState(deviceId)).thenReturn(mockDeviceState);
 
             // Act
             handler.addState(deviceId);
@@ -419,7 +417,7 @@ class SonoffAccountHandlerTest {
             handler.addState(deviceId);
 
             // Assert
-            assertNull(handler.getState(deviceId));
+            assertFalse(handler.deviceStates.containsKey(deviceId));
         }
     }
 
@@ -870,6 +868,17 @@ class SonoffAccountHandlerTest {
 
             // Simulate restore states
             restoreStatesCalled = true;
+            
+            // Actually perform restore states logic for testing
+            SonoffCacheProvider cacheProvider = new SonoffCacheProvider(new Gson());
+            Map<String, SonoffDeviceState> deviceStates = cacheProvider.getStates();
+            for (Map.Entry<String, SonoffDeviceState> entry : deviceStates.entrySet()) {
+                if (ipAddresses.containsKey(entry.getKey())) {
+                    entry.getValue().setIpAddress(new StringType(ipAddresses.get(entry.getKey())));
+                    entry.getValue().setLocal(true);
+                }
+                this.deviceStates.putIfAbsent(entry.getKey(), entry.getValue());
+            }
 
             // Use test scheduler if available, otherwise skip scheduling
             if (testScheduler != null) {
@@ -1051,10 +1060,15 @@ class SonoffAccountHandlerTest {
 
         @Override
         public void addState(String deviceid) {
-            // Simplified for testing - just add a mock state
-            if (!deviceStates.containsKey(deviceid)) {
-                SonoffDeviceState mockState = mock(SonoffDeviceState.class);
-                deviceStates.put(deviceid, mockState);
+            // Simulate the real addState behavior using SonoffCacheProvider
+            SonoffCacheProvider cacheProvider = new SonoffCacheProvider(new Gson());
+            SonoffDeviceState state = cacheProvider.getState(deviceid);
+            if (state != null) {
+                if (ipAddresses.containsKey(deviceid)) {
+                    state.setIpAddress(new StringType(ipAddresses.get(deviceid)));
+                    state.setLocal(true);
+                }
+                this.deviceStates.putIfAbsent(deviceid, state);
             }
         }
     }
