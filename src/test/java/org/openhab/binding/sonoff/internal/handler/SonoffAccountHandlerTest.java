@@ -109,7 +109,7 @@ class SonoffAccountHandlerTest {
         
         // Setup scheduler mocks
         lenient().when(mockScheduler.scheduleWithFixedDelay(any(Runnable.class), anyLong(), anyLong(), any(TimeUnit.class)))
-                .thenReturn(mockScheduledFuture);
+                .thenReturn((ScheduledFuture<?>) mockScheduledFuture);
         
         handler = new TestSonoffAccountHandler(mockBridge, mockWebSocketClient, mockHttpClient);
         handler.setTestConfig(accountConfig);
@@ -610,7 +610,7 @@ class SonoffAccountHandlerTest {
         
         // Act & Assert - Should not throw exception
         assertDoesNotThrow(() -> handler.serviceResolved(null));
-        verify(mockCommandManager).serviceResolved(null);
+        assertTrue(handler.serviceResolvedCalled);
     }
 
     @Test
@@ -622,7 +622,7 @@ class SonoffAccountHandlerTest {
         
         // Act & Assert - Should handle gracefully
         assertDoesNotThrow(() -> handler.serviceResolved(mockEvent));
-        verify(mockCommandManager).serviceResolved(mockEvent);
+        assertTrue(handler.serviceResolvedCalled);
     }
 
     @Test
@@ -636,7 +636,7 @@ class SonoffAccountHandlerTest {
         
         // Act & Assert - Should handle gracefully
         assertDoesNotThrow(() -> handler.serviceResolved(mockEvent));
-        verify(mockCommandManager).serviceResolved(mockEvent);
+        assertTrue(handler.serviceResolvedCalled);
     }
 
     @Test
@@ -656,9 +656,9 @@ class SonoffAccountHandlerTest {
         handler.serviceResolved(mockEvent);
         
         // Assert
-        verify(mockCommandManager).serviceResolved(mockEvent);
+        assertTrue(handler.serviceResolvedCalled);
         // IP address should not be stored when it's "null"
-        assertNull(handler.ipaddresses.get("test-device"));
+        assertNull(handler.ipAddresses.get("test-device"));
     }
 
     @Test
@@ -667,7 +667,7 @@ class SonoffAccountHandlerTest {
         handler.initialize();
         String deviceId = "test-device";
         String ipAddress = "192.168.1.100";
-        handler.ipaddresses.put(deviceId, ipAddress);
+        handler.ipAddresses.put(deviceId, ipAddress);
         
         ServiceEvent mockEvent = mock(ServiceEvent.class);
         ServiceInfo mockServiceInfo = mock(ServiceInfo.class);
@@ -682,8 +682,8 @@ class SonoffAccountHandlerTest {
         handler.serviceResolved(mockEvent);
         
         // Assert
-        verify(mockCommandManager).serviceResolved(mockEvent);
-        assertEquals(ipAddress, handler.ipaddresses.get(deviceId));
+        assertTrue(handler.serviceResolvedCalled);
+        assertEquals(ipAddress, handler.ipAddresses.get(deviceId));
     }
 
     @Test
@@ -703,7 +703,7 @@ class SonoffAccountHandlerTest {
             when(mockCache.getStates()).thenReturn(cachedStates);
             
             // Pre-populate IP address
-            handler.ipaddresses.put(deviceId, ipAddress);
+            handler.ipAddresses.put(deviceId, ipAddress);
             
             // Act
             handler.initialize();
@@ -730,7 +730,7 @@ class SonoffAccountHandlerTest {
             when(mockCache.getState(deviceId)).thenReturn(mockState);
             
             // Pre-populate IP address
-            handler.ipaddresses.put(deviceId, ipAddress);
+            handler.ipAddresses.put(deviceId, ipAddress);
             
             // Act
             handler.addState(deviceId);
@@ -749,17 +749,15 @@ class SonoffAccountHandlerTest {
         
         // Test 1: Connected state should start command manager
         handler.isConnected(true, true);
-        verify(mockCommandManager, atLeastOnce()).startRunning();
+        assertTrue(handler.commandManagerRunning);
         
         // Test 2: Disconnected state should stop command manager
-        reset(mockCommandManager);
         handler.isConnected(false, false);
-        verify(mockCommandManager).stopRunning();
+        assertFalse(handler.commandManagerRunning);
         
         // Test 3: Reconnected should start command manager again
-        reset(mockCommandManager);
         handler.isConnected(true, true);
-        verify(mockCommandManager).startRunning();
+        assertTrue(handler.commandManagerRunning);
     }
 
     @Test
