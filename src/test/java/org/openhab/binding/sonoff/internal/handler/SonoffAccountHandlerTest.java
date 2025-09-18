@@ -49,6 +49,7 @@ import org.openhab.core.thing.ThingUID;
 import org.openhab.core.thing.binding.ThingHandlerService;
 import org.openhab.core.types.Command;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 /**
@@ -387,7 +388,7 @@ class SonoffAccountHandlerTest {
         
         try (MockedStatic<SonoffCacheProvider> mockedCacheProvider = mockStatic(SonoffCacheProvider.class)) {
             SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
-            mockedCacheProvider.when(() -> new SonoffCacheProvider(any())).thenReturn(mockCache);
+            mockedCacheProvider.when(() -> new SonoffCacheProvider(any(Gson.class))).thenReturn(mockCache);
             when(mockCache.getState(deviceId)).thenReturn(mockDeviceState);
             
             // Act
@@ -405,7 +406,7 @@ class SonoffAccountHandlerTest {
         
         try (MockedStatic<SonoffCacheProvider> mockedCacheProvider = mockStatic(SonoffCacheProvider.class)) {
             SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
-            mockedCacheProvider.when(() -> new SonoffCacheProvider(any())).thenReturn(mockCache);
+            mockedCacheProvider.when(() -> new SonoffCacheProvider(any(Gson.class))).thenReturn(mockCache);
             when(mockCache.getState(deviceId)).thenReturn(null);
             
             // Act
@@ -696,7 +697,7 @@ class SonoffAccountHandlerTest {
             SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
             SonoffDeviceState mockState = mock(SonoffDeviceState.class);
             
-            mockedCacheProvider.when(() -> new SonoffCacheProvider(any())).thenReturn(mockCache);
+            mockedCacheProvider.when(() -> new SonoffCacheProvider(any(Gson.class))).thenReturn(mockCache);
             
             Map<String, SonoffDeviceState> cachedStates = new HashMap<>();
             cachedStates.put(deviceId, mockState);
@@ -726,7 +727,7 @@ class SonoffAccountHandlerTest {
             SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
             SonoffDeviceState mockState = mock(SonoffDeviceState.class);
             
-            mockedCacheProvider.when(() -> new SonoffCacheProvider(any())).thenReturn(mockCache);
+            mockedCacheProvider.when(() -> new SonoffCacheProvider(any(Gson.class))).thenReturn(mockCache);
             when(mockCache.getState(deviceId)).thenReturn(mockState);
             
             // Pre-populate IP address
