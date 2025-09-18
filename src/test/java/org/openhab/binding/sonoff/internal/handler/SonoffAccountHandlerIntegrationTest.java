@@ -39,7 +39,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.openhab.binding.sonoff.internal.SonoffCacheProvider;
 import org.openhab.binding.sonoff.internal.communication.SonoffCommandMessage;
 import org.openhab.binding.sonoff.internal.config.AccountConfig;
-import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.ThingStatus;
 import org.openhab.core.thing.ThingStatusDetail;
@@ -60,28 +59,28 @@ class SonoffAccountHandlerIntegrationTest {
 
     @Mock
     private Bridge mockBridge;
-    
+
     @Mock
     private WebSocketClient mockWebSocketClient;
-    
+
     @Mock
     private HttpClient mockHttpClient;
-    
+
     @Mock
     private ScheduledExecutorService mockScheduler;
-    
+
     @Mock
     private ScheduledFuture<?> mockScheduledFuture;
-    
+
     @Mock
     private SonoffDeviceListener mockDeviceListener1;
-    
+
     @Mock
     private SonoffDeviceListener mockDeviceListener2;
-    
+
     @Mock
     private SonoffDeviceState mockDeviceState1;
-    
+
     @Mock
     private SonoffDeviceState mockDeviceState2;
 
@@ -93,7 +92,7 @@ class SonoffAccountHandlerIntegrationTest {
     void setUp() {
         thingUID = new ThingUID("sonoff", "account", "integration-test");
         lenient().when(mockBridge.getUID()).thenReturn(thingUID);
-        
+
         // Setup account config
         accountConfig = new AccountConfig();
         accountConfig.appId = "integration-app-id";
@@ -101,11 +100,12 @@ class SonoffAccountHandlerIntegrationTest {
         accountConfig.email = "integration@example.com";
         accountConfig.password = "integration-password";
         accountConfig.accessmode = "mixed";
-        
+
         // Setup scheduler mocks
-        lenient().when(mockScheduler.scheduleWithFixedDelay(any(Runnable.class), anyLong(), anyLong(), any(TimeUnit.class)))
+        lenient().when(
+                mockScheduler.scheduleWithFixedDelay(any(Runnable.class), anyLong(), anyLong(), any(TimeUnit.class)))
                 .thenAnswer(invocation -> mockScheduledFuture);
-        
+
         handler = new TestSonoffAccountHandler(mockBridge, mockWebSocketClient, mockHttpClient);
         handler.setTestConfig(accountConfig);
         handler.setTestScheduler(mockScheduler);
@@ -115,34 +115,34 @@ class SonoffAccountHandlerIntegrationTest {
     void testFullLifecycle_InitializeToDispose() {
         // Act - Initialize
         handler.initialize();
-        
+
         // Assert - Initialization
         assertEquals("mixed", handler.getMode());
         assertTrue(handler.commandManagerStarted);
         assertTrue(handler.connectionManagerStarted);
         assertTrue(handler.restoreStatesCalled);
-        
+
         // Act - Add device listeners and states
         handler.addDeviceListener("device1", mockDeviceListener1);
         handler.addDeviceListener("device2", mockDeviceListener2);
         handler.deviceStates.put("device1", mockDeviceState1);
         handler.deviceStates.put("device2", mockDeviceState2);
-        
+
         // Assert - Device management
         assertEquals(mockDeviceListener1, handler.getListener("device1"));
         assertEquals(mockDeviceListener2, handler.getListener("device2"));
         assertEquals(mockDeviceState1, handler.getState("device1"));
         assertEquals(mockDeviceState2, handler.getState("device2"));
-        
+
         // Act - Connection status changes
         handler.isConnected(true, true);
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
-        
+
         // Act - Dispose
         handler.dispose();
-        
+
         // Assert - Cleanup
-        // Note: We don't verify mockScheduledFuture.cancel() since TestSonoffAccountHandler 
+        // Note: We don't verify mockScheduledFuture.cancel() since TestSonoffAccountHandler
         // uses a test implementation that doesn't use the real scheduler
         assertTrue(handler.commandManagerStopped);
         assertTrue(handler.connectionManagerStopped);
@@ -152,32 +152,32 @@ class SonoffAccountHandlerIntegrationTest {
     void testConnectionStatusTransitions_MixedMode() {
         // Arrange
         handler.initialize();
-        
+
         // Test 1: Both connected
         handler.isConnected(true, true);
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
         assertEquals(ThingStatusDetail.NONE, handler.lastStatusDetail);
         assertTrue(handler.commandManagerRunning);
-        
+
         // Test 2: Only cloud connected
         handler.isConnected(false, true);
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
         assertEquals(ThingStatusDetail.COMMUNICATION_ERROR, handler.lastStatusDetail);
         assertEquals("LAN Offline", handler.lastStatusDescription);
         assertTrue(handler.commandManagerRunning);
-        
+
         // Test 3: Only LAN connected
         handler.isConnected(true, false);
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
         assertEquals(ThingStatusDetail.COMMUNICATION_ERROR, handler.lastStatusDetail);
         assertEquals("Cloud Offline", handler.lastStatusDescription);
         assertTrue(handler.commandManagerRunning);
-        
+
         // Test 4: Neither connected
         handler.isConnected(false, false);
         assertEquals(ThingStatus.OFFLINE, handler.lastStatus);
         assertFalse(handler.commandManagerRunning);
-        
+
         // Test 5: Recovery - both connected again
         handler.isConnected(true, true);
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
@@ -189,29 +189,30 @@ class SonoffAccountHandlerIntegrationTest {
     void testMultiDeviceManagement() {
         // Arrange
         handler.initialize();
-        String[] deviceIds = {"device1", "device2", "device3"};
-        SonoffDeviceListener[] listeners = {mockDeviceListener1, mockDeviceListener2, mock(SonoffDeviceListener.class)};
-        
+        String[] deviceIds = { "device1", "device2", "device3" };
+        SonoffDeviceListener[] listeners = { mockDeviceListener1, mockDeviceListener2,
+                mock(SonoffDeviceListener.class) };
+
         // Act - Add multiple devices
         for (int i = 0; i < deviceIds.length; i++) {
             handler.addDeviceListener(deviceIds[i], listeners[i]);
             handler.addLanService(deviceIds[i]);
         }
-        
+
         // Assert - All devices added
         for (int i = 0; i < deviceIds.length; i++) {
             assertEquals(listeners[i], handler.getListener(deviceIds[i]));
             assertTrue(handler.lanServiceAdded.contains(deviceIds[i]));
         }
-        
+
         // Act - Remove some devices
         handler.removeDeviceListener(deviceIds[1]);
         handler.removeLanService(deviceIds[1]);
-        
+
         // Assert - Specific device removed
         assertNull(handler.getListener(deviceIds[1]));
         assertTrue(handler.lanServiceRemoved.contains(deviceIds[1]));
-        
+
         // Assert - Other devices still present
         assertEquals(listeners[0], handler.getListener(deviceIds[0]));
         assertEquals(listeners[2], handler.getListener(deviceIds[2]));
@@ -222,34 +223,34 @@ class SonoffAccountHandlerIntegrationTest {
         // Arrange
         handler.initialize();
         handler.isConnected(true, true);
-        
+
         // Act - Queue multiple messages
         SonoffCommandMessage message1 = new SonoffCommandMessage("device1");
         SonoffCommandMessage message2 = new SonoffCommandMessage("device2");
         handler.queueMessage(message1);
         handler.queueMessage(message2);
-        
+
         // Assert - Messages queued
         assertTrue(handler.messagesQueued.contains(message1));
         assertTrue(handler.messagesQueued.contains(message2));
-        
+
         // Act - Send various communication types
         handler.sendLanMessage("http://device1.local", "lan-payload");
         handler.sendApiMessage("device1");
         handler.sendWebsocketMessage("websocket-params");
-        
+
         // Assert - Communications sent
         assertEquals("lan-payload", handler.lanMessagesSent.get("http://device1.local"));
         assertTrue(handler.apiMessagesSent.contains("device1"));
         assertTrue(handler.websocketMessagesSent.contains("websocket-params"));
-        
+
         // Act - Receive responses
         handler.lanResponse("lan-response");
         handler.websocketMessage("websocket-response");
         JsonObject apiResponse = new JsonObject();
         apiResponse.addProperty("deviceid", "device1");
         handler.apiMessage(apiResponse);
-        
+
         // Assert - Responses received
         assertTrue(handler.lanResponsesReceived.contains("lan-response"));
         assertTrue(handler.websocketMessagesReceived.contains("websocket-response"));
@@ -262,24 +263,23 @@ class SonoffAccountHandlerIntegrationTest {
         handler.initialize();
         ServiceEvent mockServiceEvent = mock(ServiceEvent.class);
         ServiceInfo mockServiceInfo = mock(ServiceInfo.class);
-        
+
         when(mockServiceEvent.getInfo()).thenReturn(mockServiceInfo);
-        when(mockServiceInfo.getInet4Addresses()).thenReturn(new java.net.Inet4Address[] {
-            mock(java.net.Inet4Address.class)
-        });
+        when(mockServiceInfo.getInet4Addresses())
+                .thenReturn(new java.net.Inet4Address[] { mock(java.net.Inet4Address.class) });
         when(mockServiceInfo.getInet4Addresses()[0].getHostAddress()).thenReturn("192.168.1.100");
         when(mockServiceInfo.getPropertyString("id")).thenReturn("discovered-device");
-        
+
         // Act - Service discovery events
         handler.serviceAdded(mockServiceEvent);
         handler.serviceResolved(mockServiceEvent);
         handler.serviceRemoved(mockServiceEvent);
-        
+
         // Assert - Service events handled
         assertTrue(handler.serviceAddedCalled);
         assertTrue(handler.serviceResolvedCalled);
         assertTrue(handler.serviceRemovedCalled);
-        
+
         // Assert - IP address stored
         assertEquals("192.168.1.100", handler.ipAddresses.get("discovered-device"));
     }
@@ -289,7 +289,7 @@ class SonoffAccountHandlerIntegrationTest {
         // Arrange
         handler.initialize();
         CountDownLatch latch = new CountDownLatch(3);
-        
+
         // Act - Simulate concurrent operations
         Thread connectionThread = new Thread(() -> {
             try {
@@ -303,7 +303,7 @@ class SonoffAccountHandlerIntegrationTest {
                 latch.countDown();
             }
         });
-        
+
         Thread deviceThread = new Thread(() -> {
             try {
                 for (int i = 0; i < 5; i++) {
@@ -319,7 +319,7 @@ class SonoffAccountHandlerIntegrationTest {
                 latch.countDown();
             }
         });
-        
+
         Thread messageThread = new Thread(() -> {
             try {
                 for (int i = 0; i < 5; i++) {
@@ -334,14 +334,14 @@ class SonoffAccountHandlerIntegrationTest {
                 latch.countDown();
             }
         });
-        
+
         connectionThread.start();
         deviceThread.start();
         messageThread.start();
-        
+
         // Assert - Should complete without deadlock
         assertTrue(latch.await(5, TimeUnit.SECONDS));
-        
+
         // Verify operations completed successfully
         assertEquals(5, handler.messagesQueued.size());
         assertEquals(5, handler.lanServiceAdded.size());
@@ -352,26 +352,26 @@ class SonoffAccountHandlerIntegrationTest {
     void testStateManagementWithCacheProvider() {
         // Arrange
         String deviceId = "cache-test-device";
-        
+
         try (MockedStatic<SonoffCacheProvider> mockedCacheProvider = mockStatic(SonoffCacheProvider.class)) {
             SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
             mockedCacheProvider.when(() -> new SonoffCacheProvider(any(Gson.class))).thenReturn(mockCache);
-            
+
             // Setup cache to return device states
             Map<String, SonoffDeviceState> cachedStates = new HashMap<>();
             cachedStates.put(deviceId, mockDeviceState1);
             when(mockCache.getStates()).thenReturn(cachedStates);
             when(mockCache.getState(deviceId)).thenReturn(mockDeviceState1);
-            
+
             // Act - Initialize (triggers restoreStates)
             handler.initialize();
-            
+
             // Assert - States restored from cache
             assertTrue(handler.restoreStatesCalled);
-            
+
             // Act - Add new state
             handler.addState(deviceId);
-            
+
             // Assert - State added
             assertEquals(mockDeviceState1, handler.getState(deviceId));
         }
@@ -382,10 +382,10 @@ class SonoffAccountHandlerIntegrationTest {
         // Arrange
         handler.initialize();
         String apiKey = "test-api-key-12345";
-        
+
         // Act
         handler.setApiKey(apiKey);
-        
+
         // Assert
         assertEquals(apiKey, handler.apiKeySet);
     }
@@ -394,7 +394,7 @@ class SonoffAccountHandlerIntegrationTest {
      * Test implementation of SonoffAccountHandler for integration testing
      */
     private static class TestSonoffAccountHandler extends SonoffAccountHandler {
-        
+
         // Test tracking fields
         boolean commandManagerStarted = false;
         boolean commandManagerStopped = false;
@@ -405,11 +405,11 @@ class SonoffAccountHandlerIntegrationTest {
         boolean serviceAddedCalled = false;
         boolean serviceRemovedCalled = false;
         boolean serviceResolvedCalled = false;
-        
+
         ThingStatus lastStatus = ThingStatus.UNKNOWN;
         ThingStatusDetail lastStatusDetail = ThingStatusDetail.NONE;
         String lastStatusDescription = "";
-        
+
         // Collections to track method calls
         final Map<String, SonoffDeviceListener> deviceListeners = new HashMap<>();
         final Map<String, SonoffDeviceState> deviceStates = new HashMap<>();
@@ -424,13 +424,13 @@ class SonoffAccountHandlerIntegrationTest {
         final java.util.List<String> websocketMessagesReceived = new java.util.ArrayList<>();
         final java.util.List<JsonObject> apiMessagesReceived = new java.util.ArrayList<>();
         String apiKeySet = "";
-        
+
         private AccountConfig testConfig;
-        
+
         public TestSonoffAccountHandler(Bridge thing, WebSocketClient webSocketClient, HttpClient httpClient) {
             super(thing, webSocketClient, httpClient);
         }
-        
+
         @Override
         public <T> T getConfigAs(Class<T> configurationClass) {
             if (testConfig == null) {
@@ -438,113 +438,113 @@ class SonoffAccountHandlerIntegrationTest {
             }
             return configurationClass.cast(testConfig);
         }
-        
+
         public void setTestConfig(AccountConfig config) {
             this.testConfig = config;
         }
-        
+
         private ScheduledExecutorService testScheduler;
-        
+
         public void setTestScheduler(ScheduledExecutorService scheduler) {
             this.testScheduler = scheduler;
         }
-        
+
         @Override
         protected void updateStatus(ThingStatus status) {
             lastStatus = status;
             lastStatusDetail = ThingStatusDetail.NONE;
             lastStatusDescription = "";
         }
-        
+
         @Override
         protected void updateStatus(ThingStatus status, ThingStatusDetail statusDetail, String description) {
             lastStatus = status;
             lastStatusDetail = statusDetail;
             lastStatusDescription = description != null ? description : "";
         }
-        
+
         // Override methods to track calls instead of using real managers
-        
+
         @Override
         public void addDeviceListener(String deviceid, SonoffDeviceListener listener) {
             synchronized (deviceListeners) {
                 deviceListeners.put(deviceid, listener);
             }
         }
-        
+
         @Override
         public void removeDeviceListener(String deviceid) {
             synchronized (deviceListeners) {
                 deviceListeners.remove(deviceid);
             }
         }
-        
+
         @Override
         public SonoffDeviceListener getListener(String deviceid) {
             synchronized (deviceListeners) {
                 return deviceListeners.get(deviceid);
             }
         }
-        
+
         @Override
         public SonoffDeviceState getState(String deviceid) {
             synchronized (deviceStates) {
                 return deviceStates.get(deviceid);
             }
         }
-        
+
         @Override
         public void addLanService(String deviceid) {
             synchronized (lanServiceAdded) {
                 lanServiceAdded.add(deviceid);
             }
         }
-        
+
         @Override
         public void removeLanService(String deviceid) {
             synchronized (lanServiceRemoved) {
                 lanServiceRemoved.add(deviceid);
             }
         }
-        
+
         @Override
         public void queueMessage(SonoffCommandMessage message) {
             synchronized (messagesQueued) {
                 messagesQueued.add(message);
             }
         }
-        
+
         @Override
         public void sendLanMessage(String url, String payload) {
             synchronized (lanMessagesSent) {
                 lanMessagesSent.put(url, payload);
             }
         }
-        
+
         @Override
         public void sendApiMessage(String deviceid) {
             synchronized (apiMessagesSent) {
                 apiMessagesSent.add(deviceid);
             }
         }
-        
+
         @Override
         public void sendWebsocketMessage(String params) {
             synchronized (websocketMessagesSent) {
                 websocketMessagesSent.add(params);
             }
         }
-        
+
         @Override
         public void serviceAdded(ServiceEvent event) {
             serviceAddedCalled = true;
         }
-        
+
         @Override
         public void serviceRemoved(ServiceEvent event) {
             serviceRemovedCalled = true;
         }
-        
+
         @Override
         public void serviceResolved(ServiceEvent event) {
             serviceResolvedCalled = true;
@@ -562,33 +562,33 @@ class SonoffAccountHandlerIntegrationTest {
                 }
             }
         }
-        
+
         @Override
         public void lanResponse(String message) {
             synchronized (lanResponsesReceived) {
                 lanResponsesReceived.add(message);
             }
         }
-        
+
         @Override
         public void websocketMessage(String message) {
             synchronized (websocketMessagesReceived) {
                 websocketMessagesReceived.add(message);
             }
         }
-        
+
         @Override
         public void apiMessage(JsonObject thingResponse) {
             synchronized (apiMessagesReceived) {
                 apiMessagesReceived.add(thingResponse);
             }
         }
-        
+
         @Override
         public void setApiKey(String apiKey) {
             apiKeySet = apiKey;
         }
-        
+
         @Override
         public void addState(String deviceid) {
             synchronized (deviceStates) {
@@ -598,23 +598,23 @@ class SonoffAccountHandlerIntegrationTest {
                 }
             }
         }
-        
+
         // Simulate the real initialization behavior
         @Override
         public void initialize() {
             super.initialize();
-            
+
             // Simulate command manager start
             commandManagerStarted = true;
             commandManagerRunning = true;
-            
+
             // Simulate connection manager start
             connectionManagerStarted = true;
-            
+
             // Simulate restore states
             restoreStatesCalled = true;
         }
-        
+
         @Override
         public void dispose() {
             // Simulate cleanup without calling super.dispose() to avoid scheduler issues
@@ -625,24 +625,23 @@ class SonoffAccountHandlerIntegrationTest {
                     // This will be verified by the test
                 }
             }
-            
+
             // Simulate managers stop
             commandManagerStopped = true;
             commandManagerRunning = false;
             connectionManagerStopped = true;
         }
-        
+
         @Override
         public synchronized void isConnected(Boolean lanConnected, Boolean cloudConnected) {
             // Simulate the real status update logic
             String mode = getMode();
             ThingStatus status = ThingStatus.ONLINE;
             String detail = null;
-            
-            if ((mode.equals("local") && !lanConnected) || 
-                (mode.equals("cloud") && !cloudConnected) ||
-                (mode.equals("mixed") && (!lanConnected || !cloudConnected))) {
-                
+
+            if ((mode.equals("local") && !lanConnected) || (mode.equals("cloud") && !cloudConnected)
+                    || (mode.equals("mixed") && (!lanConnected || !cloudConnected))) {
+
                 if (mode.equals("mixed")) {
                     if (!lanConnected && cloudConnected) {
                         detail = "LAN Offline";
@@ -655,14 +654,14 @@ class SonoffAccountHandlerIntegrationTest {
                     status = ThingStatus.OFFLINE;
                 }
             }
-            
+
             // Update command manager running state
             if (status == ThingStatus.OFFLINE) {
                 commandManagerRunning = false;
             } else {
                 commandManagerRunning = true;
             }
-            
+
             // Update status
             if (detail != null) {
                 updateStatus(ThingStatus.ONLINE, ThingStatusDetail.COMMUNICATION_ERROR, detail);
