@@ -93,7 +93,7 @@ class SonoffCommandMessageUtilitiesTest {
                         // Verify nonce properties
                         assertNotNull(nonce, "Nonce should not be null");
                         assertEquals(8, nonce.length(), "Nonce should be 8 characters");
-                        assertTrue(ALPHANUMERIC_PATTERN.matcher(nonce).matches(), 
+                        assertTrue(ALPHANUMERIC_PATTERN.matcher(nonce).matches(),
                                 "Nonce should contain only alphanumeric characters");
                         threadNonces.add(nonce);
                     }
@@ -108,16 +108,14 @@ class SonoffCommandMessageUtilitiesTest {
 
         // Assert
         assertTrue(latch.await(10, TimeUnit.SECONDS), "All threads should complete within timeout");
-        
+
         // With 62^8 possible combinations, we should get very high uniqueness
         int expectedTotal = threadCount * noncesPerThread;
-        assertTrue(allNonces.size() > expectedTotal * 0.90, 
+        assertTrue(allNonces.size() > expectedTotal * 0.90,
                 "At least 90% of nonces should be unique (got " + allNonces.size() + " out of " + expectedTotal + ")");
-        
+
         executor.shutdown();
     }
-
-
 
     @Test
     void testGetSequence_ShouldReturnCurrentTimestamp() {
@@ -129,7 +127,7 @@ class SonoffCommandMessageUtilitiesTest {
 
         // Assert
         long afterCall = System.currentTimeMillis();
-        
+
         assertNotNull(sequence);
         assertTrue(sequence >= beforeCall, "Sequence should be >= time before call");
         assertTrue(sequence <= afterCall, "Sequence should be <= time after call");
@@ -179,24 +177,22 @@ class SonoffCommandMessageUtilitiesTest {
 
         // Assert
         assertTrue(latch.await(10, TimeUnit.SECONDS), "All threads should complete within timeout");
-        
+
         // With millisecond precision and small delays, we should get some unique values
         // The main goal is to verify the method is synchronized and doesn't throw exceptions
         int expectedTotal = threadCount * callsPerThread;
-        assertTrue(allSequences.size() >= 1, 
-                "Should have at least 1 unique sequence (got " + allSequences.size() + " out of " + expectedTotal + ")");
-        
+        assertTrue(allSequences.size() >= 1, "Should have at least 1 unique sequence (got " + allSequences.size()
+                + " out of " + expectedTotal + ")");
+
         // Verify all sequences are reasonable timestamps
         long currentTime = System.currentTimeMillis();
         for (Long sequence : allSequences) {
             assertTrue(sequence > 0, "Sequence should be positive");
             assertTrue(Math.abs(sequence - currentTime) < 60000, "Sequence should be within 1 minute of current time");
         }
-        
+
         executor.shutdown();
     }
-
-
 
     @Test
     void testGetTs_ShouldReturnCurrentTimestamp() {
@@ -208,7 +204,7 @@ class SonoffCommandMessageUtilitiesTest {
 
         // Assert
         long afterCall = System.currentTimeMillis();
-        
+
         assertNotNull(timestamp);
         assertTrue(timestamp >= beforeCall, "Timestamp should be >= time before call");
         assertTrue(timestamp <= afterCall, "Timestamp should be <= time after call");
@@ -280,7 +276,7 @@ class SonoffCommandMessageUtilitiesTest {
         // Arrange - Access private method via reflection
         Method randomStringMethod = SonoffCommandMessageUtilities.class.getDeclaredMethod("randomString", int.class);
         randomStringMethod.setAccessible(true);
-        
+
         Set<Character> observedChars = new HashSet<>();
         int iterations = 10000; // Generate many strings to observe character distribution
 
@@ -295,13 +291,12 @@ class SonoffCommandMessageUtilitiesTest {
         // Assert
         // We should observe most characters from the charset
         // With 10000 iterations of 10-character strings, we should see most of the 62 characters
-        assertTrue(observedChars.size() > 50, 
+        assertTrue(observedChars.size() > 50,
                 "Should observe most characters from charset (observed " + observedChars.size() + " out of 62)");
-        
+
         // Verify all observed characters are valid
         for (Character c : observedChars) {
-            assertTrue(EXPECTED_CHARSET.indexOf(c) >= 0, 
-                    "Character '" + c + "' should be in the expected charset");
+            assertTrue(EXPECTED_CHARSET.indexOf(c) >= 0, "Character '" + c + "' should be in the expected charset");
         }
     }
 
@@ -317,8 +312,7 @@ class SonoffCommandMessageUtilitiesTest {
         // Assert
         assertNotNull(result);
         assertEquals(1000, result.length());
-        assertTrue(ALPHANUMERIC_PATTERN.matcher(result).matches(),
-                "Large string should only contain valid characters");
+        assertTrue(ALPHANUMERIC_PATTERN.matcher(result).matches(), "Large string should only contain valid characters");
     }
 
     @Test
@@ -346,7 +340,7 @@ class SonoffCommandMessageUtilitiesTest {
         // Assert
         assertEquals(EXPECTED_CHARSET, charset);
         assertEquals(62, charset.length()); // 10 digits + 26 uppercase + 26 lowercase
-        
+
         // Verify no duplicate characters
         Set<Character> uniqueChars = new HashSet<>();
         for (char c : charset.toCharArray()) {
@@ -373,8 +367,7 @@ class SonoffCommandMessageUtilitiesTest {
         }
 
         // Assert
-        assertEquals(batchSize * batches, nonces.size(), 
-                "All nonces should be unique across time");
+        assertEquals(batchSize * batches, nonces.size(), "All nonces should be unique across time");
     }
 
     @Test
@@ -417,7 +410,7 @@ class SonoffCommandMessageUtilitiesTest {
                     for (int j = 0; j < 5; j++) {
                         Long sequence = SonoffCommandMessageUtilities.getSequence();
                         Long timestamp = SonoffCommandMessageUtilities.getTs();
-                        
+
                         // Verify both methods return valid values
                         assertNotNull(sequence, "Sequence should not be null");
                         assertNotNull(timestamp, "Timestamp should not be null");
@@ -431,11 +424,8 @@ class SonoffCommandMessageUtilitiesTest {
         }
 
         // Assert
-        assertTrue(latch.await(10, TimeUnit.SECONDS), 
-                "All threads should complete without deadlock");
-        
+        assertTrue(latch.await(10, TimeUnit.SECONDS), "All threads should complete without deadlock");
+
         executor.shutdown();
     }
-
-
 }
