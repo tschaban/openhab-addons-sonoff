@@ -14,9 +14,6 @@ package org.openhab.binding.sonoff.internal.communication;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -52,10 +49,10 @@ class SonoffCommandMessageEncryptionUtilitiesTest {
         // Assert
         assertNotNull(result);
         assertFalse(result.isEmpty());
-        
+
         // Verify it's valid Base64
         assertDoesNotThrow(() -> Base64.getDecoder().decode(result));
-        
+
         // Verify consistent results for same input
         String result2 = encryptionUtils.getAuthMac(appSecret, data);
         assertEquals(result, result2);
@@ -175,12 +172,12 @@ class SonoffCommandMessageEncryptionUtilitiesTest {
         // Assert
         assertNotNull(result);
         assertFalse(result.isEmpty());
-        
+
         // Verify it's valid JSON
         assertDoesNotThrow(() -> JsonParser.parseString(result));
-        
+
         JsonObject jsonResult = JsonParser.parseString(result).getAsJsonObject();
-        
+
         // Verify required fields are present
         assertTrue(jsonResult.has("sequence"));
         assertTrue(jsonResult.has("deviceid"));
@@ -188,13 +185,13 @@ class SonoffCommandMessageEncryptionUtilitiesTest {
         assertTrue(jsonResult.has("iv"));
         assertTrue(jsonResult.has("encrypt"));
         assertTrue(jsonResult.has("data"));
-        
+
         // Verify field values
         assertEquals(sequence.toString(), jsonResult.get("sequence").getAsString());
         assertEquals(deviceId, jsonResult.get("deviceid").getAsString());
         assertEquals("123", jsonResult.get("selfApikey").getAsString());
         assertTrue(jsonResult.get("encrypt").getAsBoolean());
-        
+
         // Verify IV and data are valid Base64
         String iv = jsonResult.get("iv").getAsString();
         String data = jsonResult.get("data").getAsString();
@@ -217,7 +214,7 @@ class SonoffCommandMessageEncryptionUtilitiesTest {
 
         // Assert
         assertNotEquals(result1, result2);
-        
+
         // Both should be valid JSON
         assertDoesNotThrow(() -> JsonParser.parseString(result1));
         assertDoesNotThrow(() -> JsonParser.parseString(result2));
@@ -303,14 +300,14 @@ class SonoffCommandMessageEncryptionUtilitiesTest {
 
         // First encrypt the data
         String encryptedJson = encryptionUtils.encrypt(originalData, deviceKey, deviceId, sequence);
-        
+
         // Skip test if encryption failed
         if (encryptedJson.isEmpty()) {
             return;
         }
-        
+
         JsonObject encryptedPayload = JsonParser.parseString(encryptedJson).getAsJsonObject();
-        
+
         // Create a payload in the format expected by decrypt method
         JsonObject decryptPayload = new JsonObject();
         decryptPayload.addProperty("iv", encryptedPayload.get("iv").getAsString());
@@ -368,13 +365,13 @@ class SonoffCommandMessageEncryptionUtilitiesTest {
 
         // Encrypt with correct key
         String encryptedJson = encryptionUtils.encrypt(originalData, correctKey, deviceId, sequence);
-        
+
         if (encryptedJson.isEmpty()) {
             return; // Skip if encryption failed
         }
-        
+
         JsonObject encryptedPayload = JsonParser.parseString(encryptedJson).getAsJsonObject();
-        
+
         JsonObject decryptPayload = new JsonObject();
         decryptPayload.addProperty("iv", encryptedPayload.get("iv").getAsString());
         decryptPayload.addProperty("data1", encryptedPayload.get("data").getAsString());
@@ -433,20 +430,20 @@ class SonoffCommandMessageEncryptionUtilitiesTest {
 
         // Act
         String encrypted = encryptionUtils.encrypt(originalData, deviceKey, deviceId, sequence);
-        
+
         if (encrypted.isEmpty()) {
             return; // Skip if encryption failed
         }
-        
+
         JsonObject encryptedPayload = JsonParser.parseString(encrypted).getAsJsonObject();
-        
+
         JsonObject decryptPayload = new JsonObject();
         decryptPayload.addProperty("iv", encryptedPayload.get("iv").getAsString());
         decryptPayload.addProperty("data1", encryptedPayload.get("data").getAsString());
         decryptPayload.addProperty("data2", "");
         decryptPayload.addProperty("data3", "");
         decryptPayload.addProperty("data4", "");
-        
+
         String decrypted = encryptionUtils.decrypt(decryptPayload, deviceKey);
 
         // Assert
@@ -463,20 +460,20 @@ class SonoffCommandMessageEncryptionUtilitiesTest {
 
         // Act
         String encrypted = encryptionUtils.encrypt(originalData, deviceKey, deviceId, sequence);
-        
+
         if (encrypted.isEmpty()) {
             return; // Skip if encryption failed
         }
-        
+
         JsonObject encryptedPayload = JsonParser.parseString(encrypted).getAsJsonObject();
-        
+
         JsonObject decryptPayload = new JsonObject();
         decryptPayload.addProperty("iv", encryptedPayload.get("iv").getAsString());
         decryptPayload.addProperty("data1", encryptedPayload.get("data").getAsString());
         decryptPayload.addProperty("data2", "");
         decryptPayload.addProperty("data3", "");
         decryptPayload.addProperty("data4", "");
-        
+
         String decrypted = encryptionUtils.decrypt(decryptPayload, deviceKey);
 
         // Assert
@@ -499,7 +496,7 @@ class SonoffCommandMessageEncryptionUtilitiesTest {
             JsonObject jsonResult = JsonParser.parseString(result).getAsJsonObject();
             String iv = jsonResult.get("iv").getAsString();
             byte[] ivBytes = Base64.getDecoder().decode(iv);
-            
+
             // AES CBC mode requires 16-byte IV
             assertEquals(16, ivBytes.length);
         }
@@ -517,11 +514,11 @@ class SonoffCommandMessageEncryptionUtilitiesTest {
         // Assert
         assertNotNull(result);
         assertFalse(result.isEmpty());
-        
+
         // Verify it's consistent
         String result2 = encryptionUtils.getAuthMac(appSecret, data);
         assertEquals(result, result2);
-        
+
         // Verify it's valid Base64
         byte[] decoded = Base64.getDecoder().decode(result);
         assertEquals(32, decoded.length); // SHA256 produces 32 bytes
