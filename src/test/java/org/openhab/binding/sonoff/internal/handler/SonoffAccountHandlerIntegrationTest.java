@@ -40,6 +40,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.openhab.binding.sonoff.internal.SonoffCacheProvider;
 import org.openhab.binding.sonoff.internal.communication.SonoffCommandMessage;
 import org.openhab.binding.sonoff.internal.config.AccountConfig;
+import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.ThingStatus;
 import org.openhab.core.thing.ThingStatusDetail;
@@ -593,10 +594,16 @@ class SonoffAccountHandlerIntegrationTest {
 
         @Override
         public void addState(String deviceid) {
-            synchronized (deviceStates) {
-                if (!deviceStates.containsKey(deviceid)) {
-                    SonoffDeviceState mockState = mock(SonoffDeviceState.class);
-                    deviceStates.put(deviceid, mockState);
+            // Simulate the real addState behavior using SonoffCacheProvider
+            SonoffCacheProvider cacheProvider = new SonoffCacheProvider(new Gson());
+            SonoffDeviceState state = cacheProvider.getState(deviceid);
+            if (state != null) {
+                synchronized (deviceStates) {
+                    if (ipAddresses.containsKey(deviceid)) {
+                        state.setIpAddress(new StringType(ipAddresses.get(deviceid)));
+                        state.setLocal(true);
+                    }
+                    this.deviceStates.putIfAbsent(deviceid, state);
                 }
             }
         }
@@ -617,6 +624,19 @@ class SonoffAccountHandlerIntegrationTest {
 
             // Simulate restore states
             restoreStatesCalled = true;
+            
+            // Actually perform restore states logic for testing
+            SonoffCacheProvider cacheProvider = new SonoffCacheProvider(new Gson());
+            Map<String, SonoffDeviceState> cachedStates = cacheProvider.getStates();
+            for (Map.Entry<String, SonoffDeviceState> entry : cachedStates.entrySet()) {
+                synchronized (deviceStates) {
+                    if (ipAddresses.containsKey(entry.getKey())) {
+                        entry.getValue().setIpAddress(new StringType(ipAddresses.get(entry.getKey())));
+                        entry.getValue().setLocal(true);
+                    }
+                    this.deviceStates.putIfAbsent(entry.getKey(), entry.getValue());
+                }
+            }
         }
         
         @Override
