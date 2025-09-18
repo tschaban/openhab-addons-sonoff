@@ -103,11 +103,11 @@ class SonoffAccountHandlerIntegrationTest {
         
         // Setup scheduler mocks
         lenient().when(mockScheduler.scheduleWithFixedDelay(any(Runnable.class), anyLong(), anyLong(), any(TimeUnit.class)))
-                .thenReturn(mockScheduledFuture);
+                .thenAnswer(invocation -> mockScheduledFuture);
         
         handler = new TestSonoffAccountHandler(mockBridge, mockWebSocketClient, mockHttpClient);
         handler.setTestConfig(accountConfig);
-        handler.setScheduler(mockScheduler);
+        handler.setTestScheduler(mockScheduler);
     }
 
     @Test
@@ -441,8 +441,10 @@ class SonoffAccountHandlerIntegrationTest {
             this.testConfig = config;
         }
         
-        public void setScheduler(ScheduledExecutorService scheduler) {
-            this.scheduler = scheduler;
+        private ScheduledExecutorService testScheduler;
+        
+        public void setTestScheduler(ScheduledExecutorService scheduler) {
+            this.testScheduler = scheduler;
         }
         
         @Override
