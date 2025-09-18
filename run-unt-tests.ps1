@@ -12,7 +12,8 @@ Write-Host ""
 
 # Step 2: Navigate to project directory
 Write-Host "[STEP 2/4] Navigating to project directory..." -ForegroundColor Yellow
-$projectPath = "D:\Adrian\Projekty\openhab\openhab-addons\bundles\org.openhab.binding.sonoff"
+#$projectPath = "D:\Adrian\Projekty\openhab\openhab-addons\bundles\org.openhab.binding.sonoff"
+$projectPath = "C:\Users\adria\Desktop\Projekty\openhab-addons\bundles\org.openhab.binding.sonoff"
 Write-Host "Target directory: $projectPath" -ForegroundColor Gray
 
 if (Test-Path $projectPath) {
