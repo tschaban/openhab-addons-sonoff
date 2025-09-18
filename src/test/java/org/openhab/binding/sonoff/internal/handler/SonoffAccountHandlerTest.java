@@ -35,7 +35,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openhab.binding.sonoff.internal.SonoffCacheProvider;
 import org.openhab.binding.sonoff.internal.communication.SonoffCommandMessage;
@@ -170,7 +169,7 @@ class SonoffAccountHandlerTest {
         handler.dispose();
 
         // Assert
-        // Note: We don't verify mockScheduledFuture.cancel() since TestSonoffAccountHandler 
+        // Note: We don't verify mockScheduledFuture.cancel() since TestSonoffAccountHandler
         // uses a test implementation that doesn't use the real scheduler
         assertTrue(handler.commandManagerStopped);
         assertTrue(handler.connectionManagerStopped);
@@ -390,7 +389,7 @@ class SonoffAccountHandlerTest {
         // Arrange
         String deviceId = "test-device-id";
 
-        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class, 
+        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class,
                 (mock, context) -> {
                     when(mock.getState(deviceId)).thenReturn(mockDeviceState);
                 })) {
@@ -408,7 +407,7 @@ class SonoffAccountHandlerTest {
         // Arrange
         String deviceId = "test-device-id";
 
-        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class, 
+        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class,
                 (mock, context) -> {
                     when(mock.getState(deviceId)).thenReturn(null);
                 })) {
@@ -699,8 +698,8 @@ class SonoffAccountHandlerTest {
         SonoffDeviceState mockState = mock(SonoffDeviceState.class);
         Map<String, SonoffDeviceState> cachedStates = new HashMap<>();
         cachedStates.put(deviceId, mockState);
-        
-        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class, 
+
+        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class,
                 (mock, context) -> {
                     when(mock.getStates()).thenReturn(cachedStates);
                 })) {
@@ -726,8 +725,8 @@ class SonoffAccountHandlerTest {
         String ipAddress = "192.168.1.100";
 
         SonoffDeviceState mockState = mock(SonoffDeviceState.class);
-        
-        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class, 
+
+        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class,
                 (mock, context) -> {
                     when(mock.getState(deviceId)).thenReturn(mockState);
                 })) {
@@ -868,7 +867,7 @@ class SonoffAccountHandlerTest {
 
             // Simulate restore states
             restoreStatesCalled = true;
-            
+
             // Actually perform restore states logic for testing
             SonoffCacheProvider cacheProvider = new SonoffCacheProvider(new Gson());
             Map<String, SonoffDeviceState> deviceStates = cacheProvider.getStates();
@@ -894,28 +893,27 @@ class SonoffAccountHandlerTest {
             commandManagerRunning = false;
             connectionManagerStopped = true;
         }
-        
+
         @Override
         public String getMode() {
             return this.mode;
         }
-        
+
         @Override
         public SonoffConnectionManager getConnectionManager() {
             return connectionManager;
         }
-        
+
         @Override
         public synchronized void isConnected(Boolean lanConnected, Boolean cloudConnected) {
             // Simulate the real status update logic
             ThingStatus status = ThingStatus.ONLINE;
             ThingStatusDetail detail = ThingStatusDetail.NONE;
             String detailDescription = null;
-            
-            if ((mode.equals("local") && !lanConnected) || 
-                (mode.equals("cloud") && !cloudConnected) ||
-                (mode.equals("mixed") && (!lanConnected || !cloudConnected))) {
-                
+
+            if ((mode.equals("local") && !lanConnected) || (mode.equals("cloud") && !cloudConnected)
+                    || (mode.equals("mixed") && (!lanConnected || !cloudConnected))) {
+
                 if (mode.equals("mixed")) {
                     if (!lanConnected && cloudConnected) {
                         detail = ThingStatusDetail.COMMUNICATION_ERROR;
@@ -930,14 +928,14 @@ class SonoffAccountHandlerTest {
                     status = ThingStatus.OFFLINE;
                 }
             }
-            
+
             // Update command manager running state
             if (status == ThingStatus.OFFLINE) {
                 commandManagerRunning = false;
             } else {
                 commandManagerRunning = true;
             }
-            
+
             // Update status
             if (detail != ThingStatusDetail.NONE) {
                 updateStatus(status, detail, detailDescription);
