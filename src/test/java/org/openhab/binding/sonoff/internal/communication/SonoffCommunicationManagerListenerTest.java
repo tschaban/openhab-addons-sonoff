@@ -314,7 +314,7 @@ class SonoffCommunicationManagerListenerTest {
         // Assert
         assertNotNull(state, "Should retrieve device state");
         assertNotNull(deviceListener, "Should retrieve device listener");
-        
+
         verify(listener).getState(TEST_DEVICE_ID);
         verify(listener).getListener(TEST_DEVICE_ID);
         verify(listener).sendLanMessage(TEST_URL, TEST_PAYLOAD);
@@ -326,7 +326,7 @@ class SonoffCommunicationManagerListenerTest {
     void testInterfaceContract_AllMethodsArePublic() {
         // This test verifies that all interface methods are accessible
         // and can be called without compilation errors
-        
+
         // Arrange
         when(listener.getState(anyString())).thenReturn(null);
         when(listener.getListener(anyString())).thenReturn(null);
@@ -351,7 +351,7 @@ class SonoffCommunicationManagerListenerTest {
         private final SonoffDeviceState deviceState;
         private final SonoffDeviceListener deviceListener;
 
-        public TestSonoffCommunicationManagerListener(SonoffDeviceState deviceState, 
+        public TestSonoffCommunicationManagerListener(SonoffDeviceState deviceState,
                 SonoffDeviceListener deviceListener) {
             this.deviceState = deviceState;
             this.deviceListener = deviceListener;
@@ -386,13 +386,13 @@ class SonoffCommunicationManagerListenerTest {
     @Test
     void testConcreteImplementation_ShouldWorkCorrectly() {
         // Arrange
-        TestSonoffCommunicationManagerListener testListener = 
-                new TestSonoffCommunicationManagerListener(mockDeviceState, mockDeviceListener);
+        TestSonoffCommunicationManagerListener testListener = new TestSonoffCommunicationManagerListener(
+                mockDeviceState, mockDeviceListener);
 
         // Act & Assert
         assertEquals(mockDeviceState, testListener.getState(TEST_DEVICE_ID));
         assertNull(testListener.getState("invalid-device"));
-        
+
         assertEquals(mockDeviceListener, testListener.getListener(TEST_DEVICE_ID));
         assertNull(testListener.getListener("invalid-device"));
 
