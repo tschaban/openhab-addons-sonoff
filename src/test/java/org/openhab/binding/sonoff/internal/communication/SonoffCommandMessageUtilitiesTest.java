@@ -117,40 +117,7 @@ class SonoffCommandMessageUtilitiesTest {
         executor.shutdown();
     }
 
-    @Test
-    void testGetSequence_SynchronizationBehavior() throws InterruptedException {
-        // Arrange
-        int threadCount = 10;
-        CountDownLatch startLatch = new CountDownLatch(1);
-        CountDownLatch completeLatch = new CountDownLatch(threadCount);
-        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
-        
-        // Act - All threads call getSequence simultaneously
-        for (int i = 0; i < threadCount; i++) {
-            executor.submit(() -> {
-                try {
-                    startLatch.await(); // Wait for all threads to be ready
-                    // Call getSequence - this should not throw any exceptions
-                    Long sequence = SonoffCommandMessageUtilities.getSequence();
-                    assertNotNull(sequence, "Sequence should not be null");
-                    assertTrue(sequence > 0, "Sequence should be positive");
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                } finally {
-                    completeLatch.countDown();
-                }
-            });
-        }
-        
-        // Start all threads simultaneously
-        startLatch.countDown();
-        
-        // Assert
-        assertTrue(completeLatch.await(5, TimeUnit.SECONDS), 
-                "All threads should complete without deadlock or exceptions");
-        
-        executor.shutdown();
-    }
+
 
     @Test
     void testGetSequence_ShouldReturnCurrentTimestamp() {
@@ -190,7 +157,6 @@ class SonoffCommandMessageUtilitiesTest {
 
         // Act
         for (int i = 0; i < threadCount; i++) {
-            final int threadIndex = i;
             executor.submit(() -> {
                 try {
                     for (int j = 0; j < callsPerThread; j++) {
@@ -230,40 +196,7 @@ class SonoffCommandMessageUtilitiesTest {
         executor.shutdown();
     }
 
-    @Test
-    void testGetSequence_SynchronizationBehavior() throws InterruptedException {
-        // Arrange
-        int threadCount = 10;
-        CountDownLatch startLatch = new CountDownLatch(1);
-        CountDownLatch completeLatch = new CountDownLatch(threadCount);
-        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
-        
-        // Act - All threads call getSequence simultaneously
-        for (int i = 0; i < threadCount; i++) {
-            executor.submit(() -> {
-                try {
-                    startLatch.await(); // Wait for all threads to be ready
-                    // Call getSequence - this should not throw any exceptions
-                    Long sequence = SonoffCommandMessageUtilities.getSequence();
-                    assertNotNull(sequence, "Sequence should not be null");
-                    assertTrue(sequence > 0, "Sequence should be positive");
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                } finally {
-                    completeLatch.countDown();
-                }
-            });
-        }
-        
-        // Start all threads simultaneously
-        startLatch.countDown();
-        
-        // Assert
-        assertTrue(completeLatch.await(5, TimeUnit.SECONDS), 
-                "All threads should complete without deadlock or exceptions");
-        
-        executor.shutdown();
-    }
+
 
     @Test
     void testGetTs_ShouldReturnCurrentTimestamp() {
@@ -504,38 +437,5 @@ class SonoffCommandMessageUtilitiesTest {
         executor.shutdown();
     }
 
-    @Test
-    void testGetSequence_SynchronizationBehavior() throws InterruptedException {
-        // Arrange
-        int threadCount = 10;
-        CountDownLatch startLatch = new CountDownLatch(1);
-        CountDownLatch completeLatch = new CountDownLatch(threadCount);
-        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
-        
-        // Act - All threads call getSequence simultaneously
-        for (int i = 0; i < threadCount; i++) {
-            executor.submit(() -> {
-                try {
-                    startLatch.await(); // Wait for all threads to be ready
-                    // Call getSequence - this should not throw any exceptions
-                    Long sequence = SonoffCommandMessageUtilities.getSequence();
-                    assertNotNull(sequence, "Sequence should not be null");
-                    assertTrue(sequence > 0, "Sequence should be positive");
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                } finally {
-                    completeLatch.countDown();
-                }
-            });
-        }
-        
-        // Start all threads simultaneously
-        startLatch.countDown();
-        
-        // Assert
-        assertTrue(completeLatch.await(5, TimeUnit.SECONDS), 
-                "All threads should complete without deadlock or exceptions");
-        
-        executor.shutdown();
-    }
+
 }
