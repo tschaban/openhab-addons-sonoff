@@ -34,6 +34,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openhab.binding.sonoff.internal.SonoffCacheProvider;
@@ -389,9 +390,11 @@ class SonoffAccountHandlerTest {
         // Arrange
         String deviceId = "test-device-id";
 
-        try (MockedStatic<SonoffCacheProvider> mockedCacheProvider = mockStatic(SonoffCacheProvider.class)) {
-            SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
-            mockedCacheProvider.when(() -> new SonoffCacheProvider(notNull())).thenReturn(mockCache);
+        SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
+        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class, 
+                (mock, context) -> {
+                    // Configure the mock behavior
+                })) {
             when(mockCache.getState(deviceId)).thenReturn(mockDeviceState);
 
             // Act
@@ -407,10 +410,10 @@ class SonoffAccountHandlerTest {
         // Arrange
         String deviceId = "test-device-id";
 
-        try (MockedStatic<SonoffCacheProvider> mockedCacheProvider = mockStatic(SonoffCacheProvider.class)) {
-            SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
-            mockedCacheProvider.when(() -> new SonoffCacheProvider(notNull())).thenReturn(mockCache);
-            when(mockCache.getState(deviceId)).thenReturn(null);
+        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class, 
+                (mock, context) -> {
+                    when(mock.getState(deviceId)).thenReturn(null);
+                })) {
 
             // Act
             handler.addState(deviceId);
@@ -695,15 +698,14 @@ class SonoffAccountHandlerTest {
         String deviceId = "test-device";
         String ipAddress = "192.168.1.100";
 
-        try (MockedStatic<SonoffCacheProvider> mockedCacheProvider = mockStatic(SonoffCacheProvider.class)) {
-            SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
-            SonoffDeviceState mockState = mock(SonoffDeviceState.class);
-
-            mockedCacheProvider.when(() -> new SonoffCacheProvider(notNull())).thenReturn(mockCache);
-
-            Map<String, SonoffDeviceState> cachedStates = new HashMap<>();
-            cachedStates.put(deviceId, mockState);
-            when(mockCache.getStates()).thenReturn(cachedStates);
+        SonoffDeviceState mockState = mock(SonoffDeviceState.class);
+        Map<String, SonoffDeviceState> cachedStates = new HashMap<>();
+        cachedStates.put(deviceId, mockState);
+        
+        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class, 
+                (mock, context) -> {
+                    when(mock.getStates()).thenReturn(cachedStates);
+                })) {
 
             // Pre-populate IP address
             handler.ipAddresses.put(deviceId, ipAddress);
@@ -725,12 +727,12 @@ class SonoffAccountHandlerTest {
         String deviceId = "test-device";
         String ipAddress = "192.168.1.100";
 
-        try (MockedStatic<SonoffCacheProvider> mockedCacheProvider = mockStatic(SonoffCacheProvider.class)) {
-            SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
-            SonoffDeviceState mockState = mock(SonoffDeviceState.class);
-
-            mockedCacheProvider.when(() -> new SonoffCacheProvider(notNull())).thenReturn(mockCache);
-            when(mockCache.getState(deviceId)).thenReturn(mockState);
+        SonoffDeviceState mockState = mock(SonoffDeviceState.class);
+        
+        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class, 
+                (mock, context) -> {
+                    when(mock.getState(deviceId)).thenReturn(mockState);
+                })) {
 
             // Pre-populate IP address
             handler.ipAddresses.put(deviceId, ipAddress);

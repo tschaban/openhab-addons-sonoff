@@ -34,6 +34,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openhab.binding.sonoff.internal.SonoffCacheProvider;
@@ -353,15 +354,15 @@ class SonoffAccountHandlerIntegrationTest {
         // Arrange
         String deviceId = "cache-test-device";
 
-        try (MockedStatic<SonoffCacheProvider> mockedCacheProvider = mockStatic(SonoffCacheProvider.class)) {
-            SonoffCacheProvider mockCache = mock(SonoffCacheProvider.class);
-            mockedCacheProvider.when(() -> new SonoffCacheProvider(notNull())).thenReturn(mockCache);
-
-            // Setup cache to return device states
-            Map<String, SonoffDeviceState> cachedStates = new HashMap<>();
-            cachedStates.put(deviceId, mockDeviceState1);
-            when(mockCache.getStates()).thenReturn(cachedStates);
-            when(mockCache.getState(deviceId)).thenReturn(mockDeviceState1);
+        // Setup cache to return device states
+        Map<String, SonoffDeviceState> cachedStates = new HashMap<>();
+        cachedStates.put(deviceId, mockDeviceState1);
+        
+        try (MockedConstruction<SonoffCacheProvider> mockedConstruction = mockConstruction(SonoffCacheProvider.class, 
+                (mock, context) -> {
+                    when(mock.getStates()).thenReturn(cachedStates);
+                    when(mock.getState(deviceId)).thenReturn(mockDeviceState1);
+                })) {
 
             // Act - Initialize (triggers restoreStates)
             handler.initialize();
