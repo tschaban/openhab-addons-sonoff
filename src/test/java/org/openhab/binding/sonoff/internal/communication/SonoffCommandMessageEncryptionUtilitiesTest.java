@@ -92,16 +92,30 @@ class SonoffCommandMessageEncryptionUtilitiesTest {
     }
 
     @Test
-    void testGetAuthMac_WithEmptySecret_ShouldNotThrow() throws Exception {
+    void testGetAuthMac_WithEmptySecret_ShouldThrowException() {
         // Arrange
         String appSecret = "";
         String data = "testData";
 
         // Act & Assert
-        assertDoesNotThrow(() -> {
-            String result = encryptionUtils.getAuthMac(appSecret, data);
-            assertNotNull(result);
+        assertThrows(IllegalArgumentException.class, () -> {
+            encryptionUtils.getAuthMac(appSecret, data);
         });
+    }
+
+    @Test
+    void testGetAuthMac_WithMinimalSecret_ShouldWork() throws Exception {
+        // Arrange
+        String appSecret = "a"; // Minimal non-empty secret
+        String data = "testData";
+
+        // Act
+        String result = encryptionUtils.getAuthMac(appSecret, data);
+
+        // Assert
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertDoesNotThrow(() -> Base64.getDecoder().decode(result));
     }
 
     @Test
