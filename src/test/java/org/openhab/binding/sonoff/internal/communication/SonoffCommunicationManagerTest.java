@@ -18,8 +18,6 @@ import static org.mockito.Mockito.*;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceInfo;
@@ -77,7 +75,7 @@ class SonoffCommunicationManagerTest {
     void setUp() {
         gson = new Gson();
         communicationManager = new SonoffCommunicationManager(mockListener, gson);
-        
+
         // Reset mocks before each test
         reset(mockListener, mockDeviceState, mockDeviceListener, mockServiceEvent, mockServiceInfo);
     }
@@ -211,7 +209,7 @@ class SonoffCommunicationManagerTest {
         // Arrange
         communicationManager.start(TEST_MODE_LOCAL);
         communicationManager.isConnected(true, false); // LAN connected, cloud not connected
-        
+
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
         SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
@@ -225,7 +223,8 @@ class SonoffCommunicationManagerTest {
         communicationManager.sendMessage(message);
 
         // Assert
-        verify(mockListener).sendLanMessage(contains("http://" + TEST_IP_ADDRESS + ":8081/zeroconf/switch"), anyString());
+        verify(mockListener).sendLanMessage(contains("http://" + TEST_IP_ADDRESS + ":8081/zeroconf/switch"),
+                anyString());
     }
 
     @Test
@@ -234,7 +233,7 @@ class SonoffCommunicationManagerTest {
         communicationManager.start(TEST_MODE_CLOUD);
         communicationManager.setApiKey(TEST_API_KEY);
         communicationManager.isConnected(false, true); // LAN not connected, cloud connected
-        
+
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
         SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
@@ -251,7 +250,7 @@ class SonoffCommunicationManagerTest {
         // Arrange
         communicationManager.start(TEST_MODE_CLOUD);
         communicationManager.isConnected(false, false); // No connections
-        
+
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
         SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
@@ -360,13 +359,13 @@ class SonoffCommunicationManagerTest {
         JsonObject apiResponse = new JsonObject();
         JsonObject data = new JsonObject();
         JsonArray thingList = new JsonArray();
-        
+
         JsonObject thing = new JsonObject();
         JsonObject itemData = new JsonObject();
         itemData.addProperty("deviceid", TEST_DEVICE_ID);
         thing.add("itemData", itemData);
         thingList.add(thing);
-        
+
         data.add("thingList", thingList);
         apiResponse.add("data", data);
 
@@ -419,7 +418,7 @@ class SonoffCommunicationManagerTest {
         when(mockServiceEvent.getInfo()).thenReturn(mockServiceInfo);
         when(mockServiceInfo.getInet4Addresses()).thenReturn(new java.net.Inet4Address[]{(java.net.Inet4Address) InetAddress.getByName(TEST_IP_ADDRESS)});
         when(mockServiceInfo.getPropertyNames()).thenReturn(new java.util.Enumeration<String>() {
-            private final String[] props = {"id", "encrypt"};
+            private final String[] props = { "id", "encrypt" };
             private int index = 0;
 
             @Override
@@ -461,13 +460,13 @@ class SonoffCommunicationManagerTest {
         // Assert - Test by sending a cloud message that uses the API key
         communicationManager.start(TEST_MODE_CLOUD);
         communicationManager.isConnected(false, true);
-        
+
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
         SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
         
         communicationManager.sendMessage(message);
-        
+
         // Verify websocket message was sent (which uses the API key)
         verify(mockListener).sendWebsocketMessage(anyString());
     }
@@ -479,7 +478,7 @@ class SonoffCommunicationManagerTest {
 
         // Assert - Test by sending a message that should use LAN
         communicationManager.start(TEST_MODE_LOCAL);
-        
+
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
         SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
@@ -489,7 +488,7 @@ class SonoffCommunicationManagerTest {
         when(mockDeviceState.getIpAddress()).thenReturn(new StringType(TEST_IP_ADDRESS));
 
         communicationManager.sendMessage(message);
-        
+
         // Should use LAN since it's connected
         verify(mockListener).sendLanMessage(anyString(), anyString());
     }
@@ -498,7 +497,7 @@ class SonoffCommunicationManagerTest {
     void testRun_ShouldProcessQueuedMessages() throws InterruptedException {
         // Arrange
         communicationManager.startRunning();
-        
+
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
         SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
@@ -508,10 +507,10 @@ class SonoffCommunicationManagerTest {
         // Act
         Thread runThread = new Thread(communicationManager);
         runThread.start();
-        
+
         // Give some time for processing
         Thread.sleep(100);
-        
+
         communicationManager.stopRunning();
         runThread.interrupt();
 
@@ -601,7 +600,7 @@ class SonoffCommunicationManagerTest {
         // Arrange
         JsonObject device = new JsonObject();
         device.addProperty("deviceid", "unknown-device");
-        
+
         when(mockListener.getState("unknown-device")).thenReturn(null);
 
         JsonObject updateMessage = new JsonObject();
