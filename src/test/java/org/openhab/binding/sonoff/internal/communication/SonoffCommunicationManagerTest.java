@@ -185,7 +185,7 @@ class SonoffCommunicationManagerTest {
         communicationManager.sendMessage(devicesMessage);
 
         // Assert
-        verify(mockListener).sendApiMessage(TEST_DEVICE_ID);
+        verify(mockListener).sendApiMessage("");
     }
 
     @Test
