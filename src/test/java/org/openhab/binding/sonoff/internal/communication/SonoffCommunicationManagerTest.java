@@ -173,7 +173,7 @@ class SonoffCommunicationManagerTest {
         communicationManager.sendMessage(deviceMessage);
 
         // Assert
-        verify(mockListener).sendApiMessage("");
+        verify(mockListener).sendApiMessage(TEST_DEVICE_ID);
     }
 
     @Test
@@ -185,7 +185,7 @@ class SonoffCommunicationManagerTest {
         communicationManager.sendMessage(devicesMessage);
 
         // Assert
-        verify(mockListener).sendApiMessage("");
+        verify(mockListener).sendApiMessage(TEST_DEVICE_ID);
     }
 
     @Test
