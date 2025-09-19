@@ -27,15 +27,13 @@ import javax.jmdns.ServiceInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openhab.binding.sonoff.internal.dto.commands.SingleSwitch;
-import org.openhab.binding.sonoff.internal.dto.commands.MultiSwitch;
 import org.openhab.binding.sonoff.internal.dto.commands.UiActive;
 import org.openhab.binding.sonoff.internal.handler.SonoffDeviceListener;
 import org.openhab.binding.sonoff.internal.handler.SonoffDeviceState;
+import org.openhab.core.library.types.StringType;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -123,7 +121,7 @@ class SonoffCommunicationManagerTest {
         // Assert - Test by queuing a message (should work when running)
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
-        SonoffCommandMessage message = new SonoffCommandMessage(TEST_DEVICE_ID, command);
+        SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
         
         assertDoesNotThrow(() -> communicationManager.queueMessage(message));
     }
@@ -146,7 +144,7 @@ class SonoffCommunicationManagerTest {
         communicationManager.startRunning();
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
-        SonoffCommandMessage message = new SonoffCommandMessage(TEST_DEVICE_ID, command);
+        SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
 
         // Act
         communicationManager.queueMessage(message);
@@ -162,7 +160,7 @@ class SonoffCommunicationManagerTest {
         communicationManager.stopRunning();
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
-        SonoffCommandMessage message = new SonoffCommandMessage(TEST_DEVICE_ID, command);
+        SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
 
         // Act & Assert - Should not throw exception but won't queue
         assertDoesNotThrow(() -> communicationManager.queueMessage(message));
@@ -171,7 +169,7 @@ class SonoffCommunicationManagerTest {
     @Test
     void testSendMessage_DeviceCommand_ShouldCallApiMessage() {
         // Arrange
-        SonoffCommandMessage deviceMessage = new SonoffCommandMessage(TEST_DEVICE_ID, "device");
+        SonoffCommandMessage deviceMessage = new SonoffCommandMessage(TEST_DEVICE_ID);
 
         // Act
         communicationManager.sendMessage(deviceMessage);
@@ -183,7 +181,7 @@ class SonoffCommunicationManagerTest {
     @Test
     void testSendMessage_DevicesCommand_ShouldCallApiMessage() {
         // Arrange
-        SonoffCommandMessage devicesMessage = new SonoffCommandMessage(TEST_DEVICE_ID, "devices");
+        SonoffCommandMessage devicesMessage = new SonoffCommandMessage();
 
         // Act
         communicationManager.sendMessage(devicesMessage);
@@ -198,8 +196,7 @@ class SonoffCommunicationManagerTest {
         communicationManager.start(TEST_MODE_LOCAL);
         UiActive command = new UiActive();
         command.setUiActive(60);
-        SonoffCommandMessage message = new SonoffCommandMessage(TEST_DEVICE_ID, command);
-        message.setLanSupported(false); // Not supported in local mode
+        SonoffCommandMessage message = new SonoffCommandMessage("uiActive", TEST_DEVICE_ID, false, command);
 
         // Act
         communicationManager.sendMessage(message);
@@ -217,13 +214,12 @@ class SonoffCommunicationManagerTest {
         
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
-        SonoffCommandMessage message = new SonoffCommandMessage(TEST_DEVICE_ID, command);
-        message.setLanSupported(true);
+        SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
 
         // Mock device state
         when(mockListener.getState(TEST_DEVICE_ID)).thenReturn(mockDeviceState);
         when(mockDeviceState.getDeviceKey()).thenReturn(TEST_DEVICE_KEY);
-        when(mockDeviceState.getIpAddress()).thenReturn(InetAddress.getByName(TEST_IP_ADDRESS));
+        when(mockDeviceState.getIpAddress()).thenReturn(new StringType(TEST_IP_ADDRESS));
 
         // Act
         communicationManager.sendMessage(message);
@@ -241,7 +237,7 @@ class SonoffCommunicationManagerTest {
         
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
-        SonoffCommandMessage message = new SonoffCommandMessage(TEST_DEVICE_ID, command);
+        SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
 
         // Act
         communicationManager.sendMessage(message);
@@ -258,7 +254,7 @@ class SonoffCommunicationManagerTest {
         
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
-        SonoffCommandMessage message = new SonoffCommandMessage(TEST_DEVICE_ID, command);
+        SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
 
         // Act
         communicationManager.sendMessage(message);
@@ -421,7 +417,7 @@ class SonoffCommunicationManagerTest {
     void testServiceResolved_ShouldProcessLanDevice() throws UnknownHostException {
         // Arrange
         when(mockServiceEvent.getInfo()).thenReturn(mockServiceInfo);
-        when(mockServiceInfo.getInet4Addresses()).thenReturn(new InetAddress[]{InetAddress.getByName(TEST_IP_ADDRESS)});
+        when(mockServiceInfo.getInet4Addresses()).thenReturn(new java.net.Inet4Address[]{(java.net.Inet4Address) InetAddress.getByName(TEST_IP_ADDRESS)});
         when(mockServiceInfo.getPropertyNames()).thenReturn(new java.util.Enumeration<String>() {
             private final String[] props = {"id", "encrypt"};
             private int index = 0;
@@ -468,7 +464,7 @@ class SonoffCommunicationManagerTest {
         
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
-        SonoffCommandMessage message = new SonoffCommandMessage(TEST_DEVICE_ID, command);
+        SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
         
         communicationManager.sendMessage(message);
         
@@ -486,16 +482,11 @@ class SonoffCommunicationManagerTest {
         
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
-        SonoffCommandMessage message = new SonoffCommandMessage(TEST_DEVICE_ID, command);
-        message.setLanSupported(true);
+        SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
 
         when(mockListener.getState(TEST_DEVICE_ID)).thenReturn(mockDeviceState);
         when(mockDeviceState.getDeviceKey()).thenReturn(TEST_DEVICE_KEY);
-        try {
-            when(mockDeviceState.getIpAddress()).thenReturn(InetAddress.getByName(TEST_IP_ADDRESS));
-        } catch (UnknownHostException e) {
-            fail("Test setup failed: " + e.getMessage());
-        }
+        when(mockDeviceState.getIpAddress()).thenReturn(new StringType(TEST_IP_ADDRESS));
 
         communicationManager.sendMessage(message);
         
@@ -510,7 +501,7 @@ class SonoffCommunicationManagerTest {
         
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
-        SonoffCommandMessage message = new SonoffCommandMessage(TEST_DEVICE_ID, command);
+        SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
         
         communicationManager.queueMessage(message);
 
@@ -538,9 +529,9 @@ class SonoffCommunicationManagerTest {
         // Act - Perform multiple operations
         SingleSwitch switchCommand = new SingleSwitch();
         switchCommand.setSwitch("on");
-        SonoffCommandMessage switchMessage = new SonoffCommandMessage(TEST_DEVICE_ID, switchCommand);
+        SonoffCommandMessage switchMessage = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, switchCommand);
         
-        SonoffCommandMessage deviceMessage = new SonoffCommandMessage(TEST_DEVICE_ID, "device");
+        SonoffCommandMessage deviceMessage = new SonoffCommandMessage(TEST_DEVICE_ID);
 
         communicationManager.sendMessage(switchMessage);
         communicationManager.sendMessage(deviceMessage);
@@ -566,7 +557,7 @@ class SonoffCommunicationManagerTest {
         // Arrange
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
-        SonoffCommandMessage message = new SonoffCommandMessage("", command);
+        SonoffCommandMessage message = new SonoffCommandMessage("switch", "", true, command);
 
         // Act & Assert - Should not throw exception
         assertDoesNotThrow(() -> communicationManager.sendMessage(message));
@@ -575,7 +566,7 @@ class SonoffCommunicationManagerTest {
     @Test
     void testEdgeCases_NullCommand_ShouldHandleGracefully() {
         // Arrange
-        SonoffCommandMessage message = new SonoffCommandMessage(TEST_DEVICE_ID, (String) null);
+        SonoffCommandMessage message = new SonoffCommandMessage(TEST_DEVICE_ID);
 
         // Act & Assert - Should not throw exception
         assertDoesNotThrow(() -> communicationManager.sendMessage(message));
@@ -589,12 +580,12 @@ class SonoffCommunicationManagerTest {
         // Create switch command (should have higher priority)
         SingleSwitch switchCommand = new SingleSwitch();
         switchCommand.setSwitch("on");
-        SonoffCommandMessage switchMessage = new SonoffCommandMessage(TEST_DEVICE_ID, switchCommand);
+        SonoffCommandMessage switchMessage = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, switchCommand);
 
         // Create other command
         UiActive uiCommand = new UiActive();
         uiCommand.setUiActive(60);
-        SonoffCommandMessage uiMessage = new SonoffCommandMessage(TEST_DEVICE_ID, uiCommand);
+        SonoffCommandMessage uiMessage = new SonoffCommandMessage("uiActive", TEST_DEVICE_ID, false, uiCommand);
 
         // Act - Queue in reverse priority order
         communicationManager.queueMessage(uiMessage);
