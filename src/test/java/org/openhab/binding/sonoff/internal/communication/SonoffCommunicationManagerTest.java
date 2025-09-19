@@ -120,7 +120,7 @@ class SonoffCommunicationManagerTest {
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
         SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
-        
+
         assertDoesNotThrow(() -> communicationManager.queueMessage(message));
     }
 
@@ -339,8 +339,8 @@ class SonoffCommunicationManagerTest {
         String invalidJson = "{ invalid json }";
 
         // Act & Assert - Should throw JsonSyntaxException for malformed JSON
-        assertThrows(com.google.gson.JsonSyntaxException.class, () -> 
-            communicationManager.websocketMessage(invalidJson));
+        assertThrows(com.google.gson.JsonSyntaxException.class,
+                () -> communicationManager.websocketMessage(invalidJson));
     }
 
     @Test
@@ -391,8 +391,8 @@ class SonoffCommunicationManagerTest {
         String invalidResponse = "invalid json";
 
         // Act & Assert - Should throw JsonSyntaxException for invalid JSON
-        assertThrows(com.google.gson.JsonSyntaxException.class, () -> 
-            communicationManager.lanResponse(invalidResponse));
+        assertThrows(com.google.gson.JsonSyntaxException.class,
+                () -> communicationManager.lanResponse(invalidResponse));
     }
 
     @Test
@@ -413,7 +413,8 @@ class SonoffCommunicationManagerTest {
     void testServiceResolved_ShouldProcessLanDevice() throws UnknownHostException {
         // Arrange
         when(mockServiceEvent.getInfo()).thenReturn(mockServiceInfo);
-        when(mockServiceInfo.getInet4Addresses()).thenReturn(new java.net.Inet4Address[]{(java.net.Inet4Address) InetAddress.getByName(TEST_IP_ADDRESS)});
+        when(mockServiceInfo.getInet4Addresses()).thenReturn(
+                new java.net.Inet4Address[] { (java.net.Inet4Address) InetAddress.getByName(TEST_IP_ADDRESS) });
         when(mockServiceInfo.getPropertyNames()).thenReturn(new java.util.Enumeration<String>() {
             private final String[] props = { "id", "encrypt" };
             private int index = 0;
@@ -461,7 +462,7 @@ class SonoffCommunicationManagerTest {
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
         SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
-        
+
         communicationManager.sendMessage(message);
 
         // Verify websocket message was sent (which uses the API key)
@@ -498,7 +499,7 @@ class SonoffCommunicationManagerTest {
         SingleSwitch command = new SingleSwitch();
         command.setSwitch("on");
         SonoffCommandMessage message = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, command);
-        
+
         communicationManager.queueMessage(message);
 
         // Act
@@ -526,7 +527,7 @@ class SonoffCommunicationManagerTest {
         SingleSwitch switchCommand = new SingleSwitch();
         switchCommand.setSwitch("on");
         SonoffCommandMessage switchMessage = new SonoffCommandMessage("switch", TEST_DEVICE_ID, true, switchCommand);
-        
+
         SonoffCommandMessage deviceMessage = new SonoffCommandMessage(TEST_DEVICE_ID);
 
         communicationManager.sendMessage(switchMessage);
@@ -598,7 +599,7 @@ class SonoffCommunicationManagerTest {
         JsonObject updateMessage = new JsonObject();
         updateMessage.addProperty("action", "update");
         updateMessage.addProperty("deviceid", "unknown-device");
-        
+
         when(mockListener.getState("unknown-device")).thenReturn(null);
 
         // Act & Assert - Should not throw exception (method logs error and returns early)
