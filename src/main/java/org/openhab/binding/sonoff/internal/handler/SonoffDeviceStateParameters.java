@@ -119,6 +119,11 @@ public class SonoffDeviceStateParameters {
     private DateTimeType trigTime = new DateTimeType(System.currentTimeMillis() + "");
     private OnOffType motion = OnOffType.OFF;
 
+    private double round(double value, int decimalPlaces) {
+        double multiplier = Math.pow(10, decimalPlaces);
+        return Math.round(value * multiplier) / multiplier;
+    }
+
     public OnOffType getCamPower() {
         return this.camPower;
     }
@@ -210,24 +215,26 @@ public class SonoffDeviceStateParameters {
         return this.power;
     }
 
-    public void setPower(String power) {
-        this.power = new QuantityType<Power>(Float.parseFloat(power) / 100, WATT);
+    public void setPower(String power, Float multiplier, int decimalPlaces) {
+        this.power = new QuantityType<Power>(round(Float.parseFloat(power) * multiplier, decimalPlaces), WATT);
     }
 
     public QuantityType<ElectricPotential> getVoltage() {
         return this.voltage;
     }
 
-    public void setVoltage(String voltage) {
-        this.voltage = new QuantityType<ElectricPotential>(Float.parseFloat(voltage) / 100, VOLT);
+    public void setVoltage(String voltage, Float multiplier, int decimalPlaces) {
+        this.voltage = new QuantityType<ElectricPotential>(round(Float.parseFloat(voltage) * multiplier, decimalPlaces),
+                VOLT);
     }
 
     public QuantityType<ElectricCurrent> getCurrent() {
         return this.current;
     }
 
-    public void setCurrent(String current) {
-        this.current = new QuantityType<ElectricCurrent>(Float.parseFloat(current) / 100, AMPERE);
+    public void setCurrent(String current, Float multiplier, int decimalPlaces) {
+        this.current = new QuantityType<ElectricCurrent>(round(Float.parseFloat(current) * multiplier, decimalPlaces),
+                AMPERE);
     }
 
     public QuantityType<ElectricPotential> getBattery() {
@@ -242,48 +249,48 @@ public class SonoffDeviceStateParameters {
         return this.todayKwh;
     }
 
-    public void setTodayKwh(Double total) {
-        this.todayKwh = new QuantityType<Energy>(total / 100, KILOWATT_HOUR);
+    public void setTodayKwh(Double total, float multiplier, int decimalPlaces) {
+        this.todayKwh = new QuantityType<Energy>(round(total * multiplier, decimalPlaces), KILOWATT_HOUR);
     }
 
     public QuantityType<Energy> getYesterdayKwh() {
         return this.yesterdayKwh;
     }
 
-    public void setYesterdayKwh(Double total) {
-        this.yesterdayKwh = new QuantityType<Energy>(total, KILOWATT_HOUR);
+    public void setYesterdayKwh(Double total, float multiplier, int decimalPlaces) {
+        this.yesterdayKwh = new QuantityType<Energy>(round(total * multiplier, decimalPlaces), KILOWATT_HOUR);
     }
 
     public QuantityType<Energy> getMonthKwh() {
         return this.monthKwh;
     }
 
-    public void setMonthKwh(Double total) {
-        this.monthKwh = new QuantityType<Energy>(total / 100, KILOWATT_HOUR);
+    public void setMonthKwh(Double total, float multiplier, int decimalPlaces) {
+        this.monthKwh = new QuantityType<Energy>(round(total * multiplier, decimalPlaces), KILOWATT_HOUR);
     }
 
     public QuantityType<Energy> getSevenKwh() {
         return this.sevenKwh;
     }
 
-    public void setSevenKwh(Double total) {
-        this.sevenKwh = new QuantityType<Energy>(total, KILOWATT_HOUR);
+    public void setSevenKwh(Double total, float multiplier, int decimalPlaces) {
+        this.sevenKwh = new QuantityType<Energy>(round(total * multiplier, decimalPlaces), KILOWATT_HOUR);
     }
 
     public QuantityType<Energy> getThirtyKwh() {
         return this.thirtyKwh;
     }
 
-    public void setThirtyKwh(Double total) {
-        this.thirtyKwh = new QuantityType<Energy>(total, KILOWATT_HOUR);
+    public void setThirtyKwh(Double total, float multiplier, int decimalPlaces) {
+        this.thirtyKwh = new QuantityType<Energy>(round(total * multiplier, decimalPlaces), KILOWATT_HOUR);
     }
 
     public QuantityType<Energy> getHundredKwh() {
         return this.hundredKwh;
     }
 
-    public void setHundredKwh(Double total) {
-        this.hundredKwh = new QuantityType<Energy>(total, KILOWATT_HOUR);
+    public void setHundredKwh(Double total, float multiplier, int decimalPlaces) {
+        this.hundredKwh = new QuantityType<Energy>(round(total * multiplier, decimalPlaces), KILOWATT_HOUR);
     }
 
     public StringType getSensorType() {
