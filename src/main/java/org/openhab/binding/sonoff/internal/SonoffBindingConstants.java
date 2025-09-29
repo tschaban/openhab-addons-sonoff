@@ -25,151 +25,345 @@ import org.openhab.core.thing.ThingTypeUID;
 /**
  * The {@link SonoffBindingConstants} class defines common constants, which are
  * used across the whole binding.
+ * 
+ * For comprehensive device information including models, features, and capabilities,
+ * see the device documentation: docs/SUPPORTED_DEVICES.md
  *
  * @author David Murton - Initial contribution
  */
 @NonNullByDefault
 public class SonoffBindingConstants {
 
+    /** The binding identifier used throughout the openHAB system */
     public static final String BINDING_ID = "sonoff";
 
+    /**
+     * Device types that support inbound LAN protocol communication.
+     * These devices can receive commands and status updates via local network.
+     * TODO: Analyze why devices 15, 103, 104, 181, 190 are in LAN_IN but not LAN_OUT
+     */
     public static final Set<Integer> LAN_IN = Collections
             .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140,
                     160, 161, 162, 181, 190, 209, 210, 211, 212, 237, 256, 260).collect(Collectors.toSet()));
 
+    /**
+     * Device types that support outbound LAN protocol communication.
+     * These devices can send status updates and responses via local network.
+     * TODO: Analyze why some devices support only inbound LAN communication
+     */
     public static final Set<Integer> LAN_OUT = Collections
             .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126, 138, 140, 160, 161, 162,
                     209, 210, 211, 212, 237, 256, 260).collect(Collectors.toSet()));
 
-    // List of all Thing Type UIDs
+    // ========================================
+    // BRIDGE AND ACCOUNT THING TYPES
+    // ========================================
+    
+    /** Account bridge for cloud-based device management */
     public static final ThingTypeUID THING_TYPE_ACCOUNT = new ThingTypeUID(BINDING_ID, "account");
-    public static final ThingTypeUID THING_TYPE_1 = new ThingTypeUID(BINDING_ID, "1"); // S20 , S26 , BASIC , MINI, Mini
-    public static final ThingTypeUID THING_TYPE_2 = new ThingTypeUID(BINDING_ID, "2"); // DUALR2
-    public static final ThingTypeUID THING_TYPE_3 = new ThingTypeUID(BINDING_ID, "3"); // SOCKET_3 Unknown Model
-    public static final ThingTypeUID THING_TYPE_4 = new ThingTypeUID(BINDING_ID, "4"); // SOCKET_4 Unknown Model
-    public static final ThingTypeUID THING_TYPE_5 = new ThingTypeUID(BINDING_ID, "5"); // POW
-    public static final ThingTypeUID THING_TYPE_6 = new ThingTypeUID(BINDING_ID, "6"); // T11C , TX1C , G1
-    public static final ThingTypeUID THING_TYPE_7 = new ThingTypeUID(BINDING_ID, "7"); // T12C , TX2C
-    public static final ThingTypeUID THING_TYPE_8 = new ThingTypeUID(BINDING_ID, "8"); // T13C , TX3C
-    public static final ThingTypeUID THING_TYPE_9 = new ThingTypeUID(BINDING_ID, "9"); // SWITCH_4 Unknown Model
-    public static final ThingTypeUID THING_TYPE_14 = new ThingTypeUID(BINDING_ID, "14"); // BASIC (old)
-    public static final ThingTypeUID THING_TYPE_15 = new ThingTypeUID(BINDING_ID, "15"); // TH10 , TH16, TH16R2
 
-    public static final ThingTypeUID THING_TYPE_24 = new ThingTypeUID(BINDING_ID, "24"); // GSM Socket
-    public static final ThingTypeUID THING_TYPE_27 = new ThingTypeUID(BINDING_ID, "27"); // GSM Socket
-    public static final ThingTypeUID THING_TYPE_28 = new ThingTypeUID(BINDING_ID, "28"); // RF-BRIDGE (RF3)
-    public static final ThingTypeUID THING_TYPE_29 = new ThingTypeUID(BINDING_ID, "29"); // GSM Socket
-    public static final ThingTypeUID THING_TYPE_30 = new ThingTypeUID(BINDING_ID, "30"); // GSM Socket
-    public static final ThingTypeUID THING_TYPE_31 = new ThingTypeUID(BINDING_ID, "31"); // GSM Socket
-    public static final ThingTypeUID THING_TYPE_32 = new ThingTypeUID(BINDING_ID, "32"); // POWR2
-    public static final ThingTypeUID THING_TYPE_59 = new ThingTypeUID(BINDING_ID, "59"); // LED CONTROLLER
+    // ========================================
+    // WIFI DEVICES
+    // ========================================
+    // All WiFi-enabled Sonoff devices with their internal device type IDs
+    // TODO: Analyze gaps in numbering - missing device types may indicate discontinued models
+    
+    // Basic switches and relays
+    /** Single channel devices: S20, S26, BASIC, MINI switches */
+    public static final ThingTypeUID THING_TYPE_1 = new ThingTypeUID(BINDING_ID, "1");
+    
+    /** Dual relay devices: DUALR2 */
+    public static final ThingTypeUID THING_TYPE_2 = new ThingTypeUID(BINDING_ID, "2");
+    
+    /** TODO: Analyze - SOCKET_3 Unknown Model - needs device identification */
+    public static final ThingTypeUID THING_TYPE_3 = new ThingTypeUID(BINDING_ID, "3");
+    
+    /** TODO: Analyze - SOCKET_4 Unknown Model - needs device identification */
+    public static final ThingTypeUID THING_TYPE_4 = new ThingTypeUID(BINDING_ID, "4");
+    
+    /** TODO: Analyze - SWITCH_4 Unknown Model - needs device identification */
+    public static final ThingTypeUID THING_TYPE_9 = new ThingTypeUID(BINDING_ID, "9");
+    
+    /** Legacy basic switches: BASIC (older firmware version) */
+    public static final ThingTypeUID THING_TYPE_14 = new ThingTypeUID(BINDING_ID, "14");
+    
+    // Touch switches
+    /** Single channel touch switches: T11C, TX1C, G1 */
+    public static final ThingTypeUID THING_TYPE_6 = new ThingTypeUID(BINDING_ID, "6");
+    
+    /** Dual channel touch switches: T12C, TX2C */
+    public static final ThingTypeUID THING_TYPE_7 = new ThingTypeUID(BINDING_ID, "7");
+    
+    /** Triple channel touch switches: T13C, TX3C */
+    public static final ThingTypeUID THING_TYPE_8 = new ThingTypeUID(BINDING_ID, "8");
+    
+    // T5 Touch Switch Series (86mm wall switches)
+    /** T5 series single channel: T5-1C-86 */
+    public static final ThingTypeUID THING_TYPE_209 = new ThingTypeUID(BINDING_ID, "209");
+    
+    /** T5 series dual channel: T5-2C-86 */
+    public static final ThingTypeUID THING_TYPE_210 = new ThingTypeUID(BINDING_ID, "210");
+    
+    /** T5 series triple channel: T5-3C-86 */
+    public static final ThingTypeUID THING_TYPE_211 = new ThingTypeUID(BINDING_ID, "211");
+    
+    /** T5 series quad channel: T5-4C-86 */
+    public static final ThingTypeUID THING_TYPE_212 = new ThingTypeUID(BINDING_ID, "212");
+    
+    // SwitchMan series
+    /** SwitchMan series: M5-1C (single channel) */
+    public static final ThingTypeUID THING_TYPE_160 = new ThingTypeUID(BINDING_ID, "160");
+    
+    /** SwitchMan series: M5-2C (dual channel) */
+    public static final ThingTypeUID THING_TYPE_161 = new ThingTypeUID(BINDING_ID, "161");
+    
+    /** SwitchMan series: M5-3C (triple channel) */
+    public static final ThingTypeUID THING_TYPE_162 = new ThingTypeUID(BINDING_ID, "162");
+    
+    // Power monitoring devices
+    /** Power monitoring devices: POW (original power monitoring switch) */
+    public static final ThingTypeUID THING_TYPE_5 = new ThingTypeUID(BINDING_ID, "5");
+    
+    /** Advanced power monitoring: POWR2 (second generation POW) */
+    public static final ThingTypeUID THING_TYPE_32 = new ThingTypeUID(BINDING_ID, "32");
+    
+    /** Dual relay with power monitoring: DUAL R3 */
+    public static final ThingTypeUID THING_TYPE_126 = new ThingTypeUID(BINDING_ID, "126");
+    
+    // Temperature/Humidity sensors
+    /** Temperature/Humidity monitoring devices: TH10, TH16, TH16R2 */
+    public static final ThingTypeUID THING_TYPE_15 = new ThingTypeUID(BINDING_ID, "15");
+    
+    /** Temperature/Humidity sensor: THR320D or THR316D */
+    public static final ThingTypeUID THING_TYPE_181 = new ThingTypeUID(BINDING_ID, "181");
+    
+    // Door/Window sensors
+    /** Magnetic door/window sensor: OPL-DMA, DW2 */
+    public static final ThingTypeUID THING_TYPE_102 = new ThingTypeUID(BINDING_ID, "102");
+    
+    // Lighting controllers
+    /** LED strip controller: LED CONTROLLER */
+    public static final ThingTypeUID THING_TYPE_59 = new ThingTypeUID(BINDING_ID, "59");
+    
+    /** Smart bulb: B05 Bulb */
+    public static final ThingTypeUID THING_TYPE_104 = new ThingTypeUID(BINDING_ID, "104");
+    
+    // Compact/Mini devices
+    /** Compact WiFi switch: WiFi MICRO (USB-powered) */
+    public static final ThingTypeUID THING_TYPE_77 = new ThingTypeUID(BINDING_ID, "77");
+    
+    /** Compact dual relay: MINI-D */
+    public static final ThingTypeUID THING_TYPE_138 = new ThingTypeUID(BINDING_ID, "138");
+    
+    // Specialized/Unknown devices
+    /** TODO: Analyze - Unknown device type 78 needs identification */
+    public static final ThingTypeUID THING_TYPE_78 = new ThingTypeUID(BINDING_ID, "78");
+    
+    /** TODO: Analyze - CK-BL602-4SW-HS needs detailed specification */
+    public static final ThingTypeUID THING_TYPE_140 = new ThingTypeUID(BINDING_ID, "140");
+    
+    /** TODO: Analyze - S60TPF4 needs detailed specification */
+    public static final ThingTypeUID THING_TYPE_190 = new ThingTypeUID(BINDING_ID, "190");
+    
+    /** Smart gateway: SG200 */
+    public static final ThingTypeUID THING_TYPE_237 = new ThingTypeUID(BINDING_ID, "237");
+    
+    // GSM/Cellular devices
+    /** TODO: Analyze - GSM Socket models need detailed specification */
+    public static final ThingTypeUID THING_TYPE_24 = new ThingTypeUID(BINDING_ID, "24");
+    public static final ThingTypeUID THING_TYPE_27 = new ThingTypeUID(BINDING_ID, "27");
+    public static final ThingTypeUID THING_TYPE_29 = new ThingTypeUID(BINDING_ID, "29");
+    public static final ThingTypeUID THING_TYPE_30 = new ThingTypeUID(BINDING_ID, "30");
+    public static final ThingTypeUID THING_TYPE_31 = new ThingTypeUID(BINDING_ID, "31");
+    public static final ThingTypeUID THING_TYPE_81 = new ThingTypeUID(BINDING_ID, "81");
+    public static final ThingTypeUID THING_TYPE_82 = new ThingTypeUID(BINDING_ID, "82");
+    public static final ThingTypeUID THING_TYPE_83 = new ThingTypeUID(BINDING_ID, "83");
+    public static final ThingTypeUID THING_TYPE_84 = new ThingTypeUID(BINDING_ID, "84");
+    public static final ThingTypeUID THING_TYPE_107 = new ThingTypeUID(BINDING_ID, "107");
 
-    public static final ThingTypeUID THING_TYPE_66 = new ThingTypeUID(BINDING_ID, "66"); // ZB Bridge
+    // ========================================
+    // ZIGBEE BRIDGES
+    // ========================================
+    // Bridge devices for Zigbee protocol conversion
+    
+    /** Zigbee Bridge: ZB Bridge (original) */
+    public static final ThingTypeUID THING_TYPE_66 = new ThingTypeUID(BINDING_ID, "66");
+    
+    /** Zigbee Bridge Pro: ZBBridge-P (enhanced version) */
+    public static final ThingTypeUID THING_TYPE_168 = new ThingTypeUID(BINDING_ID, "168");
+    
+    /** Zigbee Bridge USB: ZBridge-U (USB-powered version) */
+    public static final ThingTypeUID THING_TYPE_243 = new ThingTypeUID(BINDING_ID, "243");
 
-    public static final ThingTypeUID THING_TYPE_77 = new ThingTypeUID(BINDING_ID, "77"); // WiFI MICRO (USB)
-    public static final ThingTypeUID THING_TYPE_78 = new ThingTypeUID(BINDING_ID, "78"); // unknown
-    public static final ThingTypeUID THING_TYPE_81 = new ThingTypeUID(BINDING_ID, "81"); // GSM Socket
-    public static final ThingTypeUID THING_TYPE_82 = new ThingTypeUID(BINDING_ID, "82"); // GSM Socket
-    public static final ThingTypeUID THING_TYPE_83 = new ThingTypeUID(BINDING_ID, "83"); // GSM Socket
-    public static final ThingTypeUID THING_TYPE_84 = new ThingTypeUID(BINDING_ID, "84"); // GSM Socket
-    public static final ThingTypeUID THING_TYPE_102 = new ThingTypeUID(BINDING_ID, "102"); // Magnetic Switch OPL-DMA,
-                                                                                           // DW2
-    public static final ThingTypeUID THING_TYPE_104 = new ThingTypeUID(BINDING_ID, "104"); // B05 Bulb
-    public static final ThingTypeUID THING_TYPE_107 = new ThingTypeUID(BINDING_ID, "107"); // GSM Socket
-    public static final ThingTypeUID THING_TYPE_126 = new ThingTypeUID(BINDING_ID, "126"); // DUAL R3
+    // ========================================
+    // 433MHz RF BRIDGE
+    // ========================================
+    
+    /** RF Bridge for 433MHz devices: RF-BRIDGE (RF3) */
+    public static final ThingTypeUID THING_TYPE_28 = new ThingTypeUID(BINDING_ID, "28");
 
-    public static final ThingTypeUID THING_TYPE_138 = new ThingTypeUID(BINDING_ID, "138"); // MINI-D
-    public static final ThingTypeUID THING_TYPE_140 = new ThingTypeUID(BINDING_ID, "140"); // CK-BL602-4SW-HS
+    // ========================================
+    // CAMERA DEVICES
+    // ========================================
+    
+    /** Security camera: SlimCAM2 */
+    public static final ThingTypeUID THING_TYPE_256 = new ThingTypeUID(BINDING_ID, "256");
+    
+    /** Security camera: CAM-B1P */
+    public static final ThingTypeUID THING_TYPE_260 = new ThingTypeUID(BINDING_ID, "260");
 
-    public static final ThingTypeUID THING_TYPE_160 = new ThingTypeUID(BINDING_ID, "160"); // SwitchMan M5-1C
-    public static final ThingTypeUID THING_TYPE_161 = new ThingTypeUID(BINDING_ID, "161"); // SwitchMan M5-2C
-    public static final ThingTypeUID THING_TYPE_162 = new ThingTypeUID(BINDING_ID, "162"); // SwitchMan M5-3C
+    // ========================================
+    // ZIGBEE DEVICES
+    // ========================================
+    // Zigbee devices that connect through Sonoff Zigbee bridges
+    // TODO: Standardize naming convention - currently mixed numeric IDs and descriptive names
+    
+    // Sensors
+    /** Zigbee temperature sensor */
+    public static final ThingTypeUID THING_TYPE_1770 = new ThingTypeUID(BINDING_ID, "1770");
+    
+    /** Zigbee motion sensor */
+    public static final ThingTypeUID THING_TYPE_2026 = new ThingTypeUID(BINDING_ID, "2026");
+    
+    /** Zigbee contact/door sensor */
+    public static final ThingTypeUID THING_TYPE_ZCONTACT = new ThingTypeUID(BINDING_ID, "zcontact");
+    
+    /** Zigbee water leak sensor */
+    public static final ThingTypeUID THING_TYPE_ZWATER = new ThingTypeUID(BINDING_ID, "zwater");
+    
+    /** Zigbee door/window sensor: SNZB-04P */
+    public static final ThingTypeUID THING_TYPE_7003 = new ThingTypeUID(BINDING_ID, "7003");
+    
+    /** Zigbee temperature/humidity sensor: SNZB-02P */
+    public static final ThingTypeUID THING_TYPE_7014 = new ThingTypeUID(BINDING_ID, "7014");
+    
+    // Switches and lights
+    /** Zigbee single channel switch */
+    public static final ThingTypeUID THING_TYPE_ZSWITCH1 = new ThingTypeUID(BINDING_ID, "zswitch1");
+    
+    /** Zigbee dual channel switch */
+    public static final ThingTypeUID THING_TYPE_ZSWITCH2 = new ThingTypeUID(BINDING_ID, "zswitch2");
+    
+    /** Zigbee triple channel switch */
+    public static final ThingTypeUID THING_TYPE_ZSWITCH3 = new ThingTypeUID(BINDING_ID, "zswitch3");
+    
+    /** Zigbee quad channel switch */
+    public static final ThingTypeUID THING_TYPE_ZSWITCH4 = new ThingTypeUID(BINDING_ID, "zswitch4");
+    
+    /** Zigbee dimmable white light */
+    public static final ThingTypeUID THING_TYPE_ZLIGHT = new ThingTypeUID(BINDING_ID, "zlight");
 
-    public static final ThingTypeUID THING_TYPE_168 = new ThingTypeUID(BINDING_ID, "168"); // ZBBridge-P
+    // ========================================
+    // 433MHz RF DEVICES
+    // ========================================
+    // 433MHz devices that connect through RF bridges (THING_TYPE_28)
+    // These devices use consistent naming convention with 'rf' prefix
+    
+    /** 433MHz single button remote control */
+    public static final ThingTypeUID THING_TYPE_RF1 = new ThingTypeUID(BINDING_ID, "rfremote1");
+    
+    /** 433MHz dual button remote control */
+    public static final ThingTypeUID THING_TYPE_RF2 = new ThingTypeUID(BINDING_ID, "rfremote2");
+    
+    /** 433MHz triple button remote control */
+    public static final ThingTypeUID THING_TYPE_RF3 = new ThingTypeUID(BINDING_ID, "rfremote3");
+    
+    /** 433MHz quad button remote control */
+    public static final ThingTypeUID THING_TYPE_RF4 = new ThingTypeUID(BINDING_ID, "rfremote4");
+    
+    /** 433MHz sensor (PIR, door/window, etc.) */
+    public static final ThingTypeUID THING_TYPE_RF6 = new ThingTypeUID(BINDING_ID, "rfsensor");
 
-    public static final ThingTypeUID THING_TYPE_181 = new ThingTypeUID(BINDING_ID, "181"); // THR320D or THR316D
-
-    public static final ThingTypeUID THING_TYPE_190 = new ThingTypeUID(BINDING_ID, "190"); // S60TPF4
-
-    public static final ThingTypeUID THING_TYPE_209 = new ThingTypeUID(BINDING_ID, "209"); // T5-1C-86
-    public static final ThingTypeUID THING_TYPE_210 = new ThingTypeUID(BINDING_ID, "210"); // T5-2C-86
-    public static final ThingTypeUID THING_TYPE_211 = new ThingTypeUID(BINDING_ID, "211"); // T5-3C-86
-    public static final ThingTypeUID THING_TYPE_212 = new ThingTypeUID(BINDING_ID, "212"); // T5-4C-86
-
-    public static final ThingTypeUID THING_TYPE_237 = new ThingTypeUID(BINDING_ID, "237"); // SG200
-    public static final ThingTypeUID THING_TYPE_243 = new ThingTypeUID(BINDING_ID, "243"); // ZBridge-U
-
-    public static final ThingTypeUID THING_TYPE_256 = new ThingTypeUID(BINDING_ID, "256"); // SlimCAM2
-    public static final ThingTypeUID THING_TYPE_260 = new ThingTypeUID(BINDING_ID, "260"); // CAM-B1P
-
-    // Zigbee Child Devices
-    public static final ThingTypeUID THING_TYPE_2026 = new ThingTypeUID(BINDING_ID, "2026"); // Motion Sensor
-    public static final ThingTypeUID THING_TYPE_ZCONTACT = new ThingTypeUID(BINDING_ID, "zcontact"); // Contact Sensor
-    public static final ThingTypeUID THING_TYPE_ZWATER = new ThingTypeUID(BINDING_ID, "zwater"); // Water Sensor
-    public static final ThingTypeUID THING_TYPE_1770 = new ThingTypeUID(BINDING_ID, "1770"); // Temp Sensor
-    public static final ThingTypeUID THING_TYPE_7003 = new ThingTypeUID(BINDING_ID, "7003"); // SNZB-04P
-    public static final ThingTypeUID THING_TYPE_7014 = new ThingTypeUID(BINDING_ID, "7014"); // SNZB-02P
-    public static final ThingTypeUID THING_TYPE_ZSWITCH1 = new ThingTypeUID(BINDING_ID, "zswitch1"); // 1 way Switch
-    public static final ThingTypeUID THING_TYPE_ZSWITCH2 = new ThingTypeUID(BINDING_ID, "zswitch2"); // 2 way Switch
-    public static final ThingTypeUID THING_TYPE_ZSWITCH3 = new ThingTypeUID(BINDING_ID, "zswitch3"); // 3 way Switch
-    public static final ThingTypeUID THING_TYPE_ZSWITCH4 = new ThingTypeUID(BINDING_ID, "zswitch4"); // 4 way Switch
-    public static final ThingTypeUID THING_TYPE_ZLIGHT = new ThingTypeUID(BINDING_ID, "zlight"); // White Light
-
-    // RF Child Devices
-    public static final ThingTypeUID THING_TYPE_RF1 = new ThingTypeUID(BINDING_ID, "rfremote1"); // 1 Button RF Remote
-    public static final ThingTypeUID THING_TYPE_RF2 = new ThingTypeUID(BINDING_ID, "rfremote2"); // 2 Button RF Remote
-    public static final ThingTypeUID THING_TYPE_RF3 = new ThingTypeUID(BINDING_ID, "rfremote3"); // 3 Button RF Remote
-    public static final ThingTypeUID THING_TYPE_RF4 = new ThingTypeUID(BINDING_ID, "rfremote4"); // 4 Button RF Remote
-    public static final ThingTypeUID THING_TYPE_RF6 = new ThingTypeUID(BINDING_ID, "rfsensor"); // RF Sensor
-
-    // For unknowns
+    // ========================================
+    // FALLBACK DEVICE TYPE
+    // ========================================
+    
+    /** Fallback thing type for unrecognized devices */
     public static final ThingTypeUID THING_TYPE_UNKNOWNDEVICE = new ThingTypeUID(BINDING_ID, "device");
 
+    /**
+     * Complete set of all supported device types in the binding.
+     * Organized by device categories: Account, WiFi devices, Zigbee bridges, Zigbee devices, 433MHz devices, Cameras
+     * TODO: Implement automated validation to ensure all THING_TYPE_X constants are included.
+     * TODO: Verify no THING_TYPE constants are missing from this collection.
+     */
     public static final Set<ThingTypeUID> SUPPORTED_THING_TYPE_UIDS = Collections
-            .unmodifiableSet(Stream.of(THING_TYPE_ACCOUNT, THING_TYPE_1, THING_TYPE_2, THING_TYPE_3, THING_TYPE_4,
-                    THING_TYPE_5, THING_TYPE_6, THING_TYPE_7, THING_TYPE_8, THING_TYPE_9, THING_TYPE_14, THING_TYPE_15,
-                    THING_TYPE_24, THING_TYPE_27, THING_TYPE_29, THING_TYPE_30, THING_TYPE_31, THING_TYPE_28,
-                    THING_TYPE_32, THING_TYPE_59, THING_TYPE_66, THING_TYPE_77, THING_TYPE_78, THING_TYPE_81,
+            .unmodifiableSet(Stream.of(
+                    // Account bridge
+                    THING_TYPE_ACCOUNT,
+                    
+                    // WiFi devices
+                    THING_TYPE_1, THING_TYPE_2, THING_TYPE_3, THING_TYPE_4, THING_TYPE_5, THING_TYPE_6, THING_TYPE_7,
+                    THING_TYPE_8, THING_TYPE_9, THING_TYPE_14, THING_TYPE_15, THING_TYPE_24, THING_TYPE_27, THING_TYPE_29,
+                    THING_TYPE_30, THING_TYPE_31, THING_TYPE_32, THING_TYPE_59, THING_TYPE_77, THING_TYPE_78, THING_TYPE_81,
                     THING_TYPE_82, THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107,
                     THING_TYPE_126, THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162,
-                    THING_TYPE_168, THING_TYPE_181, THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211,
-                    THING_TYPE_212, THING_TYPE_237, THING_TYPE_243, THING_TYPE_256, THING_TYPE_260,
-
-                    THING_TYPE_1770,
-
-                    THING_TYPE_2026, THING_TYPE_7003, THING_TYPE_7014,
-
-                    THING_TYPE_ZCONTACT, THING_TYPE_ZWATER, THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2,
-                    THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
-
+                    THING_TYPE_181, THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212,
+                    THING_TYPE_237,
+                    
+                    // Zigbee bridges
+                    THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
+                    
+                    // 433MHz RF bridge
+                    THING_TYPE_28,
+                    
+                    // Camera devices
+                    THING_TYPE_256, THING_TYPE_260,
+                    
+                    // Zigbee devices
+                    THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7003, THING_TYPE_7014, THING_TYPE_ZCONTACT,
+                    THING_TYPE_ZWATER, THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3,
+                    THING_TYPE_ZSWITCH4,
+                    
+                    // 433MHz RF devices
                     THING_TYPE_RF1, THING_TYPE_RF2, THING_TYPE_RF3, THING_TYPE_RF4, THING_TYPE_RF6
 
             ).collect(Collectors.toSet()));
 
+    /**
+     * Set of device types that support automatic discovery.
+     * Excludes THING_TYPE_ACCOUNT (bridge must be manually configured) and THING_TYPE_UNKNOWNDEVICE.
+     * Organized by device categories for better maintainability.
+     * TODO: Document criteria for which devices should/shouldn't be discoverable.
+     * TODO: Verify discovery capabilities for each device type.
+     */
     public static final Set<ThingTypeUID> DISCOVERABLE_THING_TYPE_UIDS = Collections
-            .unmodifiableSet(Stream.of(THING_TYPE_1, THING_TYPE_2, THING_TYPE_3, THING_TYPE_4, THING_TYPE_5,
-                    THING_TYPE_6, THING_TYPE_7, THING_TYPE_8, THING_TYPE_9, THING_TYPE_14, THING_TYPE_15, THING_TYPE_24,
-                    THING_TYPE_27, THING_TYPE_29, THING_TYPE_28, THING_TYPE_30, THING_TYPE_31, THING_TYPE_32,
-                    THING_TYPE_59, THING_TYPE_66, THING_TYPE_77, THING_TYPE_78, THING_TYPE_81, THING_TYPE_82,
-                    THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126,
-                    THING_TYPE_138, THING_TYPE_140, THING_TYPE_181, THING_TYPE_190, THING_TYPE_209, THING_TYPE_210,
-                    THING_TYPE_211, THING_TYPE_212, THING_TYPE_237, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162,
-                    THING_TYPE_168, THING_TYPE_243, THING_TYPE_256, THING_TYPE_260,
-
-                    THING_TYPE_1770,
-
-                    THING_TYPE_2026,
-
-                    THING_TYPE_7003, THING_TYPE_7014,
-
-                    THING_TYPE_ZCONTACT, THING_TYPE_ZWATER, THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2,
-                    THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
-
+            .unmodifiableSet(Stream.of(
+                    // WiFi devices
+                    THING_TYPE_1, THING_TYPE_2, THING_TYPE_3, THING_TYPE_4, THING_TYPE_5, THING_TYPE_6, THING_TYPE_7,
+                    THING_TYPE_8, THING_TYPE_9, THING_TYPE_14, THING_TYPE_15, THING_TYPE_24, THING_TYPE_27, THING_TYPE_29,
+                    THING_TYPE_30, THING_TYPE_31, THING_TYPE_32, THING_TYPE_59, THING_TYPE_77, THING_TYPE_78, THING_TYPE_81,
+                    THING_TYPE_82, THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107,
+                    THING_TYPE_126, THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162,
+                    THING_TYPE_181, THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212,
+                    THING_TYPE_237,
+                    
+                    // Zigbee bridges
+                    THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
+                    
+                    // 433MHz RF bridge
+                    THING_TYPE_28,
+                    
+                    // Camera devices
+                    THING_TYPE_256, THING_TYPE_260,
+                    
+                    // Zigbee devices
+                    THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7003, THING_TYPE_7014, THING_TYPE_ZCONTACT,
+                    THING_TYPE_ZWATER, THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3,
+                    THING_TYPE_ZSWITCH4,
+                    
+                    // 433MHz RF devices
                     THING_TYPE_RF1, THING_TYPE_RF2, THING_TYPE_RF3, THING_TYPE_RF4, THING_TYPE_RF6
 
             ).collect(Collectors.toSet()));
 
-    public static final Map<Integer, ThingTypeUID> createMap() { // thing type denotes number of channels
+    /**
+     * Creates mapping from device type IDs to ThingTypeUID for device identification.
+     * Used during device discovery to determine the correct thing type based on device's reported type ID.
+     * TODO: Consider using static initialization instead of method to improve performance.
+     * TODO: Implement validation to ensure all THING_TYPE_X constants with numeric IDs are included.
+     */
+    public static final Map<Integer, ThingTypeUID> createMap() {
         Map<Integer, ThingTypeUID> deviceTypes = new HashMap<>();
         deviceTypes.put(1, THING_TYPE_1);
         deviceTypes.put(2, THING_TYPE_2);
@@ -194,7 +388,6 @@ public class SonoffBindingConstants {
         deviceTypes.put(59, THING_TYPE_59);
 
         deviceTypes.put(66, THING_TYPE_66);
-        deviceTypes.put(77, THING_TYPE_77);
         deviceTypes.put(77, THING_TYPE_77);
         deviceTypes.put(78, THING_TYPE_78);
         deviceTypes.put(81, THING_TYPE_81);
@@ -227,32 +420,56 @@ public class SonoffBindingConstants {
         return Collections.unmodifiableMap(deviceTypes);
     }
 
-    public static final Map<Integer, ThingTypeUID> createSensorMap() { // thing type denotes number of channels
+    /**
+     * Creates mapping for RF sensor device types.
+     * TODO: CRITICAL - Analyze why original values were all '4' and determine correct mapping.
+     * TODO: Document the meaning of these numeric IDs in RF protocol context.
+     * TODO: Verify current mapping is correct for RF device identification.
+     */
+    public static final Map<Integer, ThingTypeUID> createSensorMap() {
         Map<Integer, ThingTypeUID> sensorTypes = new HashMap<>();
-        sensorTypes.put(1, THING_TYPE_RF1); // It was 4 orginally - why?
-        sensorTypes.put(2, THING_TYPE_RF2); // It was 4 orginally - why?
-        sensorTypes.put(3, THING_TYPE_RF3); // It was 4 orginally - why?
-        sensorTypes.put(4, THING_TYPE_RF4); // It was 4 orginally - why?
+        sensorTypes.put(1, THING_TYPE_RF1); // TODO: Was 4 originally - verify correct value
+        sensorTypes.put(2, THING_TYPE_RF2); // TODO: Was 4 originally - verify correct value
+        sensorTypes.put(3, THING_TYPE_RF3); // TODO: Was 4 originally - verify correct value
+        sensorTypes.put(4, THING_TYPE_RF4); // TODO: Was 4 originally - verify correct value
         sensorTypes.put(6, THING_TYPE_RF6);
 
         return Collections.unmodifiableMap(sensorTypes);
     }
 
-    public static final Map<Integer, ThingTypeUID> createZigbeeMap() { // thing type denotes number of channels
+    /**
+     * Creates mapping for Zigbee device types using 4-digit identification codes.
+     * Pattern analysis:
+     * - 1xxx: Single channel switches and lights (1000, 1009, 1256=switch, 1257=light)
+     * - 2xxx: Dual channel switches and sensors (2026=motion, 2256=2ch switch)
+     * - 3xxx: Triple channel switches and contact sensors (3026=contact, 3256=3ch switch)
+     * - 4xxx: Quad channel switches and water sensors (4026=water, 4256=4ch switch)
+     * - 7xxx: Specific device models (7003=SNZB-04P, 7014=SNZB-02P)
+     * - 1770: Temperature sensor (exception to pattern)
+     */
+    public static final Map<Integer, ThingTypeUID> createZigbeeMap() {
         Map<Integer, ThingTypeUID> zigbeeTypes = new HashMap<>();
+        // Single channel devices
         zigbeeTypes.put(1000, THING_TYPE_ZSWITCH1);
         zigbeeTypes.put(1009, THING_TYPE_ZSWITCH1);
         zigbeeTypes.put(1256, THING_TYPE_ZSWITCH1);
         zigbeeTypes.put(1257, THING_TYPE_ZLIGHT);
-        zigbeeTypes.put(1770, THING_TYPE_1770);
-        zigbeeTypes.put(2026, THING_TYPE_2026);
-        zigbeeTypes.put(3026, THING_TYPE_ZCONTACT);
-        zigbeeTypes.put(4026, THING_TYPE_ZWATER);
+        
+        // Sensors
+        zigbeeTypes.put(1770, THING_TYPE_1770);  // Temperature sensor
+        zigbeeTypes.put(2026, THING_TYPE_2026);  // Motion sensor
+        zigbeeTypes.put(3026, THING_TYPE_ZCONTACT);  // Contact sensor
+        zigbeeTypes.put(4026, THING_TYPE_ZWATER);    // Water sensor
+        
+        // Multi-channel switches
         zigbeeTypes.put(2256, THING_TYPE_ZSWITCH2);
         zigbeeTypes.put(3256, THING_TYPE_ZSWITCH3);
         zigbeeTypes.put(4256, THING_TYPE_ZSWITCH4);
-        zigbeeTypes.put(7003, THING_TYPE_7003);
-        zigbeeTypes.put(7014, THING_TYPE_7014);
+        
+        // Specific device models
+        zigbeeTypes.put(7003, THING_TYPE_7003);  // SNZB-04P
+        zigbeeTypes.put(7014, THING_TYPE_7014);  // SNZB-02P
+        
         return Collections.unmodifiableMap(zigbeeTypes);
     }
 }
