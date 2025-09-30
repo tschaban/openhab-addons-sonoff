@@ -11,7 +11,9 @@ Each Sonoff device is identified by a UUID number that determines its capabiliti
 - 🌐 **Cloud**: Cloud-only connection via eWeLink servers
 - 🔄 **Mixed**: Both local LAN and cloud connections supported
 
-## All Supported Devices
+## Supported Devices
+
+The following devices are currently supported by this Sonoff binding:
 
 | UUID | Models | Connection | Features | Notes |
 |------|--------|------------|----------|-------|
@@ -78,5 +80,3 @@ Each Sonoff device is identified by a UUID number that determines its capabiliti
 | **RF3** | Triple Button Remote | 🔄 Mixed | 3 button control | 433MHz triple-button remote |
 | **RF4** | Quad Button Remote | 🔄 Mixed | 4 button control | 433MHz quad-button remote |
 | **RF6** | RF Sensor | 🔄 Mixed | Motion/contact detection | 433MHz PIR or door/window sensor |
-| **DEVICE** | Unknown Device | 🔄 Mixed | Fallback device type | Used for unrecognized devices |
-
