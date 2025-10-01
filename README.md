@@ -12,14 +12,7 @@ This is an enhanced branch of the original Sonoff binding for OpenHAB, featuring
 
 ### 📱 Enhanced Device Support - Smart'nyDom Edition
 
-This enhanced branch extends the original Sonoff binding with **89+ supported devices** across 8 categories, featuring the latest Sonoff models and comprehensive technical specifications.
-
-#### 🔧 **Development & Testing Enhancements**
-- **Comprehensive testing framework** with unit and integration tests
-- **Bridge handler foundation testing** for abstract class coverage  
-- **Automated CI/CD scripts** with quality gates
-- **Mock-based unit testing** with Mockito integration
-- **Device validation system** for new device additions
+This enhanced branch extends the original Sonoff binding with **60+ supported devices** across multiple categories, featuring the latest Sonoff models and comprehensive technical specifications.
 
 ## 📋 Quick Links
 
@@ -41,7 +34,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 
 ### 🔌 Complete Device Support Matrix
 
-**89+ Sonoff devices supported** across 8 categories. Enhanced with official [Itead.cc](https://itead.cc/) manufacturer specifications and Smart'nyDom testing status.
+**60+ Sonoff devices supported** across multiple categories. Enhanced with official [Itead.cc](https://itead.cc/) manufacturer specifications.
 
 #### Legend
 **Connection Types:**
@@ -54,43 +47,71 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 
 #### Device supported
 
-| UUID | Models | Connection | Features | Power Rating | Status |
-|------|--------|------------|----------|--------------|--------|
-| **1** | S20, S26, BasicR1, BasicR2, Mini, Mini PCIe Card | 🔄 Mixed | Single relay switch | 10A/16A | |
-| **2** | DUALR2 | 🔄 Mixed | Dual relay switch | 10A per channel | |
-| **4** | 4CHPROR3 | 🔄 Mixed | 4-channel relay | 10A per channel | |
-| **5** | POW | 🔄 Mixed | Power monitoring switch | 16A/3500W | |
-| **6** | T11C, TX1C, G1 | 🔄 Mixed | Single touch switch | 10A | |
-| **7** | T12C, TX2C | 🔄 Mixed | Dual touch switch | 10A per gang | |
-| **8** | T13C, TX3C | 🔄 Mixed | Triple touch switch | 10A per gang | |
-| **15** | TH10, TH16, TH16R2, TH Origin | 🔄 Mixed | Temperature/humidity monitoring | 10A/16A/20A | |
-| **28** | RF-BRIDGE (RF3), RF BridgeR2 433 | 🔄 Mixed | 433MHz RF bridge | N/A | |
-| **32** | POWR2, POWR316, POWR316D, POWR320D, POW Origin | 🔄 Mixed | Advanced power monitoring | 16A/20A | |
-| **66** | ZB Bridge, ZBBridge Pro | 🌐 Cloud | Zigbee bridge | N/A | |
-| **77** | WiFi MICRO (USB), Micro | 🔄 Mixed | Compact WiFi switch | 5V/10A | |
-| **102** | OPL-DMA, DW2, DW2-WIFI | 🔄 Mixed | Door/window sensor | N/A | |
-| **104** | B05 Bulb, B02-BL, B05-BL | 🔄 Mixed | Smart bulb | 9W/E27 | |
-| **126** | DUAL R3, DUALR3 Lite | 🔄 Mixed | Dual relay + power monitoring | 16A per channel | |
-| **138** | MINI-D, MINI-R4, MINI-R4M, MINIR4M (Matter) | 🔄 Mixed | Compact dual relay | 10A | |
-| **140** | CK-BL602-4SW-HS (Bouffalo Lab BL602) | 🔄 Mixed | 3-way wall switch | 10A | |
-| **160-162** | M5-1C/2C/3C, SwitchMan M5 | 🔄 Mixed | 1-3 channel switches | 10A per gang | ⚠️ Testing needed |
-| **168** | ZBBridge-P, ZBBridge Pro | 🌐 Cloud | Zigbee bridge Pro | N/A | |
-| **181** | THR320D, THR316D, TH Elite | 🔄 Mixed | Temperature/humidity sensor | 16A/20A | |
-| **190** | S60TPF4, S60TPF, S60TPG, S60 Series | 🔄 Mixed | Smart plug | 16A | |
-| **209-212** | T5-1C/2C/3C/4C-86, TX Ultimate | 🔄 Mixed | 1-4 gang touch switches | 10A per gang | ⚠️ Partially tested |
-| **243** | ZBridge-U, ZBBridge Ultra | 🌐 Cloud | Zigbee bridge USB | N/A | |
-| **256** | SlimCAM2, CAM Slim Gen2 | 🌐 Cloud | Security camera | N/A | |
-| **2026** | Motion Sensor, SNZB-03P | 🌐 Cloud | Motion detection | N/A | |
-| **7003** | SNZB-04P | 🌐 Cloud | Door/window sensor | N/A | ⚠️ Testing needed |
-| **7014** | SNZB-02P, SNZB-02D | 🌐 Cloud | Temperature/humidity sensor | N/A | |
-
-#### GSM Socket Support (Cloud Only)
-- **UUID24, 27, 81, 107:** Single channel GSM sockets (10A)
-- **UUID29, 82:** Dual channel GSM sockets (10A per channel)  
-- **UUID30, 83:** Triple channel GSM sockets (10A per channel)
-- **UUID31, 84:** Quad channel GSM sockets (10A per channel)
-
-> **📋 Complete Device List:** See [SUPPORTED_DEVICES.md](docs/SUPPORTED_DEVICES.md) for comprehensive device specifications and UUID mappings.
+| UUID | Models | Connection | Features | Status |
+|------|--------|------------|----------|--------|
+| **ACCOUNT** | eWeLink Account Bridge | 🔄 Mixed | Account management | |
+| **1** | S20, S26, BasicR1, BasicR2, Mini, Mini PCIe Card | 🔄 Mixed | Single relay switch | |
+| **2** | DUALR2 | 🔄 Mixed | Dual relay switch | |
+| **3** | Unknown Models | 🔄 Mixed | Socket (3 channels) | |
+| **4** | 4CHPROR3 | 🔄 Mixed | Socket (4 channels) | |
+| **5** | POW | 🔄 Mixed | Power monitoring switch | |
+| **6** | T11C, TX1C, G1 | 🔄 Mixed | Single touch switch | |
+| **7** | T12C, TX2C | 🔄 Mixed | Dual touch switch | |
+| **8** | T13C, TX3C | 🔄 Mixed | Triple touch switch | |
+| **9** | Unknown Models | 🔄 Mixed | Switch (4 channels) | |
+| **14** | BasicR1 (older firmware) | 🔄 Mixed | Single relay switch | |
+| **15** | TH10, TH16, TH16R2 | 🔄 Mixed | Temperature/humidity monitoring | |
+| **24** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
+| **27** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
+| **28** | RF-BRIDGE (RF3) | 🔄 Mixed | 433MHz RF bridge | |
+| **29** | GSM Socket | 🌐 Cloud | Dual channel GSM socket | |
+| **30** | GSM Socket | 🌐 Cloud | Triple channel GSM socket | |
+| **31** | GSM Socket | 🌐 Cloud | Quad channel GSM socket | |
+| **32** | POWR2, POWR316, POWR316D, POWR320D | 🔄 Mixed | Advanced power monitoring | |
+| **59** | LED Controller | 🔄 Mixed | LED strip controller | |
+| **66** | ZB Bridge | 🌐 Cloud | Zigbee bridge | |
+| **77** | WiFi MICRO (USB) | 🔄 Mixed | Compact WiFi switch | |
+| **78** | Unknown | 🔄 Mixed | Unknown functionality | |
+| **81** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
+| **82** | GSM Socket | 🌐 Cloud | Dual channel GSM socket | |
+| **83** | GSM Socket | 🌐 Cloud | Triple channel GSM socket | |
+| **84** | GSM Socket | 🌐 Cloud | Quad channel GSM socket | |
+| **102** | OPL-DMA, DW2 | 🔄 Mixed | Magnetic door/window sensor | |
+| **104** | B05 Bulb | 🔄 Mixed | Smart bulb | |
+| **107** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
+| **126** | DUAL R3 | 🔄 Mixed | Dual relay + power monitoring | |
+| **138** | MINI-D, MINI-R4, MINI-R4M | 🔄 Mixed | Compact dual relay | |
+| **140** | CK-BL602-4SW-HS (Bouffalo Lab BL602) | 🔄 Mixed | 3-way wall switch | |
+| **160** | M5-1C | 🔄 Mixed | Single channel switch | ⚠️ Testing needed |
+| **161** | M5-2C | 🔄 Mixed | Dual channel switch | ⚠️ Testing needed |
+| **162** | M5-3C | 🔄 Mixed | Triple channel switch | ⚠️ Testing needed |
+| **168** | ZBBridge-P | 🌐 Cloud | Zigbee bridge Pro | |
+| **181** | THR320D, THR316D | 🔄 Mixed | Temperature/humidity sensor | |
+| **190** | S60TPF4, S60TPF, S60TPG | 🔄 Mixed | Smart plug | |
+| **209** | T5-1C-86 | 🔄 Mixed | Single touch switch | ⚠️ Partially tested |
+| **210** | T5-2C-86 | 🔄 Mixed | Dual touch switch | ⚠️ Partially tested |
+| **211** | T5-3C-86 | 🔄 Mixed | Triple touch switch | ⚠️ Partially tested |
+| **212** | T5-4C-86 | 🔄 Mixed | Quad touch switch | ⚠️ Partially tested |
+| **237** | SG200 | 🔄 Mixed | Smart gateway | |
+| **243** | ZBridge-U | 🌐 Cloud | Zigbee bridge USB | |
+| **256** | SlimCAM2 | 🌐 Cloud | Security camera | |
+| **260** | CAM-B1P | 🌐 Cloud | Security camera | |
+| **1770** | Temperature Sensor | 🌐 Cloud | Temperature monitoring | |
+| **2026** | Motion Sensor | 🌐 Cloud | Motion detection | |
+| **7003** | SNZB-04P | 🌐 Cloud | Door/window sensor | ⚠️ Testing needed |
+| **7014** | SNZB-02P, SNZB-02D | 🌐 Cloud | Temperature/humidity sensor | |
+| **ZCONTACT** | Generic Contact Sensor | 🌐 Cloud | Contact detection | |
+| **ZWATER** | Water Leak Sensor | 🌐 Cloud | Water leak detection | |
+| **ZSWITCH1** | Single Channel Switch | 🌐 Cloud | Single relay | |
+| **ZSWITCH2** | Dual Channel Switch | 🌐 Cloud | Dual relay | |
+| **ZSWITCH3** | Triple Channel Switch | 🌐 Cloud | Triple relay | |
+| **ZSWITCH4** | Quad Channel Switch | 🌐 Cloud | Quad relay | |
+| **ZLIGHT** | Dimmable Light | 🌐 Cloud | Dimmable white light | |
+| **RF1** | Single Button Remote | 🔄 Mixed | 1 button control | |
+| **RF2** | Dual Button Remote | 🔄 Mixed | 2 button control | |
+| **RF3** | Triple Button Remote | 🔄 Mixed | 3 button control | |
+| **RF4** | Quad Button Remote | 🔄 Mixed | 4 button control | |
+| **RF6** | RF Sensor | 🔄 Mixed | Motion/contact detection | |
 
 > **🏭 Manufacturer:** All devices manufactured by [Itead Co., Ltd.](https://itead.cc/) - Official Sonoff producer.
 
