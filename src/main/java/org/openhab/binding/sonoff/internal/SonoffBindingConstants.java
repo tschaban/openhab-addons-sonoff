@@ -50,7 +50,7 @@ public class SonoffBindingConstants {
      */
     public static final Set<Integer> LAN_IN = Collections
             .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140,
-                    160, 161, 162, 181, 190, 209, 210, 211, 212, 237, 256, 260).collect(Collectors.toSet()));
+                    160, 161, 162, 181, 190, 209, 210, 211, 212, 237, 256, 260, 268).collect(Collectors.toSet()));
 
     /**
      * Device types that support outbound LAN protocol communication.
@@ -59,7 +59,7 @@ public class SonoffBindingConstants {
      */
     public static final Set<Integer> LAN_OUT = Collections
             .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126, 138, 140, 160, 161, 162,
-                    209, 210, 211, 212, 237, 256, 260).collect(Collectors.toSet()));
+                    209, 210, 211, 212, 237, 256, 260, 268).collect(Collectors.toSet()));
 
     // ========================================
     // BRIDGE AND ACCOUNT THING TYPES
@@ -172,6 +172,9 @@ public class SonoffBindingConstants {
     
     /** Smart gateway: SG200 */
     public static final ThingTypeUID THING_TYPE_237 = new ThingTypeUID(BINDING_ID, "237");
+    
+    /** BASIC 5Gen: BASIC-1GS (5th generation basic switch with Matter support) */
+    public static final ThingTypeUID THING_TYPE_268 = new ThingTypeUID(BINDING_ID, "268");
     
     // GSM/Cellular devices
     /** TODO: Analyze - GSM Socket models need detailed specification */
@@ -306,7 +309,7 @@ public class SonoffBindingConstants {
                     THING_TYPE_82, THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107,
                     THING_TYPE_126, THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162,
                     THING_TYPE_181, THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212,
-                    THING_TYPE_237,
+                    THING_TYPE_237, THING_TYPE_268,
                     
                     // Zigbee bridges
                     THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
@@ -346,7 +349,7 @@ public class SonoffBindingConstants {
                     THING_TYPE_82, THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107,
                     THING_TYPE_126, THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162,
                     THING_TYPE_181, THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212,
-                    THING_TYPE_237,
+                    THING_TYPE_237, THING_TYPE_268,
                     
                     // Zigbee bridges
                     THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
@@ -428,6 +431,7 @@ public class SonoffBindingConstants {
 
         deviceTypes.put(256, THING_TYPE_256);
         deviceTypes.put(260, THING_TYPE_260);
+        deviceTypes.put(268, THING_TYPE_268);
 
         return Collections.unmodifiableMap(deviceTypes);
     }

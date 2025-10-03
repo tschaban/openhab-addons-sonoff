@@ -1180,4 +1180,29 @@
 		</config-description>
 	</thing-type>
 
+	<thing-type id="268">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF BASIC 5Gen WiFi Smart Switch</label>
+		<description>Model: BASIC-1GS (5th generation basic switch with Matter support)</description>
+		<channels>
+			<channel id="switch" typeId="power"/>
+			<channel id="localOnline" typeId="localOnline"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="ipaddress" typeId="ipaddress"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+		</channels>
+
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
 </thing:thing-descriptions>

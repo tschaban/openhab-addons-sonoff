@@ -96,6 +96,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **243** | ZBridge-U | 🌐 Cloud | Zigbee bridge USB | |
 | **256** | SlimCAM2 | 🌐 Cloud | Security camera | |
 | **260** | CAM-B1P | 🌐 Cloud | Security camera | |
+| **268** | BASIC-1GS | 🔄 Mixed | BASIC 5Gen single switch with Matter support | |
 | **1770** | Temperature Sensor | 🌐 Cloud | Temperature monitoring | |
 | **2026** | Motion Sensor | 🌐 Cloud | Motion detection | |
 | **7003** | SNZB-04P | 🌐 Cloud | Door/window sensor | ⚠️ Testing needed |
