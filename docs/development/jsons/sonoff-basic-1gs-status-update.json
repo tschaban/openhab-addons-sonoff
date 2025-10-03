@@ -1,0 +1,56 @@
+{
+    "deviceid": "1002768b56",
+    "txtvers": "1",
+    "data3": "",
+    "data2": "",
+    "apivers": "1",
+    "iv": "",
+    "data1": "",
+    "encrypt": "true",
+    "type": "plug",
+    "seq": "77",
+    "localAddress": "192.168.2.41",
+    "params": {
+        "sledOnline": "on",
+        "switches": [
+            {
+                "outlet": 0,
+                "switch": "on"
+            }
+        ],
+        "triggerType": 11,
+        "configure": [
+            {
+                "outlet": 0,
+                "startup": "off",
+                "enableDelay": 0,
+                "width": 27000
+            }
+        ],
+        "pulses": [
+            {
+                "outlet": 0,
+                "pulse": "off",
+                "switch": "off",
+                "width": 1000
+            }
+        ],
+        "offBrightness": 50,
+        "onlineWhenLightOff": true,
+        "timerV2": {
+            "revision": "0"
+        },
+        "autoUpgrade": {
+            "enable": true,
+            "range": [
+                "02:00",
+                "04:00"
+            ]
+        },
+        "ssid": "ssid",
+        "bssid": "D4:01:C3:F8:0D:47",
+        "staMac": "D0:27:04:63:D6:7E",
+        "rssi": -75
+    },
+    "ipaddress": "192.168.2.41"
+}
