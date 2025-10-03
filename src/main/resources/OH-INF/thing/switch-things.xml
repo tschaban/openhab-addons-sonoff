@@ -1187,7 +1187,7 @@
 		<label>SONOFF BASIC 5Gen WiFi Smart Switch</label>
 		<description>Model: BASIC-1GS (5th generation basic switch with Matter support)</description>
 		<channels>
-			<channel id="switch" typeId="power"/>
+			<channel id="switch0" typeId="power"/>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
