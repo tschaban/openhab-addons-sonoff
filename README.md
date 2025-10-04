@@ -50,7 +50,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **1** | Sonoff S20, [S26](https://s.smartnydom.pl/r/sonoff-s26), [BasicR1](https://s.smartnydom.pl/r/sonoff-basic-r4), [BasicR2](https://s.smartnydom.pl/r/sonoff-basic-r4), Mini, Mini PCIe Card | 🔄 Mixed | Single relay switch | |
 | **2** | Sonoff DUALR2 | 🔄 Mixed | Dual relay switch | |
 | **3** | Unknown Models | 🔄 Mixed | Socket (3 channels) | |
-| **4** | [Sonoff 4CHPROR3](https://s.smartnydom.pl/r/sonoff-4chr3) | 🔄 Mixed | Socket (4 channels) | |
+| **4** | [Sonoff 4CHPro R3](https://s.smartnydom.pl/r/sonoff-4chr3) | 🔄 Mixed | Socket (4 channels) | |
 | **5** | [Sonoff POW](https://s.smartnydom.pl/r/sonoff-pow-r2-yt) | 🔄 Mixed | Power monitoring switch | |
 | **6** | Sonoff [T11C](https://s.smartnydom.pl/r/sonoff-wall-switches), [TX1C](https://s.smartnydom.pl/r/sonoff-tx-sd), [G1](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Single touch switch | |
 | **7** | Sonoff [T12C](https://s.smartnydom.pl/r/sonoff-wall-switches), [TX2C](https://s.smartnydom.pl/r/sonoff-tx-sd) | 🔄 Mixed | Dual touch switch | |
@@ -66,7 +66,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **31** | GSM Socket | 🌐 Cloud | Quad channel GSM socket | |
 | **32** | [Sonoff POWR2, POWR316, POWR320D](https://s.smartnydom.pl/r/sonoff-pow-r2-yt) | 🔄 Mixed | Advanced power monitoring | |
 | **59** | LED Controller | 🔄 Mixed | LED strip controller | |
-| **66** | Sonoff ZigBee Bridge | 🌐 Cloud | Zigbee bridge | |
+| **66** | [Sonoff ZigBee Bridge](https://s.smartnydom.pl/r/sonoff-zigbee-sensors) | 🌐 Cloud | Zigbee bridge | |
 | **77** | Sonoff WiFi MICRO (USB) | 🔄 Mixed | Compact WiFi switch | |
 | **78** | Unknown | 🔄 Mixed | | |
 | **81** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
@@ -85,17 +85,17 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **168** | [Sonoff ZigBee ZBBridge-P](https://s.smartnydom.pl/r/sonoff-zb-bridge-pro) | 🌐 Cloud | Zigbee bridge Pro | |
 | **181** | [Sonoff THR320D, THR316D](https://s.smartnydom.pl/r/sonoff-th-elite-smart-temperature-and-humidity-monitoring-switch-yt) | 🔄 Mixed | Single relay with Temperature/humidity sensor | |
 | **190** | [Sonoff S60TPF, S60TPG](https://s.smartnydom.pl/r/sonoff-s60tpf) | 🔄 Mixed | Smart plug | |
-| **209** | [T5-1C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Single touch switch | ⚠️ Partially tested |
-| **210** | [T5-2C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Dual touch switch | ⚠️ Partially tested |
-| **211** | [T5-3C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Triple touch switch | ⚠️ Partially tested |
-| **212** | [T5-4C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Quad touch switch | ⚠️ Partially tested |
-| **237** | SG200 | 🔄 Mixed | Smart gateway | Prototype device |
+| **209** | [Sonoff T5-1C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Single touch switch | ⚠️ Partially tested |
+| **210** | [Sonoff T5-2C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Dual touch switch | ⚠️ Partially tested |
+| **211** | [Sonoff T5-3C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Triple touch switch | ⚠️ Partially tested |
+| **212** | [Sonoff T5-4C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Quad touch switch | ⚠️ Partially tested |
+| **237** | Sonoff SG200 | 🔄 Mixed | Smart gateway | Prototype device |
 | **243** | [Sonoff ZBridge-U](https://s.smartnydom.pl/r/sonoff-zbbridge-u) | 🌐 Cloud | Zigbee bridge USB | |
 | **256** | [Sonoff SlimCAM2](https://s.smartnydom.pl/r/sonoff-cam-pan-tilt-2-itead-eu) | 🌐 Cloud | Security camera | |
 | **260** | [Sonoff CAM-B1P](https://s.smartnydom.pl/r/sonoff-b1p-itead) | 🌐 Cloud | Security camera | |
 | **268** | [Sonoff BASIC-1GS](https://s.smartnydom.pl/r/sonoff-basic-1gs-itead-en) | 🔄 Mixed | BASIC 5Gen single switch with Matter support | |
-| **1770** | Sonoff ZigBee SNZB-02 | 🌐 Cloud | Temperature monitoring, 1st version| |
-| **2026** | Sonoff ZigBee Motion Sensor | 🌐 Cloud | Motion detection, 1st version | |
+| **1770** | [Sonoff ZigBee SNZB-02](https://s.smartnydom.pl/r/sonoff-zigbee-sensors) | 🌐 Cloud | Temperature monitoring, 1st version| |
+| **2026** | [Sonoff ZigBee Motion Sensor](https://s.smartnydom.pl/r/sonoff-zigbee-sensors) | 🌐 Cloud | Motion detection, 1st version | |
 | **7003** | Sonoff [SNZB-04P](https://s.smartnydom.pl/r/sonoff-snzb-04p-itead) | 🌐 Cloud | Door/window sensor | ⚠️ Testing needed |
 | **7014** | Sonoff ZigBee [SNZB-02P](https://s.smartnydom.pl/r/sonoff-snzb-02p), [SNZB-02D](	https://s.smartnydom.pl/r/sonoff-snzb-02d-sd) | 🌐 Cloud | Temperature/humidity sensor | |
 | **ZCONTACT** | Generic Contact Sensor | 🌐 Cloud | Contact detection | |
