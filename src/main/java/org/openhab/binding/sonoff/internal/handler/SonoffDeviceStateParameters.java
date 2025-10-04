@@ -59,6 +59,7 @@ public class SonoffDeviceStateParameters {
     private QuantityType<ElectricPotential> voltage = new QuantityType<ElectricPotential>(0.0, (VOLT));
     private QuantityType<ElectricCurrent> current = new QuantityType<ElectricCurrent>(0.0, (AMPERE));
     private QuantityType<ElectricPotential> battery = new QuantityType<ElectricPotential>(0.0, (VOLT));
+    private QuantityType<Dimensionless> batteryLevel = new QuantityType<Dimensionless>(0.0, PERCENT);
     // Energy
     private QuantityType<Energy> todayKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
     private QuantityType<Energy> yesterdayKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
@@ -243,6 +244,14 @@ public class SonoffDeviceStateParameters {
 
     public void setBattery(Double battery) {
         this.battery = new QuantityType<ElectricPotential>(battery, VOLT);
+    }
+
+    public QuantityType<Dimensionless> getBatteryLevel() {
+        return this.batteryLevel;
+    }
+
+    public void setBatteryLevel(Double batteryLevel) {
+        this.batteryLevel = new QuantityType<Dimensionless>(batteryLevel, PERCENT);
     }
 
     public QuantityType<Energy> getTodayKwh() {

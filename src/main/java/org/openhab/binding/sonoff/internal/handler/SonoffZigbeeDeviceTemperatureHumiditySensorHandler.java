@@ -38,7 +38,7 @@ public class SonoffZigbeeDeviceTemperatureHumiditySensorHandler extends SonoffBa
     @Override
     public void updateDevice(SonoffDeviceState newDevice) {
         // Motion
-        updateState("battery", newDevice.getParameters().getBattery());
+        updateState("battery", newDevice.getParameters().getBatteryLevel());
         updateState("trigTime", newDevice.getParameters().getTrigTime());
         updateState("temperature", newDevice.getParameters().getTemperature());
         updateState("humidity", newDevice.getParameters().getHumidity());
