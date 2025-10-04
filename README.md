@@ -14,7 +14,6 @@ This is an enhanced branch of the Sonoff binding for OpenHAB, featuring extended
 - **📦 [Latest Release](https://github.com/tschaban/openhab-addons-sonoff/releases)** - Download the newest version
 - **🐛 [Report Issues](https://github.com/tschaban/openhab-addons-sonoff/issues)** - Bug reports and feature requests
 - **📈 [Changelog](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)** - All enhancements and fixes
-- **👨‍💻 [Development Docs](docs/development/README.md)** - For developers and contributors
 
 ---
 
