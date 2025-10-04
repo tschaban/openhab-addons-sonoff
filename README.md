@@ -4,15 +4,10 @@
 [![GitHub Issues](https://img.shields.io/github/issues/tschaban/openhab-addons-sonoff)](https://github.com/tschaban/openhab-addons-sonoff/issues)
 [![GitHub Milestones](https://img.shields.io/github/milestones/closed/tschaban/openhab-addons-sonoff)](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)
 [![CI/CD Pipeline](https://github.com/tschaban/openhab-addons-sonoff/actions/workflows/ci.yml/badge.svg)](https://github.com/tschaban/openhab-addons-sonoff/actions/workflows/ci.yml)
+
 **Enhanced and maintained by [Smart'nyDom](https://github.com/tschaban)** | Based on the original work by [delid4ve](https://github.com/delid4ve/openhab-3.x-sonoff)
 
-This is an enhanced branch of the original Sonoff binding for OpenHAB, featuring extended device support, improved functionality, and comprehensive testing framework.
-
-## 🚀 What's New in This Branch
-
-### 📱 Enhanced Device Support - Smart'nyDom Edition
-
-This enhanced branch extends the original Sonoff binding with **60+ supported devices** across multiple categories, featuring the latest Sonoff models and comprehensive technical specifications.
+This is an enhanced branch of the Sonoff binding for OpenHAB, featuring extended device support, improved functionality, with testing framework.
 
 ## 📋 Quick Links
 
@@ -40,8 +35,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 - 🔄 **Mixed**: Both local LAN and cloud connections supported
 
 **Testing Status:**
-- ⚠️ **Testing needed**: Added but requires community feedback
-- ⚠️ **Partially tested**: Limited testing (I don't have that device to test it) feedback welcome
+- ⚠️ **Testing needed**:Limited testing (I don't have that device to test it) feedback welcome
 
 #### Device supported
 
@@ -85,10 +79,10 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **168** | [Sonoff ZigBee ZBBridge-P](https://s.smartnydom.pl/r/sonoff-zb-bridge-pro) | 🌐 Cloud | Zigbee bridge Pro | |
 | **181** | [Sonoff THR320D, THR316D](https://s.smartnydom.pl/r/sonoff-th-elite-smart-temperature-and-humidity-monitoring-switch-yt) | 🔄 Mixed | Single relay with Temperature/humidity sensor | |
 | **190** | [Sonoff S60TPF, S60TPG](https://s.smartnydom.pl/r/sonoff-s60tpf) | 🔄 Mixed | Smart plug | |
-| **209** | [Sonoff T5-1C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Single touch switch | ⚠️ Partially tested |
-| **210** | [Sonoff T5-2C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Dual touch switch | ⚠️ Partially tested |
-| **211** | [Sonoff T5-3C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Triple touch switch | ⚠️ Partially tested |
-| **212** | [Sonoff T5-4C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Quad touch switch | ⚠️ Partially tested |
+| **209** | [Sonoff T5-1C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Single touch switch | ⚠️ Testing needed |
+| **210** | [Sonoff T5-2C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Dual touch switch | ⚠️ Testing needed |
+| **211** | [Sonoff T5-3C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Triple touch switch | ⚠️ Testing needed |
+| **212** | [Sonoff T5-4C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Quad touch switch | ⚠️ Testing needed |
 | **237** | Sonoff SG200 | 🔄 Mixed | Smart gateway | Prototype device |
 | **243** | [Sonoff ZBridge-U](https://s.smartnydom.pl/r/sonoff-zbbridge-u) | 🌐 Cloud | Zigbee bridge USB | |
 | **256** | [Sonoff SlimCAM2](https://s.smartnydom.pl/r/sonoff-cam-pan-tilt-2-itead-eu) | 🌐 Cloud | Security camera | |
