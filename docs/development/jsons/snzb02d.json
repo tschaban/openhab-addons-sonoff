@@ -1,0 +1,12 @@
+{
+    "action": "update",
+    "deviceid": "111",
+    "apikey": "111",
+    "userAgent": "device",
+    "d_seq": 8449,
+    "params": {
+        "battery": 100,
+        "trigTime": "1759778971000",
+        "supportPowConfig": 1
+    }
+}W

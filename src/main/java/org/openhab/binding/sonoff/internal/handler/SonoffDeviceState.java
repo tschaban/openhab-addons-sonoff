@@ -68,7 +68,7 @@ public class SonoffDeviceState {
         logger.info("-----------------------");
         logger.info("Found: {}", this.name);
         logger.info("Hardware: {}", this.brand + " Model: " + this.model + " FW: " + this.fw);
-        logger.info("UUID: {}", this.uiid + ", DeviceId: " + this.deviceid);
+        logger.info("uiid: {}", this.uiid + ", DeviceId: " + this.deviceid);
         updateState(device);
     }
 
@@ -167,28 +167,55 @@ public class SonoffDeviceState {
             if (uiid.equals(256) || uiid.equals(260)) { // Temporary workaround to be fixed for CAMs
                 parameters.setCamPower(params.get("power").getAsString());
             } else {
-                parameters.setPower(params.get("power").getAsString());
+                if (uiid.equals(5) || uiid.equals(32)) {
+                    parameters.setPower(params.get("power").getAsString(), 1f, 2);
+                } else {
+                    parameters.setPower(params.get("power").getAsString(), 0.01f, 2);
+                }
             }
         }
 
         if (params.get("voltage") != null) {
-            parameters.setVoltage(params.get("voltage").getAsString());
+            if (uiid.equals(5) || uiid.equals(32)) {
+                parameters.setVoltage(params.get("voltage").getAsString(), 1f, 1);
+            } else {
+                parameters.setVoltage(params.get("voltage").getAsString(), 0.01f, 1);
+            }
         }
 
         if (params.get("current") != null) {
-            parameters.setCurrent(params.get("current").getAsString());
+            if (uiid.equals(5) || uiid.equals(32)) {
+                parameters.setCurrent(params.get("current").getAsString(), 1f, 3);
+            } else {
+                parameters.setCurrent(params.get("current").getAsString(), 0.001f, 3);
+            }
         }
 
         if (params.get("battery") != null) {
-            parameters.setBattery(params.get("battery").getAsDouble());
+            // Set battery parameter based on device UUID
+            if (uiid.equals(2026)) {
+                // Motion Sensor uses battery voltage
+                parameters.setBattery(params.get("battery").getAsDouble());
+            } else if (uiid.equals(1770) || uiid.equals(7003) || uiid.equals(7014)) {
+                // Temperature/Humidity and Door/Window sensors use battery level percentage
+                parameters.setBatteryLevel(params.get("battery").getAsDouble());
+            }
         }
 
         if (params.get("dayKwh") != null) {
-            parameters.setTodayKwh(params.get("dayKwh").getAsDouble());
+            if (uiid.equals(5) || uiid.equals(32)) {
+                parameters.setTodayKwh(params.get("dayKwh").getAsDouble(), 1f, 2);
+            } else {
+                parameters.setTodayKwh(params.get("dayKwh").getAsDouble(), 0.01f, 2);
+            }
         }
 
         if (params.get("monthKwh") != null) {
-            parameters.setMonthKwh(params.get("monthKwh").getAsDouble());
+            if (uiid.equals(5) || uiid.equals(32)) {
+                parameters.setMonthKwh(params.get("monthKwh").getAsDouble(), 1f, 2);
+            } else {
+                parameters.setMonthKwh(params.get("monthKwh").getAsDouble(), 0.01f, 2);
+            }
         }
 
         // Energy
@@ -203,21 +230,42 @@ public class SonoffDeviceState {
                     total = total + Double.parseDouble(Integer.parseInt(hexValues[0], 16) + "."
                             + Integer.parseInt(hexValues[1], 16) + Integer.parseInt(hexValues[2], 16));
                     if (i == 0) {
-                        parameters.setTodayKwh(total);
+                        if (uiid.equals(5) || uiid.equals(32)) {
+                            parameters.setTodayKwh(total, 1f, 2);
+                        } else {
+                            parameters.setTodayKwh(total, 0.01f, 2);
+                        }
                     }
                     if (i == 1) {
                         double newtotal = Double.parseDouble(Integer.parseInt(hexValues[0], 16) + "."
                                 + Integer.parseInt(hexValues[1], 16) + Integer.parseInt(hexValues[2], 16));
-                        parameters.setYesterdayKwh(newtotal);
+
+                        if (uiid.equals(5) || uiid.equals(32)) {
+                            parameters.setYesterdayKwh(newtotal, 1f, 2);
+                        } else {
+                            parameters.setYesterdayKwh(newtotal, 0.01f, 2);
+                        }
                     }
                     if (i == 6) {
-                        parameters.setSevenKwh(total);
+                        if (uiid.equals(5) || uiid.equals(32)) {
+                            parameters.setSevenKwh(total, 1f, 2);
+                        } else {
+                            parameters.setSevenKwh(total, 0.01f, 2);
+                        }
                     }
                     if (i == 29) {
-                        parameters.setThirtyKwh(total);
+                        if (uiid.equals(5) || uiid.equals(32)) {
+                            parameters.setThirtyKwh(total, 1f, 2);
+                        } else {
+                            parameters.setThirtyKwh(total, 0.01f, 2);
+                        }
                     }
                     if (i == 99) {
-                        parameters.setHundredKwh(total);
+                        if (uiid.equals(5) || uiid.equals(32)) {
+                            parameters.setHundredKwh(total, 1f, 2);
+                        } else {
+                            parameters.setHundredKwh(total, 0.01f, 2);
+                        }
                     }
                 }
             }

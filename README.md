@@ -5,43 +5,15 @@
 [![GitHub Milestones](https://img.shields.io/github/milestones/closed/tschaban/openhab-addons-sonoff)](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)
 [![CI/CD Pipeline](https://github.com/tschaban/openhab-addons-sonoff/actions/workflows/ci.yml/badge.svg)](https://github.com/tschaban/openhab-addons-sonoff/actions/workflows/ci.yml)
 
-
 **Enhanced and maintained by [Smart'nyDom](https://github.com/tschaban)** | Based on the original work by [delid4ve](https://github.com/delid4ve/openhab-3.x-sonoff)
 
-This is an enhanced branch of the original Sonoff binding for OpenHAB, featuring extended device support, improved functionality, and comprehensive testing framework.
-
-## 🚀 What's New in This Branch
-
-### 📱 Extended Device Support
-**Added: SONOFF Supported Devices**
-- SONOFF WiFi iPlug Smart Plug | S60 Series: Models: S60TPF, S60TPG
-- SONOFF WiFi POW Smart Power Meter Switch | Models: POWR316, POWR316D, POWR320D
-- SONOFF WiFi POW Ring Smart Power Meter | Models: POWCT
-- SONOFF WiFi MINI Dry Smart Switch | Model: MINI-D
-- SONOFF WiFi MINI Smart Switch | Models: MINI-R4, MINI-R4M
-- SONOFF WiFi Smart Gate Controller (Prototype device)
-- SONOFF WiFi SwitchMan 1-3 Channel Switch | Model: M5-1C, M5-2C, M5-3C [Not tested, let me know if it works]
-- SONOFF WiFi TX ULTIMATE 1-4 Channel Wall Switch | Model: T5-1C, T5-2C, T5-3C, T5-4C [Partially tested, let me know if it works]
-- SONOFF Zigbee Bridge | Model: ZB-Bridge-Pro
-- SONOFF Zigbee Bridge | Model: ZB-Bridge-Ultra
-- SONOFF Zigbee Sensor: Temp and Humidity | Models: SNZB-02P, SNZB-02D
-- SONOFF Zigbee Sensor: Door and Window: | Model: SNZB-04P (1st version) [Not tested, let me know if it works]
-
-**Added: GENERIC Devices**
-- 3 Way Wall Switch | Model: Bouffalo Lab BL602 (CK-BL602-4SW-HS)
-
-### 🔧 Development Enhancements
-- **Comprehensive testing framework** with unit and integration tests
-- **Bridge handler foundation testing** for abstract class coverage
-- **Automated CI/CD scripts** with quality gates
-- **Mock-based unit testing** with Mockito integration
+This is an enhanced branch of the Sonoff binding for OpenHAB, featuring extended device support, improved functionality, with testing framework.
 
 ## 📋 Quick Links
 
 - **📦 [Latest Release](https://github.com/tschaban/openhab-addons-sonoff/releases)** - Download the newest version
 - **🐛 [Report Issues](https://github.com/tschaban/openhab-addons-sonoff/issues)** - Bug reports and feature requests
 - **📈 [Changelog](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)** - All enhancements and fixes
-- **👨‍💻 [Development Docs](docs/development/README.md)** - For developers and contributors
 
 ---
 
@@ -54,38 +26,84 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 - **Local Mode** - Direct LAN communication (where supported)
 - **Mixed Mode** - Automatic fallback between local and cloud
 
-### 🔌 Supported Things
+### 🔌 Complete Device Support Matrix
 
-Currently known to support (non-exhaustive list):
+#### Legend
+**Connection Types:**
+- 🌐 **Cloud**: Cloud-only connection via eWeLink servers
+- 🔄 **Mixed**: Both local LAN and cloud connections supported
 
-#### Mixed Mode Support (Local + Cloud)
-- **UUID1:** S20, S26, BasicR1, BasicR2, Mini, Mini PCIe Card
-- **UUID2:** Unknown Models
-- **UUID3:** Unknown Models
-- **UUID4:** 4CHPROR3
-- **UUID5:** POW
-- **UUID6:** T11C, TX1C, G1
-- **UUID7:** T12C, TX2C
-- **UUID8:** T13C, TX3C
-- **UUID9:** Unknown Models
-- **UUID15:** TH10, TH16
-- **UUID28:** RFBRIDGE (Only sensors currently supported, awaiting remote logs)
-- **UUID32:** POWR2
-- **UUID77:** MICRO USB
+**Testing Status:**
+- ⚠️ **Testing needed**:Limited testing (I don't have that device to test it) feedback welcome
 
-#### Cloud Only Support
-- **UUID24:** 1 Channel GSM Socket
-- **UUID27:** 1 Channel GSM Socket
-- **UUID29:** 2 Channel GSM Socket
-- **UUID30:** 3 Channel GSM Socket
-- **UUID31:** 4 Channel GSM Socket
-- **UUID66:** Zigbee Bridge
-- **UUID81:** 1 Channel GSM Socket
-- **UUID82:** 2 Channel GSM Socket
-- **UUID83:** 3 Channel GSM Socket
-- **UUID84:** 4 Channel GSM Socket
-- **UUID107:** 1 Channel GSM Socket
-- **UUID2026:** Zigbee Motion Sensor
+#### Device supported
+
+| UUID | Models | Connection | Features | Status |
+|------|--------|------------|----------|--------|
+| **1** | Sonoff S20, [S26](https://s.smartnydom.pl/r/sonoff-s26), [BasicR1](https://s.smartnydom.pl/r/sonoff-basic-r4), [BasicR2](https://s.smartnydom.pl/r/sonoff-basic-r4), Mini, Mini PCIe Card | 🔄 Mixed | Single relay switch | |
+| **2** | Sonoff DUALR2 | 🔄 Mixed | Dual relay switch | |
+| **3** | Unknown Models | 🔄 Mixed | Socket (3 channels) | |
+| **4** | [Sonoff 4CHPro R3](https://s.smartnydom.pl/r/sonoff-4chr3) | 🔄 Mixed | Socket (4 channels) | |
+| **5** | [Sonoff POW](https://s.smartnydom.pl/r/sonoff-pow-r2-yt) | 🔄 Mixed | Power monitoring switch | |
+| **6** | Sonoff [T11C](https://s.smartnydom.pl/r/sonoff-wall-switches), [TX1C](https://s.smartnydom.pl/r/sonoff-tx-sd), [G1](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Single touch switch | |
+| **7** | Sonoff [T12C](https://s.smartnydom.pl/r/sonoff-wall-switches), [TX2C](https://s.smartnydom.pl/r/sonoff-tx-sd) | 🔄 Mixed | Dual touch switch | |
+| **8** | Sonoff [T13C](https://s.smartnydom.pl/r/sonoff-wall-switches), [TX3C](https://s.smartnydom.pl/r/sonoff-tx-sd) | 🔄 Mixed | Triple touch switch | |
+| **9** | Unknown Models | 🔄 Mixed | Switch (4 channels) | |
+| **14** | [Sonoff BasicR1](https://s.smartnydom.pl/r/sonoff-basic-r4) | 🔄 Mixed | Single relay switch | |
+| **15** | [Sonoff TH10, TH16, TH16R2](https://s.smartnydom.pl/r/sonoff-th-origin-sd) | 🔄 Mixed | Temperature/humidity monitoring | |
+| **24** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
+| **27** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
+| **28** | RF-BRIDGE (RF3) | 🔄 Mixed | 433MHz RF bridge | |
+| **29** | GSM Socket | 🌐 Cloud | Dual channel GSM socket | |
+| **30** | GSM Socket | 🌐 Cloud | Triple channel GSM socket | |
+| **31** | GSM Socket | 🌐 Cloud | Quad channel GSM socket | |
+| **32** | [Sonoff POWR2, POWR316, POWR320D](https://s.smartnydom.pl/r/sonoff-pow-r2-yt) | 🔄 Mixed | Advanced power monitoring | |
+| **59** | LED Controller | 🔄 Mixed | LED strip controller | |
+| **66** | [Sonoff ZigBee Bridge](https://s.smartnydom.pl/r/sonoff-zigbee-sensors) | 🌐 Cloud | Zigbee bridge | |
+| **77** | Sonoff WiFi MICRO (USB) | 🔄 Mixed | Compact WiFi switch | |
+| **78** | Unknown | 🔄 Mixed | | |
+| **81** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
+| **82** | GSM Socket | 🌐 Cloud | Dual channel GSM socket | |
+| **83** | GSM Socket | 🌐 Cloud | Triple channel GSM socket | |
+| **84** | GSM Socket | 🌐 Cloud | Quad channel GSM socket | |
+| **102** | OPL-DMA, DW2 | 🔄 Mixed | Magnetic door/window sensor | |
+| **104** | B05 Bulb | 🔄 Mixed | Smart bulb | |
+| **107** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
+| **126** | [Sonoff DUAL R3](https://s.smartnydom.pl/r/sonoff-dual-r3) | 🔄 Mixed | Dual relay + power monitoring | |
+| **138** | Sonoff [MINI-D](https://s.smartnydom.pl/r/sonoff-mini-d-itead), [MINI-R4](	https://s.smartnydom.pl/r/sonoff-mini-extreme-r4), [MINI-R4M](https://s.smartnydom.pl/r/sonoff-minir4-matter) | 🔄 Mixed | Single relay | |
+| **140** | CK-BL602-4SW-HS (Bouffalo Lab BL602) | 🔄 Mixed | 3-way wall switch | |
+| **160** | [Sonoff M5-1C](https://s.smartnydom.pl/r/sonoff-switchman-m5) | 🔄 Mixed | Single channel switch | ⚠️ Testing needed |
+| **161** | [Sonoff M5-2C](https://s.smartnydom.pl/r/sonoff-switchman-m5) | 🔄 Mixed | Dual channel switch | ⚠️ Testing needed |
+| **162** | [Sonoff M5-3C](https://s.smartnydom.pl/r/sonoff-switchman-m5) | 🔄 Mixed | Triple channel switch | ⚠️ Testing needed |
+| **168** | [Sonoff ZigBee ZBBridge-P](https://s.smartnydom.pl/r/sonoff-zb-bridge-pro) | 🌐 Cloud | Zigbee bridge Pro | |
+| **181** | [Sonoff THR320D, THR316D](https://s.smartnydom.pl/r/sonoff-th-elite-smart-temperature-and-humidity-monitoring-switch-yt) | 🔄 Mixed | Single relay with Temperature/humidity sensor | |
+| **190** | [Sonoff S60TPF, S60TPG](https://s.smartnydom.pl/r/sonoff-s60tpf) | 🔄 Mixed | Smart plug | |
+| **209** | [Sonoff T5-1C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Single touch switch | ⚠️ Testing needed |
+| **210** | [Sonoff T5-2C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Dual touch switch | ⚠️ Testing needed |
+| **211** | [Sonoff T5-3C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Triple touch switch | ⚠️ Testing needed |
+| **212** | [Sonoff T5-4C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Quad touch switch | ⚠️ Testing needed |
+| **237** | Sonoff SG200 | 🔄 Mixed | Smart gateway | Prototype device |
+| **243** | [Sonoff ZBridge-U](https://s.smartnydom.pl/r/sonoff-zbbridge-u) | 🌐 Cloud | Zigbee bridge USB | |
+| **256** | [Sonoff SlimCAM2](https://s.smartnydom.pl/r/sonoff-cam-pan-tilt-2-itead-eu) | 🌐 Cloud | Security camera | |
+| **260** | [Sonoff CAM-B1P](https://s.smartnydom.pl/r/sonoff-b1p-itead) | 🌐 Cloud | Security camera | |
+| **268** | [Sonoff BASIC-1GS](https://s.smartnydom.pl/r/sonoff-basic-1gs-itead-en) | 🔄 Mixed | BASIC 5Gen single switch with Matter support | |
+| **1770** | [Sonoff ZigBee SNZB-02](https://s.smartnydom.pl/r/sonoff-zigbee-sensors) | 🌐 Cloud | Temperature monitoring, 1st version| |
+| **2026** | [Sonoff ZigBee Motion Sensor](https://s.smartnydom.pl/r/sonoff-zigbee-sensors) | 🌐 Cloud | Motion detection, 1st version | |
+| **7003** | Sonoff [SNZB-04P](https://s.smartnydom.pl/r/sonoff-snzb-04p-itead) | 🌐 Cloud | Door/window sensor | ⚠️ Testing needed |
+| **7014** | Sonoff ZigBee [SNZB-02P](https://s.smartnydom.pl/r/sonoff-snzb-02p), [SNZB-02D](	https://s.smartnydom.pl/r/sonoff-snzb-02d-sd) | 🌐 Cloud | Temperature/humidity sensor | |
+| **ZCONTACT** | Generic Contact Sensor | 🌐 Cloud | Contact detection | |
+| **ZWATER** | Water Leak Sensor | 🌐 Cloud | Water leak detection | |
+| **ZSWITCH1** | Single Channel Switch | 🌐 Cloud | Single relay | |
+| **ZSWITCH2** | Dual Channel Switch | 🌐 Cloud | Dual relay | |
+| **ZSWITCH3** | Triple Channel Switch | 🌐 Cloud | Triple relay | |
+| **ZSWITCH4** | Quad Channel Switch | 🌐 Cloud | Quad relay | |
+| **ZLIGHT** | Dimmable Light | 🌐 Cloud | Dimmable white light | |
+| **RF1** | Single Button Remote | 🔄 Mixed | 1 button control | |
+| **RF2** | Dual Button Remote | 🔄 Mixed | 2 button control | |
+| **RF3** | Triple Button Remote | 🔄 Mixed | 3 button control | |
+| **RF4** | Quad Button Remote | 🔄 Mixed | 4 button control | |
+| **RF6** | RF Sensor | 🔄 Mixed | Motion/contact detection | |
+
 
 ## 🛠️ Setup
 
