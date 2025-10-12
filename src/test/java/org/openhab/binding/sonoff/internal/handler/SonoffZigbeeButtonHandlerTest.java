@@ -32,7 +32,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.openhab.binding.sonoff.internal.config.DeviceConfig;
 import org.openhab.core.config.core.Configuration;
 import org.openhab.core.library.types.OpenClosedType;
 import org.openhab.core.library.types.QuantityType;
@@ -40,8 +39,6 @@ import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
-import org.openhab.core.thing.ThingStatus;
-import org.openhab.core.thing.ThingStatusInfo;
 import org.openhab.core.thing.ThingUID;
 import org.openhab.core.thing.binding.ThingHandlerCallback;
 import org.openhab.core.types.State;
@@ -162,7 +159,8 @@ class SonoffZigbeeButtonHandlerTest {
         when(mockParameters.getButton(anyInt())).thenReturn(OpenClosedType.CLOSED);
         when(mockParameters.getButtonTrigTime(anyInt())).thenReturn(new StringType("2024-01-01T12:00:00Z"));
         when(mockParameters.getRssi()).thenReturn(new QuantityType<>(-50, org.openhab.core.library.unit.Units.DECIBEL));
-        when(mockParameters.getBatteryLevel()).thenReturn(new QuantityType<>(85, org.openhab.core.library.unit.Units.PERCENT));
+        when(mockParameters.getBatteryLevel())
+                .thenReturn(new QuantityType<>(85, org.openhab.core.library.unit.Units.PERCENT));
 
         // Setup mock account
         when(mockZigbeeBridge.account).thenReturn(mockAccount);
@@ -215,13 +213,10 @@ class SonoffZigbeeButtonHandlerTest {
         handler.testUpdateDevice(mockDeviceState);
 
         // Verify button state updated to OPEN
-        verify(mockCallback).stateUpdated(
-                eq(new ChannelUID(thingUID, "button0")),
-                eq(OpenClosedType.OPEN));
+        verify(mockCallback).stateUpdated(eq(new ChannelUID(thingUID, "button0")), eq(OpenClosedType.OPEN));
 
         // Verify trigger time updated
-        verify(mockCallback).stateUpdated(
-                eq(new ChannelUID(thingUID, "button0TrigTime")),
+        verify(mockCallback).stateUpdated(eq(new ChannelUID(thingUID, "button0TrigTime")),
                 eq(new StringType("2024-01-01T12:00:00Z")));
 
         // Verify reset task scheduled
@@ -232,9 +227,7 @@ class SonoffZigbeeButtonHandlerTest {
         runnableCaptor.getValue().run();
 
         // Verify button state reset to CLOSED
-        verify(mockCallback).stateUpdated(
-                eq(new ChannelUID(thingUID, "button0")),
-                eq(OpenClosedType.CLOSED));
+        verify(mockCallback).stateUpdated(eq(new ChannelUID(thingUID, "button0")), eq(OpenClosedType.CLOSED));
 
         // Verify button state was reset in parameters
         verify(mockParameters).setButton(0, OpenClosedType.CLOSED);
@@ -253,13 +246,10 @@ class SonoffZigbeeButtonHandlerTest {
         handler.testUpdateDevice(mockDeviceState);
 
         // Verify button state updated to OPEN
-        verify(mockCallback).stateUpdated(
-                eq(new ChannelUID(thingUID, "button1")),
-                eq(OpenClosedType.OPEN));
+        verify(mockCallback).stateUpdated(eq(new ChannelUID(thingUID, "button1")), eq(OpenClosedType.OPEN));
 
         // Verify trigger time updated
-        verify(mockCallback).stateUpdated(
-                eq(new ChannelUID(thingUID, "button1TrigTime")),
+        verify(mockCallback).stateUpdated(eq(new ChannelUID(thingUID, "button1TrigTime")),
                 eq(new StringType("2024-01-01T12:00:01Z")));
 
         // Verify reset task scheduled
@@ -270,9 +260,7 @@ class SonoffZigbeeButtonHandlerTest {
         runnableCaptor.getValue().run();
 
         // Verify button state reset to CLOSED
-        verify(mockCallback).stateUpdated(
-                eq(new ChannelUID(thingUID, "button1")),
-                eq(OpenClosedType.CLOSED));
+        verify(mockCallback).stateUpdated(eq(new ChannelUID(thingUID, "button1")), eq(OpenClosedType.CLOSED));
 
         // Verify button state was reset in parameters
         verify(mockParameters).setButton(1, OpenClosedType.CLOSED);
@@ -291,13 +279,10 @@ class SonoffZigbeeButtonHandlerTest {
         handler.testUpdateDevice(mockDeviceState);
 
         // Verify button state updated to OPEN
-        verify(mockCallback).stateUpdated(
-                eq(new ChannelUID(thingUID, "button2")),
-                eq(OpenClosedType.OPEN));
+        verify(mockCallback).stateUpdated(eq(new ChannelUID(thingUID, "button2")), eq(OpenClosedType.OPEN));
 
         // Verify trigger time updated
-        verify(mockCallback).stateUpdated(
-                eq(new ChannelUID(thingUID, "button2TrigTime")),
+        verify(mockCallback).stateUpdated(eq(new ChannelUID(thingUID, "button2TrigTime")),
                 eq(new StringType("2024-01-01T12:00:02Z")));
 
         // Verify reset task scheduled
@@ -308,9 +293,7 @@ class SonoffZigbeeButtonHandlerTest {
         runnableCaptor.getValue().run();
 
         // Verify button state reset to CLOSED
-        verify(mockCallback).stateUpdated(
-                eq(new ChannelUID(thingUID, "button2")),
-                eq(OpenClosedType.CLOSED));
+        verify(mockCallback).stateUpdated(eq(new ChannelUID(thingUID, "button2")), eq(OpenClosedType.CLOSED));
 
         // Verify button state was reset in parameters
         verify(mockParameters).setButton(2, OpenClosedType.CLOSED);
@@ -366,8 +349,7 @@ class SonoffZigbeeButtonHandlerTest {
         @SuppressWarnings("rawtypes")
         ScheduledFuture secondTask = mock(ScheduledFuture.class);
 
-        when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
-                .thenReturn(firstTask)
+        when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class))).thenReturn(firstTask)
                 .thenReturn(secondTask);
 
         // Execute first press
@@ -424,9 +406,7 @@ class SonoffZigbeeButtonHandlerTest {
         handler.testUpdateDevice(mockDeviceState);
 
         // Verify
-        verify(mockCallback).stateUpdated(
-                eq(new ChannelUID(thingUID, "cloudOnline")),
-                eq(new StringType("Connected")));
+        verify(mockCallback).stateUpdated(eq(new ChannelUID(thingUID, "cloudOnline")), eq(new StringType("Connected")));
     }
 
     @Test
@@ -439,8 +419,7 @@ class SonoffZigbeeButtonHandlerTest {
         handler.testUpdateDevice(mockDeviceState);
 
         // Verify
-        verify(mockCallback).stateUpdated(
-                eq(new ChannelUID(thingUID, "cloudOnline")),
+        verify(mockCallback).stateUpdated(eq(new ChannelUID(thingUID, "cloudOnline")),
                 eq(new StringType("Disconnected")));
     }
 
@@ -456,10 +435,8 @@ class SonoffZigbeeButtonHandlerTest {
         @SuppressWarnings("rawtypes")
         ScheduledFuture task2 = mock(ScheduledFuture.class);
 
-        when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
-                .thenReturn(task0)
-                .thenReturn(task1)
-                .thenReturn(task2);
+        when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class))).thenReturn(task0)
+                .thenReturn(task1).thenReturn(task2);
 
         // Press all buttons to create tasks
         when(mockParameters.getButton(0)).thenReturn(OpenClosedType.OPEN);
@@ -530,10 +507,8 @@ class SonoffZigbeeButtonHandlerTest {
         @SuppressWarnings("rawtypes")
         ScheduledFuture task3 = mock(ScheduledFuture.class);
 
-        when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
-                .thenReturn(task1)
-                .thenReturn(task2)
-                .thenReturn(task3);
+        when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class))).thenReturn(task1)
+                .thenReturn(task2).thenReturn(task3);
 
         // Execute - press button three times rapidly
         handler.testUpdateDevice(mockDeviceState);
