@@ -15,7 +15,9 @@ package org.openhab.binding.sonoff.internal.handler;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
@@ -74,7 +76,8 @@ class SonoffZigbeeButtonHandlerTest {
     private ScheduledExecutorService mockScheduler;
 
     @Mock
-    private ScheduledFuture<?> mockScheduledFuture;
+    @SuppressWarnings("rawtypes")
+    private ScheduledFuture mockScheduledFuture;
 
     @Mock
     private SonoffZigbeeBridgeHandler mockZigbeeBridge;
@@ -86,7 +89,7 @@ class SonoffZigbeeButtonHandlerTest {
     private SonoffDeviceState mockDeviceState;
 
     @Mock
-    private SonoffDeviceParameters mockParameters;
+    private SonoffDeviceStateParameters mockParameters;
 
     private ThingUID thingUID;
     private ThingUID bridgeUID;
@@ -99,6 +102,17 @@ class SonoffZigbeeButtonHandlerTest {
     private class TestSonoffZigbeeButtonHandler extends SonoffZigbeeButtonHandler {
         public TestSonoffZigbeeButtonHandler(Thing thing) {
             super(thing);
+        }
+
+        public void setTestScheduler(ScheduledExecutorService scheduler) {
+            try {
+                Field schedulerField = org.openhab.core.thing.binding.BaseThingHandler.class
+                        .getDeclaredField("scheduler");
+                schedulerField.setAccessible(true);
+                schedulerField.set(this, scheduler);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to set scheduler", e);
+            }
         }
 
         @Override
@@ -135,10 +149,9 @@ class SonoffZigbeeButtonHandlerTest {
         // Setup mock bridge
         when(mockBridge.getUID()).thenReturn(bridgeUID);
         when(mockBridge.getHandler()).thenReturn(mockZigbeeBridge);
-        when(mockThing.getBridge()).thenReturn(mockBridge);
 
         // Setup mock scheduler
-        when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
+        lenient().when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
                 .thenReturn(mockScheduledFuture);
 
         // Setup mock device state
@@ -159,7 +172,7 @@ class SonoffZigbeeButtonHandlerTest {
         // Create handler
         handler = new TestSonoffZigbeeButtonHandler(mockThing);
         handler.setCallback(mockCallback);
-        handler.scheduler = mockScheduler;
+        handler.setTestScheduler(mockScheduler);
     }
 
     @Test
@@ -341,14 +354,17 @@ class SonoffZigbeeButtonHandlerTest {
 
     @Test
     @DisplayName("Should cancel existing reset task when button pressed again")
+    @SuppressWarnings("unchecked")
     void testCancelExistingResetTask() {
         // Setup - button 0 pressed first time
         when(mockParameters.getButton(0)).thenReturn(OpenClosedType.OPEN);
         when(mockParameters.getButton(1)).thenReturn(OpenClosedType.CLOSED);
         when(mockParameters.getButton(2)).thenReturn(OpenClosedType.CLOSED);
 
-        ScheduledFuture<?> firstTask = mock(ScheduledFuture.class);
-        ScheduledFuture<?> secondTask = mock(ScheduledFuture.class);
+        @SuppressWarnings("rawtypes")
+        ScheduledFuture firstTask = mock(ScheduledFuture.class);
+        @SuppressWarnings("rawtypes")
+        ScheduledFuture secondTask = mock(ScheduledFuture.class);
 
         when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
                 .thenReturn(firstTask)
@@ -430,11 +446,15 @@ class SonoffZigbeeButtonHandlerTest {
 
     @Test
     @DisplayName("Should cancel all reset tasks on disposal")
+    @SuppressWarnings("unchecked")
     void testCancelTasksOnDisposal() {
         // Setup - create tasks for all buttons
-        ScheduledFuture<?> task0 = mock(ScheduledFuture.class);
-        ScheduledFuture<?> task1 = mock(ScheduledFuture.class);
-        ScheduledFuture<?> task2 = mock(ScheduledFuture.class);
+        @SuppressWarnings("rawtypes")
+        ScheduledFuture task0 = mock(ScheduledFuture.class);
+        @SuppressWarnings("rawtypes")
+        ScheduledFuture task1 = mock(ScheduledFuture.class);
+        @SuppressWarnings("rawtypes")
+        ScheduledFuture task2 = mock(ScheduledFuture.class);
 
         when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
                 .thenReturn(task0)
@@ -496,15 +516,19 @@ class SonoffZigbeeButtonHandlerTest {
 
     @Test
     @DisplayName("Should handle rapid button presses")
+    @SuppressWarnings("unchecked")
     void testRapidButtonPresses() {
         // Setup
         when(mockParameters.getButton(0)).thenReturn(OpenClosedType.OPEN);
         when(mockParameters.getButton(1)).thenReturn(OpenClosedType.CLOSED);
         when(mockParameters.getButton(2)).thenReturn(OpenClosedType.CLOSED);
 
-        ScheduledFuture<?> task1 = mock(ScheduledFuture.class);
-        ScheduledFuture<?> task2 = mock(ScheduledFuture.class);
-        ScheduledFuture<?> task3 = mock(ScheduledFuture.class);
+        @SuppressWarnings("rawtypes")
+        ScheduledFuture task1 = mock(ScheduledFuture.class);
+        @SuppressWarnings("rawtypes")
+        ScheduledFuture task2 = mock(ScheduledFuture.class);
+        @SuppressWarnings("rawtypes")
+        ScheduledFuture task3 = mock(ScheduledFuture.class);
 
         when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
                 .thenReturn(task1)
@@ -540,7 +564,7 @@ class SonoffZigbeeButtonHandlerTest {
         // Create new handler with custom timeout
         TestSonoffZigbeeButtonHandler customHandler = new TestSonoffZigbeeButtonHandler(mockThing);
         customHandler.setCallback(mockCallback);
-        customHandler.scheduler = mockScheduler;
+        customHandler.setTestScheduler(mockScheduler);
         customHandler.initialize();
 
         // Setup button press
