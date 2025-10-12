@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.binding.sonoff.internal.config.DeviceConfig;
 import org.openhab.core.library.types.OpenClosedType;
 import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.ChannelUID;
@@ -39,9 +40,23 @@ public class SonoffZigbeeButtonHandler extends SonoffBaseZigbeeHandler {
     private @Nullable ScheduledFuture<?> button0ResetTask;
     private @Nullable ScheduledFuture<?> button1ResetTask;
     private @Nullable ScheduledFuture<?> button2ResetTask;
+    
+    private int buttonResetTimeout = 500; // Default value
 
     public SonoffZigbeeButtonHandler(Thing thing) {
         super(thing);
+    }
+
+    @Override
+    public void initialize() {
+        // Read configuration
+        DeviceConfig config = getConfigAs(DeviceConfig.class);
+        this.buttonResetTimeout = config.buttonResetTimeout;
+        
+        logger.debug("Button reset timeout configured to: {} ms", buttonResetTimeout);
+        
+        // Call parent initialization
+        super.initialize();
     }
 
     @Override
@@ -80,7 +95,7 @@ public class SonoffZigbeeButtonHandler extends SonoffBaseZigbeeHandler {
                 }
                 button0ResetTask = scheduler.schedule(() -> {
                     updateState("button0", OpenClosedType.CLOSED);
-                }, 500, TimeUnit.MILLISECONDS);
+                }, buttonResetTimeout, TimeUnit.MILLISECONDS);
                 break;
             case 1:
                 task = button1ResetTask;
@@ -89,7 +104,7 @@ public class SonoffZigbeeButtonHandler extends SonoffBaseZigbeeHandler {
                 }
                 button1ResetTask = scheduler.schedule(() -> {
                     updateState("button1", OpenClosedType.CLOSED);
-                }, 500, TimeUnit.MILLISECONDS);
+                }, buttonResetTimeout, TimeUnit.MILLISECONDS);
                 break;
             case 2:
                 task = button2ResetTask;
@@ -98,7 +113,7 @@ public class SonoffZigbeeButtonHandler extends SonoffBaseZigbeeHandler {
                 }
                 button2ResetTask = scheduler.schedule(() -> {
                     updateState("button2", OpenClosedType.CLOSED);
-                }, 500, TimeUnit.MILLISECONDS);
+                }, buttonResetTimeout, TimeUnit.MILLISECONDS);
                 break;
         }
     }

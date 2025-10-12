@@ -87,6 +87,11 @@
 				<label>Device ID</label>
 				<description>Device ID</description>
 			</parameter>
+			<parameter name="buttonResetTimeout" type="integer" min="100" max="60000" unit="ms">
+				<label>How long keep button state pressed?</label>
+				<description>Time in milliseconds before button state resets to CLOSED (default: 500ms)</description>
+				<default>500</default>
+			</parameter>
 		</config-description>
 	</thing-type>
 
@@ -110,6 +115,11 @@
 				<label>Device ID</label>
 				<description>Device ID</description>
 			</parameter>
+			<parameter name="buttonResetTimeout" type="integer" min="100" max="5000" unit="ms">
+				<label>Button Reset Timeout</label>
+				<description>Time in milliseconds before button state resets to CLOSED (default: 500ms)</description>
+				<default>500</default>
+			</parameter>
 		</config-description>
 	</thing-type>
 
@@ -132,6 +142,11 @@
 			<parameter name="deviceid" type="text" required="true">
 				<label>Device ID</label>
 				<description>Device ID</description>
+			</parameter>
+			<parameter name="buttonResetTimeout" type="integer" min="100" max="5000" unit="ms">
+				<label>Button Reset Timeout</label>
+				<description>Time in milliseconds before button state resets to CLOSED (default: 500ms)</description>
+				<default>500</default>
 			</parameter>
 		</config-description>
 	</thing-type>
@@ -157,6 +172,11 @@
 			<parameter name="deviceid" type="text" required="true">
 				<label>Device ID</label>
 				<description>Device ID</description>
+			</parameter>
+			<parameter name="buttonResetTimeout" type="integer" min="100" max="5000" unit="ms">
+				<label>Button Reset Timeout</label>
+				<description>Time in milliseconds before button state resets to CLOSED (default: 500ms)</description>
+				<default>500</default>
 			</parameter>
 		</config-description>
 	</thing-type>
@@ -202,6 +222,11 @@
 			<parameter name="deviceid" type="text" required="true">
 				<label>Device ID</label>
 				<description>Device ID</description>
+			</parameter>
+			<parameter name="buttonResetTimeout" type="integer" min="100" max="5000" unit="ms">
+				<label>Button Reset Timeout</label>
+				<description>Time in milliseconds before button state resets to CLOSED (default: 500ms)</description>
+				<default>500</default>
 			</parameter>
 		</config-description>
 	</thing-type>
