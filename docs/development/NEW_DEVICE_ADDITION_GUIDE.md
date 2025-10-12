@@ -168,7 +168,77 @@ case "XXX":
 </supported-bridge-type-refs>
 ```
 
-### 5. **Update Documentation**
+### 5. **Update Test Classes**
+**Files**: 
+- `src/test/java/.../SonoffHandlerFactoryTest.java`
+- `src/test/java/.../SonoffHandlerFactoryIntegrationTest.java`
+
+**⚠️ IMPORTANT**: Update test classes to include the new device for proper test coverage
+
+#### a) Update SonoffHandlerFactoryTest.java
+Add the new device UUID to the appropriate test method:
+
+```java
+// For single switch devices
+@ParameterizedTest
+@ValueSource(strings = { "1", "6", "14", ..., "XXX" })  // Add your UUID
+@DisplayName("Should create SonoffSwitchSingleHandler for single switch device types")
+void testCreateHandler_SingleSwitchDevices(String deviceId) {
+    // Test implementation
+}
+
+// OR for multi switch devices
+@ParameterizedTest
+@ValueSource(strings = { "2", "3", "4", ..., "XXX" })  // Add your UUID
+@DisplayName("Should create SonoffSwitchMultiHandler for multi switch device types")
+void testCreateHandler_MultiSwitchDevices(String deviceId) {
+    // Test implementation
+}
+
+// OR create dedicated test for unique device types
+@Test
+@DisplayName("Should create SonoffNewDeviceHandler for new device type")
+void testCreateHandler_NewDevice() {
+    ThingTypeUID thingType = new ThingTypeUID("sonoff", "XXX");
+    when(mockThing.getThingTypeUID()).thenReturn(thingType);
+    
+    ThingHandler handler = factory.createHandler(mockThing);
+    
+    assertNotNull(handler);
+    assertEquals("SonoffNewDeviceHandler", handler.getClass().getSimpleName());
+}
+```
+
+#### b) Update SonoffHandlerFactoryIntegrationTest.java
+Add the new device to the integration test:
+
+```java
+@Test
+@DisplayName("Should create correct handler types for device categories")
+void testHandlerCreationByCategory() {
+    // Add to appropriate array
+    String[] singleSwitchIds = { "1", "6", "14", ..., "XXX" };  // Add your UUID
+    for (String id : singleSwitchIds) {
+        testDeviceHandlerCreation(id, "SonoffSwitchSingleHandler");
+    }
+    
+    // OR add dedicated test call
+    testDeviceHandlerCreation("XXX", "SonoffNewDeviceHandler");
+}
+```
+
+**📋 Test Categories:**
+- Single switch devices → Add to `singleSwitchIds` array
+- Multi switch devices → Add to `multiSwitchIds` array
+- Sensor devices → Add to `sensorIds` array
+- Button devices → Add dedicated test call
+- RF devices → Add to `rfIds` array
+- Unique handlers → Create dedicated test method
+
+**✅ BENEFIT**: Ensures factory correctly creates handlers for new devices  
+**⚠️ NOTE**: Tests will fail if handler mapping is incorrect
+
+### 6. **Update Documentation**
 **File**: `docs/SUPPORTED_DEVICES.md`
 
 Add entry to supported devices table:
@@ -176,7 +246,7 @@ Add entry to supported devices table:
 | **XXX** | ModelName | 🔄 Mixed | Device features | Device description |
 ```
 
-### 6. **✅ AUTOMATIC: subDevRssi Handling (Zigbee Devices)**
+### 7. **✅ AUTOMATIC: subDevRssi Handling (Zigbee Devices)**
 **File**: `SonoffDeviceState.java`
 
 **✅ AUTOMATIC**: Zigbee devices automatically use `subDevRssi` instead of `rssi`
