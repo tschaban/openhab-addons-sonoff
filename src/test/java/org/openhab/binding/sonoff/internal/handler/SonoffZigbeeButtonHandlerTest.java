@@ -129,6 +129,7 @@ class SonoffZigbeeButtonHandlerTest {
     }
 
     @BeforeEach
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     void setUp() {
         thingUID = new ThingUID("sonoff", "7000", "test-button");
         bridgeUID = new ThingUID("sonoff", "66", "test-bridge");
@@ -149,9 +150,8 @@ class SonoffZigbeeButtonHandlerTest {
         when(mockBridge.getHandler()).thenReturn(mockZigbeeBridge);
 
         // Setup mock scheduler
-        @SuppressWarnings({ "unchecked", "rawtypes" })
         lenient().when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
-                .thenReturn((ScheduledFuture) mockScheduledFuture);
+                .thenReturn(mockScheduledFuture);
 
         // Setup mock device state
         when(mockDeviceState.getParameters()).thenReturn(mockParameters);
