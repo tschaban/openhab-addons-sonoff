@@ -133,6 +133,21 @@ class SonoffZigbeeButtonHandlerTest {
             }
         }
 
+        public void setTestDeviceId(String deviceId) {
+            try {
+                Field deviceIdField = SonoffBaseDeviceHandler.class.getDeclaredField("deviceid");
+                deviceIdField.setAccessible(true);
+                deviceIdField.set(this, deviceId);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to set deviceid", e);
+            }
+        }
+
+        @Override
+        protected Bridge getBridge() {
+            return mockBridge;
+        }
+
         @Override
         protected void updateState(String channelID, State state) {
             // Capture state updates for verification
@@ -161,40 +176,48 @@ class SonoffZigbeeButtonHandlerTest {
         configuration = new Configuration(configMap);
 
         // Setup mock thing
-        when(mockThing.getUID()).thenReturn(thingUID);
-        when(mockThing.getConfiguration()).thenReturn(configuration);
-        when(mockThing.getBridgeUID()).thenReturn(bridgeUID);
+        lenient().when(mockThing.getUID()).thenReturn(thingUID);
+        lenient().when(mockThing.getConfiguration()).thenReturn(configuration);
+        lenient().when(mockThing.getBridgeUID()).thenReturn(bridgeUID);
 
         // Setup mock bridge
-        when(mockBridge.getUID()).thenReturn(bridgeUID);
-        when(mockBridge.getHandler()).thenReturn(mockZigbeeBridge);
+        lenient().when(mockBridge.getUID()).thenReturn(bridgeUID);
+        lenient().when(mockBridge.getHandler()).thenReturn(mockZigbeeBridge);
 
         // Setup mock scheduler
         lenient().when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
                 .thenReturn(mockScheduledFuture);
 
         // Setup mock device state
-        when(mockDeviceState.getParameters()).thenReturn(mockParameters);
-        when(mockDeviceState.getCloud()).thenReturn(true);
+        lenient().when(mockDeviceState.getParameters()).thenReturn(mockParameters);
+        lenient().when(mockDeviceState.getCloud()).thenReturn(true);
 
         // Setup mock parameters - default all buttons to CLOSED
-        when(mockParameters.getButton(anyInt())).thenReturn(OpenClosedType.CLOSED);
-        when(mockParameters.getButtonTrigTime(anyInt())).thenReturn(new DateTimeType("2024-01-01T12:00:00Z"));
-        when(mockParameters.getRssi()).thenReturn(
+        lenient().when(mockParameters.getButton(anyInt())).thenReturn(OpenClosedType.CLOSED);
+        lenient().when(mockParameters.getButtonTrigTime(anyInt())).thenReturn(new DateTimeType("2024-01-01T12:00:00Z"));
+        lenient().when(mockParameters.getRssi()).thenReturn(
                 new QuantityType<>(Double.valueOf(-50), org.openhab.core.library.unit.Units.DECIBEL_MILLIWATTS));
-        when(mockParameters.getBatteryLevel())
+        lenient().when(mockParameters.getBatteryLevel())
                 .thenReturn(new QuantityType<>(Double.valueOf(85), org.openhab.core.library.unit.Units.PERCENT));
 
         // Setup mock account
-        when(mockAccount.getState("test-device-id")).thenReturn(mockDeviceState);
-        when(mockAccount.getMode()).thenReturn("cloud");
+        lenient().when(mockAccount.getState("test-device-id")).thenReturn(mockDeviceState);
+        lenient().when(mockAccount.getMode()).thenReturn("cloud");
+        lenient().when(mockDeviceState.getProperties()).thenReturn(new HashMap<>());
+
+        // Set account field on zigbee bridge mock using reflection
+        try {
+            Field accountField = SonoffBaseBridgeHandler.class.getDeclaredField("account");
+            accountField.setAccessible(true);
+            accountField.set(mockZigbeeBridge, mockAccount);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to set account on zigbee bridge", e);
+        }
 
         // Create handler
         handler = new TestSonoffZigbeeButtonHandler(mockThing);
         handler.setCallback(mockCallback);
         handler.setTestScheduler(mockScheduler);
-        handler.setTestAccount(mockAccount);
-        handler.setTestZigbeeBridge(mockZigbeeBridge);
     }
 
     @Test
