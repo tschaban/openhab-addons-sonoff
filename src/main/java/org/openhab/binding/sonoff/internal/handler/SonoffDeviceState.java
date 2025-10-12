@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.openhab.binding.sonoff.internal.SonoffBindingConstants;
 import org.openhab.core.library.types.StringType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -313,11 +314,11 @@ public class SonoffDeviceState {
             }
         } else {
             if (params.get("temperature") != null) {
-                parameters.setTemperature(Double.valueOf(params.get("temperature").getAsInt() / 100));
+                parameters.setTemperature(Double.valueOf((double) params.get("temperature").getAsInt() / 100));
             }
 
             if (params.get("humidity") != null) {
-                parameters.setHumidity(Double.valueOf(params.get("humidity").getAsInt() / 100));
+                parameters.setHumidity(Double.valueOf((double) params.get("humidity").getAsInt() / 100));
             }
         }
 
@@ -394,9 +395,10 @@ public class SonoffDeviceState {
             parameters.setNetworkLED(params.get("sledOnline").getAsString());
         }
 
-        // For devices use rssi for subdevices (Zigbee) use subDevRssi
-        // @TODO add subdevices IDs gere
-        if (uiid.equals(7003)) {
+        // For WiFi devices use rssi, for Zigbee subdevices use subDevRssi
+        // All Zigbee devices (non-bridge) use subDevRssi instead of rssi
+        // Check if device is in Zigbee map (excludes bridges 66, 168, 243)
+        if (SonoffBindingConstants.createZigbeeMap().containsKey(uiid)) {
             if (params.get("subDevRssi") != null) {
                 parameters.setRssi(params.get("subDevRssi").getAsInt());
             }
@@ -487,6 +489,13 @@ public class SonoffDeviceState {
 
         if (params.get("motion") != null) {
             parameters.setMotion(params.get("motion").getAsInt());
+        }
+
+        // Button press events
+        if (params.get("key") != null && params.get("trigTime") != null) {
+            Integer key = params.get("key").getAsInt();
+            String trigTime = params.get("trigTime").getAsString();
+            parameters.setButtonPress(key, trigTime);
         }
     }
 

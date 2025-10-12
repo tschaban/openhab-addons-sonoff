@@ -22,7 +22,7 @@ import org.openhab.core.types.*;
  * The {@link SonoffZigbeeContactSensorHandler} allows the handling of commands and updates to Contact Sensor Type
  * Devices
  *
- * @author Tschaban-A - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @NonNullByDefault
 public class SonoffZigbeeContactSensorHandler extends SonoffBaseZigbeeHandler {

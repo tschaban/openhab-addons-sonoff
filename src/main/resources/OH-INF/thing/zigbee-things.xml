@@ -87,6 +87,7 @@
 				<label>Device ID</label>
 				<description>Device ID</description>
 			</parameter>
+
 		</config-description>
 	</thing-type>
 
@@ -110,6 +111,7 @@
 				<label>Device ID</label>
 				<description>Device ID</description>
 			</parameter>
+
 		</config-description>
 	</thing-type>
 
@@ -133,6 +135,7 @@
 				<label>Device ID</label>
 				<description>Device ID</description>
 			</parameter>
+
 		</config-description>
 	</thing-type>
 
@@ -156,6 +159,56 @@
 			<parameter name="deviceid" type="text" required="true">
 				<label>Device ID</label>
 				<description>Device ID</description>
+			</parameter>
+
+		</config-description>
+	</thing-type>
+
+	<thing-type id="7000">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="66"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Wireless Switch</label>
+		<description>Model: SNZB-01P</description>
+		<channels>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="button0" typeId="button-press">
+				<label>Single Press</label>
+				<description>Single button press event</description>
+			</channel>
+			<channel id="button0TrigTime" typeId="trigTime">
+				<label>Last triggered: Single Press</label>
+				<description>Last single press trigger time</description>
+			</channel>
+			<channel id="button1" typeId="button-press">
+				<label>Double Press</label>
+				<description>Double button press event</description>
+			</channel>
+			<channel id="button1TrigTime" typeId="trigTime">
+				<label>Last triggered: Double Press</label>
+				<description>Last double press trigger time</description>
+			</channel>
+			<channel id="button2" typeId="button-press">
+				<label>Long Press</label>
+				<description>Long button press event</description>
+			</channel>
+			<channel id="button2TrigTime" typeId="trigTime">
+				<label>Last triggered: Long Press</label>
+				<description>Last long press trigger time</description>
+			</channel>
+			<channel id="rssi" typeId="rssi"/>
+		</channels>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+			<parameter name="buttonResetTimeout" type="integer" min="100" max="60000" unit="ms">
+				<label>How long (ms) keep button state pressed?</label>
+				<description>Time in milliseconds before button state resets to CLOSED: default=500</description>
+				<default>500</default>
 			</parameter>
 		</config-description>
 	</thing-type>

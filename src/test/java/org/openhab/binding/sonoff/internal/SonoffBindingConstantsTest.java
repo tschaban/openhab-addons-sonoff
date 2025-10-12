@@ -25,7 +25,7 @@ import org.openhab.core.thing.ThingTypeUID;
 /**
  * Unit tests for {@link SonoffBindingConstants} validation functionality.
  *
- * @author Assistant - Test implementation
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 public class SonoffBindingConstantsTest {
 

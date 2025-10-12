@@ -1,7 +1,7 @@
 {
     "action": "update",
-    "deviceid": "111",
-    "apikey": "111",
+    "deviceid": "devId",
+    "apikey": "apikey",
     "userAgent": "device",
     "d_seq": 8449,
     "params": {
@@ -9,4 +9,44 @@
         "trigTime": "1759778971000",
         "supportPowConfig": 1
     }
-}W
+}
+
+
+{
+    "action": "update",
+    "deviceid": "devId",
+    "apikey": "apikey",
+    "userAgent": "device",
+    "d_seq": 24687,
+    "params": {
+        "temperature": "2270",
+        "trigTime": "1760273502000",
+        "tempComfortStatus": 0
+    }
+}
+
+{
+    "action": "update",
+    "deviceid": "devId",
+    "apikey": "apikey",
+    "userAgent": "device",
+    "d_seq": 60480,
+    "params": {
+        "humidity": "5760",
+        "trigTime": "1760273502000",
+        "humiComfortStatus": 2
+    }
+}
+
+{
+    "action": "update",
+    "deviceid": "devId",
+    "apikey": "apikey",
+    "userAgent": "device",
+    "d_seq": 60480,
+    "params": {
+        "humidity": "5760",
+        "trigTime": "1760273502000",
+        "humiComfortStatus": 2
+    }
+}

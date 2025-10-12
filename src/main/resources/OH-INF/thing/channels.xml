@@ -234,6 +234,7 @@
 		<label>Last triggered</label>
 		<description>Last Triggered</description>
 	</channel-type>
+
 	<channel-type id="motion">
 		<item-type>Switch</item-type>
 		<label>Motion Alarm Active</label>
@@ -252,6 +253,13 @@
 		<label>Battery Level</label>
 		<description>Battery level</description>
 		<state readOnly="true" pattern="%.0f %unit%"/>
+	</channel-type>
+
+	<channel-type id="button-press">
+		<item-type>Contact</item-type>
+		<label>Button Press</label>
+		<description>Button press event</description>
+		<state readOnly="true"/>
 	</channel-type>
 
 </thing:thing-descriptions>

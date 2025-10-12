@@ -27,7 +27,7 @@ import org.openhab.binding.sonoff.internal.handler.SonoffDeviceState;
  * Unit tests for {@link SonoffCommunicationManagerListener}
  * Tests interface contract and behavior through mock implementations
  *
- * @author OpenHAB Sonoff Binding - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 class SonoffCommunicationManagerListenerTest {

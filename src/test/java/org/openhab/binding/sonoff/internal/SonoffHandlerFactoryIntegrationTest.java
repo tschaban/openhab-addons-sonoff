@@ -41,7 +41,7 @@ import org.openhab.core.thing.binding.ThingHandler;
  * - Edge cases and boundary conditions
  * - Factory behavior with various mock configurations
  *
- * @author Test Author - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 class SonoffHandlerFactoryIntegrationTest {
@@ -178,7 +178,7 @@ class SonoffHandlerFactoryIntegrationTest {
 
         // Test multi switch devices
         String[] multiSwitchIds = { "2", "3", "4", "7", "8", "9", "29", "30", "31", "77", "78", "82", "83", "84", "126",
-                "161", "162", "210", "211", "212" };
+                "161", "162", "210", "211", "212", "268" };
         for (String id : multiSwitchIds) {
             testDeviceHandlerCreation(id, "SonoffSwitchMultiHandler");
         }
@@ -188,6 +188,9 @@ class SonoffHandlerFactoryIntegrationTest {
         for (String id : sensorIds) {
             testDeviceHandlerCreation(id, "SonoffZigbeeDeviceTemperatureHumiditySensorHandler");
         }
+
+        // Test button devices
+        testDeviceHandlerCreation("7000", "SonoffZigbeeButtonHandler");
 
         // Test RF devices
         String[] rfIds = { "rfremote1", "rfremote2", "rfremote3", "rfremote4", "rfsensor" };

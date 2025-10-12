@@ -41,7 +41,7 @@ import org.openhab.core.thing.binding.ThingHandler;
  * - createHandler method for all device types
  * - Error cases and edge conditions
  *
- * @author Test Author - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 class SonoffHandlerFactoryTest {
@@ -107,8 +107,10 @@ class SonoffHandlerFactoryTest {
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_237));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_1770));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_2026));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7000));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7003));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7014));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_268));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_RF1));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_RF2));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_RF3));
@@ -161,7 +163,7 @@ class SonoffHandlerFactoryTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "2", "3", "4", "7", "8", "9", "29", "30", "31", "77", "78", "82", "83", "84", "126", "161",
-            "162", "210", "211", "212" })
+            "162", "210", "211", "212", "268" })
     @DisplayName("Should create SonoffSwitchMultiHandler for multi switch device types")
     void testCreateHandler_MultiSwitchDevices(String deviceId) {
         // Setup
@@ -387,6 +389,21 @@ class SonoffHandlerFactoryTest {
         // Verify
         assertNotNull(handler);
         assertEquals("SonoffZigbeeDeviceMotionSensorHandler", handler.getClass().getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Should create SonoffZigbeeButtonHandler for button device type")
+    void testCreateHandler_ButtonDevice() {
+        // Setup
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", "7000");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType);
+
+        // Execute
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify
+        assertNotNull(handler);
+        assertEquals("SonoffZigbeeButtonHandler", handler.getClass().getSimpleName());
     }
 
     @ParameterizedTest

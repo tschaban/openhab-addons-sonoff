@@ -49,7 +49,7 @@ import com.google.gson.JsonSyntaxException;
  * - File system error conditions
  * - Boundary conditions
  *
- * @author Test Author - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 class SonoffCacheProviderErrorHandlingTest {
