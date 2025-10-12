@@ -129,7 +129,7 @@ class SonoffZigbeeButtonHandlerTest {
     }
 
     @BeforeEach
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("unchecked")
     void setUp() {
         thingUID = new ThingUID("sonoff", "7000", "test-button");
         bridgeUID = new ThingUID("sonoff", "66", "test-bridge");
