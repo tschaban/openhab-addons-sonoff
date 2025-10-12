@@ -279,7 +279,7 @@ Only if existing handlers don't fit. Follow existing handler patterns.
 
 ## 🚨 MANDATORY Validation & Testing
 
-### 8. **🚨 CRITICAL: Run Automated Validation**
+### 9. **🚨 CRITICAL: Run Automated Validation**
 ```java
 // Test validation passes
 ValidationResult result = SonoffBindingConstants.validateDeviceMappings();
@@ -289,7 +289,7 @@ assertFalse(result.hasErrors());
 **🚨 CRITICAL**: NEVER skip validation - catches 90% of common errors
 **⚠️ WARNING**: Validation errors = device won't work in production
 
-### 9. **🚨 CRITICAL: Test Discovery**
+### 10. **🚨 CRITICAL: Test Discovery**
 - Device should appear in discovery
 - Thing creation should work
 - Channels should be functional
@@ -332,6 +332,8 @@ assertFalse(result.hasErrors());
 ❌ **Missing XML definition** → Thing creation fails  
 ❌ **Wrong XML file** → Thing not found  
 ❌ **Zigbee device not in createZigbeeMap()** → RSSI shows wrong values (uses rssi instead of subDevRssi)  
+❌ **Forgot to update test classes** → Tests fail in CI/CD pipeline  
+❌ **Added to wrong test category** → Test expects wrong handler type  
 
 ---
 
@@ -341,6 +343,7 @@ assertFalse(result.hasErrors());
 ✅ **Discovery works**: Device appears in discovery  
 ✅ **Thing creates**: No errors in logs  
 ✅ **Channels work**: Device responds to commands  
+✅ **Tests pass**: Unit and integration tests succeed  
 ✅ **Documentation updated**: Device listed in SUPPORTED_DEVICES.md  
 
 ---
@@ -372,8 +375,16 @@ case "999":
 </thing-type>
 ```
 
+```java
+// 5. SonoffHandlerFactoryTest.java - Add to parameterized test
+@ValueSource(strings = { "1", "6", "14", ..., "999" })
+
+// 6. SonoffHandlerFactoryIntegrationTest.java - Add to array
+String[] singleSwitchIds = { "1", "6", "14", ..., "999" };
+```
+
 ```markdown
-<!-- 5. SUPPORTED_DEVICES.md -->
+<!-- 7. SUPPORTED_DEVICES.md -->
 | **999** | NewDevice | 🔄 Mixed | Single switch | New device model |
 ```
 
@@ -420,15 +431,32 @@ case "7000":
 </thing-type>
 ```
 
+```java
+// 6. SonoffHandlerFactoryTest.java - Add dedicated test
+@Test
+@DisplayName("Should create SonoffZigbeeButtonHandler for button device type")
+void testCreateHandler_ButtonDevice() {
+    ThingTypeUID thingType = new ThingTypeUID("sonoff", "7000");
+    when(mockThing.getThingTypeUID()).thenReturn(thingType);
+    ThingHandler handler = factory.createHandler(mockThing);
+    assertNotNull(handler);
+    assertEquals("SonoffZigbeeButtonHandler", handler.getClass().getSimpleName());
+}
+
+// 7. SonoffHandlerFactoryIntegrationTest.java - Add dedicated test call
+testDeviceHandlerCreation("7000", "SonoffZigbeeButtonHandler");
+```
+
 ```markdown
-<!-- 6. SUPPORTED_DEVICES.md -->
+<!-- 8. SUPPORTED_DEVICES.md -->
 | **7000** | SNZB-01P | ☁️ Cloud | Wireless switch | Zigbee button device |
 ```
 
 ---
 
 **🎯 Total Time**: ~15-30 minutes for simple devices  
-**🔧 Files Modified**: 3-4 files typically  
+**🔧 Files Modified**: 5-6 files typically (including tests)  
 **✅ Validation**: Automated validation catches most issues  
+**🧪 Testing**: Unit and integration tests ensure correctness  
 
 **Need Help?** Check existing similar devices for patterns and examples.
