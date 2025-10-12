@@ -51,24 +51,13 @@ public class SonoffZigbeeButtonHandler extends SonoffBaseZigbeeHandler {
     @Override
     public void updateDevice(SonoffDeviceState newDevice) {
         // Button press events - only update the button that was actually pressed
-
-        if (newDevice.getParameters().getButton0() == OpenClosedType.OPEN) {
-            updateState("button0", OpenClosedType.OPEN);
-            updateState("button0TrigTime", newDevice.getParameters().getButton0TrigTime());
-            schedulePressReset(0);
-            newDevice.getParameters().setButton0(OpenClosedType.CLOSED);
-        }
-        if (newDevice.getParameters().getButton1() == OpenClosedType.OPEN) {
-            updateState("button1", OpenClosedType.OPEN);
-            updateState("button1TrigTime", newDevice.getParameters().getButton1TrigTime());
-            schedulePressReset(1);
-            newDevice.getParameters().setButton1(OpenClosedType.CLOSED);
-        }
-        if (newDevice.getParameters().getButton2() == OpenClosedType.OPEN) {
-            updateState("button2", OpenClosedType.OPEN);
-            updateState("button2TrigTime", newDevice.getParameters().getButton2TrigTime());
-            schedulePressReset(2);
-            newDevice.getParameters().setButton2(OpenClosedType.CLOSED);
+        for (int key = 0; key <= 2; key++) {
+            if (newDevice.getParameters().getButton(key) == OpenClosedType.OPEN) {
+                updateState("button" + key, OpenClosedType.OPEN);
+                updateState("button" + key + "TrigTime", newDevice.getParameters().getButtonTrigTime(key));
+                schedulePressReset(key);
+                newDevice.getParameters().setButton(key, OpenClosedType.CLOSED);
+            }
         }
 
         // Other parameters

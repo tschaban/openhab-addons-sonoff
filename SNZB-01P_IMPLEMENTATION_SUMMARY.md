@@ -68,12 +68,15 @@ Added button state fields using generic naming:
 - `button0`, `button1`, `button2` (OpenClosedType)
 - `button0TrigTime`, `button1TrigTime`, `button2TrigTime` (DateTimeType)
 
-Added methods:
-- `getButton0()`, `setButton0()`, `getButton0TrigTime()`, `setButton0TrigTime()`
-- `getButton1()`, `setButton1()`, `getButton1TrigTime()`, `setButton1TrigTime()`
-- `getButton2()`, `setButton2()`, `getButton2TrigTime()`, `setButton2TrigTime()`
-- `setButtonPress(Integer key, String trigTime)` - Sets press state based on key value (0→button0, 1→button1, 2→button2)
-- `resetButtonPress(Integer key)` - Resets press state to CLOSED
+Added generic methods with key parameter:
+- `getButton(Integer key)` - Returns button state for specified key (0-2)
+- `setButton(Integer key, OpenClosedType state)` - Sets button state for specified key
+- `getButtonTrigTime(Integer key)` - Returns trigger time for specified key
+- `setButtonTrigTime(Integer key, String trigTime)` - Sets trigger time for specified key
+- `setButtonPress(Integer key, String trigTime)` - Convenience method that sets button to OPEN and updates trigger time
+- `resetButtonPress(Integer key)` - Convenience method that sets button to CLOSED
+
+All methods use switch statements to map key values (0-2) to the appropriate button fields.
 
 ### 4. Device State Parsing (SonoffDeviceState.java)
 Added parsing logic for the `key` parameter:
@@ -88,9 +91,12 @@ if (params.get("key") != null && params.get("trigTime") != null) {
 ### 5. Button Handler (SonoffZigbeeButtonHandler.java)
 Created new handler class extending `SonoffBaseZigbeeHandler`:
 - Uses generic channel naming: `button0`, `button1`, `button2` and `button0TrigTime`, `button1TrigTime`, `button2TrigTime`
-- Updates all button press channels based on key parameter (0=button0, 1=button1, 2=button2)
+- Uses loop-based approach to check all buttons (0-2) for press events
+- Calls generic `getButton(key)` and `getButtonTrigTime(key)` methods
+- Only updates the button channel that was actually pressed (checks which button is OPEN)
+- Immediately resets the button parameter to CLOSED using `setButton(key, CLOSED)` after processing
 - Updates battery and RSSI channels
-- Implements auto-reset mechanism (500ms delay) for button press states
+- Implements auto-reset mechanism (500ms delay) for button press channel states
 - Properly manages scheduled tasks for state resets (button0ResetTask, button1ResetTask, button2ResetTask)
 - Implements required abstract methods from base class
 
@@ -110,12 +116,13 @@ Created new handler class extending `SonoffBaseZigbeeHandler`:
 Complete generic naming pattern throughout the codebase:
 - **Fields**: `button0`, `button1`, `button2` (OpenClosedType)
 - **TrigTime Fields**: `button0TrigTime`, `button1TrigTime`, `button2TrigTime` (DateTimeType)
-- **Getters/Setters**: `getButton0()`, `setButton0()`, etc.
+- **Methods**: Generic with key parameter - `getButton(key)`, `setButton(key, state)`, `getButtonTrigTime(key)`, `setButtonTrigTime(key, time)`
 - **Channel IDs**: `button0`, `button1`, `button2`, `button0TrigTime`, `button1TrigTime`, `button2TrigTime`
 - **Channel Types**: Generic `button-press` (new) and `trigTime` (existing, reused)
 - **Task Names**: `button0ResetTask`, `button1ResetTask`, `button2ResetTask`
 - **Mapping**: key=0 → button0, key=1 → button1, key=2 → button2
 - **User Labels**: Descriptive labels ("Single Press", "Double Press", "Long Press") defined in thing definition
+- **Handler Logic**: Loop-based approach iterates through keys 0-2, making it easy to extend for more buttons
 - This makes the code more maintainable, extensible, and follows existing patterns (e.g., switch0/switch1 using "power" type, RF button channels)
 - Reuses existing `trigTime` channel type for consistency with other sensor devices
 
@@ -126,11 +133,12 @@ Button press channels use `Contact` type (OPEN/CLOSED) instead of `Switch` (ON/O
 - This follows OpenHAB conventions for momentary events
 
 ### Auto-Reset Mechanism
-Button press states automatically reset to CLOSED after 500ms:
+Button press channel states automatically reset to CLOSED after 500ms:
 - Allows automation rules to trigger on state changes
 - Prevents stuck "pressed" states
 - Each button type has independent reset task (button0ResetTask, button1ResetTask, button2ResetTask)
 - Tasks are properly cancelled on handler disposal
+- Handler immediately resets button parameters to CLOSED after processing to prevent state pollution on next update
 
 ### Separate Trigger Time Channels
 Each button type has its own trigger time channel:

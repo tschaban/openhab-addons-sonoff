@@ -599,85 +599,72 @@ public class SonoffDeviceStateParameters {
         this.motion = motion.equals(1) ? OnOffType.ON : OnOffType.OFF;
     }
 
-    public OpenClosedType getButton0() {
-        return this.button0;
-    }
-
-    public void setButton0(OpenClosedType state) {
-        this.button0 = state;
-    }
-
-    public OpenClosedType getButton1() {
-        return this.button1;
-    }
-
-    public void setButton1(OpenClosedType state) {
-        this.button1 = state;
-    }
-
-    public OpenClosedType getButton2() {
-        return this.button2;
-    }
-
-    public void setButton2(OpenClosedType state) {
-        this.button2 = state;
-    }
-
-    public DateTimeType getButton0TrigTime() {
-        return this.button0TrigTime;
-    }
-
-    public void setButton0TrigTime(String trigTime) {
-        this.button0TrigTime = new DateTimeType(trigTime);
-    }
-
-    public DateTimeType getButton1TrigTime() {
-        return this.button1TrigTime;
-    }
-
-    public void setButton1TrigTime(String trigTime) {
-        this.button1TrigTime = new DateTimeType(trigTime);
-    }
-
-    public DateTimeType getButton2TrigTime() {
-        return this.button2TrigTime;
-    }
-
-    public void setButton2TrigTime(String trigTime) {
-        this.button2TrigTime = new DateTimeType(trigTime);
-    }
-
-    public void setButtonPress(Integer key, String trigTime) {
-        // Set only the pressed button to OPEN
+    public OpenClosedType getButton(Integer key) {
         switch (key) {
             case 0:
-                this.button0 = OpenClosedType.OPEN;
-                setButton0TrigTime(trigTime);
+                return this.button0;
+            case 1:
+                return this.button1;
+            case 2:
+                return this.button2;
+            default:
+                logger.warn("Unknown button key value: {}", key);
+                return OpenClosedType.CLOSED;
+        }
+    }
+
+    public void setButton(Integer key, OpenClosedType state) {
+        switch (key) {
+            case 0:
+                this.button0 = state;
                 break;
             case 1:
-                this.button1 = OpenClosedType.OPEN;
-                setButton1TrigTime(trigTime);
+                this.button1 = state;
                 break;
             case 2:
-                this.button2 = OpenClosedType.OPEN;
-                setButton2TrigTime(trigTime);
+                this.button2 = state;
                 break;
             default:
                 logger.warn("Unknown button key value: {}", key);
         }
     }
 
-    public void resetButtonPress(Integer key) {
+    public DateTimeType getButtonTrigTime(Integer key) {
         switch (key) {
             case 0:
-                this.button0 = OpenClosedType.CLOSED;
+                return this.button0TrigTime;
+            case 1:
+                return this.button1TrigTime;
+            case 2:
+                return this.button2TrigTime;
+            default:
+                logger.warn("Unknown button key value: {}", key);
+                return new DateTimeType(System.currentTimeMillis() + "");
+        }
+    }
+
+    public void setButtonTrigTime(Integer key, String trigTime) {
+        switch (key) {
+            case 0:
+                this.button0TrigTime = new DateTimeType(trigTime);
                 break;
             case 1:
-                this.button1 = OpenClosedType.CLOSED;
+                this.button1TrigTime = new DateTimeType(trigTime);
                 break;
             case 2:
-                this.button2 = OpenClosedType.CLOSED;
+                this.button2TrigTime = new DateTimeType(trigTime);
                 break;
+            default:
+                logger.warn("Unknown button key value: {}", key);
         }
+    }
+
+    public void setButtonPress(Integer key, String trigTime) {
+        setButton(key, OpenClosedType.OPEN);
+        setButtonTrigTime(key, trigTime);
+    }
+
+    public void resetButtonPress(Integer key) {
+        setButton(key, OpenClosedType.CLOSED);
     }
 }
