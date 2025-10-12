@@ -160,7 +160,8 @@ class SonoffZigbeeButtonHandlerTest {
         // Setup mock parameters - default all buttons to CLOSED
         when(mockParameters.getButton(anyInt())).thenReturn(OpenClosedType.CLOSED);
         when(mockParameters.getButtonTrigTime(anyInt())).thenReturn(new DateTimeType("2024-01-01T12:00:00Z"));
-        when(mockParameters.getRssi()).thenReturn(new QuantityType<>(Double.valueOf(-50), org.openhab.core.library.unit.Units.DECIBEL_MILLIWATTS));
+        when(mockParameters.getRssi()).thenReturn(
+                new QuantityType<>(Double.valueOf(-50), org.openhab.core.library.unit.Units.DECIBEL_MILLIWATTS));
         when(mockParameters.getBatteryLevel())
                 .thenReturn(new QuantityType<>(Double.valueOf(85), org.openhab.core.library.unit.Units.PERCENT));
 
@@ -374,7 +375,8 @@ class SonoffZigbeeButtonHandlerTest {
     @DisplayName("Should update RSSI state")
     void testUpdateRssi() {
         // Setup
-        QuantityType<javax.measure.quantity.Power> rssi = new QuantityType<>(Double.valueOf(-65), org.openhab.core.library.unit.Units.DECIBEL_MILLIWATTS);
+        QuantityType<javax.measure.quantity.Power> rssi = new QuantityType<>(Double.valueOf(-65),
+                org.openhab.core.library.unit.Units.DECIBEL_MILLIWATTS);
         when(mockParameters.getRssi()).thenReturn(rssi);
 
         // Execute
@@ -388,7 +390,8 @@ class SonoffZigbeeButtonHandlerTest {
     @DisplayName("Should update battery level state")
     void testUpdateBatteryLevel() {
         // Setup
-        QuantityType<javax.measure.quantity.Dimensionless> battery = new QuantityType<>(Double.valueOf(75), org.openhab.core.library.unit.Units.PERCENT);
+        QuantityType<javax.measure.quantity.Dimensionless> battery = new QuantityType<>(Double.valueOf(75),
+                org.openhab.core.library.unit.Units.PERCENT);
         when(mockParameters.getBatteryLevel()).thenReturn(battery);
 
         // Execute
