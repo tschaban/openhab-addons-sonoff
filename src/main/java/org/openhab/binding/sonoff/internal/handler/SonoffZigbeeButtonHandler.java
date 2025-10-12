@@ -40,7 +40,7 @@ public class SonoffZigbeeButtonHandler extends SonoffBaseZigbeeHandler {
     private @Nullable ScheduledFuture<?> button0ResetTask;
     private @Nullable ScheduledFuture<?> button1ResetTask;
     private @Nullable ScheduledFuture<?> button2ResetTask;
-    
+
     private int buttonResetTimeout = 500; // Default value
 
     public SonoffZigbeeButtonHandler(Thing thing) {
@@ -52,9 +52,9 @@ public class SonoffZigbeeButtonHandler extends SonoffBaseZigbeeHandler {
         // Read configuration
         DeviceConfig config = getConfigAs(DeviceConfig.class);
         this.buttonResetTimeout = config.buttonResetTimeout;
-        
+
         logger.debug("Button reset timeout configured to: {} ms", buttonResetTimeout);
-        
+
         // Call parent initialization
         super.initialize();
     }
