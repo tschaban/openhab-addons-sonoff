@@ -488,6 +488,13 @@ public class SonoffDeviceState {
         if (params.get("motion") != null) {
             parameters.setMotion(params.get("motion").getAsInt());
         }
+
+        // Button press events
+        if (params.get("key") != null && params.get("trigTime") != null) {
+            Integer key = params.get("key").getAsInt();
+            String trigTime = params.get("trigTime").getAsString();
+            parameters.setButtonPress(key, trigTime);
+        }
     }
 
     public Map<String, String> getProperties() {

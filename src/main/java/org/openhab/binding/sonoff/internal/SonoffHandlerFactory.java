@@ -26,6 +26,7 @@ import org.openhab.binding.sonoff.internal.handler.SonoffAccountHandler;
 import org.openhab.binding.sonoff.internal.handler.SonoffRfBridgeHandler;
 import org.openhab.binding.sonoff.internal.handler.SonoffRfDeviceHandler;
 import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeBridgeHandler;
+import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeButtonHandler;
 import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeDeviceMotionSensorHandler;
 import org.openhab.binding.sonoff.internal.handler.SonoffZigbeeDeviceTemperatureHumiditySensorHandler;
 import org.openhab.core.io.net.http.HttpClientFactory;
@@ -142,6 +143,8 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "rfremote4":
             case "rfsensor":
                 return new SonoffRfDeviceHandler(thing);
+            case "7000":
+                return new SonoffZigbeeButtonHandler(thing);
             case "7003":
                 return new SonoffZigbeeContactSensorHandler(thing);
             default:

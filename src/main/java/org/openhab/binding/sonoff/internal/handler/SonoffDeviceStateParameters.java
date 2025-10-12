@@ -119,6 +119,13 @@ public class SonoffDeviceStateParameters {
     // Zigbee
     private DateTimeType trigTime = new DateTimeType(System.currentTimeMillis() + "");
     private OnOffType motion = OnOffType.OFF;
+    // Button
+    private OpenClosedType button0 = OpenClosedType.CLOSED;
+    private OpenClosedType button1 = OpenClosedType.CLOSED;
+    private OpenClosedType button2 = OpenClosedType.CLOSED;
+    private DateTimeType button0TrigTime = new DateTimeType(System.currentTimeMillis() + "");
+    private DateTimeType button1TrigTime = new DateTimeType(System.currentTimeMillis() + "");
+    private DateTimeType button2TrigTime = new DateTimeType(System.currentTimeMillis() + "");
 
     private double round(double value, int decimalPlaces) {
         double multiplier = Math.pow(10, decimalPlaces);
@@ -590,5 +597,86 @@ public class SonoffDeviceStateParameters {
 
     public void setMotion(Integer motion) {
         this.motion = motion.equals(1) ? OnOffType.ON : OnOffType.OFF;
+    }
+
+    public OpenClosedType getButton0() {
+        return this.button0;
+    }
+
+    public void setButton0(OpenClosedType state) {
+        this.button0 = state;
+    }
+
+    public OpenClosedType getButton1() {
+        return this.button1;
+    }
+
+    public void setButton1(OpenClosedType state) {
+        this.button1 = state;
+    }
+
+    public OpenClosedType getButton2() {
+        return this.button2;
+    }
+
+    public void setButton2(OpenClosedType state) {
+        this.button2 = state;
+    }
+
+    public DateTimeType getButton0TrigTime() {
+        return this.button0TrigTime;
+    }
+
+    public void setButton0TrigTime(String trigTime) {
+        this.button0TrigTime = new DateTimeType(trigTime);
+    }
+
+    public DateTimeType getButton1TrigTime() {
+        return this.button1TrigTime;
+    }
+
+    public void setButton1TrigTime(String trigTime) {
+        this.button1TrigTime = new DateTimeType(trigTime);
+    }
+
+    public DateTimeType getButton2TrigTime() {
+        return this.button2TrigTime;
+    }
+
+    public void setButton2TrigTime(String trigTime) {
+        this.button2TrigTime = new DateTimeType(trigTime);
+    }
+
+    public void setButtonPress(Integer key, String trigTime) {
+        switch (key) {
+            case 0:
+                this.button0 = OpenClosedType.OPEN;
+                setButton0TrigTime(trigTime);
+                break;
+            case 1:
+                this.button1 = OpenClosedType.OPEN;
+                setButton1TrigTime(trigTime);
+                break;
+            case 2:
+                this.button2 = OpenClosedType.OPEN;
+                setButton2TrigTime(trigTime);
+                break;
+            default:
+                logger.warn("Unknown button key value: {}", key);
+        }
+    }
+
+    public void resetButtonPress(Integer key) {
+        switch (key) {
+            case 0:
+                this.button0 = OpenClosedType.CLOSED;
+                break;
+            case 1:
+                this.button1 = OpenClosedType.CLOSED;
+                break;
+            case 2:
+                this.button2 = OpenClosedType.CLOSED;
+                break;
+        }
     }
 }
