@@ -40,6 +40,9 @@ import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
+import org.openhab.core.thing.ThingStatus;
+import org.openhab.core.thing.ThingStatusDetail;
+import org.openhab.core.thing.ThingStatusInfo;
 import org.openhab.core.thing.ThingUID;
 import org.openhab.core.thing.binding.ThingHandlerCallback;
 import org.openhab.core.types.State;
@@ -183,6 +186,8 @@ class SonoffZigbeeButtonHandlerTest {
         // Setup mock bridge
         lenient().when(mockBridge.getUID()).thenReturn(bridgeUID);
         lenient().when(mockBridge.getHandler()).thenReturn(mockZigbeeBridge);
+        lenient().when(mockBridge.getStatusInfo())
+                .thenReturn(new ThingStatusInfo(ThingStatus.ONLINE, ThingStatusDetail.NONE, null));
 
         // Setup mock scheduler
         lenient().when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
