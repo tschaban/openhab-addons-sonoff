@@ -149,10 +149,9 @@ class SonoffZigbeeButtonHandlerTest {
         when(mockBridge.getHandler()).thenReturn(mockZigbeeBridge);
 
         // Setup mock scheduler
-        @SuppressWarnings("unchecked")
-        ScheduledFuture<?> typedFuture = mockScheduledFuture;
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         lenient().when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
-                .thenReturn(typedFuture);
+                .thenReturn((ScheduledFuture) mockScheduledFuture);
 
         // Setup mock device state
         when(mockDeviceState.getParameters()).thenReturn(mockParameters);
