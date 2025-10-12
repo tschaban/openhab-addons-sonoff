@@ -724,8 +724,8 @@ public class SonoffBindingConstants {
      */
     private static void validateHandlerAvailability(Set<ThingTypeUID> discoverableTypes, ValidationResult result) {
         try {
-            // Get the handler factory class
-            Class<?> handlerFactoryClass = Class.forName("org.openhab.binding.sonoff.internal.SonoffHandlerFactory");
+            // Verify the handler factory class exists
+            Class.forName("org.openhab.binding.sonoff.internal.SonoffHandlerFactory");
 
             // We can't easily parse the switch statement via reflection, but we can check if the method exists
             // and provide guidance on what should be validated manually
@@ -856,12 +856,11 @@ public class SonoffBindingConstants {
     private static class NumericThingType {
         final Integer numericId;
         final ThingTypeUID thingType;
-        final String fieldName;
 
         NumericThingType(Integer numericId, ThingTypeUID thingType, String fieldName) {
             this.numericId = numericId;
             this.thingType = thingType;
-            this.fieldName = fieldName;
+            // fieldName parameter kept for backward compatibility but not stored
         }
     }
 

@@ -32,7 +32,6 @@ import org.openhab.core.types.Command;
 import org.openhab.core.types.RefreshType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.HandlerBase;
 
 /**
  * The {@link HandlerBase} allows the handling of commands and updates to Devices
