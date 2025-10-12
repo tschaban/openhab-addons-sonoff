@@ -270,7 +270,7 @@ if (SonoffBindingConstants.createZigbeeMap().containsKey(uiid)) {
 2. RSSI handling is automatically configured
 3. No additional code changes needed
 
-### 7. **Create/Update Handler (if needed)**
+### 8. **Create/Update Handler (if needed)**
 **File**: `src/main/java/.../handler/SonoffNewDeviceHandler.java`
 
 Only if existing handlers don't fit. Follow existing handler patterns.
