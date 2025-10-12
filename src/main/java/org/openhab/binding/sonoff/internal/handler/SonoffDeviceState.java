@@ -314,11 +314,11 @@ public class SonoffDeviceState {
             }
         } else {
             if (params.get("temperature") != null) {
-                parameters.setTemperature(Double.valueOf(params.get("temperature").getAsInt() / 100));
+                parameters.setTemperature(Double.valueOf((double)params.get("temperature").getAsInt() / 100));
             }
 
             if (params.get("humidity") != null) {
-                parameters.setHumidity(Double.valueOf(params.get("humidity").getAsInt() / 100));
+                parameters.setHumidity(Double.valueOf((double)params.get("humidity").getAsInt() / 100));
             }
         }
 
