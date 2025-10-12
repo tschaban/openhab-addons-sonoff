@@ -72,7 +72,14 @@ THING_TYPE_XXX,
 deviceTypes.put(XXX, THING_TYPE_XXX);
 ```
 
-#### d) Add to LAN protocol sets (if LAN supported)
+#### d) Add to createZigbeeMap() (Zigbee devices only)
+```java
+// Add in createZigbeeMap() method
+zigbeeTypes.put(XXX, THING_TYPE_XXX); // e.g., zigbeeTypes.put(7000, THING_TYPE_7000);
+```
+**✅ AUTOMATIC**: This also enables automatic subDevRssi handling for RSSI values
+
+#### e) Add to LAN protocol sets (WiFi devices with LAN support)
 ```java
 // Add XXX to LAN_IN and/or LAN_OUT sets
 ```
@@ -90,6 +97,8 @@ case "XXX":
 **⚠️ WARNING**: Wrong handler = device functions won't work properly
 
 **📋 Handler Types Available:**
+
+**WiFi Devices:**
 - `SonoffSwitchSingleHandler` - Single channel switches
 - `SonoffSwitchMultiHandler` - Multi-channel switches  
 - `SonoffSwitchPOWHandler` - Power monitoring (POW)
@@ -97,6 +106,15 @@ case "XXX":
 - `SonoffSwitchTHHandler` - Temperature/humidity sensors
 - `SonoffRGBStripHandler` - RGB lighting
 - `SonoffRGBCCTHandler` - RGB+CCT lighting
+
+**Zigbee Devices:**
+- `SonoffZigbeeContactSensorHandler` - Door/window sensors
+- `SonoffZigbeeDeviceMotionSensorHandler` - Motion sensors
+- `SonoffZigbeeDeviceTemperatureHumiditySensorHandler` - Temperature/humidity sensors
+- `SonoffZigbeeButtonHandler` - Button/switch devices
+
+**Other:**
+- `SonoffRfDeviceHandler` - 433MHz RF devices
 - Create new handler if none fit
 
 ### 4. 🚨 **CRITICAL: Add Thing Type Definition**
@@ -133,11 +151,22 @@ case "XXX":
 ```
 
 **📁 File Selection:**
-- `switch-things.xml` - Switches and relays
-- `sensor-things.xml` - Sensors
-- `light-things.xml` - Lighting devices
+- `switch-things.xml` - WiFi switches and relays
+- `sensor-things.xml` - WiFi sensors
+- `light-things.xml` - WiFi lighting devices
 - `cam-things.xml` - Cameras
+- `zigbee-things.xml` - Zigbee devices (sensors, switches, buttons)
+- `rf-things.xml` - 433MHz RF devices
 - Create new file if needed
+
+**⚠️ Zigbee Devices**: Must include supported bridge type refs:
+```xml
+<supported-bridge-type-refs>
+    <bridge-type-ref id="66"/>   <!-- ZB Bridge -->
+    <bridge-type-ref id="168"/>  <!-- ZBBridge-P -->
+    <bridge-type-ref id="243"/>  <!-- ZBBridge-U -->
+</supported-bridge-type-refs>
+```
 
 ### 5. **Update Documentation**
 **File**: `docs/SUPPORTED_DEVICES.md`
@@ -147,7 +176,31 @@ Add entry to supported devices table:
 | **XXX** | ModelName | 🔄 Mixed | Device features | Device description |
 ```
 
-### 6. **Create/Update Handler (if needed)**
+### 6. **✅ AUTOMATIC: subDevRssi Handling (Zigbee Devices)**
+**File**: `SonoffDeviceState.java`
+
+**✅ AUTOMATIC**: Zigbee devices automatically use `subDevRssi` instead of `rssi`
+
+**No manual configuration needed!** The code automatically detects Zigbee devices:
+```java
+// Automatic detection - checks if UUID is in createZigbeeMap()
+if (SonoffBindingConstants.createZigbeeMap().containsKey(uiid)) {
+    // Uses subDevRssi for Zigbee devices
+} else {
+    // Uses rssi for WiFi devices
+}
+```
+
+**✅ BENEFIT**: Adding device to `createZigbeeMap()` automatically enables subDevRssi  
+**⚠️ NOTE**: Only applies to Zigbee devices that connect through bridges (66, 168, 243)  
+**✅ SKIP**: WiFi devices and Zigbee bridges automatically use regular `rssi` parameter
+
+**📋 How It Works:**
+1. Add Zigbee device UUID to `createZigbeeMap()` (Step 2d)
+2. RSSI handling is automatically configured
+3. No additional code changes needed
+
+### 7. **Create/Update Handler (if needed)**
 **File**: `src/main/java/.../handler/SonoffNewDeviceHandler.java`
 
 Only if existing handlers don't fit. Follow existing handler patterns.
@@ -156,7 +209,7 @@ Only if existing handlers don't fit. Follow existing handler patterns.
 
 ## 🚨 MANDATORY Validation & Testing
 
-### 7. **🚨 CRITICAL: Run Automated Validation**
+### 8. **🚨 CRITICAL: Run Automated Validation**
 ```java
 // Test validation passes
 ValidationResult result = SonoffBindingConstants.validateDeviceMappings();
@@ -166,7 +219,7 @@ assertFalse(result.hasErrors());
 **🚨 CRITICAL**: NEVER skip validation - catches 90% of common errors
 **⚠️ WARNING**: Validation errors = device won't work in production
 
-### 8. **🚨 CRITICAL: Test Discovery**
+### 9. **🚨 CRITICAL: Test Discovery**
 - Device should appear in discovery
 - Thing creation should work
 - Channels should be functional
@@ -208,6 +261,7 @@ assertFalse(result.hasErrors());
 ❌ **Typo in UUID** → Device not recognized  
 ❌ **Missing XML definition** → Thing creation fails  
 ❌ **Wrong XML file** → Thing not found  
+❌ **Zigbee device not in createZigbeeMap()** → RSSI shows wrong values (uses rssi instead of subDevRssi)  
 
 ---
 
@@ -221,7 +275,7 @@ assertFalse(result.hasErrors());
 
 ---
 
-## Example: Adding UUID 999
+## Example 1: Adding WiFi Device (UUID 999)
 
 ```java
 // 1. SonoffBindingConstants.java
@@ -240,7 +294,10 @@ case "999":
 ```xml
 <!-- 4. switch-things.xml -->
 <thing-type id="999">
-    <label>SONOFF New Device</label>
+    <supported-bridge-type-refs>
+        <bridge-type-ref id="account"/>
+    </supported-bridge-type-refs>
+    <label>SONOFF New WiFi Device</label>
     <!-- ... rest of definition -->
 </thing-type>
 ```
@@ -248,6 +305,54 @@ case "999":
 ```markdown
 <!-- 5. SUPPORTED_DEVICES.md -->
 | **999** | NewDevice | 🔄 Mixed | Single switch | New device model |
+```
+
+---
+
+## Example 2: Adding Zigbee Device (UUID 7000)
+
+```java
+// 1. SonoffBindingConstants.java
+public static final ThingTypeUID THING_TYPE_7000 = new ThingTypeUID(BINDING_ID, "7000");
+
+// 2. Add to collections
+THING_TYPE_7000, // in SUPPORTED_THING_TYPE_UIDS
+THING_TYPE_7000, // in DISCOVERABLE_THING_TYPE_UIDS
+zigbeeTypes.put(7000, THING_TYPE_7000); // in createZigbeeMap()
+
+// 3. SonoffHandlerFactory.java
+case "7000":
+    return new SonoffZigbeeButtonHandler(thing);
+
+// 4. subDevRssi is AUTOMATIC - no code changes needed!
+// Adding to createZigbeeMap() automatically enables subDevRssi handling
+```
+
+```xml
+<!-- 5. zigbee-things.xml -->
+<thing-type id="7000">
+    <supported-bridge-type-refs>
+        <bridge-type-ref id="66"/>
+        <bridge-type-ref id="168"/>
+        <bridge-type-ref id="243"/>
+    </supported-bridge-type-refs>
+    <label>SONOFF Zigbee Wireless Switch</label>
+    <description>Model: SNZB-01P</description>
+    <channels>
+        <channel id="cloudOnline" typeId="cloudOnline"/>
+        <channel id="button0" typeId="button-press">
+            <label>Single Press</label>
+        </channel>
+        <channel id="battery" typeId="battery-level"/>
+        <channel id="rssi" typeId="rssi"/>
+    </channels>
+    <!-- ... rest of definition -->
+</thing-type>
+```
+
+```markdown
+<!-- 6. SUPPORTED_DEVICES.md -->
+| **7000** | SNZB-01P | ☁️ Cloud | Wireless switch | Zigbee button device |
 ```
 
 ---

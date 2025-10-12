@@ -394,9 +394,10 @@ public class SonoffDeviceState {
             parameters.setNetworkLED(params.get("sledOnline").getAsString());
         }
 
-        // For devices use rssi for subdevices (Zigbee) use subDevRssi
-        // @TODO add subdevices IDs gere
-        if (uiid.equals(7003)) {
+        // For WiFi devices use rssi, for Zigbee subdevices use subDevRssi
+        // All Zigbee devices (non-bridge) use subDevRssi instead of rssi
+        // Check if device is in Zigbee map (excludes bridges 66, 168, 243)
+        if (SonoffBindingConstants.createZigbeeMap().containsKey(uiid)) {
             if (params.get("subDevRssi") != null) {
                 parameters.setRssi(params.get("subDevRssi").getAsInt());
             }
