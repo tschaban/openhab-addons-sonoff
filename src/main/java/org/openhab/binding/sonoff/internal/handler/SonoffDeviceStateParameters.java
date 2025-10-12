@@ -648,11 +648,6 @@ public class SonoffDeviceStateParameters {
     }
 
     public void setButtonPress(Integer key, String trigTime) {
-        // Reset all buttons to CLOSED first
-        //this.button0 = OpenClosedType.CLOSED;
-        //this.button1 = OpenClosedType.CLOSED;
-        //this.button2 = OpenClosedType.CLOSED;
-        
         // Set only the pressed button to OPEN
         switch (key) {
             case 0:

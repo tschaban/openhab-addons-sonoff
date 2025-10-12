@@ -22,6 +22,8 @@ import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.types.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The {@link SonoffZigbeeButtonHandler} allows the handling of commands and updates to Button Type
@@ -31,6 +33,8 @@ import org.openhab.core.types.*;
  */
 @NonNullByDefault
 public class SonoffZigbeeButtonHandler extends SonoffBaseZigbeeHandler {
+
+    private final Logger logger = LoggerFactory.getLogger(SonoffZigbeeButtonHandler.class);
 
     private @Nullable ScheduledFuture<?> button0ResetTask;
     private @Nullable ScheduledFuture<?> button1ResetTask;
@@ -47,20 +51,24 @@ public class SonoffZigbeeButtonHandler extends SonoffBaseZigbeeHandler {
     @Override
     public void updateDevice(SonoffDeviceState newDevice) {
         // Button press events - only update the button that was actually pressed
+
         if (newDevice.getParameters().getButton0() == OpenClosedType.OPEN) {
             updateState("button0", OpenClosedType.OPEN);
             updateState("button0TrigTime", newDevice.getParameters().getButton0TrigTime());
             schedulePressReset(0);
+            newDevice.getParameters().setButton0(OpenClosedType.CLOSED);
         }
         if (newDevice.getParameters().getButton1() == OpenClosedType.OPEN) {
             updateState("button1", OpenClosedType.OPEN);
             updateState("button1TrigTime", newDevice.getParameters().getButton1TrigTime());
             schedulePressReset(1);
+            newDevice.getParameters().setButton1(OpenClosedType.CLOSED);
         }
         if (newDevice.getParameters().getButton2() == OpenClosedType.OPEN) {
             updateState("button2", OpenClosedType.OPEN);
             updateState("button2TrigTime", newDevice.getParameters().getButton2TrigTime());
             schedulePressReset(2);
+            newDevice.getParameters().setButton2(OpenClosedType.CLOSED);
         }
 
         // Other parameters
