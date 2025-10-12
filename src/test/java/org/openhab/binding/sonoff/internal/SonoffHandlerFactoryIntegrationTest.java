@@ -41,7 +41,7 @@ import org.openhab.core.thing.binding.ThingHandler;
  * - Edge cases and boundary conditions
  * - Factory behavior with various mock configurations
  *
- * @author Test Author - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 class SonoffHandlerFactoryIntegrationTest {

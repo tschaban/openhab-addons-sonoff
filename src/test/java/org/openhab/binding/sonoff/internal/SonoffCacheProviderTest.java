@@ -48,7 +48,7 @@ import com.google.gson.JsonObject;
  * - Error handling and edge cases
  * - Directory creation and management
  *
- * @author Test Author - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 class SonoffCacheProviderTest {

@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
  * Unit tests for {@link SonoffCommandMessageUtilities}
  * Tests random string generation, nonce creation, and timestamp functionality
  *
- * @author OpenHAB Sonoff Binding - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 class SonoffCommandMessageUtilitiesTest {
 

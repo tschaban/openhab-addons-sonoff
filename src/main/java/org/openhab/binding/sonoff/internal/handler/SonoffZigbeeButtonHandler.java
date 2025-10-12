@@ -9,6 +9,7 @@
  * http://www.eclipse.org/legal/epl-2.0
  *
  * SPDX-License-Identifier: EPL-2.0
+ * 
  */
 package org.openhab.binding.sonoff.internal.handler;
 
@@ -30,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * The {@link SonoffZigbeeButtonHandler} allows the handling of commands and updates to Button Type
  * Devices
  *
- * @author Tschaban-A - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @NonNullByDefault
 public class SonoffZigbeeButtonHandler extends SonoffBaseZigbeeHandler {

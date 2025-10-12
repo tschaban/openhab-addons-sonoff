@@ -56,7 +56,7 @@ import com.google.gson.JsonObject;
 /**
  * Unit tests for {@link SonoffAccountHandler}
  *
- * @author OpenHAB Sonoff Binding - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 @NonNullByDefault

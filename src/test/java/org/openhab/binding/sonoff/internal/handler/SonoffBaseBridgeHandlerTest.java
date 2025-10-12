@@ -41,7 +41,7 @@ import org.openhab.core.types.RefreshType;
 /**
  * Unit tests for {@link SonoffBaseBridgeHandler}
  *
- * @author OpenHAB Sonoff Binding - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 @NonNullByDefault

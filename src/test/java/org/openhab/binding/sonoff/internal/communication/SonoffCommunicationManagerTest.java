@@ -41,7 +41,7 @@ import com.google.gson.JsonObject;
  * Unit tests for {@link SonoffCommunicationManager}
  * Tests message queuing, processing, and communication management functionality
  *
- * @author OpenHAB Sonoff Binding - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 class SonoffCommunicationManagerTest {

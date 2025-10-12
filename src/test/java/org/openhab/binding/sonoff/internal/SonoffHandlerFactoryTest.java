@@ -41,7 +41,7 @@ import org.openhab.core.thing.binding.ThingHandler;
  * - createHandler method for all device types
  * - Error cases and edge conditions
  *
- * @author Test Author - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 class SonoffHandlerFactoryTest {

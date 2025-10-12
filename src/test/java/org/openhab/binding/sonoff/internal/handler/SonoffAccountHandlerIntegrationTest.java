@@ -52,7 +52,7 @@ import com.google.gson.JsonObject;
  * Integration tests for {@link SonoffAccountHandler}
  * Tests the interaction between components and full lifecycle scenarios
  *
- * @author OpenHAB Sonoff Binding - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 @NonNullByDefault

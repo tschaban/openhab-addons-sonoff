@@ -42,7 +42,7 @@ import org.openhab.core.types.Command;
  * Integration tests for {@link SonoffBaseBridgeHandler}
  * Tests the interaction between components and full lifecycle scenarios
  *
- * @author OpenHAB Sonoff Binding - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 @NonNullByDefault

@@ -26,7 +26,7 @@ import com.google.gson.JsonParser;
  * Unit tests for {@link SonoffCommandMessageEncryptionUtilities}
  * Tests encryption, decryption, and authentication MAC functionality
  *
- * @author OpenHAB Sonoff Binding - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 class SonoffCommandMessageEncryptionUtilitiesTest {
 
