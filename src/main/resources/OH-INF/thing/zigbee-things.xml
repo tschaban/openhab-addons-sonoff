@@ -151,6 +151,7 @@
 			<channel id="trigTime" typeId="trigTime"/>
 			<channel id="temperature" typeId="temperature"/>
 			<channel id="humidity" typeId="humidity"/>
+			<channel id="rssi" typeId="rssi"/>
 		</channels>
 		<config-description>
 			<parameter name="deviceid" type="text" required="true">
