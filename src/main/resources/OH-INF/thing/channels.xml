@@ -234,7 +234,7 @@
 		<label>Last triggered</label>
 		<description>Last Triggered</description>
 	</channel-type>
-	
+
 	<channel-type id="motion">
 		<item-type>Switch</item-type>
 		<label>Motion Alarm Active</label>
