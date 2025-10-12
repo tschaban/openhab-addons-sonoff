@@ -150,7 +150,7 @@ class SonoffZigbeeButtonHandlerTest {
 
         // Setup mock scheduler
         @SuppressWarnings("unchecked")
-        ScheduledFuture<Object> typedFuture = (ScheduledFuture<Object>) mockScheduledFuture;
+        ScheduledFuture<?> typedFuture = mockScheduledFuture;
         lenient().when(mockScheduler.schedule(any(Runnable.class), anyLong(), any(TimeUnit.class)))
                 .thenReturn(typedFuture);
 
