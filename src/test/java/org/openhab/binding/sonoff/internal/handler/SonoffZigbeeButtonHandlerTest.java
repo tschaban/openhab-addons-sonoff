@@ -116,36 +116,6 @@ class SonoffZigbeeButtonHandlerTest {
             }
         }
 
-        public void setTestAccount(SonoffAccountHandler account) {
-            try {
-                Field accountField = SonoffBaseDeviceHandler.class.getDeclaredField("account");
-                accountField.setAccessible(true);
-                accountField.set(this, account);
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to set account", e);
-            }
-        }
-
-        public void setTestZigbeeBridge(SonoffZigbeeBridgeHandler bridge) {
-            try {
-                Field bridgeField = SonoffBaseZigbeeHandler.class.getDeclaredField("zigbeeBridge");
-                bridgeField.setAccessible(true);
-                bridgeField.set(this, bridge);
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to set zigbeeBridge", e);
-            }
-        }
-
-        public void setTestDeviceId(String deviceId) {
-            try {
-                Field deviceIdField = SonoffBaseDeviceHandler.class.getDeclaredField("deviceid");
-                deviceIdField.setAccessible(true);
-                deviceIdField.set(this, deviceId);
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to set deviceid", e);
-            }
-        }
-
         @Override
         protected Bridge getBridge() {
             return mockBridge;
