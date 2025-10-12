@@ -113,6 +113,26 @@ class SonoffZigbeeButtonHandlerTest {
             }
         }
 
+        public void setTestAccount(SonoffAccountHandler account) {
+            try {
+                Field accountField = SonoffBaseDeviceHandler.class.getDeclaredField("account");
+                accountField.setAccessible(true);
+                accountField.set(this, account);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to set account", e);
+            }
+        }
+
+        public void setTestZigbeeBridge(SonoffZigbeeBridgeHandler bridge) {
+            try {
+                Field bridgeField = SonoffBaseZigbeeHandler.class.getDeclaredField("zigbeeBridge");
+                bridgeField.setAccessible(true);
+                bridgeField.set(this, bridge);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to set zigbeeBridge", e);
+            }
+        }
+
         @Override
         protected void updateState(String channelID, State state) {
             // Capture state updates for verification
@@ -166,7 +186,6 @@ class SonoffZigbeeButtonHandlerTest {
                 .thenReturn(new QuantityType<>(Double.valueOf(85), org.openhab.core.library.unit.Units.PERCENT));
 
         // Setup mock account
-        when(mockZigbeeBridge.account).thenReturn(mockAccount);
         when(mockAccount.getState("test-device-id")).thenReturn(mockDeviceState);
         when(mockAccount.getMode()).thenReturn("cloud");
 
@@ -174,6 +193,8 @@ class SonoffZigbeeButtonHandlerTest {
         handler = new TestSonoffZigbeeButtonHandler(mockThing);
         handler.setCallback(mockCallback);
         handler.setTestScheduler(mockScheduler);
+        handler.setTestAccount(mockAccount);
+        handler.setTestZigbeeBridge(mockZigbeeBridge);
     }
 
     @Test
