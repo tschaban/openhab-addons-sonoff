@@ -1,0 +1,107 @@
+{
+    "action": "update",
+    "deviceid": "devId",
+    "apikey": "api",
+    "userAgent": "device",
+    "d_seq": 1760381282311,
+    "params": {
+        "subDevRssi": -75
+    }
+}
+
+{
+    "action": "update",
+    "deviceid": "devId",
+    "apikey": "api",
+    "userAgent": "device",
+    "d_seq": 1760382110605,
+    "params": {
+        "key": 0
+    }
+}
+
+{
+    "name": "SNZB-03P",
+    "deviceid": "dev",
+    "apikey": "api",
+    "extra": {
+        "mac": "5c16c3feff5fae0c7002",
+        "apmac": "00:00:00:00:00:00",
+        "model": "SN-MG22-ZB03P-01",
+        "description": "PIR自研Zigbee3.0版本",
+        "modelInfo": "612c78e82089bfdd1ba00ac8",
+        "manufacturer": "深圳松诺技术有限公司",
+        "brandId": "5c4c1aee3a7d24c7100be054",
+        "uiid": 7002,
+        "ui": "PIR_支持OTA",
+        "reportProduct": "SNZB-03P",
+        "staMac": "0x0cae5ffffec3165c"
+    },
+    "brandName": "SONOFF",
+    "brandLogo": "https://eu-ota.coolkit.cc/logo/q62PevoglDNmwUJ9oPE7kRrpt1nL1CoA.png",
+    "showBrand": true,
+    "productModel": "SNZB-03P",
+    "tags": {
+        "temperatureUnit": "centigrade"
+    },
+    "devConfig": {},
+    "deviceConfigToApp": {
+        "otaTimeout": 7200
+    },
+    "family": {
+        "familyid": "",
+        "index": -16,
+        "members": [
+            ""
+        ],
+        "guests": []
+    },
+    "shareTo": [],
+    "devicekey": "",
+    "online": true,
+    "params": {
+        "bindInfos": {
+            "alexa": [
+                ""
+            ],
+            "gaction": [
+                "api_ewelinkGoogleHome"
+            ]
+        },
+        "subDevId": "",
+        "parentid": "",
+        "fwVersion": "2.2.1",
+        "otaInfo": {
+            "state": 0,
+            "upgradeVersion": "2.2.1",
+            "stateTime": 1760382741159,
+            "reason": 0
+        },
+        "staMac": "0x0cae5ffffec3165c",
+        "battery": 17,
+        "brState": "brighter",
+        "motion": 1,
+        "trigTime": 1760382703014,
+        "subDevRssi": -77,
+        "key": 0
+    },
+    "denyFeatures": [
+        "temperature_control_precision"
+    ],
+    "isSupportGroup": false,
+    "isSupportedOnMP": false,
+    "isSupportChannelSplit": false,
+    "deviceFeature": {}
+}
+
+{
+    "action": "update",
+    "deviceid": "dev",
+    "apikey": "api",
+    "userAgent": "device",
+    "d_seq": 1760384962972,
+    "params": {
+        "motion": 0,
+        "trigTime": 1760384962962
+    }
+}

@@ -50,9 +50,9 @@ public class SonoffZigbeeDeviceMotionSensorHandler extends SonoffBaseZigbeeHandl
             updateState("rssi", newDevice.getParameters().getRssi());
             updateState("brightnessState", newDevice.getParameters().getBrightnessState());
         }
-        
+
         updateState("trigTime", newDevice.getParameters().getTrigTime());
-        
+
         // Connections
         this.cloud = newDevice.getCloud();
         updateState("cloudOnline", this.cloud ? new StringType("Connected") : new StringType("Disconnected"));
