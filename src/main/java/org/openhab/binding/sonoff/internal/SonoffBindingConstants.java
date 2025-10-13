@@ -218,7 +218,7 @@ public class SonoffBindingConstants {
         zigbeeBridgeTypes.put(66, THING_TYPE_66);
         zigbeeBridgeTypes.put(168, THING_TYPE_168);
         zigbeeBridgeTypes.put(243, THING_TYPE_243);
-        
+
         return Collections.unmodifiableMap(zigbeeBridgeTypes);
     }
 

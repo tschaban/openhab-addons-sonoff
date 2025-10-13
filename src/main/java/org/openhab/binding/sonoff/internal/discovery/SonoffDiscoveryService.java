@@ -327,12 +327,12 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                 } catch (NumberFormatException e) {
                     // Not a numeric UIID, skip
                 }
-                
+
                 // RF Devices
                 if ("28".equals(uiid)) {
                     try {
-                        SonoffRfBridgeHandler rfBridge = (SonoffRfBridgeHandler) account.getThing().getThings()
-                                .get(i).getHandler();
+                        SonoffRfBridgeHandler rfBridge = (SonoffRfBridgeHandler) account.getThing().getThings().get(i)
+                                .getHandler();
                         if (rfBridge != null) {
                             JsonArray subDevices = rfBridge.getSubDevices();
                             if (subDevices != null) {
@@ -351,11 +351,10 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                                         }
                                         Integer type = Integer.parseInt(remoteTypeElement.getAsString());
 
-                                        ThingTypeUID thingTypeUid = SonoffBindingConstants.createSensorMap()
-                                                .get(type);
+                                        ThingTypeUID thingTypeUid = SonoffBindingConstants.createSensorMap().get(type);
                                         if (thingTypeUid != null) {
-                                            ThingUID rfThing = new ThingUID(thingTypeUid,
-                                                    rfBridge.getThing().getUID(), j + "");
+                                            ThingUID rfThing = new ThingUID(thingTypeUid, rfBridge.getThing().getUID(),
+                                                    j + "");
                                             Map<String, Object> properties = new HashMap<>();
                                             properties.put("deviceid", j + "");
 
@@ -366,9 +365,8 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                                             properties.put("Name", name);
 
                                             String rfLabel = name;
-                                            thingDiscovered(DiscoveryResultBuilder.create(rfThing)
-                                                    .withLabel(rfLabel).withProperties(properties)
-                                                    .withRepresentationProperty("deviceid")
+                                            thingDiscovered(DiscoveryResultBuilder.create(rfThing).withLabel(rfLabel)
+                                                    .withProperties(properties).withRepresentationProperty("deviceid")
                                                     .withBridge(rfBridge.getThing().getUID()).build());
                                         }
                                     } catch (Exception e) {
@@ -380,7 +378,7 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                     } catch (Exception e) {
                         logger.debug("Error processing RF bridge: {}", e.getMessage());
                     }
-                // Zigbee Devices
+                    // Zigbee Devices
                 } else if (uiidInt != null && SonoffBindingConstants.createZigbeeBridgeMap().containsKey(uiidInt)) {
                     try {
                         SonoffZigbeeBridgeHandler zigbeeBridge = (SonoffZigbeeBridgeHandler) account.getThing()
@@ -417,8 +415,7 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                                                     continue;
                                                 }
                                                 JsonElement mainDeviceIdElement = mainDevice.get("deviceid");
-                                                if (mainDeviceIdElement == null
-                                                        || mainDeviceIdElement.isJsonNull()) {
+                                                if (mainDeviceIdElement == null || mainDeviceIdElement.isJsonNull()) {
                                                     continue;
                                                 }
                                                 if (mainDeviceIdElement.getAsString().equals(subDeviceid)) {
@@ -430,8 +427,8 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                                                                     ? paramsElement.getAsJsonObject()
                                                                     : new JsonObject();
 
-                                                    ThingTypeUID thingTypeUid = SonoffBindingConstants
-                                                            .createZigbeeMap().get(subDeviceuiid);
+                                                    ThingTypeUID thingTypeUid = SonoffBindingConstants.createZigbeeMap()
+                                                            .get(subDeviceuiid);
                                                     if (thingTypeUid != null) {
                                                         ThingUID zigbeeThing = new ThingUID(thingTypeUid,
                                                                 zigbeeBridge.getThing().getUID(), subDeviceid);
@@ -439,10 +436,9 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                                                         properties.put("deviceid", subDeviceid);
 
                                                         JsonElement nameElement = subDevice.get("name");
-                                                        String name = (nameElement != null
-                                                                && !nameElement.isJsonNull())
-                                                                        ? nameElement.getAsString()
-                                                                        : "Zigbee Device";
+                                                        String name = (nameElement != null && !nameElement.isJsonNull())
+                                                                ? nameElement.getAsString()
+                                                                : "Zigbee Device";
                                                         properties.put("Name", name);
 
                                                         JsonElement brandElement = subDevice.get("brandName");
@@ -486,19 +482,16 @@ public class SonoffDiscoveryService extends AbstractDiscoveryService implements 
                                                         thingDiscovered(DiscoveryResultBuilder.create(zigbeeThing)
                                                                 .withLabel(label).withProperties(properties)
                                                                 .withRepresentationProperty("deviceid")
-                                                                .withBridge(zigbeeBridge.getThing().getUID())
-                                                                .build());
+                                                                .withBridge(zigbeeBridge.getThing().getUID()).build());
                                                     }
                                                     break;
                                                 }
                                             } catch (Exception e) {
-                                                logger.debug("Error processing main device {}: {}", k,
-                                                        e.getMessage());
+                                                logger.debug("Error processing main device {}: {}", k, e.getMessage());
                                             }
                                         }
                                     } catch (Exception e) {
-                                        logger.debug("Error processing Zigbee sub-device {}: {}", j,
-                                                e.getMessage());
+                                        logger.debug("Error processing Zigbee sub-device {}: {}", j, e.getMessage());
                                     }
                                 }
                             }
