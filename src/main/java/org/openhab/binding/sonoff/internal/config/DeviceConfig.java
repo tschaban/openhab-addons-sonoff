@@ -28,11 +28,12 @@ public class DeviceConfig {
     public Boolean consumption = false;
     public Boolean local = false;
     public Integer buttonResetTimeout = 500;
+    public Integer motionResetTimeout = 60000;
 
     @Override
     public String toString() {
         return "[deviceid=" + deviceid + ", localPoll=" + localPoll + ", consumptionPoll=" + consumptionPoll
                 + ", local=" + local + ", consumption=" + consumption + ", buttonResetTimeout=" + buttonResetTimeout
-                + "]";
+                + ", motionResetTimeout=" + motionResetTimeout + "]";
     }
 }

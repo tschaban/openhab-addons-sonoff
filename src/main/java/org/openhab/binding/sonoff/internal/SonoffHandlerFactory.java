@@ -146,7 +146,7 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "7000":
                 return new SonoffZigbeeButtonHandler(thing);
             case "7002":
-                return new SonoffZigbeeDeviceMotionSensorHandler(thing);
+                return new SonoffZigbeeDeviceMotionSensorV2Handler(thing);
             case "7003":
                 return new SonoffZigbeeContactSensorHandler(thing);
             default:

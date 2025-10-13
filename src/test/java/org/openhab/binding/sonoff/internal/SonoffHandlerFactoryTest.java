@@ -377,12 +377,11 @@ class SonoffHandlerFactoryTest {
         assertEquals("SonoffZigbeeDeviceTemperatureHumiditySensorHandler", handler.getClass().getSimpleName());
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "2026", "7002" })
-    @DisplayName("Should create SonoffZigbeeDeviceMotionSensorHandler for motion sensor types")
-    void testCreateHandler_MotionSensor(String deviceId) {
+    @Test
+    @DisplayName("Should create SonoffZigbeeDeviceMotionSensorHandler for motion sensor type 2026")
+    void testCreateHandler_MotionSensor() {
         // Setup
-        ThingTypeUID thingType = new ThingTypeUID("sonoff", deviceId);
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", "2026");
         when(mockThing.getThingTypeUID()).thenReturn(thingType);
 
         // Execute
@@ -391,6 +390,21 @@ class SonoffHandlerFactoryTest {
         // Verify
         assertNotNull(handler);
         assertEquals("SonoffZigbeeDeviceMotionSensorHandler", handler.getClass().getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Should create SonoffZigbeeDeviceMotionSensorV2Handler for motion sensor type 7002")
+    void testCreateHandler_MotionSensorV2() {
+        // Setup
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", "7002");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType);
+
+        // Execute
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify
+        assertNotNull(handler);
+        assertEquals("SonoffZigbeeDeviceMotionSensorV2Handler", handler.getClass().getSimpleName());
     }
 
     @Test

@@ -135,6 +135,11 @@
 				<label>Device ID</label>
 				<description>Device ID</description>
 			</parameter>
+			<parameter name="motionResetTimeout" type="integer" min="1000" max="300000" unit="ms">
+				<label>How long (ms) keep motion state detected?</label>
+				<description>Time in milliseconds before motion state resets to no motion: default=60000 (60 seconds)</description>
+				<default>60000</default>
+			</parameter>
 
 		</config-description>
 	</thing-type>
