@@ -596,6 +596,10 @@ public class SonoffDeviceStateParameters {
         return this.motion;
     }
 
+    public OpenClosedType getMotionContact() {
+        return this.motion == OnOffType.ON ? OpenClosedType.OPEN : OpenClosedType.CLOSED;
+    }
+
     public void setMotion(Integer motion) {
         this.motion = motion.equals(1) ? OnOffType.ON : OnOffType.OFF;
     }

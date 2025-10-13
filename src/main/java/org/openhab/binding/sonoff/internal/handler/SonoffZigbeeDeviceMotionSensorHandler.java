@@ -37,15 +37,14 @@ public class SonoffZigbeeDeviceMotionSensorHandler extends SonoffBaseZigbeeHandl
 
     @Override
     public void updateDevice(SonoffDeviceState newDevice) {
-        // Motion
-        updateState("motion", newDevice.getParameters().getMotion());
-        
-        // Battery - different types for different devices
-        // 2026 (old SNZB-03) uses battery voltage
-        // 7002 (SNZB-03P) uses battery level percentage
+        // Motion - different channel types for different devices
+        // 2026 (old SNZB-03) uses Switch (OnOffType)
+        // 7002 (SNZB-03P) uses Contact (OpenClosedType)
         if (newDevice.getUiid().equals(2026)) {
+            updateState("motion", newDevice.getParameters().getMotion());
             updateState("battery", newDevice.getParameters().getBattery());
         } else {
+            updateState("motion", newDevice.getParameters().getMotionContact());
             updateState("battery", newDevice.getParameters().getBatteryLevel());
             // RSSI and brightness state only available on newer devices (7002)
             updateState("rssi", newDevice.getParameters().getRssi());

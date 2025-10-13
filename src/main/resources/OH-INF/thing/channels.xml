@@ -271,7 +271,7 @@
 	<channel-type id="brightness-state">
 		<item-type>String</item-type>
 		<label>Brightness State</label>
-		<description>Ambient brightness level (bright, normal, dark)</description>
+		<description>Ambient brightness level</description>
 		<state readOnly="true"/>
 	</channel-type>
 
