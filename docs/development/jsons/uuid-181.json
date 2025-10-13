@@ -1,0 +1,26 @@
+{
+    "action": "update",
+    "deviceid": "deviceId",
+    "apikey": "API-Key",
+    "userAgent": "app",
+    "sequence": "1760356728793",
+    "params": {
+        "switch": "off"
+    }
+}
+
+{
+    "action": "update",
+    "deviceid": "deviceId",
+    "apikey": "API-Key",
+    "userAgent": "device",
+    "d_seq": 2220,
+    "params": {
+        "sensorType": "AM2301",
+        "currentTemperature": "17.5",
+        "currentHumidity": "55.2",
+        "tempCorrection": 0,
+        "humCorrection": 0
+    },
+    "seq": "189800"
+}
