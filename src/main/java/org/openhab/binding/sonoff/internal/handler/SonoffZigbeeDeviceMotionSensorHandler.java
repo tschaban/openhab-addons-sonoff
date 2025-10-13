@@ -47,8 +47,9 @@ public class SonoffZigbeeDeviceMotionSensorHandler extends SonoffBaseZigbeeHandl
             updateState("battery", newDevice.getParameters().getBattery());
         } else {
             updateState("battery", newDevice.getParameters().getBatteryLevel());
-            // RSSI only available on newer devices
+            // RSSI and brightness state only available on newer devices (7002)
             updateState("rssi", newDevice.getParameters().getRssi());
+            updateState("brightnessState", newDevice.getParameters().getBrightnessState());
         }
         
         updateState("trigTime", newDevice.getParameters().getTrigTime());

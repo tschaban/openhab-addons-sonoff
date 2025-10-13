@@ -491,6 +491,10 @@ public class SonoffDeviceState {
             parameters.setMotion(params.get("motion").getAsInt());
         }
 
+        if (params.get("brState") != null) {
+            parameters.setBrightnessState(params.get("brState").getAsString());
+        }
+
         // Button press events
         if (params.get("key") != null && params.get("trigTime") != null) {
             Integer key = params.get("key").getAsInt();

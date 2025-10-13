@@ -268,4 +268,11 @@
 		<state readOnly="true"/>
 	</channel-type>
 
+	<channel-type id="brightness-state">
+		<item-type>String</item-type>
+		<label>Brightness State</label>
+		<description>Ambient brightness level (bright, normal, dark)</description>
+		<state readOnly="true"/>
+	</channel-type>
+
 </thing:thing-descriptions>

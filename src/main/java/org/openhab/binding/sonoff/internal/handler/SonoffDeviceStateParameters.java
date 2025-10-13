@@ -119,6 +119,7 @@ public class SonoffDeviceStateParameters {
     // Zigbee
     private DateTimeType trigTime = new DateTimeType(System.currentTimeMillis() + "");
     private OnOffType motion = OnOffType.OFF;
+    private StringType brightnessState = new StringType("");
     // Button
     private OpenClosedType button0 = OpenClosedType.CLOSED;
     private OpenClosedType button1 = OpenClosedType.CLOSED;
@@ -597,6 +598,14 @@ public class SonoffDeviceStateParameters {
 
     public void setMotion(Integer motion) {
         this.motion = motion.equals(1) ? OnOffType.ON : OnOffType.OFF;
+    }
+
+    public StringType getBrightnessState() {
+        return this.brightnessState;
+    }
+
+    public void setBrightnessState(String brightnessState) {
+        this.brightnessState = new StringType(brightnessState);
     }
 
     public OpenClosedType getButton(Integer key) {
