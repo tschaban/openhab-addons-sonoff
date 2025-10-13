@@ -197,8 +197,8 @@ public class SonoffDeviceState {
             if (uiid.equals(2026)) {
                 // Motion Sensor uses battery voltage
                 parameters.setBattery(params.get("battery").getAsDouble());
-            } else if (uiid.equals(1770) || uiid.equals(7003) || uiid.equals(7014)) {
-                // Temperature/Humidity and Door/Window sensors use battery level percentage
+            } else if (uiid.equals(1770) || uiid.equals(7002) || uiid.equals(7003) || uiid.equals(7014)) {
+                // Temperature/Humidity, Motion (SNZB-03P), and Door/Window sensors use battery level percentage
                 parameters.setBatteryLevel(params.get("battery").getAsDouble());
             }
         }
