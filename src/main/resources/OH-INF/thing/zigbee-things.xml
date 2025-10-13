@@ -115,6 +115,30 @@
 		</config-description>
 	</thing-type>
 
+	<thing-type id="7002">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="66"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Motion Sensor</label>
+		<description>Model: SNZB-03P</description>
+		<channels>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="motion" typeId="motion"/>
+			<channel id="battery" typeId="battery-level"/>
+			<channel id="trigTime" typeId="trigTime"/>
+			<channel id="rssi" typeId="rssi"/>
+		</channels>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+
+		</config-description>
+	</thing-type>
+
 	<thing-type id="7003">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>

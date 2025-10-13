@@ -108,6 +108,7 @@ class SonoffHandlerFactoryTest {
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_1770));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_2026));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7000));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7002));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7003));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7014));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_268));
@@ -376,11 +377,12 @@ class SonoffHandlerFactoryTest {
         assertEquals("SonoffZigbeeDeviceTemperatureHumiditySensorHandler", handler.getClass().getSimpleName());
     }
 
-    @Test
-    @DisplayName("Should create SonoffZigbeeDeviceMotionSensorHandler for motion sensor type")
-    void testCreateHandler_MotionSensor() {
+    @ParameterizedTest
+    @ValueSource(strings = { "2026", "7002" })
+    @DisplayName("Should create SonoffZigbeeDeviceMotionSensorHandler for motion sensor types")
+    void testCreateHandler_MotionSensor(String deviceId) {
         // Setup
-        ThingTypeUID thingType = new ThingTypeUID("sonoff", "2026");
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", deviceId);
         when(mockThing.getThingTypeUID()).thenReturn(thingType);
 
         // Execute
