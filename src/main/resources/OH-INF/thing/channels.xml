@@ -241,6 +241,12 @@
 		<description>Motion Alarm Active</description>
 	</channel-type>
 
+	<channel-type id="motion-contact">
+		<item-type>Contact</item-type>
+		<label>Motion Alarm Active</label>
+		<description>Motion Alarm Active</description>
+	</channel-type>
+
 	<channel-type id="battery">
 		<item-type>Number:ElectricPotential</item-type>
 		<label>Battery Voltage</label>
