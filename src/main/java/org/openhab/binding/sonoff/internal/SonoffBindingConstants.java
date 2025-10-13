@@ -203,6 +203,25 @@ public class SonoffBindingConstants {
     /** Zigbee Bridge USB: ZBridge-U */
     public static final ThingTypeUID THING_TYPE_243 = new ThingTypeUID(BINDING_ID, "243");
 
+    /**
+     * Creates mapping for ZigBee Bridge device types.
+     * Used to identify devices that support ZigBee sub-devices.
+     * When adding new ZigBee bridges, add their UUID to this map.
+     * 
+     * Current bridges:
+     * - 66: THING_TYPE_66 (ZB Bridge original)
+     * - 168: THING_TYPE_168 (ZBBridge-P enhanced version)
+     * - 243: THING_TYPE_243 (ZBridge-U USB version)
+     */
+    public static final Map<Integer, ThingTypeUID> createZigbeeBridgeMap() {
+        Map<Integer, ThingTypeUID> zigbeeBridgeTypes = new HashMap<>();
+        zigbeeBridgeTypes.put(66, THING_TYPE_66);
+        zigbeeBridgeTypes.put(168, THING_TYPE_168);
+        zigbeeBridgeTypes.put(243, THING_TYPE_243);
+        
+        return Collections.unmodifiableMap(zigbeeBridgeTypes);
+    }
+
     // ========================================
     // 433MHz RF BRIDGE
     // ========================================

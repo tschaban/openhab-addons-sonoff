@@ -87,7 +87,7 @@ public class SonoffDeviceState {
             }
         }
         setParameters(device.getAsJsonObject("params"));
-        if (uiid.equals(66) || uiid.equals(168) || uiid.equals(243) || uiid.equals(28)) {
+        if (SonoffBindingConstants.createZigbeeBridgeMap().containsKey(uiid) || uiid.equals(28)) {
             setSubDevices(device);
         }
         return this;
@@ -550,7 +550,7 @@ public class SonoffDeviceState {
 
     private void setSubDevices(JsonObject device) {
         JsonArray subDevices = null;
-        if (uiid.equals(66) || uiid.equals(168) || uiid.equals(243)) {
+        if (SonoffBindingConstants.createZigbeeBridgeMap().containsKey(uiid)) {
             if (device.getAsJsonObject("params").getAsJsonArray("subDevices") != null) {
                 subDevices = device.getAsJsonObject("params").getAsJsonArray("subDevices");
             }
