@@ -203,6 +203,25 @@ public class SonoffBindingConstants {
     /** Zigbee Bridge USB: ZBridge-U */
     public static final ThingTypeUID THING_TYPE_243 = new ThingTypeUID(BINDING_ID, "243");
 
+    /**
+     * Creates mapping for ZigBee Bridge device types.
+     * Used to identify devices that support ZigBee sub-devices.
+     * When adding new ZigBee bridges, add their UUID to this map.
+     * 
+     * Current bridges:
+     * - 66: THING_TYPE_66 (ZB Bridge original)
+     * - 168: THING_TYPE_168 (ZBBridge-P enhanced version)
+     * - 243: THING_TYPE_243 (ZBridge-U USB version)
+     */
+    public static final Map<Integer, ThingTypeUID> createZigbeeBridgeMap() {
+        Map<Integer, ThingTypeUID> zigbeeBridgeTypes = new HashMap<>();
+        zigbeeBridgeTypes.put(66, THING_TYPE_66);
+        zigbeeBridgeTypes.put(168, THING_TYPE_168);
+        zigbeeBridgeTypes.put(243, THING_TYPE_243);
+
+        return Collections.unmodifiableMap(zigbeeBridgeTypes);
+    }
+
     // ========================================
     // 433MHz RF BRIDGE
     // ========================================
@@ -247,6 +266,9 @@ public class SonoffBindingConstants {
 
     /** Zigbee wireless switch: SNZB-01P */
     public static final ThingTypeUID THING_TYPE_7000 = new ThingTypeUID(BINDING_ID, "7000");
+
+    /** Zigbee motion sensor: SNZB-03P */
+    public static final ThingTypeUID THING_TYPE_7002 = new ThingTypeUID(BINDING_ID, "7002");
 
     // Switches and lights
     /** Zigbee single channel switch */
@@ -323,9 +345,9 @@ public class SonoffBindingConstants {
             THING_TYPE_256, THING_TYPE_260,
 
             // Zigbee devices
-            THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7003, THING_TYPE_7014, THING_TYPE_ZCONTACT,
-            THING_TYPE_ZWATER, THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3,
-            THING_TYPE_ZSWITCH4,
+            THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7002, THING_TYPE_7003, THING_TYPE_7014,
+            THING_TYPE_ZCONTACT, THING_TYPE_ZWATER, THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2,
+            THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
 
             // 433MHz RF devices
             THING_TYPE_RF1, THING_TYPE_RF2, THING_TYPE_RF3, THING_TYPE_RF4, THING_TYPE_RF6
@@ -362,9 +384,9 @@ public class SonoffBindingConstants {
             THING_TYPE_256, THING_TYPE_260,
 
             // Zigbee devices
-            THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7003, THING_TYPE_7014, THING_TYPE_ZCONTACT,
-            THING_TYPE_ZWATER, THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3,
-            THING_TYPE_ZSWITCH4,
+            THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7002, THING_TYPE_7003, THING_TYPE_7014,
+            THING_TYPE_ZCONTACT, THING_TYPE_ZWATER, THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2,
+            THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
 
             // 433MHz RF devices
             THING_TYPE_RF1, THING_TYPE_RF2, THING_TYPE_RF3, THING_TYPE_RF4, THING_TYPE_RF6
@@ -485,6 +507,7 @@ public class SonoffBindingConstants {
 
         // Specific device models
         zigbeeTypes.put(7000, THING_TYPE_7000); // SNZB-01P
+        zigbeeTypes.put(7002, THING_TYPE_7002); // SNZB-03P
         zigbeeTypes.put(7003, THING_TYPE_7003); // SNZB-04P
         zigbeeTypes.put(7014, THING_TYPE_7014); // SNZB-02P
 

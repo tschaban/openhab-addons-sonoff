@@ -134,9 +134,11 @@ public class SonoffWebSocketConnection {
         if (message.contains("hbInterval")) {
             logger.debug("Login Response Received: {}", message);
             JsonObject object = gson.fromJson(message, JsonObject.class);
-            if (object.get("error").getAsInt() == 0) {
+            int errorCode = object.get("error").getAsNumber().intValue();
+            if (errorCode == 0) {
                 listener.webSocketLoggedIn(true);
             } else {
+                logger.warn("WebSocket login failed with error code: {}", errorCode);
                 listener.websocketConnected(false);
             }
             return;

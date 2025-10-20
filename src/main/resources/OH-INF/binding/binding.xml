@@ -3,8 +3,8 @@
 	xmlns:binding="https://openhab.org/schemas/binding/v1.0.0"
 	xsi:schemaLocation="https://openhab.org/schemas/binding/v1.0.0 https://openhab.org/schemas/binding-1.0.0.xsd">
 
-	<name>Sonoff Binding</name>
-	<description>This is the binding for sonoff.</description>
+	<name>Sonoff (eWeLink) Binding</name>
+	<description>Binding for Sonoff devices using the eWeLink cloud service as well as local LAN control where supported.</description>
 	<author>David Murton</author>
 
 </binding:binding>

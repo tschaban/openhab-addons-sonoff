@@ -79,7 +79,48 @@ zigbeeTypes.put(XXX, THING_TYPE_XXX); // e.g., zigbeeTypes.put(7000, THING_TYPE_
 ```
 **✅ AUTOMATIC**: This also enables automatic subDevRssi handling for RSSI values
 
-#### e) Add to LAN protocol sets (WiFi devices with LAN support)
+#### e) 🚨 **CRITICAL: Add to createZigbeeBridgeMap() (ZigBee Bridge devices only)**
+**File**: `SonoffBindingConstants.java`
+
+**⚠️ ONLY for ZigBee Bridge devices (not regular ZigBee devices)**
+
+If adding a **NEW ZIGBEE BRIDGE** (like a new version of ZBBridge), you MUST update the `createZigbeeBridgeMap()` method:
+
+```java
+/**
+ * Creates mapping for ZigBee Bridge device types.
+ * Used to identify devices that support ZigBee sub-devices.
+ * When adding new ZigBee bridges, add their UUID to this map.
+ * 
+ * Current bridges:
+ * - 66: THING_TYPE_66 (ZB Bridge original)
+ * - 168: THING_TYPE_168 (ZBBridge-P enhanced version)
+ * - 243: THING_TYPE_243 (ZBridge-U USB version)
+ * - XXX: THING_TYPE_XXX (Your new bridge)  // ADD THIS LINE
+ */
+public static final Map<Integer, ThingTypeUID> createZigbeeBridgeMap() {
+    Map<Integer, ThingTypeUID> zigbeeBridgeTypes = new HashMap<>();
+    zigbeeBridgeTypes.put(66, THING_TYPE_66);
+    zigbeeBridgeTypes.put(168, THING_TYPE_168);
+    zigbeeBridgeTypes.put(243, THING_TYPE_243);
+    zigbeeBridgeTypes.put(XXX, THING_TYPE_XXX);  // ADD THIS LINE
+    
+    return Collections.unmodifiableMap(zigbeeBridgeTypes);
+}
+```
+
+**🚨 CRITICAL**: Missing this = ZigBee sub-devices won't be discovered through the new bridge  
+**⚠️ NOTE**: This is ONLY for bridge devices, NOT for ZigBee end devices (sensors, switches, etc.)  
+**✅ BENEFIT**: Automatically enables sub-device discovery and management for the new bridge
+
+**📋 What This Does:**
+- Enables automatic ZigBee sub-device detection for the bridge
+- Allows the bridge to report connected ZigBee devices
+- Used by `SonoffDeviceState.setSubDevices()` to identify bridge devices
+- Used by `SonoffDiscoveryService` to discover ZigBee devices connected to the bridge
+- Follows the same pattern as `createMap()`, `createZigbeeMap()`, and `createSensorMap()`
+
+#### f) Add to LAN protocol sets (WiFi devices with LAN support)
 ```java
 // Add XXX to LAN_IN and/or LAN_OUT sets
 ```
@@ -332,6 +373,7 @@ assertFalse(result.hasErrors());
 ❌ **Missing XML definition** → Thing creation fails  
 ❌ **Wrong XML file** → Thing not found  
 ❌ **Zigbee device not in createZigbeeMap()** → RSSI shows wrong values (uses rssi instead of subDevRssi)  
+❌ **ZigBee Bridge not in createZigbeeBridgeMap()** → Sub-devices won't be discovered through the bridge  
 ❌ **Forgot to update test classes** → Tests fail in CI/CD pipeline  
 ❌ **Added to wrong test category** → Test expects wrong handler type  
 
@@ -451,6 +493,82 @@ testDeviceHandlerCreation("7000", "SonoffZigbeeButtonHandler");
 <!-- 8. SUPPORTED_DEVICES.md -->
 | **7000** | SNZB-01P | ☁️ Cloud | Wireless switch | Zigbee button device |
 ```
+
+---
+
+## Example 3: Adding ZigBee Bridge Device (UUID 300)
+
+```java
+// 1. SonoffBindingConstants.java - Add constant
+public static final ThingTypeUID THING_TYPE_300 = new ThingTypeUID(BINDING_ID, "300");
+
+// 2. Add to collections
+THING_TYPE_300, // in SUPPORTED_THING_TYPE_UIDS
+THING_TYPE_300, // in DISCOVERABLE_THING_TYPE_UIDS
+deviceTypes.put(300, THING_TYPE_300); // in createMap()
+
+// 3. 🚨 CRITICAL: Add to createZigbeeBridgeMap() (ONLY for bridge devices!)
+public static final Map<Integer, ThingTypeUID> createZigbeeBridgeMap() {
+    Map<Integer, ThingTypeUID> zigbeeBridgeTypes = new HashMap<>();
+    zigbeeBridgeTypes.put(66, THING_TYPE_66);
+    zigbeeBridgeTypes.put(168, THING_TYPE_168);
+    zigbeeBridgeTypes.put(243, THING_TYPE_243);
+    zigbeeBridgeTypes.put(300, THING_TYPE_300);  // ADD NEW BRIDGE
+    
+    return Collections.unmodifiableMap(zigbeeBridgeTypes);
+}
+
+// 4. Update documentation comment
+/**
+ * Creates mapping for ZigBee Bridge device types.
+ * 
+ * Current bridges:
+ * - 66: THING_TYPE_66 (ZB Bridge original)
+ * - 168: THING_TYPE_168 (ZBBridge-P enhanced version)
+ * - 243: THING_TYPE_243 (ZBridge-U USB version)
+ * - 300: THING_TYPE_300 (New ZigBee Bridge)  // ADD THIS
+ */
+
+// 5. SonoffHandlerFactory.java
+case "300":
+    return new SonoffZigbeeBridgeHandler(thing);
+```
+
+```xml
+<!-- 6. switch-things.xml (or create zigbee-bridge-things.xml) -->
+<thing-type id="300">
+    <supported-bridge-type-refs>
+        <bridge-type-ref id="account"/>
+    </supported-bridge-type-refs>
+    <label>SONOFF New ZigBee Bridge</label>
+    <description>Model: ZBBridge-X</description>
+    <channels>
+        <channel id="cloudOnline" typeId="cloudOnline"/>
+        <!-- Bridge-specific channels -->
+    </channels>
+    <!-- ... rest of definition -->
+</thing-type>
+```
+
+```java
+// 7. SonoffHandlerFactoryTest.java - Add to bridge test
+@ParameterizedTest
+@ValueSource(strings = { "66", "168", "243", "300" })
+@DisplayName("Should create SonoffZigbeeBridgeHandler for ZigBee bridge types")
+void testCreateHandler_ZigbeeBridges(String deviceId) {
+    // Test implementation
+}
+
+// 8. SonoffHandlerFactoryIntegrationTest.java
+testDeviceHandlerCreation("300", "SonoffZigbeeBridgeHandler");
+```
+
+```markdown
+<!-- 9. SUPPORTED_DEVICES.md -->
+| **300** | ZBBridge-X | ☁️ Cloud | ZigBee Bridge | New generation ZigBee bridge |
+```
+
+**⚠️ IMPORTANT**: ZigBee bridges require the createZigbeeBridgeMap() update to enable sub-device discovery!
 
 ---
 

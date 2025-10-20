@@ -189,6 +189,12 @@ class SonoffHandlerFactoryIntegrationTest {
             testDeviceHandlerCreation(id, "SonoffZigbeeDeviceTemperatureHumiditySensorHandler");
         }
 
+        // Test motion sensor devices
+        String[] motionSensorIds = { "2026", "7002" };
+        for (String id : motionSensorIds) {
+            testDeviceHandlerCreation(id, "SonoffZigbeeDeviceMotionSensorHandler");
+        }
+
         // Test button devices
         testDeviceHandlerCreation("7000", "SonoffZigbeeButtonHandler");
 

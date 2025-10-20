@@ -87,7 +87,7 @@ public class SonoffDeviceState {
             }
         }
         setParameters(device.getAsJsonObject("params"));
-        if (uiid.equals(66) || uiid.equals(168) || uiid.equals(243) || uiid.equals(28)) {
+        if (SonoffBindingConstants.createZigbeeBridgeMap().containsKey(uiid) || uiid.equals(28)) {
             setSubDevices(device);
         }
         return this;
@@ -197,8 +197,8 @@ public class SonoffDeviceState {
             if (uiid.equals(2026)) {
                 // Motion Sensor uses battery voltage
                 parameters.setBattery(params.get("battery").getAsDouble());
-            } else if (uiid.equals(1770) || uiid.equals(7003) || uiid.equals(7014)) {
-                // Temperature/Humidity and Door/Window sensors use battery level percentage
+            } else if (uiid.equals(1770) || uiid.equals(7002) || uiid.equals(7003) || uiid.equals(7014)) {
+                // Temperature/Humidity, Motion (SNZB-03P), and Door/Window sensors use battery level percentage
                 parameters.setBatteryLevel(params.get("battery").getAsDouble());
             }
         }
@@ -272,7 +272,7 @@ public class SonoffDeviceState {
             }
         }
 
-        if (uiid.equals(15)) {
+        if (uiid.equals(15) || uiid.equals(181)) {
             // api returns a string always
             if (params.get("currentTemperature") != null) {
                 JsonPrimitive p = params.get("currentTemperature").getAsJsonPrimitive();
@@ -491,6 +491,10 @@ public class SonoffDeviceState {
             parameters.setMotion(params.get("motion").getAsInt());
         }
 
+        if (params.get("brState") != null) {
+            parameters.setBrightnessState(params.get("brState").getAsString());
+        }
+
         // Button press events
         if (params.get("key") != null && params.get("trigTime") != null) {
             Integer key = params.get("key").getAsInt();
@@ -550,7 +554,7 @@ public class SonoffDeviceState {
 
     private void setSubDevices(JsonObject device) {
         JsonArray subDevices = null;
-        if (uiid.equals(66) || uiid.equals(168) || uiid.equals(243)) {
+        if (SonoffBindingConstants.createZigbeeBridgeMap().containsKey(uiid)) {
             if (device.getAsJsonObject("params").getAsJsonArray("subDevices") != null) {
                 subDevices = device.getAsJsonObject("params").getAsJsonArray("subDevices");
             }

@@ -216,7 +216,7 @@
 		<item-type unitHint="%">Number:Dimensionless</item-type>
 		<label>Humidity</label>
 		<description>Current humidity</description>
-		<state readOnly="true" pattern="%.0f %unit%"/>
+		<state readOnly="true" pattern="%.2f %unit%"/>
 	</channel-type>
 	<channel-type id="mainSwitch">
 		<item-type>Switch</item-type>
@@ -241,6 +241,12 @@
 		<description>Motion Alarm Active</description>
 	</channel-type>
 
+	<channel-type id="motion-contact">
+		<item-type>Contact</item-type>
+		<label>Motion Alarm Active</label>
+		<description>Motion Alarm Active</description>
+	</channel-type>
+
 	<channel-type id="battery">
 		<item-type>Number:ElectricPotential</item-type>
 		<label>Battery Voltage</label>
@@ -259,6 +265,13 @@
 		<item-type>Contact</item-type>
 		<label>Button Press</label>
 		<description>Button press event</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="brightness-state">
+		<item-type>String</item-type>
+		<label>Brightness State</label>
+		<description>Ambient brightness level</description>
 		<state readOnly="true"/>
 	</channel-type>
 
