@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.openhab.addons.bundles</groupId>
     <artifactId>org.openhab.addons.reactor.bundles</artifactId>
-    <version>5.0.2-SNAPSHOT</version>
+    <version>5.0.3-SNAPSHOT</version>
     <relativePath/>
   </parent>
 
@@ -21,6 +21,33 @@
     <!-- Skip XML validation for standalone repository -->
     <skipXmlValidation>true</skipXmlValidation>
   </properties>
+
+  <repositories>
+    <repository>
+      <id>openhab-artifactory-release</id>
+      <name>OpenHAB Artifactory Release Repository</name>
+      <url>https://openhab.jfrog.io/artifactory/libs-release</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>openhab-artifactory-snapshot</id>
+      <name>OpenHAB Artifactory Snapshot Repository</name>
+      <url>https://openhab.jfrog.io/artifactory/libs-snapshot</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <dependencies>
     <!-- JUnit 5 for unit testing -->
