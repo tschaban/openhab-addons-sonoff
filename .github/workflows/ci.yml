@@ -39,15 +39,13 @@ jobs:
         # Install root parent POM
         echo "📦 Installing root parent POM..."
         cd ../openhab-addons
-        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true
         
         # Install bundles reactor POM  
         echo "📦 Installing bundles reactor POM..."
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true
         
-        # Return to addon directory
-        cd ${{ github.workspace }}
         echo "✅ Parent POM setup completed successfully"
         
     - name: Verify parent POM resolution
@@ -108,10 +106,9 @@ jobs:
         echo "🔧 Setting up OpenHAB parent dependencies..."
         git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         cd ../openhab-addons
-        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
-        cd ${{ github.workspace }}
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true
         echo "✅ Parent POM setup completed"
         
     - name: Check code formatting
@@ -155,9 +152,9 @@ jobs:
         echo "🔧 Setting up OpenHAB parent dependencies on ${{ matrix.os }}..."
         git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         cd ../openhab-addons
-        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true
         echo "✅ Parent POM setup completed"
         
     - name: Quick compile test
