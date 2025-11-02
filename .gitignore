@@ -2,3 +2,10 @@
 /.settings/
 *.code-workspace
 /.devcontainer/
+
+# Custom build script configurations
+# These files contain user-specific paths and should not be committed
+conf.d/*.ps1
+
+# Keep the example file in the repository
+!conf.d/*.example
