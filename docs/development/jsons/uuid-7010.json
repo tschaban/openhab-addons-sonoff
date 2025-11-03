@@ -1,0 +1,46 @@
+{
+    "action": "update",
+    "deviceid": "",
+    "apikey": "",
+    "userAgent": "app",
+    "sequence": "1762108973569",
+    "params": {
+        "switch": "on"
+    }
+}
+
+{
+    "action": "update",
+    "deviceid": "",
+    "apikey": "",
+    "userAgent": "app",
+    "sequence": "1762109011240",
+    "params": {
+        "subDevRssiSetting": {
+            "active": 60,
+            "duration": 5
+        }
+    }
+}
+
+{
+    "action": "update",
+    "deviceid": "",
+    "apikey": "",
+    "userAgent": "device",
+    "d_seq": 17670,
+    "params": {
+        "subDevRssi": -69
+    }
+}
+
+{
+    "action": "update",
+    "deviceid": "",
+    "apikey": "",
+    "userAgent": "app",
+    "sequence": "1762113243106",
+    "params": {
+        "sledOnline": "off"
+    }
+}

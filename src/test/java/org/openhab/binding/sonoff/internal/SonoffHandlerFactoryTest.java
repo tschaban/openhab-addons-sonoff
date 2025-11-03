@@ -408,6 +408,21 @@ class SonoffHandlerFactoryTest {
         assertEquals("SonoffZigbeeButtonHandler", handler.getClass().getSimpleName());
     }
 
+    @Test
+    @DisplayName("Should create SonoffZigbeeSwitchSingleHandler for Zigbee switch device type")
+    void testCreateHandler_ZigbeeSwitchDevice() {
+        // Setup
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", "7010");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType);
+
+        // Execute
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify
+        assertNotNull(handler);
+        assertEquals("SonoffZigbeeSwitchSingleHandler", handler.getClass().getSimpleName());
+    }
+
     @ParameterizedTest
     @ValueSource(strings = { "rfremote1", "rfremote2", "rfremote3", "rfremote4", "rfsensor" })
     @DisplayName("Should create SonoffRfDeviceHandler for RF device types")

@@ -253,7 +253,7 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
         String deviceid = device.get("deviceid").getAsString();
         SonoffDeviceState state = listener.getState(deviceid);
         if (state == null) {
-            logger.error("The device {} doesnt exist, unable to set state", deviceid);
+            logger.debug("The device {} doesnt exist, unable to set state", deviceid);
             return;
         }
 

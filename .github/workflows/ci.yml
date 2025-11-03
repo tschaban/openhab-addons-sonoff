@@ -36,18 +36,21 @@ jobs:
         # Clone OpenHAB addons repository
         git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         
-        # Install root parent POM
-        echo "📦 Installing root parent POM..."
+        # Install root parent POM (org.openhab.addons.reactor)
+        echo "📦 Installing root parent POM (org.openhab.addons.reactor:5.0.3-SNAPSHOT)..."
         cd ../openhab-addons
-        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true || { echo "❌ Failed to install root POM"; exit 1; }
         
-        # Install bundles reactor POM  
-        echo "📦 Installing bundles reactor POM..."
+        # Install bundles reactor POM (org.openhab.addons.reactor.bundles)
+        echo "📦 Installing bundles reactor POM (org.openhab.addons.reactor.bundles:5.0.3-SNAPSHOT)..."
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true || { echo "❌ Failed to install bundles POM"; exit 1; }
         
-        # Return to addon directory
-        cd ${{ github.workspace }}
+        # Verify installation
+        echo "🔍 Verifying installed POMs..."
+        ls -la ~/.m2/repository/org/openhab/addons/org.openhab.addons.reactor/5.0.3-SNAPSHOT/ || echo "⚠️ Root POM not found in local repo"
+        ls -la ~/.m2/repository/org/openhab/addons/bundles/org.openhab.addons.reactor.bundles/5.0.3-SNAPSHOT/ || echo "⚠️ Bundles POM not found in local repo"
+        
         echo "✅ Parent POM setup completed successfully"
         
     - name: Verify parent POM resolution
@@ -108,10 +111,9 @@ jobs:
         echo "🔧 Setting up OpenHAB parent dependencies..."
         git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         cd ../openhab-addons
-        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true || { echo "❌ Failed to install root POM"; exit 1; }
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
-        cd ${{ github.workspace }}
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true || { echo "❌ Failed to install bundles POM"; exit 1; }
         echo "✅ Parent POM setup completed"
         
     - name: Check code formatting
@@ -155,9 +157,9 @@ jobs:
         echo "🔧 Setting up OpenHAB parent dependencies on ${{ matrix.os }}..."
         git clone --depth 1 --branch 5.0.x https://github.com/openhab/openhab-addons.git ../openhab-addons
         cd ../openhab-addons
-        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true || { echo "❌ Failed to install root POM"; exit 1; }
         cd bundles
-        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true -q
+        mvn install -N -DskipTests -DskipChecks -Dspotless.check.skip=true || { echo "❌ Failed to install bundles POM"; exit 1; }
         echo "✅ Parent POM setup completed"
         
     - name: Quick compile test
