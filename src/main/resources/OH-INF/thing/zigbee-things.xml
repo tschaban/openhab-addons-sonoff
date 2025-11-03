@@ -165,6 +165,29 @@
 	</thing-type>
 
 
+	<thing-type id="7010">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="66"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Single Relay Switch</label>
+		<description>Model: ZBMINIR2</description>
+		<channels>
+			<channel id="switch" typeId="power"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="sled" typeId="sled"/>
+			<channel id="rssi" typeId="rssi"/>
+		</channels>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+
 	<thing-type id="7014">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>

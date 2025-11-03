@@ -198,6 +198,9 @@ class SonoffHandlerFactoryIntegrationTest {
         // Test button devices
         testDeviceHandlerCreation("7000", "SonoffZigbeeButtonHandler");
 
+        // Test Zigbee switch devices
+        testDeviceHandlerCreation("7010", "SonoffZigbeeSwitchSingleHandler");
+
         // Test RF devices
         String[] rfIds = { "rfremote1", "rfremote2", "rfremote3", "rfremote4", "rfsensor" };
         for (String id : rfIds) {

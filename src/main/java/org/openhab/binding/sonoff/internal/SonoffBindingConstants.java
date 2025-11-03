@@ -270,6 +270,9 @@ public class SonoffBindingConstants {
     /** Zigbee motion sensor: SNZB-03P */
     public static final ThingTypeUID THING_TYPE_7002 = new ThingTypeUID(BINDING_ID, "7002");
 
+    /** Zigbee single relay switch: ZBMINIR2 */
+    public static final ThingTypeUID THING_TYPE_7010 = new ThingTypeUID(BINDING_ID, "7010");
+
     // Switches and lights
     /** Zigbee single channel switch */
     public static final ThingTypeUID THING_TYPE_ZSWITCH1 = new ThingTypeUID(BINDING_ID, "zswitch1");
@@ -345,9 +348,9 @@ public class SonoffBindingConstants {
             THING_TYPE_256, THING_TYPE_260,
 
             // Zigbee devices
-            THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7002, THING_TYPE_7003, THING_TYPE_7014,
-            THING_TYPE_ZCONTACT, THING_TYPE_ZWATER, THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2,
-            THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
+            THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7002, THING_TYPE_7003, THING_TYPE_7010,
+            THING_TYPE_7014, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER, THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1,
+            THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
 
             // 433MHz RF devices
             THING_TYPE_RF1, THING_TYPE_RF2, THING_TYPE_RF3, THING_TYPE_RF4, THING_TYPE_RF6
@@ -384,9 +387,9 @@ public class SonoffBindingConstants {
             THING_TYPE_256, THING_TYPE_260,
 
             // Zigbee devices
-            THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7002, THING_TYPE_7003, THING_TYPE_7014,
-            THING_TYPE_ZCONTACT, THING_TYPE_ZWATER, THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2,
-            THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
+            THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7002, THING_TYPE_7003, THING_TYPE_7010,
+            THING_TYPE_7014, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER, THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1,
+            THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
 
             // 433MHz RF devices
             THING_TYPE_RF1, THING_TYPE_RF2, THING_TYPE_RF3, THING_TYPE_RF4, THING_TYPE_RF6
@@ -509,6 +512,7 @@ public class SonoffBindingConstants {
         zigbeeTypes.put(7000, THING_TYPE_7000); // SNZB-01P
         zigbeeTypes.put(7002, THING_TYPE_7002); // SNZB-03P
         zigbeeTypes.put(7003, THING_TYPE_7003); // SNZB-04P
+        zigbeeTypes.put(7010, THING_TYPE_7010); // ZBMINIR2
         zigbeeTypes.put(7014, THING_TYPE_7014); // SNZB-02P
 
         return Collections.unmodifiableMap(zigbeeTypes);
@@ -794,6 +798,7 @@ public class SonoffBindingConstants {
         handlerIds.add("209");
         handlerIds.add("256"); // CAM not fully supported
         handlerIds.add("260"); // CAM not fully supported
+        handlerIds.add("7010");
 
         // Multi switch handlers
         handlerIds.add("2");

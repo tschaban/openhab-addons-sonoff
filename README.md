@@ -92,6 +92,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **7000** | Sonoff [SNZB-01P](https://s.smartnydom.pl/r/sonoff-snzb-01p) | 🌐 Cloud | Wireless ZigBee switch (single/double/long press) | |
 | **7002** | Sonoff [SNZB-03P](https://s.smartnydom.pl/r/sonoff-snzb-03p) | 🌐 Cloud | Motion sensor | |
 | **7003** | Sonoff [SNZB-04P](https://s.smartnydom.pl/r/sonoff-snzb-04p-itead) | 🌐 Cloud | Door/window sensor | ⚠️ Testing needed |
+| **7010** | Sonoff ZBMINIR2 | 🌐 Cloud | Zigbee single relay switch | |
 | **7014** | Sonoff ZigBee [SNZB-02P](https://s.smartnydom.pl/r/sonoff-snzb-02p), [SNZB-02D](	https://s.smartnydom.pl/r/sonoff-snzb-02d-sd) | 🌐 Cloud | Temperature/humidity sensor | |
 | **ZCONTACT** | Generic Contact Sensor | 🌐 Cloud | Contact detection | |
 | **ZWATER** | Water Leak Sensor | 🌐 Cloud | Water leak detection | |
