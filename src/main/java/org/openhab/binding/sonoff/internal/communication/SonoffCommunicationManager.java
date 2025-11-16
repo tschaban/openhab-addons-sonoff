@@ -124,6 +124,8 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
                 CountDownLatch latch = new CountDownLatch(1);
                 latchMap.putIfAbsent(message.getSequence(), latch);
                 retryCountMap.putIfAbsent(message.getSequence(), Integer.valueOf(1));
+                logger.debug("Sending message: command={}, sequence={}, deviceid={}", message.getCommand(),
+                        message.getSequence(), message.getDeviceid());
                 sendMessage(message);
                 boolean unlatched = latch.await(timeoutForOkMessagesMs, TimeUnit.MILLISECONDS);
                 latchMap.remove(message.getSequence());
@@ -144,7 +146,7 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
 
                     }
                     logger.warn(
-                            "Ok message not received for transaction: {}, command was {}, retrying again. Retry count {}",
+                            "Message not received for transaction: {}, command was {}, retrying again. Retry count {}",
                             message.getSequence(), message.getCommand(), newRetryCount);
                     retryCountMap.put(message.getSequence(), newRetryCount);
 

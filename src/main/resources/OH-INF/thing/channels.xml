@@ -143,6 +143,21 @@
 		<label>Button 4</label>
 		<description>Button 4</description>
 	</channel-type>
+	<channel-type id="button0TrigTime">
+		<item-type>DateTime</item-type>
+		<label>Button 1 Last Triggered</label>
+		<description>Button 1 Last Triggered Time</description>
+	</channel-type>
+	<channel-type id="button1TrigTime">
+		<item-type>DateTime</item-type>
+		<label>Button 2 Last Triggered</label>
+		<description>Button 2 Last Triggered Time</description>
+	</channel-type>
+	<channel-type id="button2TrigTime">
+		<item-type>DateTime</item-type>
+		<label>Button 3 Last Triggered</label>
+		<description>Button 3 Last Triggered Time</description>
+	</channel-type>
 	<channel-type id="rf0External">
 		<item-type>DateTime</item-type>
 		<label>RF Channel 1 Last triggered</label>

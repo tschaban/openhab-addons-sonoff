@@ -82,17 +82,20 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **210** | [Sonoff T5-2C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Dual touch switch | ⚠️ Testing needed |
 | **211** | [Sonoff T5-3C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Triple touch switch | ⚠️ Testing needed |
 | **212** | [Sonoff T5-4C-86](https://s.smartnydom.pl/r/sonoff-wall-switches) | 🔄 Mixed | Quad touch switch | ⚠️ Testing needed |
+| **226** | CK-BL602-W102SW18-01 | 🔄 Mixed | Advanced power monitoring | ⚠️ Testing needed  |
 | **237** | Sonoff SG200 | 🔄 Mixed | Smart gateway | Prototype device |
 | **243** | [Sonoff ZBridge-U](https://s.smartnydom.pl/r/sonoff-zbbridge-u) | 🌐 Cloud | Zigbee bridge USB | |
 | **256** | [Sonoff SlimCAM2](https://s.smartnydom.pl/r/sonoff-cam-pan-tilt-2-itead-eu) | 🌐 Cloud | Security camera | |
 | **260** | [Sonoff CAM-B1P](https://s.smartnydom.pl/r/sonoff-b1p-itead) | 🌐 Cloud | Security camera | |
+| **264** | Sonoff Virtual Switch | 🌐 Cloud | Model: NON-OTA-GL(264) | |
+| **265** | Sonoff Virtual 3xButtons | 🌐 Cloud | Model: NON-OTA-GL(265) | |
 | **268** | [Sonoff BASIC-1GS](https://s.smartnydom.pl/r/sonoff-basic-1gs-itead-en) | 🔄 Mixed | BASIC 5Gen single switch with Matter support | |
 | **1770** | [Sonoff ZigBee SNZB-02](https://s.smartnydom.pl/r/sonoff-zigbee-sensors) | 🌐 Cloud | Temperature monitoring, 1st version| |
 | **2026** | [Sonoff ZigBee Motion Sensor](https://s.smartnydom.pl/r/sonoff-zigbee-sensors) | 🌐 Cloud | Motion detection, 1st version | |
 | **7000** | Sonoff [SNZB-01P](https://s.smartnydom.pl/r/sonoff-snzb-01p) | 🌐 Cloud | Wireless ZigBee switch (single/double/long press) | |
 | **7002** | Sonoff [SNZB-03P](https://s.smartnydom.pl/r/sonoff-snzb-03p) | 🌐 Cloud | Motion sensor | |
 | **7003** | Sonoff [SNZB-04P](https://s.smartnydom.pl/r/sonoff-snzb-04p-itead) | 🌐 Cloud | Door/window sensor | ⚠️ Testing needed |
-| **7010** | Sonoff ZBMINIR2 | 🌐 Cloud | Zigbee single relay switch | |
+| **7010** | Sonoff [ZBMINIR2](https://s.smartnydom.pl/r/sonoff-zbminir2-itead) | 🌐 Cloud | Zigbee single relay switch | |
 | **7014** | Sonoff ZigBee [SNZB-02P](https://s.smartnydom.pl/r/sonoff-snzb-02p), [SNZB-02D](	https://s.smartnydom.pl/r/sonoff-snzb-02d-sd) | 🌐 Cloud | Temperature/humidity sensor | |
 | **ZCONTACT** | Generic Contact Sensor | 🌐 Cloud | Contact detection | |
 | **ZWATER** | Water Leak Sensor | 🌐 Cloud | Water leak detection | |

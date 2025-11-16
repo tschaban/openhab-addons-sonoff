@@ -103,6 +103,7 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "210":
             case "211":
             case "212":
+            case "264":
             case "268":
                 return new SonoffSwitchMultiHandler(thing);
             case "5":
@@ -115,6 +116,7 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "28":
                 return new SonoffRfBridgeHandler((Bridge) thing);
             case "32":
+            case "226":
                 return new SonoffSwitchPOWR2Handler(thing);
             case "59":
                 return new SonoffRGBStripHandler(thing);
@@ -132,6 +134,8 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
                 return new SonoffSwitchPOWUgradedHandler(thing);
             case "237":
                 return new SonoffGateHandler(thing);
+            case "265":
+                return new SonoffButtonHandler(thing);
             case "1770":
             case "7014": // SNZB-02P
                 return new SonoffZigbeeDeviceTemperatureHumiditySensorHandler(thing);

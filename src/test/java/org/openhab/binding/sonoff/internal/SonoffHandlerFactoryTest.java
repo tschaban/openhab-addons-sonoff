@@ -164,7 +164,7 @@ class SonoffHandlerFactoryTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "2", "3", "4", "7", "8", "9", "29", "30", "31", "77", "78", "82", "83", "84", "126", "161",
-            "162", "210", "211", "212", "268" })
+            "162", "210", "211", "212", "264", "268" })
     @DisplayName("Should create SonoffSwitchMultiHandler for multi switch device types")
     void testCreateHandler_MultiSwitchDevices(String deviceId) {
         // Setup
@@ -245,6 +245,21 @@ class SonoffHandlerFactoryTest {
     void testCreateHandler_POWR2Device() {
         // Setup
         ThingTypeUID thingType = new ThingTypeUID("sonoff", "32");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType);
+
+        // Execute
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify
+        assertNotNull(handler);
+        assertEquals("SonoffSwitchPOWR2Handler", handler.getClass().getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Should create SonoffSwitchPOWR2Handler for CK-BL602 device type")
+    void testCreateHandler_CKBL602Device() {
+        // Setup
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", "226");
         when(mockThing.getThingTypeUID()).thenReturn(thingType);
 
         // Execute
@@ -421,6 +436,21 @@ class SonoffHandlerFactoryTest {
         // Verify
         assertNotNull(handler);
         assertEquals("SonoffZigbeeSwitchSingleHandler", handler.getClass().getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Should create SonoffButtonHandler for WiFi button device type")
+    void testCreateHandler_WiFiButtonDevice() {
+        // Setup
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", "265");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType);
+
+        // Execute
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify
+        assertNotNull(handler);
+        assertEquals("SonoffButtonHandler", handler.getClass().getSimpleName());
     }
 
     @ParameterizedTest
