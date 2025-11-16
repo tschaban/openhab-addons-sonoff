@@ -1,0 +1,15 @@
+{
+    "action": "update",
+    "deviceid": "",
+    "apikey": "",
+    "userAgent": "app",
+    "sequence": "1763317299915",
+    "params": {
+        "switches": [
+            {
+                "outlet": 0,
+                "switch": "off"
+            }
+        ]
+    }
+}

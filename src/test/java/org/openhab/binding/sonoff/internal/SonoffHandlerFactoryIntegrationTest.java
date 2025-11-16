@@ -178,7 +178,7 @@ class SonoffHandlerFactoryIntegrationTest {
 
         // Test multi switch devices
         String[] multiSwitchIds = { "2", "3", "4", "7", "8", "9", "29", "30", "31", "77", "78", "82", "83", "84", "126",
-                "161", "162", "210", "211", "212", "268" };
+                "161", "162", "210", "211", "212", "264", "268" };
         for (String id : multiSwitchIds) {
             testDeviceHandlerCreation(id, "SonoffSwitchMultiHandler");
         }
@@ -200,6 +200,15 @@ class SonoffHandlerFactoryIntegrationTest {
 
         // Test Zigbee switch devices
         testDeviceHandlerCreation("7010", "SonoffZigbeeSwitchSingleHandler");
+
+        // Test WiFi button devices
+        testDeviceHandlerCreation("265", "SonoffButtonHandler");
+
+        // Test POWR2 devices
+        String[] powr2Ids = { "32", "226" };
+        for (String id : powr2Ids) {
+            testDeviceHandlerCreation(id, "SonoffSwitchPOWR2Handler");
+        }
 
         // Test RF devices
         String[] rfIds = { "rfremote1", "rfremote2", "rfremote3", "rfremote4", "rfsensor" };

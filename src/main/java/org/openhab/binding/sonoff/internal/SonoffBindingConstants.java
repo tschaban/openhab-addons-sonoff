@@ -132,6 +132,9 @@ public class SonoffBindingConstants {
     /** Advanced power monitoring: POWR2 (second generation POW) */
     public static final ThingTypeUID THING_TYPE_32 = new ThingTypeUID(BINDING_ID, "32");
 
+    /** Advanced power monitoring: CK-BL602-W102SW18-01 (same as POWR2) */
+    public static final ThingTypeUID THING_TYPE_226 = new ThingTypeUID(BINDING_ID, "226");
+
     /** Dual relay with power monitoring: DUAL R3 */
     public static final ThingTypeUID THING_TYPE_126 = new ThingTypeUID(BINDING_ID, "126");
 
@@ -175,6 +178,12 @@ public class SonoffBindingConstants {
 
     /** BASIC 5Gen: BASIC-1GS (5th generation basic switch with Matter support) */
     public static final ThingTypeUID THING_TYPE_268 = new ThingTypeUID(BINDING_ID, "268");
+
+    /** Virtual Switch: NON-OTA-GL(264) */
+    public static final ThingTypeUID THING_TYPE_264 = new ThingTypeUID(BINDING_ID, "264");
+
+    /** Virtual Button: NON-OTA-GL(265) */
+    public static final ThingTypeUID THING_TYPE_265 = new ThingTypeUID(BINDING_ID, "265");
 
     // GSM/Cellular devices
     /** TODO: Analyze - GSM Socket models need detailed specification */
@@ -335,8 +344,8 @@ public class SonoffBindingConstants {
             THING_TYPE_30, THING_TYPE_31, THING_TYPE_32, THING_TYPE_59, THING_TYPE_77, THING_TYPE_78, THING_TYPE_81,
             THING_TYPE_82, THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126,
             THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162, THING_TYPE_181,
-            THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212, THING_TYPE_237,
-            THING_TYPE_268,
+            THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212, THING_TYPE_226,
+            THING_TYPE_237, THING_TYPE_264, THING_TYPE_265, THING_TYPE_268,
 
             // Zigbee bridges
             THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
@@ -374,8 +383,8 @@ public class SonoffBindingConstants {
             THING_TYPE_30, THING_TYPE_31, THING_TYPE_32, THING_TYPE_59, THING_TYPE_77, THING_TYPE_78, THING_TYPE_81,
             THING_TYPE_82, THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126,
             THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162, THING_TYPE_181,
-            THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212, THING_TYPE_237,
-            THING_TYPE_268,
+            THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212, THING_TYPE_226,
+            THING_TYPE_237, THING_TYPE_264, THING_TYPE_265, THING_TYPE_268,
 
             // Zigbee bridges
             THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
@@ -452,11 +461,14 @@ public class SonoffBindingConstants {
         deviceTypes.put(210, THING_TYPE_210);
         deviceTypes.put(211, THING_TYPE_211);
         deviceTypes.put(212, THING_TYPE_212);
+        deviceTypes.put(226, THING_TYPE_226);
         deviceTypes.put(237, THING_TYPE_237);
         deviceTypes.put(243, THING_TYPE_243);
 
         deviceTypes.put(256, THING_TYPE_256);
         deviceTypes.put(260, THING_TYPE_260);
+        deviceTypes.put(264, THING_TYPE_264);
+        deviceTypes.put(265, THING_TYPE_265);
         deviceTypes.put(268, THING_TYPE_268);
 
         return Collections.unmodifiableMap(deviceTypes);
