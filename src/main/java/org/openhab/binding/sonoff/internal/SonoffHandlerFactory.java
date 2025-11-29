@@ -157,6 +157,7 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
                 return new SonoffZigbeeContactSensorHandler(thing);
             case "7010":
                 return new SonoffZigbeeSwitchSingleHandler(thing);
+            case "7029":
             case "7040":
                 return new SonoffZigbeeSwitchMultiHandler(thing);
             default:

@@ -47,10 +47,11 @@ public class SonoffBindingConstants {
      * Device types that support inbound LAN protocol communication.
      * These devices can receive commands and status updates via local network.
      * TODO: Analyze why devices 15, 103, 104, 181, 190 are in LAN_IN but not LAN_OUT
+     * NOTE: UUID 226 (Circuit Breaker) is cloud-only and does not support LAN communication
      */
-    public static final Set<Integer> LAN_IN = Collections.unmodifiableSet(
-            Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140, 160, 161, 162,
-                    181, 190, 209, 210, 211, 212, 226, 237, 256, 260, 268, 275).collect(Collectors.toSet()));
+    public static final Set<Integer> LAN_IN = Collections
+            .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140,
+                    160, 161, 162, 181, 190, 209, 210, 211, 212, 237, 256, 260, 268, 275).collect(Collectors.toSet()));
 
     /**
      * Device types that support outbound LAN protocol communication.
@@ -285,6 +286,9 @@ public class SonoffBindingConstants {
     /** Zigbee single relay switch: ZBMINIR2 */
     public static final ThingTypeUID THING_TYPE_7010 = new ThingTypeUID(BINDING_ID, "7010");
 
+    /** Zigbee dual channel switch with neutral wire: MINI-ZB2GS-L */
+    public static final ThingTypeUID THING_TYPE_7029 = new ThingTypeUID(BINDING_ID, "7029");
+
     /** Zigbee dual channel switch: MINI-ZB2GS */
     public static final ThingTypeUID THING_TYPE_7040 = new ThingTypeUID(BINDING_ID, "7040");
 
@@ -364,8 +368,8 @@ public class SonoffBindingConstants {
 
             // Zigbee devices
             THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7002, THING_TYPE_7003, THING_TYPE_7010,
-            THING_TYPE_7014, THING_TYPE_7040, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER, THING_TYPE_ZLIGHT,
-            THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
+            THING_TYPE_7014, THING_TYPE_7029, THING_TYPE_7040, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER,
+            THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
 
             // 433MHz RF devices
             THING_TYPE_RF1, THING_TYPE_RF2, THING_TYPE_RF3, THING_TYPE_RF4, THING_TYPE_RF6
@@ -403,8 +407,8 @@ public class SonoffBindingConstants {
 
             // Zigbee devices
             THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7002, THING_TYPE_7003, THING_TYPE_7010,
-            THING_TYPE_7014, THING_TYPE_7040, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER, THING_TYPE_ZLIGHT,
-            THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
+            THING_TYPE_7014, THING_TYPE_7029, THING_TYPE_7040, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER,
+            THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
 
             // 433MHz RF devices
             THING_TYPE_RF1, THING_TYPE_RF2, THING_TYPE_RF3, THING_TYPE_RF4, THING_TYPE_RF6
@@ -533,6 +537,7 @@ public class SonoffBindingConstants {
         zigbeeTypes.put(7003, THING_TYPE_7003); // SNZB-04P
         zigbeeTypes.put(7010, THING_TYPE_7010); // ZBMINIR2
         zigbeeTypes.put(7014, THING_TYPE_7014); // SNZB-02P
+        zigbeeTypes.put(7029, THING_TYPE_7029); // MINI-ZB2GS-L
         zigbeeTypes.put(7040, THING_TYPE_7040); // MINI-ZB2GS
 
         return Collections.unmodifiableMap(zigbeeTypes);

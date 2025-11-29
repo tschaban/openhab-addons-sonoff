@@ -120,7 +120,11 @@ public class SonoffDeviceState {
                 if (switchObj.has("switch")) {
                     String switchState = switchObj.get("switch").getAsString();
 
-                    switch (i) {
+                    // Zigbee multi-switch devices use 'outlet' field to specify which channel
+                    // WiFi multi-switch devices rely on array index
+                    int outletIndex = switchObj.has("outlet") ? switchObj.get("outlet").getAsInt() : i;
+
+                    switch (outletIndex) {
                         case 0:
                             parameters.setSwitch0(switchState);
                             break;
@@ -136,7 +140,7 @@ public class SonoffDeviceState {
                         default:
                             logger.warn(
                                     "Sonoff addon support only devices with at most 4 switches, ignoring switch: {}",
-                                    i);
+                                    outletIndex);
                     }
                 }
             }
