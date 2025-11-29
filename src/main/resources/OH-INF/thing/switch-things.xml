@@ -889,6 +889,36 @@
 		</config-description>
 	</thing-type>
 
+	<thing-type id="275">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Mini-2GS Dual Relay Switch</label>
+		<description>Model: MINI-2GS (Mini 2-gang switch)</description>
+		<channels>
+			<channel id="switch0" typeId="power">
+				<label>Switch 1</label>
+			</channel>
+			<channel id="switch1" typeId="power">
+				<label>Switch 2</label>
+			</channel>
+			<channel id="localOnline" typeId="localOnline"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="ipaddress" typeId="ipaddress"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+		</channels>
+
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
 	<thing-type id="140">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
@@ -1261,33 +1291,23 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>Generic WiFi 1-Channel Switch with Energy Monitoring</label>
+		<label>Generic WiFi Circuit Breaker with Energy Monitoring</label>
 		<description>Model: CK-BL602-W102SW18-01</description>
 		<channels>
 			<channel id="switch" typeId="power"/>
 			<channel id="current" typeId="electric-current"/>
 			<channel id="voltage" typeId="electric-voltage"/>
 			<channel id="power" typeId="electric-power"/>
-			<channel id="todayKwh" typeId="electrical-energy">
-				<label>Today's Energy Consumption</label>
+			<channel id="totalPower" typeId="electric-power">
+				<label>Total Power</label>
 			</channel>
-			<channel id="yesterdayKwh" typeId="electrical-energy">
-				<label>Yesterday's Energy Consumption</label>
-			</channel>
-			<channel id="sevenKwh" typeId="electrical-energy">
-				<label>Last 7 Days Energy Consumption</label>
-			</channel>
-			<channel id="thirtyKwh" typeId="electrical-energy">
-				<label>Last 30 Days Energy Consumption</label>
-			</channel>
-			<channel id="hundredKwh" typeId="electrical-energy">
-				<label>Last 100 Days Energy Consumption</label>
+			<channel id="availablePower" typeId="electric-power">
+				<label>Available Power</label>
 			</channel>
 			<channel id="localOnline" typeId="localOnline"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
 			<channel id="rssi" typeId="rssi"/>
-			<channel id="sled" typeId="sled"/>
 		</channels>
 
 		<representation-property>deviceid</representation-property>
@@ -1297,32 +1317,8 @@
 				<label>Device ID</label>
 				<description>Device ID</description>
 			</parameter>
-			<parameter name="consumption" type="boolean" required="true">
-				<label>Enable consumption polling</label>
-				<default>Disabled</default>
-				<options>
-					<option value="true">Enabled</option>
-					<option value="false">Disabled</option>
-				</options>
-			</parameter>
-			<parameter name="consumptionPoll" type="integer" min="10" max="86400" step="1" required="true">
-				<label>Polling Interval For Energy Data</label>
-				<description>Polling Interval for Energy Data from devices such as POW and POWR2</description>
-				<default>3600</default>
-			</parameter>
-			<parameter name="local" type="boolean" required="true">
-				<label>Enable local polling</label>
-				<default>Disabled</default>
-				<options>
-					<option value="true">Enabled</option>
-					<option value="false">Disabled</option>
-				</options>
-			</parameter>
-			<parameter name="localPoll" type="integer" min="10" max="86400" step="1" required="true">
-				<label>Polling Interval for Local Only Mode</label>
-				<description>Polling Interval for Local Only Mode</description>
-				<default>10</default>
-			</parameter>
+			<!-- UUID 226 does not support LAN connection - cloud only device -->
+			<!-- No local or localPoll parameters needed -->
 		</config-description>
 	</thing-type>
 

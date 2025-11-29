@@ -63,23 +63,29 @@ class SonoffCacheProviderErrorHandlingTest {
     private SonoffCacheProvider cacheProvider;
     private SonoffCacheProvider cacheProviderWithoutGson;
     private String testCacheDir;
+    private MockedStatic<OpenHAB> mockedOpenHAB;
 
     @BeforeEach
     void setUp() {
         // Setup temporary directory for testing
-        testCacheDir = tempDir.resolve("sonoff").toString();
+        // SonoffCacheProvider uses <userDataFolder>/cache/sonoff
+        testCacheDir = tempDir.resolve("cache").resolve("sonoff").toString();
 
         // Mock OpenHAB.getUserDataFolder() to return our temp directory
-        try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
-            mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
+        mockedOpenHAB = mockStatic(OpenHAB.class);
+        mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
 
-            cacheProvider = new SonoffCacheProvider(mockGson);
-            cacheProviderWithoutGson = new SonoffCacheProvider();
-        }
+        cacheProvider = new SonoffCacheProvider(mockGson);
+        cacheProviderWithoutGson = new SonoffCacheProvider();
     }
 
     @AfterEach
     void tearDown() throws IOException {
+        // Close the static mock
+        if (mockedOpenHAB != null) {
+            mockedOpenHAB.close();
+        }
+
         // Clean up test files
         if (Files.exists(Paths.get(testCacheDir))) {
             Files.walk(Paths.get(testCacheDir)).map(Path::toFile).forEach(File::delete);
@@ -277,18 +283,13 @@ class SonoffCacheProviderErrorHandlingTest {
         Files.deleteIfExists(Paths.get(testCacheDir));
         Files.createFile(Paths.get(testCacheDir)); // Create file instead of directory
 
-        // Execute - try to create new cache provider
-        try (MockedStatic<OpenHAB> mockedOpenHAB = mockStatic(OpenHAB.class)) {
-            mockedOpenHAB.when(OpenHAB::getUserDataFolder).thenReturn(tempDir.toString());
+        // This should handle the corrupted directory gracefully
+        SonoffCacheProvider corruptedCacheProvider = new SonoffCacheProvider(mockGson);
 
-            // This should handle the corrupted directory gracefully
-            SonoffCacheProvider corruptedCacheProvider = new SonoffCacheProvider(mockGson);
-
-            // Try to perform operations
-            assertDoesNotThrow(() -> {
-                corruptedCacheProvider.newFile("test-device", "{\"test\":\"data\"}");
-            }, "Should handle corrupted cache directory gracefully");
-        }
+        // Try to perform operations
+        assertDoesNotThrow(() -> {
+            corruptedCacheProvider.newFile("test-device", "{\"test\":\"data\"}");
+        }, "Should handle corrupted cache directory gracefully");
     }
 
     @Test
@@ -330,7 +331,10 @@ class SonoffCacheProviderErrorHandlingTest {
     @Test
     @DisplayName("Should handle getFiles when directory contains non-text files")
     void testGetFilesWithNonTextFiles() throws IOException {
-        // Setup - create various file types
+        // Setup - ensure directory exists
+        Files.createDirectories(Paths.get(testCacheDir));
+
+        // Create various file types
         cacheProvider.newFile("device1", "{\"deviceid\":\"device1\"}");
         cacheProvider.newFile("device2", "{\"deviceid\":\"device2\"}");
 
@@ -363,7 +367,8 @@ class SonoffCacheProviderErrorHandlingTest {
     @Test
     @DisplayName("Should handle getFiles when directory contains only empty files")
     void testGetFilesOnlyEmptyFiles() throws IOException {
-        // Setup - create empty files
+        // Setup - ensure directory exists and create empty files
+        Files.createDirectories(Paths.get(testCacheDir));
         Files.write(Paths.get(testCacheDir, "empty1.txt"), "".getBytes());
         Files.write(Paths.get(testCacheDir, "empty2.txt"), "".getBytes());
 

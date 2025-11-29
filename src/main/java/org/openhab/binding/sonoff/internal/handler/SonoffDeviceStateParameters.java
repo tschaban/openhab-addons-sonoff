@@ -56,6 +56,8 @@ public class SonoffDeviceStateParameters {
     private OnOffType switch3 = OnOffType.OFF;
     // Electric
     private QuantityType<Power> power = new QuantityType<Power>(0.0, WATT);
+    private QuantityType<Power> totalPower = new QuantityType<Power>(0.0, WATT);
+    private QuantityType<Power> availablePower = new QuantityType<Power>(0.0, WATT);
     private QuantityType<ElectricPotential> voltage = new QuantityType<ElectricPotential>(0.0, (VOLT));
     private QuantityType<ElectricCurrent> current = new QuantityType<ElectricCurrent>(0.0, (AMPERE));
     private QuantityType<ElectricPotential> battery = new QuantityType<ElectricPotential>(0.0, (VOLT));
@@ -226,6 +228,24 @@ public class SonoffDeviceStateParameters {
 
     public void setPower(String power, Float multiplier, int decimalPlaces) {
         this.power = new QuantityType<Power>(round(Float.parseFloat(power) * multiplier, decimalPlaces), WATT);
+    }
+
+    public QuantityType<Power> getTotalPower() {
+        return this.totalPower;
+    }
+
+    public void setTotalPower(String totalPower, Float multiplier, int decimalPlaces) {
+        this.totalPower = new QuantityType<Power>(round(Float.parseFloat(totalPower) * multiplier, decimalPlaces),
+                WATT);
+    }
+
+    public QuantityType<Power> getAvailablePower() {
+        return this.availablePower;
+    }
+
+    public void setAvailablePower(String availablePower, Float multiplier, int decimalPlaces) {
+        this.availablePower = new QuantityType<Power>(
+                round(Float.parseFloat(availablePower) * multiplier, decimalPlaces), WATT);
     }
 
     public QuantityType<ElectricPotential> getVoltage() {

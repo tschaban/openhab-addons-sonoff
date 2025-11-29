@@ -105,7 +105,12 @@ public class SonoffDeviceState {
 
         // Switches
         if (params.has("switch")) {
-            parameters.setSwitch0(params.get("switch").getAsString());
+            // UUID 226 uses boolean, others use string
+            if (uiid.equals(226)) {
+                parameters.setSwitch0(params.get("switch").getAsBoolean() ? "on" : "off");
+            } else {
+                parameters.setSwitch0(params.get("switch").getAsString());
+            }
         } else if (params.has("switches")) {
             JsonArray switches = params.getAsJsonArray("switches");
 
@@ -189,6 +194,25 @@ public class SonoffDeviceState {
                 parameters.setCurrent(params.get("current").getAsString(), 1f, 3);
             } else {
                 parameters.setCurrent(params.get("current").getAsString(), 0.001f, 3);
+            }
+        }
+
+        // UUID 226 Circuit Breaker - phase_0_* fields
+        if (uiid.equals(226)) {
+            if (params.get("phase_0_p") != null) {
+                parameters.setPower(params.get("phase_0_p").getAsString(), 1f, 2);
+            }
+            if (params.get("phase_0_v") != null) {
+                parameters.setVoltage(params.get("phase_0_v").getAsString(), 1f, 2);
+            }
+            if (params.get("phase_0_c") != null) {
+                parameters.setCurrent(params.get("phase_0_c").getAsString(), 1f, 2);
+            }
+            if (params.get("totalPower") != null) {
+                parameters.setTotalPower(params.get("totalPower").getAsString(), 1f, 2);
+            }
+            if (params.get("availablePower") != null) {
+                parameters.setAvailablePower(params.get("availablePower").getAsString(), 1f, 2);
             }
         }
 
