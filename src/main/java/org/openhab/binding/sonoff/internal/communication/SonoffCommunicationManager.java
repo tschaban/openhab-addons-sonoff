@@ -26,6 +26,7 @@ import javax.jmdns.ServiceInfo;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.sonoff.internal.connection.SonoffConnectionManagerListener;
+import org.openhab.binding.sonoff.internal.dto.commands.CircuitBreakerSwitch;
 import org.openhab.binding.sonoff.internal.dto.commands.MultiSwitch;
 import org.openhab.binding.sonoff.internal.dto.commands.SingleSwitch;
 import org.openhab.binding.sonoff.internal.dto.requests.WebsocketRequest;
@@ -177,9 +178,22 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
             queue.poll();
         }
 
-        if (message.getCommand().equals("switch") && ((SingleSwitch) message.getParams()).getSwitch() != null
-                || message.getCommand().equals("switches")
-                        && !((MultiSwitch) message.getParams()).getSwitches().isEmpty()) {
+        if (message.getCommand().equals("switch")) {
+            // Check if it's a SingleSwitch or CircuitBreakerSwitch with a non-null switch value
+            Object params = message.getParams();
+            boolean hasSwitchValue = false;
+            if (params instanceof SingleSwitch) {
+                hasSwitchValue = ((SingleSwitch) params).getSwitch() != null;
+            } else if (params instanceof CircuitBreakerSwitch) {
+                hasSwitchValue = ((CircuitBreakerSwitch) params).getSwitch() != null;
+            }
+            if (hasSwitchValue) {
+                queue.addFirst(message);
+            } else {
+                queue.add(message);
+            }
+        } else if (message.getCommand().equals("switches")
+                && !((MultiSwitch) message.getParams()).getSwitches().isEmpty()) {
             queue.addFirst(message);
         } else {
             queue.add(message);
@@ -199,9 +213,17 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
      * Forward messages to the appropriate connection
      */
     public void sendMessage(SonoffCommandMessage message) {
+        logger.debug("************* SEND MESSAGE START *************");
+        logger.debug("Command: {}, DeviceID: {}, Sequence: {}", message.getCommand(), message.getDeviceid(),
+                message.getSequence());
+        logger.debug("LAN supported: {}, LAN connected: {}, Cloud connected: {}, Mode: {}", message.getLanSupported(),
+                lanConnected, cloudConnected, mode);
+
         // Send Api Device requests
         if (message.getCommand().equals("device") || message.getCommand().equals("devices")) {
+            logger.debug("API request - forwarding to API handler");
             listener.sendApiMessage(message.getDeviceid());
+            logger.debug("************* SEND MESSAGE END (API) *************");
             return;
         }
 
@@ -209,6 +231,7 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
         if (!message.getLanSupported() && mode.equals("local")) {
             logger.warn("Cannot send command {} for device {}, Not supported by local mode", message.getCommand(),
                     message.getDeviceid());
+            logger.debug("************* SEND MESSAGE END (UNSUPPORTED) *************");
             return;
         }
 
@@ -217,35 +240,55 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
         String deviceKey = "";
         String url = "";
         if (message.getLanSupported() && lanConnected) {
+            logger.debug("Attempting LAN transmission...");
             SonoffDeviceState state = listener.getState(message.getDeviceid());
             if (state != null) {
                 deviceKey = state.getDeviceKey();
                 ipaddress = state.getIpAddress().toString();
-                url = "http://" + ipaddress + ":8081/zeroconf/" + message.getCommand();
+                if (!ipaddress.equals("")) {
+                    url = "http://" + ipaddress + ":8081/zeroconf/" + message.getCommand();
+                    logger.debug("Device state found - IP: {}, URL: {}", ipaddress, url);
+                } else {
+                    logger.debug("No IP address available for deviceid: {}", message.getDeviceid());
+                }
+            } else {
+                logger.debug("Device state NOT found for deviceid: {}", message.getDeviceid());
             }
 
             // Send LAN Message
             if (!ipaddress.equals("")) {
-                logger.debug("Sending message via LAN");
-                listener.sendLanMessage(url, new SonoffCommandMessageEncryptionUtilities().encrypt(
-                        gson.toJson(message.getParams()), deviceKey, message.getDeviceid(), message.getSequence()));
+                logger.debug("Sending message via LAN to: {}", url);
+                String paramsJson = gson.toJson(message.getParams());
+                logger.debug("LAN Command params JSON (before encryption): {}", paramsJson);
+                listener.sendLanMessage(url, new SonoffCommandMessageEncryptionUtilities().encrypt(paramsJson,
+                        deviceKey, message.getDeviceid(), message.getSequence()));
+                logger.debug("************* SEND MESSAGE END (LAN) *************");
+                return;
+            } else {
+                logger.debug("LAN transmission skipped - no IP address available, falling back to cloud");
             }
-            return;
         }
 
         // Send Websocket Message
         if (cloudConnected) {
-            logger.debug("Sending message via Cloud");
+            logger.debug("Sending message via Cloud WebSocket");
             String params = gson.toJson(message.getParams().getCommand());
+            logger.debug("Command params JSON: {}", params);
             WebsocketRequest request = new WebsocketRequest(message.getSequence(), apiKey, message.getDeviceid(),
                     gson.fromJson(params, JsonObject.class));
-            listener.sendWebsocketMessage(gson.toJson(request));
+            String fullRequest = gson.toJson(request);
+            logger.debug("Full WebSocket request JSON: {}", fullRequest);
+            listener.sendWebsocketMessage(fullRequest);
+            logger.debug("************* SEND MESSAGE END (CLOUD) *************");
             return;
         }
 
         // Log if we cant send
+        logger.error("************* SEND MESSAGE FAILED *************");
         logger.error("Cannot send command {}, all connections are offline for deviceid {}", message.getCommand(),
                 message.getDeviceid());
+        logger.error("LAN connected: {}, Cloud connected: {}, Mode: {}", lanConnected, cloudConnected, mode);
+        logger.error("************* SEND MESSAGE END (OFFLINE) *************");
     }
 
     /**

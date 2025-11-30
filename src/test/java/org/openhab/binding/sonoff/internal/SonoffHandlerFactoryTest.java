@@ -105,12 +105,16 @@ class SonoffHandlerFactoryTest {
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_138));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_190));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_237));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_275));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_1770));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_2026));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7000));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7002));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7003));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7010));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7014));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7029));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7040));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_268));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_RF1));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_RF2));
@@ -164,7 +168,7 @@ class SonoffHandlerFactoryTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "2", "3", "4", "7", "8", "9", "29", "30", "31", "77", "78", "82", "83", "84", "126", "161",
-            "162", "210", "211", "212", "264", "268" })
+            "162", "210", "211", "212", "264", "268", "275" })
     @DisplayName("Should create SonoffSwitchMultiHandler for multi switch device types")
     void testCreateHandler_MultiSwitchDevices(String deviceId) {
         // Setup
@@ -267,7 +271,7 @@ class SonoffHandlerFactoryTest {
 
         // Verify
         assertNotNull(handler);
-        assertEquals("SonoffSwitchPOWR2Handler", handler.getClass().getSimpleName());
+        assertEquals("SonoffSwitchUUID226Handler", handler.getClass().getSimpleName());
     }
 
     @Test
@@ -436,6 +440,24 @@ class SonoffHandlerFactoryTest {
         // Verify
         assertNotNull(handler);
         assertEquals("SonoffZigbeeSwitchSingleHandler", handler.getClass().getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Should create SonoffZigbeeSwitchMultiHandler for Zigbee multi-switch device types")
+    void testCreateHandler_ZigbeeMultiSwitchDevice() {
+        // Test UUID 7029 (MINI-ZB2GS-L)
+        ThingTypeUID thingType7029 = new ThingTypeUID("sonoff", "7029");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType7029);
+        ThingHandler handler7029 = factory.createHandler(mockThing);
+        assertNotNull(handler7029);
+        assertEquals("SonoffZigbeeSwitchMultiHandler", handler7029.getClass().getSimpleName());
+
+        // Test UUID 7040 (MINI-ZB2GS)
+        ThingTypeUID thingType7040 = new ThingTypeUID("sonoff", "7040");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType7040);
+        ThingHandler handler7040 = factory.createHandler(mockThing);
+        assertNotNull(handler7040);
+        assertEquals("SonoffZigbeeSwitchMultiHandler", handler7040.getClass().getSimpleName());
     }
 
     @Test

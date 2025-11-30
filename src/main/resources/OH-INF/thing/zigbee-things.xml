@@ -212,6 +212,75 @@
 		</config-description>
 	</thing-type>
 
+	<thing-type id="7029">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="66"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Dual Channel Switch (No Neutral Wire)</label>
+		<description>Model: MINI-ZB2GS-L (MINI Duo L 2-Gang Zigbee Smart Switch with No Neutral Wire)</description>
+		<channels>
+			<channel id="switch0" typeId="power">
+				<label>Switch 1</label>
+				<description>First switch channel</description>
+			</channel>
+			<channel id="switch1" typeId="power">
+				<label>Switch 2</label>
+				<description>Second switch channel</description>
+			</channel>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="sled" typeId="sled"/>
+			<channel id="rssi" typeId="rssi"/>
+		</channels>
+		<properties>
+			<property name="vendor">SONOFF</property>
+			<property name="modelId">MINI-ZB2GS-L</property>
+			<property name="Product url">https://s.smartnydom.pl/r/sonoff-zb2gs-l?ref=openhab</property>
+		</properties>
+		<representation-property>deviceid</representation-property>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="7040">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="66"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Dual Channel Switch</label>
+		<description>Model: MINI-ZB2GS (MINI Duo 2-Gang Zigbee Smart Switch)</description>
+		<channels>
+			<channel id="switch0" typeId="power">
+				<label>Switch 1</label>
+				<description>First switch channel</description>
+			</channel>
+			<channel id="switch1" typeId="power">
+				<label>Switch 2</label>
+				<description>Second switch channel</description>
+			</channel>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="sled" typeId="sled"/>
+			<channel id="rssi" typeId="rssi"/>
+		</channels>
+		<properties>
+			<property name="vendor">SONOFF</property>
+			<property name="modelId">MINI-ZB2GS</property>
+			<property name="Product url">https://s.smartnydom.pl/r/sonoff-zb2gs?ref=openhab</property>
+		</properties>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
 	<thing-type id="7000">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>

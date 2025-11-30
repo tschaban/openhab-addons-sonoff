@@ -78,12 +78,15 @@ public abstract class SonoffBaseDeviceHandler extends BaseThingHandler implement
                         "This device has not been initilized, please run discovery");
                 return;
             } else {
-                if (!account.getMode().equals("cloud") && config.local == true) {
-                    // Check whether we are a local only device
+                // Check LAN capabilities if bridge is not in cloud-only mode
+                if (!account.getMode().equals("cloud")) {
+                    // Check whether device supports inbound LAN communication
                     if (SonoffBindingConstants.LAN_IN.contains(state.getUiid())) {
                         isLocalIn = true;
                     }
-                    if (SonoffBindingConstants.LAN_OUT.contains(state.getUiid())) {
+                    // Check whether device supports outbound LAN communication
+                    // Only enable if user hasn't explicitly disabled it via config.local
+                    if (SonoffBindingConstants.LAN_OUT.contains(state.getUiid()) && config.local != Boolean.FALSE) {
                         this.isLocalOut = true;
                     }
                 }
@@ -99,6 +102,9 @@ public abstract class SonoffBaseDeviceHandler extends BaseThingHandler implement
                 // Get initial connection statuses
                 checkBridge();
             }
+        } else {
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.BRIDGE_UNINITIALIZED, "Bridge handler not available");
+            return;
         }
     }
 
@@ -157,7 +163,13 @@ public abstract class SonoffBaseDeviceHandler extends BaseThingHandler implement
     }
 
     protected void setProperties(Map<String, String> properties) {
-        updateProperties(properties);
+        Map<String, String> updatedProperties = new HashMap<>(properties);
+
+        // Add LAN and Cloud control status
+        updatedProperties.put("LAN Controlled", isLocalOut ? "Yes" : "No");
+        updatedProperties.put("Cloud Controlled", "Yes");
+
+        updateProperties(updatedProperties);
     }
 
     @Override

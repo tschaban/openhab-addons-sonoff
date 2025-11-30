@@ -1,4 +1,31 @@
 {
+    "action": "update",
+    "deviceid": "",
+    "apikey": "",
+    "userAgent": "device",
+    "d_seq": 24640,
+    "params": {
+        "totalPower": 0,
+        "phase_0_c": 0,
+        "phase_0_v": 231.45,
+        "phase_0_p": 0,
+        "availablePower": 0
+    }
+}
+
+
+{
+    "action": "update",
+    "deviceid": "",
+    "apikey": "",
+    "userAgent": "app",
+    "sequence": "1763400324480",
+    "params": {
+        "switch": true
+    }
+}
+
+{
     "name": "XXXXXX",
     "deviceid": "",
     "apikey": "a",
@@ -31,13 +58,13 @@
     },
     "devGroups": [],
     "family": {
-        "familyid": "667da63b9b85c10008f4ed69",
+        "familyid": "",
         "index": -2,
         "members": [],
         "guests": []
     },
     "shareTo": [],
-    "devicekey": "5f780db0-d5fc-40f0-a266-d90b465f126d",
+    "devicekey": "",
     "online": true,
     "params": {
         "bindInfos": {},
