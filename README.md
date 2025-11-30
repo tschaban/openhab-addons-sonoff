@@ -90,7 +90,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **264** | Sonoff Virtual Switch | 🌐 Cloud | Model: NON-OTA-GL(264) | |
 | **265** | Sonoff Virtual 3xButtons | 🌐 Cloud | Model: NON-OTA-GL(265) | |
 | **268** | [Sonoff BASIC-1GS](https://s.smartnydom.pl/r/sonoff-basic-1gs-itead-en?ref=openhab) | 🔄 Mixed | BASIC 5Gen single switch with Matter support | |
-| **273** | [Sonoff MINI-2GS]https://s.smartnydom.pl/r/sonoff-mini-2gs?ref=openhab) | 🔄 Mixed | Dual channel switch with Matter support | |
+| **273** | [Sonoff MINI-2GS](https://s.smartnydom.pl/r/sonoff-mini-2gs?ref=openhab) | 🔄 Mixed | Dual channel switch with Matter support | |
 | **1770** | [Sonoff ZigBee SNZB-02](https://s.smartnydom.pl/r/sonoff-zigbee-sensors?ref=openhab) | 🌐 Cloud | Temperature monitoring, 1st version| |
 | **2026** | [Sonoff ZigBee Motion Sensor](https://s.smartnydom.pl/r/sonoff-zigbee-sensors?ref=openhab) | 🌐 Cloud | Motion detection, 1st version | |
 | **7000** | Sonoff [SNZB-01P](https://s.smartnydom.pl/r/sonoff-snzb-01p?ref=openhab) | 🌐 Cloud | Wireless ZigBee switch (single/double/long press) | |
