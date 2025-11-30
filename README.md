@@ -98,7 +98,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **7003** | Sonoff [SNZB-04P](https://s.smartnydom.pl/r/sonoff-snzb-04p-itead?ref=openhab) | 🌐 Cloud | Door/window sensor | ⚠️ Testing needed |
 | **7010** | Sonoff [ZBMINIR2](https://s.smartnydom.pl/r/sonoff-zbminir2-itead?ref=openhab) | 🌐 Cloud | Zigbee single relay switch | |
 | **7014** | Sonoff ZigBee [SNZB-02P](https://s.smartnydom.pl/r/sonoff-snzb-02p?ref=openhab), [SNZB-02D](https://s.smartnydom.pl/r/sonoff-snzb-02d-sd?ref=openhab) | 🌐 Cloud | Temperature/humidity sensor | |
-| **7029** | Sonoff [MINI-ZB2GS-L](https://s.smartnydom.pl/r/sonoff-zb2gs-l?ref=openhab) | 🌐 Cloud | Zigbee dual channel switch with neutral wire (MINI Duo L 2-Gang) | |
+| **7029** | Sonoff [MINI-ZB2GS-L](https://s.smartnydom.pl/r/sonoff-zb2gs-l?ref=openhab) | 🌐 Cloud | Zigbee dual channel switch with NO neutral wire (MINI Duo L 2-Gang) | |
 | **7040** | Sonoff [MINI-ZB2GS](https://s.smartnydom.pl/r/sonoff-zb2gs?ref=openhab) | 🌐 Cloud | Zigbee dual channel switch (MINI Duo 2-Gang) | ⚠️ Testing needed |
 | **ZCONTACT** | Generic Contact Sensor | 🌐 Cloud | Contact detection | |
 | **ZWATER** | Water Leak Sensor | 🌐 Cloud | Water leak detection | |
