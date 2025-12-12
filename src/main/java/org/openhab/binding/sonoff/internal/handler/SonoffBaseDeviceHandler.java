@@ -235,10 +235,10 @@ public abstract class SonoffBaseDeviceHandler extends BaseThingHandler implement
                     status = ThingStatus.ONLINE;
                 } else {
                     if (!cloud && local) {
-                        detail = "Cloud Offline";
+                        detail = "Connected via LAN only";
                     }
                     if (!local && cloud) {
-                        detail = "LAN Offline";
+                        detail = "Connected via Cloud only";
                     }
                     if (!local && !cloud) {
                         status = ThingStatus.OFFLINE;
@@ -248,7 +248,7 @@ public abstract class SonoffBaseDeviceHandler extends BaseThingHandler implement
         }
 
         if (detail != null) {
-            updateStatus(status, ThingStatusDetail.COMMUNICATION_ERROR, detail);
+            updateStatus(status, ThingStatusDetail.NONE, detail);
         } else {
             updateStatus(status);
         }

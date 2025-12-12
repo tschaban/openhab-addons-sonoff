@@ -29,6 +29,8 @@ public interface SonoffCommunicationManagerListener {
     @Nullable
     SonoffDeviceState getState(String deviceid);
 
+    void addState(String deviceid, SonoffDeviceState state);
+
     // Device Operations
     @Nullable
     SonoffDeviceListener getListener(String deviceid);

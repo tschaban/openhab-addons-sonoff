@@ -122,6 +122,8 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
                 return new SonoffSwitchUUID226Handler(thing);
             case "59":
                 return new SonoffRGBStripHandler(thing);
+            case "173":
+                return new SonoffRGBICStripHandler(thing);
             case "66":
             case "168":
             case "243":

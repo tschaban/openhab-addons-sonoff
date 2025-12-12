@@ -76,6 +76,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **161** | [Sonoff M5-2C](https://s.smartnydom.pl/r/sonoff-switchman-m5?ref=openhab) | 🔄 Mixed | Dual channel switch | ⚠️ Testing needed |
 | **162** | [Sonoff M5-3C](https://s.smartnydom.pl/r/sonoff-switchman-m5?ref=openhab) | 🔄 Mixed | Triple channel switch | ⚠️ Testing needed |
 | **168** | [Sonoff ZigBee ZBBridge-P](https://s.smartnydom.pl/r/sonoff-zb-bridge-pro?ref=openhab) | 🌐 Cloud | Zigbee bridge Pro | |
+| **173** | [Sonoff L3-5M-P](https://s.smartnydom.pl/r/sonoff-l3rgbic?ref=openhab) | 🔄 Mixed | RGBIC Light Strip with Music Sync | ⚠️ Testing needed |
 | **181** | [Sonoff THR320D, THR316D](https://s.smartnydom.pl/r/sonoff-th-elite-smart-temperature-and-humidity-monitoring-switch-yt?ref=openhab) | 🔄 Mixed | Single relay with Temperature/humidity sensor | |
 | **190** | [Sonoff S60TPF, S60TPG](https://s.smartnydom.pl/r/sonoff-s60tpf?ref=openhab) | 🔄 Mixed | Smart plug | |
 | **209** | [Sonoff T5-1C-86](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab) | 🔄 Mixed | Single touch switch | ⚠️ Testing needed |

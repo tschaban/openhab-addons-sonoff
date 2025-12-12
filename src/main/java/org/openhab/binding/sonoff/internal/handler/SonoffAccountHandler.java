@@ -193,14 +193,14 @@ public class SonoffAccountHandler extends BaseBridgeHandler
         }
 
         if (mode.equals("mixed") && lanConnected && !cloudConnected) {
-            detail = "Cloud Offline";
+            detail = "Connected via LAN only";
         } else if (mode.equals("mixed") && !lanConnected && cloudConnected) {
-            detail = "LAN Offline";
+            detail = "Connected via Cloud only";
         }
 
         if (detail != null) {
             commandManager.startRunning();
-            updateStatus(ThingStatus.ONLINE, ThingStatusDetail.COMMUNICATION_ERROR, detail);
+            updateStatus(ThingStatus.ONLINE, ThingStatusDetail.NONE, detail);
 
         } else {
             commandManager.startRunning();
@@ -330,6 +330,20 @@ public class SonoffAccountHandler extends BaseBridgeHandler
         } else {
             return null;
         }
+    }
+
+    /**
+     * Allows adding a new state to the in-memory map (used for auto-cache creation)
+     *
+     */
+    @Override
+    public void addState(String deviceid, SonoffDeviceState state) {
+        if (ipaddresses.containsKey(deviceid)) {
+            state.setIpAddress(new StringType(ipaddresses.get(deviceid)));
+            state.setLocal(true);
+        }
+        this.deviceStates.putIfAbsent(deviceid, state);
+        logger.debug("Added state for device {} to in-memory map", deviceid);
     }
 
     @Override

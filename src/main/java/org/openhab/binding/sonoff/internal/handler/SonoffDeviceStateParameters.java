@@ -86,6 +86,9 @@ public class SonoffDeviceStateParameters {
     private StringType ltype = new StringType();
     private PercentType whiteBrightness = new PercentType(0);
     private PercentType colorBrightness = new PercentType(0);
+    // RGBIC (UUID 173)
+    private OnOffType rhythmMode = OnOffType.OFF;
+    private DecimalType rhythmSensitivity = new DecimalType(0);
     // DoorSensor
     private OnOffType door0 = OnOffType.OFF;
     private OnOffType door1 = OnOffType.OFF;
@@ -699,5 +702,22 @@ public class SonoffDeviceStateParameters {
 
     public void resetButtonPress(Integer key) {
         setButton(key, OpenClosedType.CLOSED);
+    }
+
+    // RGBIC (UUID 173) specific methods
+    public OnOffType getRhythmMode() {
+        return this.rhythmMode;
+    }
+
+    public void setRhythmMode(Integer rhythmMode) {
+        this.rhythmMode = rhythmMode == 1 ? OnOffType.ON : OnOffType.OFF;
+    }
+
+    public DecimalType getRhythmSensitivity() {
+        return this.rhythmSensitivity;
+    }
+
+    public void setRhythmSensitivity(Integer rhythmSensitivity) {
+        this.rhythmSensitivity = new DecimalType(rhythmSensitivity);
     }
 }

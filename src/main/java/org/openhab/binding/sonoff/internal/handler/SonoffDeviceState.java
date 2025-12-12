@@ -378,6 +378,15 @@ public class SonoffDeviceState {
             parameters.setSpeed(params.get("speed").getAsInt());
         }
 
+        // RGBIC (UUID 173) specific parameters
+        if (params.get("rhythmMode") != null) {
+            parameters.setRhythmMode(params.get("rhythmMode").getAsInt());
+        }
+
+        if (params.get("rhythmSensitive") != null) {
+            parameters.setRhythmSensitivity(params.get("rhythmSensitive").getAsInt());
+        }
+
         if (params.get("colorR") != null && params.get("colorG") != null && params.get("colorB") != null) {
             parameters.setColor(params.get("colorR").getAsInt(), params.get("colorG").getAsInt(),
                     params.get("colorB").getAsInt());
