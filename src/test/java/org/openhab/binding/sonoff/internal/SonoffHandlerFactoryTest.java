@@ -72,8 +72,15 @@ class SonoffHandlerFactoryTest {
         when(webSocketFactory.getCommonWebSocketClient()).thenReturn(webSocketClient);
         when(httpClientFactory.getCommonHttpClient()).thenReturn(httpClient);
 
+        // Mock BundleContext and Bundle
+        org.osgi.framework.BundleContext mockBundleContext = mock(org.osgi.framework.BundleContext.class);
+        org.osgi.framework.Bundle mockBundle = mock(org.osgi.framework.Bundle.class);
+        org.osgi.framework.Version mockVersion = new org.osgi.framework.Version("5.0.3.SNAPSHOT");
+        when(mockBundleContext.getBundle()).thenReturn(mockBundle);
+        when(mockBundle.getVersion()).thenReturn(mockVersion);
+
         // Create factory instance
-        factory = new SonoffHandlerFactory(webSocketFactory, httpClientFactory);
+        factory = new SonoffHandlerFactory(webSocketFactory, httpClientFactory, mockBundleContext);
     }
 
     @Test

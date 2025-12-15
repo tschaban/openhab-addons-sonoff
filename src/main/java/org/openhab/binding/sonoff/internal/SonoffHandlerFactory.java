@@ -17,6 +17,11 @@ package org.openhab.binding.sonoff.internal;
 
 import static org.openhab.binding.sonoff.internal.SonoffBindingConstants.*;
 
+import java.io.InputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jetty.client.HttpClient;
@@ -37,9 +42,15 @@ import org.openhab.core.thing.ThingTypeUID;
 import org.openhab.core.thing.binding.BaseThingHandlerFactory;
 import org.openhab.core.thing.binding.ThingHandler;
 import org.openhab.core.thing.binding.ThingHandlerFactory;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * The {@link sonoffHandlerFactory} is responsible for creating things and thing
@@ -51,6 +62,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(configurationPid = "binding.sonoff", service = ThingHandlerFactory.class)
 
 public class SonoffHandlerFactory extends BaseThingHandlerFactory {
+    private final Logger logger = LoggerFactory.getLogger(SonoffHandlerFactory.class);
     private final WebSocketClient websocketClient;
     private final HttpClient httpClient;
 
@@ -61,9 +73,44 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
 
     @Activate
     public SonoffHandlerFactory(final @Reference WebSocketFactory webSocketFactory,
-            final @Reference HttpClientFactory httpClientFactory) {
+            final @Reference HttpClientFactory httpClientFactory, BundleContext bundleContext) {
         this.websocketClient = webSocketFactory.getCommonWebSocketClient();
         this.httpClient = httpClientFactory.getCommonHttpClient();
+
+        // Log binding version on activation
+        String customVersion = readVersionFromXml();
+        String bundleVersion = bundleContext.getBundle().getVersion().toString();
+        logger.info("Sonoff (eWeLink) Binding: version {} (Maven: {})", customVersion, bundleVersion);
+    }
+
+    /**
+     * Reads the custom version from version.xml resource file
+     *
+     * @return the version string, or "unknown" if unable to read
+     */
+    private String readVersionFromXml() {
+        try (InputStream input = getClass().getResourceAsStream("/version.xml")) {
+            if (input == null) {
+                logger.warn("version.xml not found in resources");
+                return "unknown";
+            }
+
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(input);
+
+            NodeList customNodes = doc.getElementsByTagName("custom");
+            if (customNodes.getLength() > 0) {
+                Element customElement = (Element) customNodes.item(0);
+                return customElement.getTextContent().trim();
+            }
+
+            logger.warn("No <custom> element found in version.xml");
+            return "unknown";
+        } catch (Exception e) {
+            logger.warn("Failed to read version from version.xml: {}", e.getMessage());
+            return "unknown";
+        }
     }
 
     @Override

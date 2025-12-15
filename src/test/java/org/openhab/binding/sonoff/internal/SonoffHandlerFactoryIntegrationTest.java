@@ -70,7 +70,15 @@ class SonoffHandlerFactoryIntegrationTest {
     void setUp() {
         when(webSocketFactory.getCommonWebSocketClient()).thenReturn(webSocketClient);
         when(httpClientFactory.getCommonHttpClient()).thenReturn(httpClient);
-        factory = new SonoffHandlerFactory(webSocketFactory, httpClientFactory);
+
+        // Mock BundleContext and Bundle
+        org.osgi.framework.BundleContext mockBundleContext = mock(org.osgi.framework.BundleContext.class);
+        org.osgi.framework.Bundle mockBundle = mock(org.osgi.framework.Bundle.class);
+        org.osgi.framework.Version mockVersion = new org.osgi.framework.Version("5.0.3.SNAPSHOT");
+        when(mockBundleContext.getBundle()).thenReturn(mockBundle);
+        when(mockBundle.getVersion()).thenReturn(mockVersion);
+
+        factory = new SonoffHandlerFactory(webSocketFactory, httpClientFactory, mockBundleContext);
     }
 
     @Test
@@ -121,7 +129,13 @@ class SonoffHandlerFactoryIntegrationTest {
         verify(httpClientFactory, times(1)).getCommonHttpClient();
 
         // Test that factory can be created multiple times
-        SonoffHandlerFactory secondFactory = new SonoffHandlerFactory(webSocketFactory, httpClientFactory);
+        org.osgi.framework.BundleContext mockBundleContext2 = mock(org.osgi.framework.BundleContext.class);
+        org.osgi.framework.Bundle mockBundle2 = mock(org.osgi.framework.Bundle.class);
+        org.osgi.framework.Version mockVersion2 = new org.osgi.framework.Version("5.0.3.SNAPSHOT");
+        when(mockBundleContext2.getBundle()).thenReturn(mockBundle2);
+        when(mockBundle2.getVersion()).thenReturn(mockVersion2);
+        SonoffHandlerFactory secondFactory = new SonoffHandlerFactory(webSocketFactory, httpClientFactory,
+                mockBundleContext2);
         assertNotNull(secondFactory);
 
         // Verify dependencies are called again
@@ -132,19 +146,24 @@ class SonoffHandlerFactoryIntegrationTest {
     @Test
     @DisplayName("Should handle null dependencies gracefully")
     void testNullDependencies() {
+        org.osgi.framework.BundleContext mockBundleContext3 = mock(org.osgi.framework.BundleContext.class);
+        org.osgi.framework.Bundle mockBundle3 = mock(org.osgi.framework.Bundle.class);
+        org.osgi.framework.Version mockVersion3 = new org.osgi.framework.Version("5.0.3.SNAPSHOT");
+        // Don't set up when() calls as they won't be used due to NPE on null parameters
+
         // Test with null WebSocketFactory
         assertThrows(NullPointerException.class, () -> {
-            new SonoffHandlerFactory(null, httpClientFactory);
+            new SonoffHandlerFactory(null, httpClientFactory, mockBundleContext3);
         });
 
         // Test with null HttpClientFactory
         assertThrows(NullPointerException.class, () -> {
-            new SonoffHandlerFactory(webSocketFactory, null);
+            new SonoffHandlerFactory(webSocketFactory, null, mockBundleContext3);
         });
 
         // Test with both null
         assertThrows(NullPointerException.class, () -> {
-            new SonoffHandlerFactory(null, null);
+            new SonoffHandlerFactory(null, null, mockBundleContext3);
         });
     }
 
@@ -156,7 +175,13 @@ class SonoffHandlerFactoryIntegrationTest {
         when(httpClientFactory.getCommonHttpClient()).thenReturn(null);
 
         // Factory creation should still work (null handling is up to handlers)
-        SonoffHandlerFactory factoryWithNullClients = new SonoffHandlerFactory(webSocketFactory, httpClientFactory);
+        org.osgi.framework.BundleContext mockBundleContext4 = mock(org.osgi.framework.BundleContext.class);
+        org.osgi.framework.Bundle mockBundle4 = mock(org.osgi.framework.Bundle.class);
+        org.osgi.framework.Version mockVersion4 = new org.osgi.framework.Version("5.0.3.SNAPSHOT");
+        when(mockBundleContext4.getBundle()).thenReturn(mockBundle4);
+        when(mockBundle4.getVersion()).thenReturn(mockVersion4);
+        SonoffHandlerFactory factoryWithNullClients = new SonoffHandlerFactory(webSocketFactory, httpClientFactory,
+                mockBundleContext4);
         assertNotNull(factoryWithNullClients);
 
         // Test that it can still create non-bridge handlers

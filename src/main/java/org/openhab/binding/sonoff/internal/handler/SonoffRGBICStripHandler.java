@@ -16,7 +16,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.binding.sonoff.internal.communication.SonoffCommandMessage;
 import org.openhab.binding.sonoff.internal.dto.commands.Brightness;
 import org.openhab.binding.sonoff.internal.dto.commands.Mode;
-import org.openhab.binding.sonoff.internal.dto.commands.RGBLight;
+import org.openhab.binding.sonoff.internal.dto.commands.RGBICLight;
 import org.openhab.binding.sonoff.internal.dto.commands.RhythmMode;
 import org.openhab.binding.sonoff.internal.dto.commands.RhythmSensitivity;
 import org.openhab.binding.sonoff.internal.dto.commands.SLed;
@@ -43,6 +43,12 @@ public class SonoffRGBICStripHandler extends SonoffBaseDeviceHandler {
 
     private final Logger logger = LoggerFactory.getLogger(SonoffRGBICStripHandler.class);
     private Integer previousMode = 1;
+
+    // Track current state for UUID 173 - needed when sending color commands
+    private String currentSwitch = "on";
+    private Integer currentBrightness = 100;
+    private Integer currentMode = 1;
+    private Integer currentLightType = 1;
 
     public SonoffRGBICStripHandler(Thing thing) {
         super(thing);
@@ -113,10 +119,14 @@ public class SonoffRGBICStripHandler extends SonoffBaseDeviceHandler {
                 case "color":
                     if (command.toString().contains(",")) {
                         int[] rgbColor = ColorUtil.hsbToRgb((HSBType) command);
-                        RGBLight rgb = new RGBLight();
+                        RGBICLight rgb = new RGBICLight();
+                        rgb.setSwitchState(currentSwitch);
                         rgb.setColorR(rgbColor[0]);
                         rgb.setColorG(rgbColor[1]);
                         rgb.setColorB(rgbColor[2]);
+                        rgb.setMode(currentMode);
+                        rgb.setBright(currentBrightness);
+                        rgb.setLightType(currentLightType);
                         message = new SonoffCommandMessage("color", this.deviceid, false, rgb);
                         break;
                     }
@@ -162,6 +172,18 @@ public class SonoffRGBICStripHandler extends SonoffBaseDeviceHandler {
                     this.deviceid, newDevice.getParameters().getMode(), newDevice.getParameters().getColorBrightness(),
                     newDevice.getParameters().getColor(), newDevice.getParameters().getSwitch0());
         }
+
+        // Update current state tracking for use in commands
+        if (newDevice.getParameters().getSwitch0() != null) {
+            currentSwitch = newDevice.getParameters().getSwitch0() == OnOffType.ON ? "on" : "off";
+        }
+        if (newDevice.getParameters().getColorBrightness() != null) {
+            currentBrightness = newDevice.getParameters().getColorBrightness().intValue();
+        }
+        if (newDevice.getParameters().getMode() != null) {
+            currentMode = Integer.parseInt(newDevice.getParameters().getMode().toString());
+        }
+        // light_type is typically 1 for RGB mode
 
         // Update basic channels
         updateState("switch", newDevice.getParameters().getSwitch0());
