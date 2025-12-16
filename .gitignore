@@ -9,3 +9,7 @@ conf.d/*.ps1
 
 # Keep the example file in the repository
 !conf.d/*.example
+
+
+docs/development/instructions/ai.instruction.md
+docs/development/logs/*
