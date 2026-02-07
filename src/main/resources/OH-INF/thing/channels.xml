@@ -227,10 +227,46 @@
 		<description>Current temperature</description>
 		<state pattern="%.2f %unit%" readOnly="true"/>
 	</channel-type>
+	<channel-type id="temperatureMax">
+		<item-type unitHint="°C">Number:Temperature</item-type>
+		<label>Temperature Maximum</label>
+		<description>Maximum temperature recorded</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+	<channel-type id="temperatureMin">
+		<item-type unitHint="°C">Number:Temperature</item-type>
+		<label>Temperature Minimum</label>
+		<description>Minimum temperature recorded</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+	<channel-type id="temperatureAvg">
+		<item-type unitHint="°C">Number:Temperature</item-type>
+		<label>Temperature Average</label>
+		<description>Average temperature recorded</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
 	<channel-type id="humidity">
 		<item-type unitHint="%">Number:Dimensionless</item-type>
 		<label>Humidity</label>
 		<description>Current humidity</description>
+		<state readOnly="true" pattern="%.2f %unit%"/>
+	</channel-type>
+	<channel-type id="humidityMax">
+		<item-type unitHint="%">Number:Dimensionless</item-type>
+		<label>Humidity Maximum</label>
+		<description>Maximum humidity recorded</description>
+		<state readOnly="true" pattern="%.2f %unit%"/>
+	</channel-type>
+	<channel-type id="humidityMin">
+		<item-type unitHint="%">Number:Dimensionless</item-type>
+		<label>Humidity Minimum</label>
+		<description>Minimum humidity recorded</description>
+		<state readOnly="true" pattern="%.2f %unit%"/>
+	</channel-type>
+	<channel-type id="humidityAvg">
+		<item-type unitHint="%">Number:Dimensionless</item-type>
+		<label>Humidity Average</label>
+		<description>Average humidity recorded</description>
 		<state readOnly="true" pattern="%.2f %unit%"/>
 	</channel-type>
 	<channel-type id="mainSwitch">

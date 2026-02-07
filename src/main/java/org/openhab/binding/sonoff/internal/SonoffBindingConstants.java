@@ -49,9 +49,9 @@ public class SonoffBindingConstants {
      * TODO: Analyze why devices 15, 103, 104, 181, 190 are in LAN_IN but not LAN_OUT
      * NOTE: UUID 226 (Circuit Breaker) is cloud-only and does not support LAN communication
      */
-    public static final Set<Integer> LAN_IN = Collections
-            .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140,
-                    160, 161, 162, 181, 190, 209, 210, 211, 212, 237, 256, 260, 268, 275).collect(Collectors.toSet()));
+    public static final Set<Integer> LAN_IN = Collections.unmodifiableSet(
+            Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140, 160, 161, 162,
+                    173, 181, 190, 209, 210, 211, 212, 237, 256, 260, 268, 275).collect(Collectors.toSet()));
 
     /**
      * Device types that support outbound LAN protocol communication.
@@ -60,7 +60,7 @@ public class SonoffBindingConstants {
      */
     public static final Set<Integer> LAN_OUT = Collections
             .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126, 138, 140, 160, 161, 162,
-                    209, 210, 211, 212, 237, 256, 260, 268, 275).collect(Collectors.toSet()));
+                    173, 209, 210, 211, 212, 237, 256, 260, 268, 275).collect(Collectors.toSet()));
 
     // ========================================
     // BRIDGE AND ACCOUNT THING TYPES
@@ -156,6 +156,9 @@ public class SonoffBindingConstants {
 
     /** Smart bulb: B05 Bulb */
     public static final ThingTypeUID THING_TYPE_104 = new ThingTypeUID(BINDING_ID, "104");
+
+    /** RGBIC Light Strip: L3-5M-P with music sync */
+    public static final ThingTypeUID THING_TYPE_173 = new ThingTypeUID(BINDING_ID, "173");
 
     // Compact/Mini devices
     /** Compact WiFi switch: WiFi MICRO (USB-powered) */
@@ -289,6 +292,9 @@ public class SonoffBindingConstants {
     /** Zigbee dual channel switch with neutral wire: MINI-ZB2GS-L */
     public static final ThingTypeUID THING_TYPE_7029 = new ThingTypeUID(BINDING_ID, "7029");
 
+    /** Zigbee temperature/humidity sensor with display: SNZB-02DR2 */
+    public static final ThingTypeUID THING_TYPE_7038 = new ThingTypeUID(BINDING_ID, "7038");
+
     /** Zigbee dual channel switch: MINI-ZB2GS */
     public static final ThingTypeUID THING_TYPE_7040 = new ThingTypeUID(BINDING_ID, "7040");
 
@@ -353,9 +359,9 @@ public class SonoffBindingConstants {
             THING_TYPE_8, THING_TYPE_9, THING_TYPE_14, THING_TYPE_15, THING_TYPE_24, THING_TYPE_27, THING_TYPE_29,
             THING_TYPE_30, THING_TYPE_31, THING_TYPE_32, THING_TYPE_59, THING_TYPE_77, THING_TYPE_78, THING_TYPE_81,
             THING_TYPE_82, THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126,
-            THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162, THING_TYPE_181,
-            THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212, THING_TYPE_226,
-            THING_TYPE_237, THING_TYPE_264, THING_TYPE_265, THING_TYPE_268, THING_TYPE_275,
+            THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162, THING_TYPE_173,
+            THING_TYPE_181, THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212,
+            THING_TYPE_226, THING_TYPE_237, THING_TYPE_264, THING_TYPE_265, THING_TYPE_268, THING_TYPE_275,
 
             // Zigbee bridges
             THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
@@ -368,7 +374,7 @@ public class SonoffBindingConstants {
 
             // Zigbee devices
             THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7002, THING_TYPE_7003, THING_TYPE_7010,
-            THING_TYPE_7014, THING_TYPE_7029, THING_TYPE_7040, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER,
+            THING_TYPE_7014, THING_TYPE_7029, THING_TYPE_7038, THING_TYPE_7040, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER,
             THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
 
             // 433MHz RF devices
@@ -392,9 +398,9 @@ public class SonoffBindingConstants {
             THING_TYPE_8, THING_TYPE_9, THING_TYPE_14, THING_TYPE_15, THING_TYPE_24, THING_TYPE_27, THING_TYPE_29,
             THING_TYPE_30, THING_TYPE_31, THING_TYPE_32, THING_TYPE_59, THING_TYPE_77, THING_TYPE_78, THING_TYPE_81,
             THING_TYPE_82, THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126,
-            THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162, THING_TYPE_181,
-            THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212, THING_TYPE_226,
-            THING_TYPE_237, THING_TYPE_264, THING_TYPE_265, THING_TYPE_268, THING_TYPE_275,
+            THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162, THING_TYPE_173,
+            THING_TYPE_181, THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212,
+            THING_TYPE_226, THING_TYPE_237, THING_TYPE_264, THING_TYPE_265, THING_TYPE_268, THING_TYPE_275,
 
             // Zigbee bridges
             THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
@@ -407,7 +413,7 @@ public class SonoffBindingConstants {
 
             // Zigbee devices
             THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7002, THING_TYPE_7003, THING_TYPE_7010,
-            THING_TYPE_7014, THING_TYPE_7029, THING_TYPE_7040, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER,
+            THING_TYPE_7014, THING_TYPE_7029, THING_TYPE_7038, THING_TYPE_7040, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER,
             THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
 
             // 433MHz RF devices
@@ -465,6 +471,7 @@ public class SonoffBindingConstants {
         deviceTypes.put(161, THING_TYPE_161);
         deviceTypes.put(162, THING_TYPE_162);
         deviceTypes.put(168, THING_TYPE_168);
+        deviceTypes.put(173, THING_TYPE_173);
         deviceTypes.put(181, THING_TYPE_181);
         deviceTypes.put(190, THING_TYPE_190);
         deviceTypes.put(209, THING_TYPE_209);
@@ -538,6 +545,7 @@ public class SonoffBindingConstants {
         zigbeeTypes.put(7010, THING_TYPE_7010); // ZBMINIR2
         zigbeeTypes.put(7014, THING_TYPE_7014); // SNZB-02P
         zigbeeTypes.put(7029, THING_TYPE_7029); // MINI-ZB2GS-L
+        zigbeeTypes.put(7038, THING_TYPE_7038); // SNZB-02DR2
         zigbeeTypes.put(7040, THING_TYPE_7040); // MINI-ZB2GS
 
         return Collections.unmodifiableMap(zigbeeTypes);

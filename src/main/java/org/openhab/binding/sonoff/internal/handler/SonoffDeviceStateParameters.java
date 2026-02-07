@@ -73,6 +73,12 @@ public class SonoffDeviceStateParameters {
     private StringType sensorType = new StringType();
     private QuantityType<Temperature> temperature = new QuantityType<Temperature>(0.0, SIUnits.CELSIUS);
     private QuantityType<Dimensionless> humidity = new QuantityType<Dimensionless>(0.0, PERCENT);
+    private QuantityType<Temperature> temperatureMax = new QuantityType<Temperature>(0.0, SIUnits.CELSIUS);
+    private QuantityType<Temperature> temperatureMin = new QuantityType<Temperature>(0.0, SIUnits.CELSIUS);
+    private QuantityType<Temperature> temperatureAvg = new QuantityType<Temperature>(0.0, SIUnits.CELSIUS);
+    private QuantityType<Dimensionless> humidityMax = new QuantityType<Dimensionless>(0.0, PERCENT);
+    private QuantityType<Dimensionless> humidityMin = new QuantityType<Dimensionless>(0.0, PERCENT);
+    private QuantityType<Dimensionless> humidityAvg = new QuantityType<Dimensionless>(0.0, PERCENT);
     // Actions
     private DateTimeType lastUpdate = new DateTimeType(System.currentTimeMillis() + "");
     private DateTimeType actionTime = new DateTimeType(System.currentTimeMillis() + "");
@@ -86,6 +92,9 @@ public class SonoffDeviceStateParameters {
     private StringType ltype = new StringType();
     private PercentType whiteBrightness = new PercentType(0);
     private PercentType colorBrightness = new PercentType(0);
+    // RGBIC (UUID 173)
+    private OnOffType rhythmMode = OnOffType.OFF;
+    private DecimalType rhythmSensitivity = new DecimalType(0);
     // DoorSensor
     private OnOffType door0 = OnOffType.OFF;
     private OnOffType door1 = OnOffType.OFF;
@@ -95,6 +104,7 @@ public class SonoffDeviceStateParameters {
     private OpenClosedType doorSensor2 = OpenClosedType.CLOSED;
     // Contact
     private OpenClosedType contact0 = OpenClosedType.CLOSED;
+    private OpenClosedType tamper = OpenClosedType.CLOSED;
 
     // Other
     private OnOffType networkLED = OnOffType.OFF;
@@ -188,6 +198,14 @@ public class SonoffDeviceStateParameters {
 
     public void setContact0(Integer contact0) {
         this.contact0 = contact0 == 1 ? OpenClosedType.OPEN : OpenClosedType.CLOSED;
+    }
+
+    public OpenClosedType getTamper() {
+        return this.tamper;
+    }
+
+    public void setTamper(Integer tamper) {
+        this.tamper = tamper == 1 ? OpenClosedType.OPEN : OpenClosedType.CLOSED;
     }
 
     public OnOffType getSwitch0() {
@@ -699,5 +717,71 @@ public class SonoffDeviceStateParameters {
 
     public void resetButtonPress(Integer key) {
         setButton(key, OpenClosedType.CLOSED);
+    }
+
+    // RGBIC (UUID 173) specific methods
+    public OnOffType getRhythmMode() {
+        return this.rhythmMode;
+    }
+
+    public void setRhythmMode(Integer rhythmMode) {
+        this.rhythmMode = rhythmMode == 1 ? OnOffType.ON : OnOffType.OFF;
+    }
+
+    public DecimalType getRhythmSensitivity() {
+        return this.rhythmSensitivity;
+    }
+
+    public void setRhythmSensitivity(Integer rhythmSensitivity) {
+        this.rhythmSensitivity = new DecimalType(rhythmSensitivity);
+    }
+
+    // Temperature/Humidity sensor (UUID 7038) specific methods
+    public QuantityType<Temperature> getTemperatureMax() {
+        return this.temperatureMax;
+    }
+
+    public void setTemperatureMax(Double temperatureMax) {
+        this.temperatureMax = new QuantityType<Temperature>(temperatureMax, SIUnits.CELSIUS);
+    }
+
+    public QuantityType<Temperature> getTemperatureMin() {
+        return this.temperatureMin;
+    }
+
+    public void setTemperatureMin(Double temperatureMin) {
+        this.temperatureMin = new QuantityType<Temperature>(temperatureMin, SIUnits.CELSIUS);
+    }
+
+    public QuantityType<Temperature> getTemperatureAvg() {
+        return this.temperatureAvg;
+    }
+
+    public void setTemperatureAvg(Double temperatureAvg) {
+        this.temperatureAvg = new QuantityType<Temperature>(temperatureAvg, SIUnits.CELSIUS);
+    }
+
+    public QuantityType<Dimensionless> getHumidityMax() {
+        return this.humidityMax;
+    }
+
+    public void setHumidityMax(Double humidityMax) {
+        this.humidityMax = new QuantityType<Dimensionless>(humidityMax, PERCENT);
+    }
+
+    public QuantityType<Dimensionless> getHumidityMin() {
+        return this.humidityMin;
+    }
+
+    public void setHumidityMin(Double humidityMin) {
+        this.humidityMin = new QuantityType<Dimensionless>(humidityMin, PERCENT);
+    }
+
+    public QuantityType<Dimensionless> getHumidityAvg() {
+        return this.humidityAvg;
+    }
+
+    public void setHumidityAvg(Double humidityAvg) {
+        this.humidityAvg = new QuantityType<Dimensionless>(humidityAvg, PERCENT);
     }
 }

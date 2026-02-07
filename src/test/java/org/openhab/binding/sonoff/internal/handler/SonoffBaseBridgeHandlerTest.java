@@ -417,14 +417,14 @@ class SonoffBaseBridgeHandlerTest {
         handler.local = true;
         handler.updateStatus();
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
-        assertEquals("Cloud Offline", handler.lastStatusDescription);
+        assertEquals("Connected via LAN only", handler.lastStatusDescription);
 
         // Test 3: Local support, local offline
         handler.cloud = true;
         handler.local = false;
         handler.updateStatus();
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
-        assertEquals("LAN Offline", handler.lastStatusDescription);
+        assertEquals("Connected via Cloud only", handler.lastStatusDescription);
 
         // Test 4: Both offline
         handler.cloud = false;

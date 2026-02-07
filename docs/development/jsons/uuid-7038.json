@@ -1,0 +1,92 @@
+{
+    "name": "SNZB-02DR2",
+    "deviceid": "",
+    "apikey": "",
+    "extra": {
+        "model": "SN-TLSR8656AB2036A-02DR2-01",
+        "ui": "Zigbee蓝牙带屏温湿度传感器",
+        "uiid": 7038,
+        "description": "",
+        "modelInfo": "6837c2fe62e6bc4eaf619da1",
+        "brandId": "5c4c1aee3a7d24c7100be054",
+        "itCredential": "",
+        "mac": "d0:27:04:8b:40:40",
+        "apmac": "d0:27:04:8b:40:41",
+        "manufacturer": "深圳松诺技术有限公司"
+    },
+    "brandName": "SONOFF",
+    "brandLogo": "https://eu-ota.coolkit.cc/logo/q62PevoglDNmwUJ9oPE7kRrpt1nL1CoA.png",
+    "showBrand": true,
+    "productModel": "SNZB-02DR2",
+    "tags": {},
+    "devConfig": {},
+    "settings": {
+        "opsNotify": 0,
+        "opsHistory": 1,
+        "alarmNotify": 1,
+        "wxAlarmNotify": 0,
+        "wxOpsNotify": 0,
+        "wxDoorbellNotify": 0,
+        "appDoorbellNotify": 1
+    },
+    "devGroups": [],
+    "family": {
+        "familyid": "",
+        "index": 1,
+        "members": [
+            ""
+        ]
+    },
+    "shareTo": [],
+    "devicekey": "",
+    "online": true,
+    "params": {
+        "bindInfos": {
+            "alexa": [
+                ""
+            ],
+            "gaction": [
+                ""
+            ]
+        },
+        "parentid": "",
+        "staMac": "0xa4c13808feacffff",
+        "tempUnit": 0,
+        "tempCorrection": 0,
+        "humCorrection": 0,
+        "tempComfortLower": 1900,
+        "tempComfortUpper": 2700,
+        "humiComfortLower": 4000,
+        "humiComfortUpper": 6000,
+        "frequentMode": false,
+        "fwVersion": "1.0.2",
+        "otaInfo": {
+            "state": 0,
+            "upgradeVersion": "1.0.3",
+            "stateTime": 1767041158917,
+            "reason": 14
+        },
+        "battery": 100,
+        "humidity": 2300,
+        "trigTime": "1769345064065",
+        "humiComfortStatus": 1,
+        "temperature": 1550,
+        "temperatureF": 5990,
+        "tempComfortStatus": 1,
+        "temSouce": 0,
+        "temperatureMax": 1600,
+        "temperatureMin": 1500,
+        "temperatureAvg": 1600,
+        "humidityMax": 2300,
+        "humidityMin": 2200,
+        "humidityAvg": 2200,
+        "subDevRssi": -30
+    },
+    "denyFeatures": [
+        "temperature_control_precision"
+    ],
+    "isSupportGroup": false,
+    "isSupportedOnMP": false,
+    "isSupportChannelSplit": false,
+    "deviceFeature": {}
+}

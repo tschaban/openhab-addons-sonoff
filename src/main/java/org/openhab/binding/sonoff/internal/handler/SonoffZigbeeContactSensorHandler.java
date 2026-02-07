@@ -39,6 +39,8 @@ public class SonoffZigbeeContactSensorHandler extends SonoffBaseZigbeeHandler {
     public void updateDevice(SonoffDeviceState newDevice) {
         // Contact
         updateState("contact", newDevice.getParameters().getContact0());
+        // Tamper
+        updateState("tamper", newDevice.getParameters().getTamper());
         // Other
         updateState("rssi", newDevice.getParameters().getRssi());
         updateState("battery", newDevice.getParameters().getBatteryLevel());

@@ -76,6 +76,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **161** | [Sonoff M5-2C](https://s.smartnydom.pl/r/sonoff-switchman-m5?ref=openhab) | 🔄 Mixed | Dual channel switch | ⚠️ Testing needed |
 | **162** | [Sonoff M5-3C](https://s.smartnydom.pl/r/sonoff-switchman-m5?ref=openhab) | 🔄 Mixed | Triple channel switch | ⚠️ Testing needed |
 | **168** | [Sonoff ZigBee ZBBridge-P](https://s.smartnydom.pl/r/sonoff-zb-bridge-pro?ref=openhab) | 🌐 Cloud | Zigbee bridge Pro | |
+| **173** | [Sonoff L3-5M-P](https://s.smartnydom.pl/r/sonoff-l3rgbic?ref=openhab) | 🔄 Mixed | RGBIC Light Strip with Music Sync | ⚠️ Testing needed |
 | **181** | [Sonoff THR320D, THR316D](https://s.smartnydom.pl/r/sonoff-th-elite-smart-temperature-and-humidity-monitoring-switch-yt?ref=openhab) | 🔄 Mixed | Single relay with Temperature/humidity sensor | |
 | **190** | [Sonoff S60TPF, S60TPG](https://s.smartnydom.pl/r/sonoff-s60tpf?ref=openhab) | 🔄 Mixed | Smart plug | |
 | **209** | [Sonoff T5-1C-86](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab) | 🔄 Mixed | Single touch switch | ⚠️ Testing needed |
@@ -95,10 +96,11 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **2026** | [Sonoff ZigBee Motion Sensor](https://s.smartnydom.pl/r/sonoff-zigbee-sensors?ref=openhab) | 🌐 Cloud | Motion detection, 1st version | |
 | **7000** | Sonoff [SNZB-01P](https://s.smartnydom.pl/r/sonoff-snzb-01p?ref=openhab) | 🌐 Cloud | Wireless ZigBee switch (single/double/long press) | |
 | **7002** | Sonoff [SNZB-03P](https://s.smartnydom.pl/r/sonoff-snzb-03p?ref=openhab) | 🌐 Cloud | Motion sensor | |
-| **7003** | Sonoff [SNZB-04P](https://s.smartnydom.pl/r/sonoff-snzb-04p-itead?ref=openhab) | 🌐 Cloud | Door/window sensor | ⚠️ Testing needed |
+| **7003** | Sonoff [SNZB-04P](https://s.smartnydom.pl/r/sonoff-snzb-04p-itead?ref=openhab) [SNZB-04PR2](https://s.smartnydom.pl/r/sonoff-snzb-04pr2-itead?ref=openhab) | 🌐 Cloud | Door/window sensor | ⚠️ Testing needed |
 | **7010** | Sonoff [ZBMINIR2](https://s.smartnydom.pl/r/sonoff-zbminir2-itead?ref=openhab) | 🌐 Cloud | Zigbee single relay switch | |
 | **7014** | Sonoff ZigBee [SNZB-02P](https://s.smartnydom.pl/r/sonoff-snzb-02p?ref=openhab), [SNZB-02D](https://s.smartnydom.pl/r/sonoff-snzb-02d-sd?ref=openhab) | 🌐 Cloud | Temperature/humidity sensor | |
 | **7029** | Sonoff [MINI-ZB2GS-L](https://s.smartnydom.pl/r/sonoff-zb2gs-l?ref=openhab) | 🌐 Cloud | Zigbee dual channel switch with NO neutral wire (MINI Duo L 2-Gang) | |
+| **7038** | Sonoff [SNZB-02DR2](https://s.smartnydom.pl/r/sonoff-snzb-02dr2?ref=openhab) | 🌐 Cloud | Zigbee temperature and humidity sensor with 3.6" LCD display and statistics | |
 | **7040** | Sonoff [MINI-ZB2GS](https://s.smartnydom.pl/r/sonoff-zb2gs?ref=openhab) | 🌐 Cloud | Zigbee dual channel switch (MINI Duo 2-Gang) | ⚠️ Testing needed |
 | **ZCONTACT** | Generic Contact Sensor | 🌐 Cloud | Contact detection | |
 | **ZWATER** | Water Leak Sensor | 🌐 Cloud | Water leak detection | |

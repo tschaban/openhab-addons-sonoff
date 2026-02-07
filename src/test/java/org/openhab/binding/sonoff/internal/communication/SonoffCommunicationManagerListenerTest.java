@@ -381,6 +381,11 @@ class SonoffCommunicationManagerListenerTest {
         public void sendWebsocketMessage(String params) {
             // Test implementation - no-op
         }
+
+        @Override
+        public void addState(String deviceid, SonoffDeviceState state) {
+            // Test implementation - no-op
+        }
     }
 
     @Test

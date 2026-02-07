@@ -163,15 +163,15 @@ class SonoffAccountHandlerIntegrationTest {
         // Test 2: Only cloud connected
         handler.isConnected(false, true);
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
-        assertEquals(ThingStatusDetail.COMMUNICATION_ERROR, handler.lastStatusDetail);
-        assertEquals("LAN Offline", handler.lastStatusDescription);
+        assertEquals(ThingStatusDetail.NONE, handler.lastStatusDetail);
+        assertEquals("Connected via Cloud only", handler.lastStatusDescription);
         assertTrue(handler.commandManagerRunning);
 
         // Test 3: Only LAN connected
         handler.isConnected(true, false);
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
-        assertEquals(ThingStatusDetail.COMMUNICATION_ERROR, handler.lastStatusDetail);
-        assertEquals("Cloud Offline", handler.lastStatusDescription);
+        assertEquals(ThingStatusDetail.NONE, handler.lastStatusDetail);
+        assertEquals("Connected via LAN only", handler.lastStatusDescription);
         assertTrue(handler.commandManagerRunning);
 
         // Test 4: Neither connected
@@ -672,9 +672,9 @@ class SonoffAccountHandlerIntegrationTest {
 
                 if (mode.equals("mixed")) {
                     if (!lanConnected && cloudConnected) {
-                        detail = "LAN Offline";
+                        detail = "Connected via Cloud only";
                     } else if (lanConnected && !cloudConnected) {
-                        detail = "Cloud Offline";
+                        detail = "Connected via LAN only";
                     } else if (!lanConnected && !cloudConnected) {
                         status = ThingStatus.OFFLINE;
                     }
@@ -692,7 +692,7 @@ class SonoffAccountHandlerIntegrationTest {
 
             // Update status
             if (detail != null) {
-                updateStatus(ThingStatus.ONLINE, ThingStatusDetail.COMMUNICATION_ERROR, detail);
+                updateStatus(ThingStatus.ONLINE, ThingStatusDetail.NONE, detail);
             } else {
                 updateStatus(status);
             }

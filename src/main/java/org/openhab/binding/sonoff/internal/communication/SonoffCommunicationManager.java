@@ -25,6 +25,7 @@ import javax.jmdns.ServiceInfo;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.binding.sonoff.internal.SonoffCacheProvider;
 import org.openhab.binding.sonoff.internal.connection.SonoffConnectionManagerListener;
 import org.openhab.binding.sonoff.internal.dto.commands.CircuitBreakerSwitch;
 import org.openhab.binding.sonoff.internal.dto.commands.MultiSwitch;
@@ -404,9 +405,34 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
     public void apiMessage(JsonObject thingResponse) {
         JsonObject data = thingResponse.get("data").getAsJsonObject();
         JsonArray thingList = data.get("thingList").getAsJsonArray();
+        SonoffCacheProvider cacheProvider = new SonoffCacheProvider();
         for (int i = 0; i < thingList.size(); i++) {
             JsonObject thing = thingList.get(i).getAsJsonObject();
             JsonObject device = thing.get("itemData").getAsJsonObject();
+
+            // Auto-create cache file and add to in-memory map if it doesn't exist
+            // This fixes cache path migration issues and ensures device is available immediately
+            JsonElement deviceIdElement = device.get("deviceid");
+            if (deviceIdElement != null && !deviceIdElement.isJsonNull()) {
+                String deviceid = deviceIdElement.getAsString();
+                SonoffDeviceState existingState = listener.getState(deviceid);
+                if (existingState == null) {
+                    // Create cache file if it doesn't exist
+                    if (!cacheProvider.checkFile(deviceid)) {
+                        cacheProvider.newFile(deviceid, gson.toJson(device));
+                        logger.info("Auto-created cache file for device {} from API response", deviceid);
+                    }
+                    // Add state to in-memory map so device is immediately available
+                    try {
+                        SonoffDeviceState newState = new SonoffDeviceState(device);
+                        listener.addState(deviceid, newState);
+                        logger.info("Added device {} (uiid: {}) to in-memory state map", deviceid, newState.getUiid());
+                    } catch (Exception e) {
+                        logger.warn("Failed to create device state for {}: {}", deviceid, e.getMessage());
+                    }
+                }
+            }
+
             processState(device, false);
         }
     }

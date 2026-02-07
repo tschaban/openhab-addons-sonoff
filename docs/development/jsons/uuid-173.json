@@ -1,0 +1,166 @@
+{
+    "name": "Living Room Light Strip",
+    "deviceid": "100230738d",
+    "apikey": "",
+    "extra": {
+        "model": "SN-OPL1200-L3RGBIC",
+        "mac": "d0:27:03:d7:a6:ec",
+        "apmac": "d0:27:03:d7:a6:ed",
+        "uiid": 173,
+        "ui": "幻彩灯带-Sonoff",
+        "modelInfo": "61c5e8f1b4a54b4daaa62ec4",
+        "brandId": "5c4c1aee3a7d24c7100be054",
+        "itCredential": "yk4hkfRkQQrNnu5P",
+        "description": "L3RGBIC 5M 幻彩灯带",
+        "manufacturer": "深圳松诺技术有限公司"
+    },
+    "brandName": "SONOFF",
+    "brandLogo": "https://eu-ota.coolkit.cc/logo/q62PevoglDNmwUJ9oPE7kRrpt1nL1CoA.png",
+    "showBrand": true,
+    "productModel": "L3-5M-P",
+    "tags": {
+        "un_rgb_4000_o.za": [
+            {
+                "mode": 1,
+                "rgb": [
+                    255,
+                    191,
+                    107
+                ]
+            },
+            {
+                "mode": 1,
+                "rgb": [
+                    131,
+                    57,
+                    236
+                ]
+            },
+            {
+                "mode": 1,
+                "rgb": [
+                    255,
+                    87,
+                    157
+                ]
+            },
+            {
+                "mode": 1,
+                "rgb": [
+                    80,
+                    50,
+                    255
+                ]
+            },
+            {
+                "mode": 1,
+                "rgb": [
+                    255,
+                    33,
+                    36
+                ]
+            }
+        ],
+        "un_cct_4000_o.za": [
+            {
+                "mode": 2,
+                "colorTemp": 100
+            },
+            {
+                "mode": 2,
+                "colorTemp": 42
+            },
+            {
+                "mode": 2,
+                "colorTemp": 0
+            },
+            {
+                "mode": 2,
+                "colorTemp": 100
+            }
+        ],
+        "un_w_4000_o.za": [
+            {
+                "mode": 3,
+                "bright": 10
+            },
+            {
+                "mode": 3,
+                "bright": 50
+            },
+            {
+                "mode": 3,
+                "bright": 100
+            },
+            {
+                "mode": 1,
+                "bright": 11
+            }
+        ]
+    },
+    "devConfig": {
+        "icNumber": {
+            "max": "150",
+            "min": "20"
+        }
+    },
+    "settings": {
+        "opsNotify": 0,
+        "opsHistory": 1,
+        "alarmNotify": 1,
+        "wxAlarmNotify": 0,
+        "wxOpsNotify": 0,
+        "wxDoorbellNotify": 0,
+        "appDoorbellNotify": 1
+    },
+    "devGroups": [],
+    "family": {
+        "familyid": "62d5a68984fafd0009ad2484",
+        "index": 0,
+        "members": [],
+        "guests": []
+    },
+    "shareTo": [],
+    "devicekey": "7ef4bd9a-b8e9-42f7-841f-5bd6c9c13426",
+    "online": true,
+    "params": {
+        "bindInfos": {
+            "gaction": [
+                "af58e8c9-08b0-4db2-80d5-c4e56dc04000_ewelink-google-home-v1",
+                "af58e8c9-08b0-4db2-80d5-c4e56dc04000_ewelinkGoogleHome"
+            ]
+        },
+        "version": 8,
+        "NO_SEND_TO_APP": 0,
+        "bright": 100,
+        "bssid": "46:128:136:215:237:210",
+        "colorB": 255,
+        "colorG": 57,
+        "colorR": 170,
+        "fwVersion": "1000.2.1060",
+        "icNumber": 150,
+        "icType": 0,
+        "init": 1,
+        "light_type": 1,
+        "lineSequence": {
+            "1": "g",
+            "2": "r",
+            "3": "b"
+        },
+        "mode": 1,
+        "ssid": "",
+        "switch": "off",
+        "timeZone": 2,
+        "rhythmMode": 3,
+        "rhythmSensitive": 28,
+        "bright35": 100,
+        "speed35": 50,
+        "bright18": 100,
+        "speed18": 50,
+        "colorTemp": 100
+    },
+    "isSupportGroup": true,
+    "isSupportedOnMP": false,
+    "isSupportChannelSplit": false,
+    "deviceFeature": {}
+}

@@ -275,8 +275,8 @@ class SonoffAccountHandlerTest {
 
         // Assert
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
-        assertEquals(ThingStatusDetail.COMMUNICATION_ERROR, handler.lastStatusDetail);
-        assertEquals("LAN Offline", handler.lastStatusDescription);
+        assertEquals(ThingStatusDetail.NONE, handler.lastStatusDetail);
+        assertEquals("Connected via Cloud only", handler.lastStatusDescription);
         assertTrue(handler.commandManagerRunning);
     }
 
@@ -291,8 +291,8 @@ class SonoffAccountHandlerTest {
 
         // Assert
         assertEquals(ThingStatus.ONLINE, handler.lastStatus);
-        assertEquals(ThingStatusDetail.COMMUNICATION_ERROR, handler.lastStatusDetail);
-        assertEquals("Cloud Offline", handler.lastStatusDescription);
+        assertEquals(ThingStatusDetail.NONE, handler.lastStatusDetail);
+        assertEquals("Connected via LAN only", handler.lastStatusDescription);
         assertTrue(handler.commandManagerRunning);
     }
 
@@ -916,11 +916,11 @@ class SonoffAccountHandlerTest {
 
                 if (mode.equals("mixed")) {
                     if (!lanConnected && cloudConnected) {
-                        detail = ThingStatusDetail.COMMUNICATION_ERROR;
-                        detailDescription = "LAN Offline";
+                        detail = ThingStatusDetail.NONE;
+                        detailDescription = "Connected via Cloud only";
                     } else if (lanConnected && !cloudConnected) {
-                        detail = ThingStatusDetail.COMMUNICATION_ERROR;
-                        detailDescription = "Cloud Offline";
+                        detail = ThingStatusDetail.NONE;
+                        detailDescription = "Connected via LAN only";
                     } else if (!lanConnected && !cloudConnected) {
                         status = ThingStatus.OFFLINE;
                     }
@@ -937,7 +937,7 @@ class SonoffAccountHandlerTest {
             }
 
             // Update status
-            if (detail != ThingStatusDetail.NONE) {
+            if (detailDescription != null) {
                 updateStatus(status, detail, detailDescription);
             } else {
                 updateStatus(status);
