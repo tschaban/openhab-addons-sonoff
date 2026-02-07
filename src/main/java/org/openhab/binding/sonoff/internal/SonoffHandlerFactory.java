@@ -189,6 +189,7 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
                 return new SonoffButtonHandler(thing);
             case "1770":
             case "7014": // SNZB-02P
+            case "7038": // SNZB-02DR2
                 return new SonoffZigbeeDeviceTemperatureHumiditySensorHandler(thing);
             case "2026":
                 return new SonoffZigbeeDeviceMotionSensorHandler(thing);

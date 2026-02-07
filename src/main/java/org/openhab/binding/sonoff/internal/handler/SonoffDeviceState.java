@@ -153,6 +153,13 @@ public class SonoffDeviceState {
             }
         }
 
+        // Tamper
+        if (params.has("split")) {
+            if (params.get("split") != null) {
+                parameters.setTamper(params.get("split").getAsInt());
+            }
+        }
+
         // Doors
 
         if (params.has("doorsensors")) {
@@ -347,6 +354,31 @@ public class SonoffDeviceState {
 
             if (params.get("humidity") != null) {
                 parameters.setHumidity(Double.valueOf(params.get("humidity").getAsDouble() / 100));
+            }
+
+            // Temperature/Humidity statistics (UUID 7038 - SNZB-02DR2)
+            if (params.get("temperatureMax") != null) {
+                parameters.setTemperatureMax(Double.valueOf(params.get("temperatureMax").getAsDouble() / 100));
+            }
+
+            if (params.get("temperatureMin") != null) {
+                parameters.setTemperatureMin(Double.valueOf(params.get("temperatureMin").getAsDouble() / 100));
+            }
+
+            if (params.get("temperatureAvg") != null) {
+                parameters.setTemperatureAvg(Double.valueOf(params.get("temperatureAvg").getAsDouble() / 100));
+            }
+
+            if (params.get("humidityMax") != null) {
+                parameters.setHumidityMax(Double.valueOf(params.get("humidityMax").getAsDouble() / 100));
+            }
+
+            if (params.get("humidityMin") != null) {
+                parameters.setHumidityMin(Double.valueOf(params.get("humidityMin").getAsDouble() / 100));
+            }
+
+            if (params.get("humidityAvg") != null) {
+                parameters.setHumidityAvg(Double.valueOf(params.get("humidityAvg").getAsDouble() / 100));
             }
         }
 

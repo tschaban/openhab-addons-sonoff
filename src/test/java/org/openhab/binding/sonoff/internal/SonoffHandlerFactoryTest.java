@@ -121,6 +121,7 @@ class SonoffHandlerFactoryTest {
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7010));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7014));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7029));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7038));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7040));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_268));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_RF1));
@@ -458,6 +459,13 @@ class SonoffHandlerFactoryTest {
         ThingHandler handler7029 = factory.createHandler(mockThing);
         assertNotNull(handler7029);
         assertEquals("SonoffZigbeeSwitchMultiHandler", handler7029.getClass().getSimpleName());
+
+        // Test UUID 7038 (SNZB-02DR2)
+        ThingTypeUID thingType7038 = new ThingTypeUID("sonoff", "7038");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType7038);
+        ThingHandler handler7038 = factory.createHandler(mockThing);
+        assertNotNull(handler7038);
+        assertEquals("SonoffZigbeeDeviceTemperatureHumiditySensorHandler", handler7038.getClass().getSimpleName());
 
         // Test UUID 7040 (MINI-ZB2GS)
         ThingTypeUID thingType7040 = new ThingTypeUID("sonoff", "7040");

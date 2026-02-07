@@ -147,10 +147,11 @@
 			<bridge-type-ref id="168"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Door and Window Sensor</label>
-		<description>Models: SNZB-04P</description>
+		<description>Models: SNZB-04P, SNZB-04PR2</description>
 		<channels>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="contact" typeId="contact"/>
+			<channel id="tamper" typeId="contact"/>
 			<channel id="battery" typeId="battery-level"/>
 			<channel id="trigTime" typeId="trigTime"/>
 			<channel id="rssi" typeId="rssi"/>
@@ -237,6 +238,40 @@
 			<property name="vendor">SONOFF</property>
 			<property name="modelId">MINI-ZB2GS-L</property>
 			<property name="Product url">https://s.smartnydom.pl/r/sonoff-zb2gs-l?ref=openhab</property>
+		</properties>
+		<representation-property>deviceid</representation-property>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="7038">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="66"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Temperature and Humidity Sensor with Display</label>
+		<description>Model: SNZB-02DR2 (Zigbee Bluetooth Temperature and Humidity Sensor with 3.6 LCD Display)</description>
+		<channels>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="trigTime" typeId="trigTime"/>
+			<channel id="temperature" typeId="temperature"/>
+			<channel id="humidity" typeId="humidity"/>
+			<channel id="temperatureMax" typeId="temperatureMax"/>
+			<channel id="temperatureMin" typeId="temperatureMin"/>
+			<channel id="temperatureAvg" typeId="temperatureAvg"/>
+			<channel id="humidityMax" typeId="humidityMax"/>
+			<channel id="humidityMin" typeId="humidityMin"/>
+			<channel id="humidityAvg" typeId="humidityAvg"/>
+		</channels>
+		<properties>
+			<property name="vendor">SONOFF</property>
+			<property name="modelId">SNZB-02DR2</property>
+			<property name="url">https://s.smartnydom.pl/r/sonoff-snzb-02dr2?ref=openhab</property>
 		</properties>
 		<representation-property>deviceid</representation-property>
 		<config-description>

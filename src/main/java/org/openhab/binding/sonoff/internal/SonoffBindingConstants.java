@@ -292,6 +292,9 @@ public class SonoffBindingConstants {
     /** Zigbee dual channel switch with neutral wire: MINI-ZB2GS-L */
     public static final ThingTypeUID THING_TYPE_7029 = new ThingTypeUID(BINDING_ID, "7029");
 
+    /** Zigbee temperature/humidity sensor with display: SNZB-02DR2 */
+    public static final ThingTypeUID THING_TYPE_7038 = new ThingTypeUID(BINDING_ID, "7038");
+
     /** Zigbee dual channel switch: MINI-ZB2GS */
     public static final ThingTypeUID THING_TYPE_7040 = new ThingTypeUID(BINDING_ID, "7040");
 
@@ -371,7 +374,7 @@ public class SonoffBindingConstants {
 
             // Zigbee devices
             THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7002, THING_TYPE_7003, THING_TYPE_7010,
-            THING_TYPE_7014, THING_TYPE_7029, THING_TYPE_7040, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER,
+            THING_TYPE_7014, THING_TYPE_7029, THING_TYPE_7038, THING_TYPE_7040, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER,
             THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
 
             // 433MHz RF devices
@@ -410,7 +413,7 @@ public class SonoffBindingConstants {
 
             // Zigbee devices
             THING_TYPE_1770, THING_TYPE_2026, THING_TYPE_7000, THING_TYPE_7002, THING_TYPE_7003, THING_TYPE_7010,
-            THING_TYPE_7014, THING_TYPE_7029, THING_TYPE_7040, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER,
+            THING_TYPE_7014, THING_TYPE_7029, THING_TYPE_7038, THING_TYPE_7040, THING_TYPE_ZCONTACT, THING_TYPE_ZWATER,
             THING_TYPE_ZLIGHT, THING_TYPE_ZSWITCH1, THING_TYPE_ZSWITCH2, THING_TYPE_ZSWITCH3, THING_TYPE_ZSWITCH4,
 
             // 433MHz RF devices
@@ -542,6 +545,7 @@ public class SonoffBindingConstants {
         zigbeeTypes.put(7010, THING_TYPE_7010); // ZBMINIR2
         zigbeeTypes.put(7014, THING_TYPE_7014); // SNZB-02P
         zigbeeTypes.put(7029, THING_TYPE_7029); // MINI-ZB2GS-L
+        zigbeeTypes.put(7038, THING_TYPE_7038); // SNZB-02DR2
         zigbeeTypes.put(7040, THING_TYPE_7040); // MINI-ZB2GS
 
         return Collections.unmodifiableMap(zigbeeTypes);
