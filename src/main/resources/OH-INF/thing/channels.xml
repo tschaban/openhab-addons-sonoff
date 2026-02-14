@@ -112,12 +112,12 @@
 	</channel-type>
 
 
-	<channel-type id="sled">
+	<channel-type id="sled" advanced="true">
 		<item-type>Switch</item-type>
 		<label>Network LED Status</label>
 		<description>Network LED Status</description>
 	</channel-type>
-	<channel-type id="zled">
+	<channel-type id="zled" advanced="true">
 		<item-type>Switch</item-type>
 		<label>Zigbee LED Status</label>
 		<description>Zigbee LED Status</description>
@@ -324,6 +324,21 @@
 		<label>Brightness State</label>
 		<description>Ambient brightness level</description>
 		<state readOnly="true"/>
+	</channel-type>
+
+	<!-- Roller Shutter (UUID 258) specific channels -->
+	<channel-type id="roller-switch">
+		<item-type>Rollershutter</item-type>
+		<label>Roller Shutter Control</label>
+		<description>Control roller shutter (pause, open, close, stop)</description>
+		<state readOnly="false"/>
+	</channel-type>
+
+	<channel-type id="roller-position">
+		<item-type>Number</item-type>
+		<label>Roller Shutter Position</label>
+		<description>Current position of the roller shutter (0-100)</description>
+		<state min="0" max="100" step="1" pattern="%d %%" readOnly="false"/>
 	</channel-type>
 
 </thing:thing-descriptions>

@@ -11,5 +11,5 @@ conf.d/*.ps1
 !conf.d/*.example
 
 
-docs/development/instructions/ai.instruction.md
+docs/development/instructions/ai*
 docs/development/logs/*

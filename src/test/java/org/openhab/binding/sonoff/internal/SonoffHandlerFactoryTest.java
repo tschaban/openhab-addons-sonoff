@@ -112,6 +112,8 @@ class SonoffHandlerFactoryTest {
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_138));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_190));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_237));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_258));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_268));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_275));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_1770));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_2026));
@@ -386,6 +388,23 @@ class SonoffHandlerFactoryTest {
         // Verify
         assertNotNull(handler);
         assertEquals("SonoffGateHandler", handler.getClass().getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Should create handler for WiFi device 258")
+    void testWiFiDevice258Handler() {
+        // Mock thing with correct type
+        when(mockThing.getThingTypeUID()).thenReturn(SonoffBindingConstants.THING_TYPE_258);
+
+        // Create handler
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify handler was created and is correct type
+        assertNotNull(handler, "Handler should be created for THING_TYPE_258");
+        assertEquals("SonoffRollerShutterHandler", handler.getClass().getSimpleName(),
+                "Handler should be instance of SonoffRollerShutterHandler");
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_258),
+                "Factory should support THING_TYPE_258");
     }
 
     @ParameterizedTest

@@ -1,0 +1,104 @@
+{
+    "name": "SAWF-08P",
+    "deviceid": "",
+    "apikey": "",
+    "extra": {
+        "model": "SN-ESP32D0-AQM-01",
+        "ui": "空气质量检测仪",
+        "uiid": 266,
+        "description": "CO2检测",
+        "modelInfo": "67da2c6995a9f1d80ee9f59a",
+        "brandId": "5c4c1aee3a7d24c7100be054",
+        "itCredential": "",
+        "mac": "d0:27:04:6c:32:fc",
+        "apmac": "d0:27:04:6c:32:fd",
+        "manufacturer": "深圳松诺技术有限公司",
+        "staMac": "14:08:08:0C:5D:D4"
+    },
+    "brandName": "SONOFF",
+    "brandLogo": "https://eu-ota.coolkit.cc/logo/q62PevoglDNmwUJ9oPE7kRrpt1nL1CoA.png",
+    "showBrand": true,
+    "productModel": "SAWF-08P",
+    "tags": {},
+    "devConfig": {},
+    "settings": {
+        "opsNotify": 0,
+        "opsHistory": 1,
+        "alarmNotify": 1,
+        "wxAlarmNotify": 0,
+        "wxOpsNotify": 0,
+        "wxDoorbellNotify": 0,
+        "appDoorbellNotify": 1
+    },
+    "devGroups": [],
+    "family": {
+        "familyid": "",
+        "index": -5,
+        "members": [],
+        "guests": []
+    },
+    "shareTo": [],
+    "devicekey": "",
+    "online": true,
+    "params": {
+        "bindInfos": {
+            "alexa": [
+                ""
+            ],
+            "gaction": [
+                ""
+            ]
+        },
+        "version": 8,
+        "TZ": "Europe/Warsaw",
+        "timers": [],
+        "subDevices": [],
+        "autoUpgrade": {
+            "enable": false,
+            "range": [
+                "02:00",
+                "04:00"
+            ]
+        },
+        "bssid": "D4:01:C3:F8:0D:47",
+        "co2": 807,
+        "fwVersion": "1.1.1",
+        "humCorrection": "0.0",
+        "humidity": "30.1",
+        "rssi": -73,
+        "sensorLight": true,
+        "sensorLightBr": 55,
+        "ssid": "",
+        "staMac": "14:08:08:0C:5D:D4",
+        "tempCorrection": "0.0",
+        "tempUnit": 0,
+        "temperature": "20.8",
+        "temperatureF": "69.4",
+        "voiceAlarm": false,
+        "co2MidReport": true,
+        "uiActive": 60,
+        "pairingMode": true,
+        "pairingModeTimeout": 600,
+        "co2MinReport": true,
+        "humiErrorReport": true,
+        "co2Threshold": {
+            "max": "600",
+            "min": "1500"
+        },
+        "humiThreshold": {
+            "max": "60",
+            "min": "40"
+        },
+        "tempThreshold": {
+            "minF": "66.2",
+            "max": "27.0",
+            "maxF": "80.6",
+            "min": "19.0"
+        },
+        "tempErrorReport": true
+    },
+    "isSupportGroup": false,
+    "isSupportedOnMP": false,
+    "isSupportChannelSplit": false,
+    "deviceFeature": {}
+}

@@ -1,0 +1,215 @@
+{
+    "name": "WS01TPF-E",
+    "deviceid": "",
+    "apikey": "",
+    "extra": {
+        "model": "SN-BK7238-WS01-01",
+        "ui": "Matter\u0026蓝牙插座（兼容电量统计）",
+        "uiid": 276,
+        "description": "",
+        "modelInfo": "68ca76607d9220eef0fd92ed",
+        "brandId": "5c4c1aee3a7d24c7100be054",
+        "itCredential": "",
+        "mac": "d0:27:04:b6:02:e4",
+        "apmac": "d0:27:04:b6:02:e5",
+        "manufacturer": "深圳松诺技术有限公司",
+        "staMac": "D0:27:04:B6:02:E4"
+    },
+    "brandName": "SONOFF",
+    "brandLogo": "https://eu-ota.coolkit.cc/logo/q62PevoglDNmwUJ9oPE7kRrpt1nL1CoA.png",
+    "showBrand": true,
+    "productModel": "WS01TPF-E",
+    "tags": {
+        "m_2d42_ewel": "on",
+        "deviceIconType": 0,
+        "ELECTRICITY_UNIT": [
+            "PLB",
+            "PLN"
+        ]
+    },
+    "devConfig": {},
+    "settings": {
+        "opsNotify": 0,
+        "opsHistory": 1,
+        "alarmNotify": 1,
+        "wxAlarmNotify": 0,
+        "wxOpsNotify": 0,
+        "wxDoorbellNotify": 0,
+        "appDoorbellNotify": 1
+    },
+    "devGroups": [],
+    "family": {
+        "familyid": "",
+        "index": -6,
+        "members": [],
+        "guests": []
+    },
+    "shareTo": [],
+    "devicekey": "",
+    "online": true,
+    "params": {
+        "bindInfos": {
+            "alexa": [
+                ""
+            ],
+            "gaction": [
+                ""
+            ]
+        },
+        "tzInfo": {
+            "tzName": "Europe/Warsaw",
+            "utcOffset": 60,
+            "dstOffset": 60,
+            "dstStartRule": "0 0 2 ? 1L 3 *",
+            "dstEndRule": "0 0 3 ? 1L 10 *"
+        },
+        "version": 8,
+        "TZ": "Europe/Warsaw",
+        "fwVersion": "1.0.1",
+        "isSupportElectric": true,
+        "autoUpgrade": {
+            "enable": false,
+            "range": [
+                "02:00",
+                "04:00"
+            ]
+        },
+        "demNextFetchTime": 1771106400000,
+        "relayLight": {
+            "mode": "auto"
+        },
+        "sledOnline": "off",
+        "alarmReportError1": false,
+        "configure": [
+            {
+                "outlet": 0,
+                "startup": "off",
+                "enableDelay": 0,
+                "width": 48000
+            }
+        ],
+        "offBrightness": 50,
+        "pulses": [
+            {
+                "outlet": 0,
+                "pulse": "off",
+                "switch": "off",
+                "width": 500
+            }
+        ],
+        "switches": [
+            {
+                "outlet": 0,
+                "switch": "on"
+            }
+        ],
+        "cLowRangeMax": 1600,
+        "cLowRangeMin": 10,
+        "cUpRangeMax": 1600,
+        "cUpRangeMin": 10,
+        "pLowRangeMax": 400000,
+        "pLowRangeMin": 200,
+        "pUpRangeMax": 400000,
+        "pUpRangeMin": 200,
+        "vLowRangeMax": 27700,
+        "vLowRangeMin": 16500,
+        "vUpRangeMax": 27700,
+        "vUpRangeMin": 16500,
+        "chargeProtection": {
+            "enable": false,
+            "power": 300,
+            "duration": 40
+        },
+        "costDay": 23,
+        "costMonth": 331,
+        "costSetDay": 0,
+        "costSetMonth": 0,
+        "costWeek": 331,
+        "costYear": 331,
+        "current": 52,
+        "dayKwh": 26,
+        "dayOnDuration": 44675,
+        "electricitySetDay": 0,
+        "electricitySetMonth": 0,
+        "monthKwh": 473,
+        "monthOnDuration": 677293,
+        "overload": [
+            {
+                "outlet": 0,
+                "minAP": {
+                    "en": 0,
+                    "val": 200
+                },
+                "maxAP": {
+                    "en": 1,
+                    "val": 400000
+                },
+                "minV": {
+                    "en": 0,
+                    "val": 16500
+                },
+                "maxV": {
+                    "en": 1,
+                    "val": 27700
+                },
+                "minC": {
+                    "en": 0,
+                    "val": 10
+                },
+                "maxC": {
+                    "en": 1,
+                    "val": 1600
+                }
+            }
+        ],
+        "power": 10032,
+        "tariff": {
+            "general": {
+                "cost": 140
+            },
+            "timeOfUse": [
+                {
+                    "id": 1,
+                    "cost": 80,
+                    "start": "13:00",
+                    "stop": "15:00"
+                },
+                {
+                    "id": 2,
+                    "cost": 80,
+                    "start": "00:00",
+                    "stop": "05:00"
+                }
+            ]
+        },
+        "voltage": 23464,
+        "weekKwh": 472,
+        "yearKwh": 473,
+        "bssid": "D4:01:C3:F8:0D:47",
+        "rssi": -70,
+        "ssid": "",
+        "staMac": "D0:27:04:B6:02:E4",
+        "timerV2": {
+            "max": 24,
+            "enable": 24,
+            "batch": 3,
+            "revision": "0",
+            "timers": []
+        },
+        "timerV2Rev": "0",
+        "fabricList": [
+            {
+                "compressedFabricId": "08BA4FAEA73711CF",
+                "vendorId": "4939",
+                "createAt": "1771067899000",
+                "label": "Dom"
+            }
+        ],
+        "uiActive": 60,
+        "unit": "PLN"
+    },
+    "isSupportGroup": true,
+    "isSupportedOnMP": false,
+    "isSupportChannelSplit": false,
+    "deviceFeature": {}
+}

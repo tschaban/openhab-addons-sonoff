@@ -570,6 +570,23 @@ public class SonoffDeviceState {
             String trigTime = params.get("trigTime").getAsString();
             parameters.setButtonPress(key, trigTime);
         }
+
+        // Roller Shutter (UUID 258)
+        if (params.get("switch") != null && uiid.equals(258)) {
+            parameters.setRollerSwitch(params.get("switch").getAsString());
+        }
+
+        if (params.get("setclose") != null) {
+            parameters.setSetclose(params.get("setclose").getAsInt());
+        }
+
+        if (params.get("motorDir") != null) {
+            parameters.setMotorDir(params.get("motorDir").getAsString());
+        }
+
+        if (params.get("swMode") != null) {
+            parameters.setSwMode(params.get("swMode").getAsInt());
+        }
     }
 
     public Map<String, String> getProperties() {

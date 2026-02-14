@@ -140,6 +140,12 @@ public class SonoffDeviceStateParameters {
     private DateTimeType button1TrigTime = new DateTimeType(System.currentTimeMillis() + "");
     private DateTimeType button2TrigTime = new DateTimeType(System.currentTimeMillis() + "");
 
+    // Roller Shutter (UUID 258) specific fields
+    private StringType rollerSwitch = new StringType("pause"); // pause, open, close, stop
+    private DecimalType setclose = new DecimalType(0); // position 0-100
+    private StringType motorDir = new StringType("forward"); // forward, reverse
+    private DecimalType swMode = new DecimalType(0); // switch mode
+
     private double round(double value, int decimalPlaces) {
         double multiplier = Math.pow(10, decimalPlaces);
         return Math.round(value * multiplier) / multiplier;
@@ -783,5 +789,38 @@ public class SonoffDeviceStateParameters {
 
     public void setHumidityAvg(Double humidityAvg) {
         this.humidityAvg = new QuantityType<Dimensionless>(humidityAvg, PERCENT);
+    }
+
+    // Roller Shutter (UUID 258) specific methods
+    public StringType getRollerSwitch() {
+        return this.rollerSwitch;
+    }
+
+    public void setRollerSwitch(String rollerSwitch) {
+        this.rollerSwitch = new StringType(rollerSwitch);
+    }
+
+    public DecimalType getSetclose() {
+        return this.setclose;
+    }
+
+    public void setSetclose(Integer setclose) {
+        this.setclose = new DecimalType(setclose);
+    }
+
+    public StringType getMotorDir() {
+        return this.motorDir;
+    }
+
+    public void setMotorDir(String motorDir) {
+        this.motorDir = new StringType(motorDir);
+    }
+
+    public DecimalType getSwMode() {
+        return this.swMode;
+    }
+
+    public void setSwMode(Integer swMode) {
+        this.swMode = new DecimalType(swMode);
     }
 }
