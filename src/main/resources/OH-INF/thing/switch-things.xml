@@ -1321,4 +1321,66 @@
 		</config-description>
 	</thing-type>
 
+	<thing-type id="276">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF ORB WiFi Socket with Matter and Enhanced Energy Monitoring</label>
+		<description>Model: WS01TPF-E - Wall socket with Matter support, power monitoring and comprehensive cost tracking</description>
+		<channels>
+			<channel id="switch" typeId="power"/>
+			<channel id="current" typeId="electric-current"/>
+			<channel id="voltage" typeId="electric-voltage"/>
+			<channel id="power" typeId="electric-power"/>
+			<channel id="dayKwh" typeId="electrical-energy">
+				<label>Daily Energy Consumption</label>
+			</channel>
+			<channel id="weekKwh" typeId="week-kwh"/>
+			<channel id="monthKwh" typeId="electrical-energy">
+				<label>Monthly Energy Consumption</label>
+			</channel>
+			<channel id="yearKwh" typeId="year-kwh"/>
+			<channel id="costDay" typeId="cost-day"/>
+			<channel id="costWeek" typeId="cost-week"/>
+			<channel id="costMonth" typeId="cost-month"/>
+			<channel id="costYear" typeId="cost-year"/>
+			<channel id="dayRuntime" typeId="day-runtime"/>
+			<channel id="monthRuntime" typeId="month-runtime"/>
+			<channel id="localOnline" typeId="localOnline"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="ipaddress" typeId="ipaddress"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+		</channels>
+
+		<properties>
+			<property name="vendor">SONOFF</property>
+			<property name="modelId">WS01TPF-E</property>
+			<property name="url">https://s.smartnydom.pl/r/sonoff-orb-ws01-itead?ref=openhab</property>
+		</properties>
+
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>DeviceId (can be found in the eWeLink app)</description>
+			</parameter>
+			<parameter name="local" type="boolean" required="true">
+				<label>Enable Local Communication</label>
+				<default>true</default>
+				<options>
+					<option value="true">Enabled</option>
+					<option value="false">Disabled</option>
+				</options>
+				<description>Enable local LAN communication with the device</description>
+			</parameter>
+			<parameter name="localPoll" type="integer" min="10" max="86400" step="1" required="true">
+				<label>Local Polling Interval</label>
+				<description>Polling interval for local data updates (in seconds)</description>
+				<default>60</default>
+			</parameter>
+		</config-description>
+	</thing-type>
+
 </thing:thing-descriptions>

@@ -187,6 +187,8 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
                 return new SonoffGateHandler(thing);
             case "258":
                 return new SonoffRollerShutterHandler(thing);
+            case "276":
+                return new SonoffSwitchWS01Handler(thing);
             case "265":
                 return new SonoffButtonHandler(thing);
             case "1770":

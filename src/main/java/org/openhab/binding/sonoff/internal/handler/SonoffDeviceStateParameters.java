@@ -20,6 +20,7 @@ import javax.measure.quantity.ElectricPotential;
 import javax.measure.quantity.Energy;
 import javax.measure.quantity.Power;
 import javax.measure.quantity.Temperature;
+import javax.measure.quantity.Time;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.core.library.types.DateTimeType;
@@ -66,9 +67,19 @@ public class SonoffDeviceStateParameters {
     private QuantityType<Energy> todayKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
     private QuantityType<Energy> yesterdayKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
     private QuantityType<Energy> sevenKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
+    private QuantityType<Energy> weekKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
     private QuantityType<Energy> monthKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
     private QuantityType<Energy> thirtyKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
+    private QuantityType<Energy> yearKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
     private QuantityType<Energy> hundredKwh = new QuantityType<Energy>(0.0, KILOWATT_HOUR);
+    // Cost (UUID 276)
+    private DecimalType costDay = new DecimalType(0.0);
+    private DecimalType costWeek = new DecimalType(0.0);
+    private DecimalType costMonth = new DecimalType(0.0);
+    private DecimalType costYear = new DecimalType(0.0);
+    // Runtime (UUID 276)
+    private QuantityType<Time> dayRuntime = new QuantityType<Time>(0.0, HOUR);
+    private QuantityType<Time> monthRuntime = new QuantityType<Time>(0.0, HOUR);
     // Sensors
     private StringType sensorType = new StringType();
     private QuantityType<Temperature> temperature = new QuantityType<Temperature>(0.0, SIUnits.CELSIUS);
@@ -352,6 +363,72 @@ public class SonoffDeviceStateParameters {
 
     public void setHundredKwh(Double total, float multiplier, int decimalPlaces) {
         this.hundredKwh = new QuantityType<Energy>(round(total * multiplier, decimalPlaces), KILOWATT_HOUR);
+    }
+
+    public QuantityType<Energy> getWeekKwh() {
+        return this.weekKwh;
+    }
+
+    public void setWeekKwh(Double total, float multiplier, int decimalPlaces) {
+        this.weekKwh = new QuantityType<Energy>(round(total * multiplier, decimalPlaces), KILOWATT_HOUR);
+    }
+
+    public QuantityType<Energy> getYearKwh() {
+        return this.yearKwh;
+    }
+
+    public void setYearKwh(Double total, float multiplier, int decimalPlaces) {
+        this.yearKwh = new QuantityType<Energy>(round(total * multiplier, decimalPlaces), KILOWATT_HOUR);
+    }
+
+    public DecimalType getCostDay() {
+        return this.costDay;
+    }
+
+    public void setCostDay(Double cost, float multiplier, int decimalPlaces) {
+        this.costDay = new DecimalType(round(cost * multiplier, decimalPlaces));
+    }
+
+    public DecimalType getCostWeek() {
+        return this.costWeek;
+    }
+
+    public void setCostWeek(Double cost, float multiplier, int decimalPlaces) {
+        this.costWeek = new DecimalType(round(cost * multiplier, decimalPlaces));
+    }
+
+    public DecimalType getCostMonth() {
+        return this.costMonth;
+    }
+
+    public void setCostMonth(Double cost, float multiplier, int decimalPlaces) {
+        this.costMonth = new DecimalType(round(cost * multiplier, decimalPlaces));
+    }
+
+    public DecimalType getCostYear() {
+        return this.costYear;
+    }
+
+    public void setCostYear(Double cost, float multiplier, int decimalPlaces) {
+        this.costYear = new DecimalType(round(cost * multiplier, decimalPlaces));
+    }
+
+    public QuantityType<Time> getDayRuntime() {
+        return this.dayRuntime;
+    }
+
+    public void setDayRuntime(Integer seconds) {
+        // Convert seconds to hours
+        this.dayRuntime = new QuantityType<Time>(seconds / 3600.0, HOUR);
+    }
+
+    public QuantityType<Time> getMonthRuntime() {
+        return this.monthRuntime;
+    }
+
+    public void setMonthRuntime(Integer seconds) {
+        // Convert seconds to hours
+        this.monthRuntime = new QuantityType<Time>(seconds / 3600.0, HOUR);
     }
 
     public StringType getSensorType() {

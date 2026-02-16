@@ -254,6 +254,48 @@ public class SonoffDeviceState {
             }
         }
 
+        if (params.get("weekKwh") != null) {
+            if (uiid.equals(5) || uiid.equals(32)) {
+                parameters.setWeekKwh(params.get("weekKwh").getAsDouble(), 1f, 2);
+            } else {
+                parameters.setWeekKwh(params.get("weekKwh").getAsDouble(), 0.01f, 2);
+            }
+        }
+
+        if (params.get("yearKwh") != null) {
+            if (uiid.equals(5) || uiid.equals(32)) {
+                parameters.setYearKwh(params.get("yearKwh").getAsDouble(), 1f, 2);
+            } else {
+                parameters.setYearKwh(params.get("yearKwh").getAsDouble(), 0.01f, 2);
+            }
+        }
+
+        // Cost parameters (UUID 276) - divided by 100
+        if (params.get("costDay") != null) {
+            parameters.setCostDay(params.get("costDay").getAsDouble(), 0.01f, 2);
+        }
+
+        if (params.get("costWeek") != null) {
+            parameters.setCostWeek(params.get("costWeek").getAsDouble(), 0.01f, 2);
+        }
+
+        if (params.get("costMonth") != null) {
+            parameters.setCostMonth(params.get("costMonth").getAsDouble(), 0.01f, 2);
+        }
+
+        if (params.get("costYear") != null) {
+            parameters.setCostYear(params.get("costYear").getAsDouble(), 0.01f, 2);
+        }
+
+        // Runtime (UUID 276)
+        if (params.get("dayOnDuration") != null) {
+            parameters.setDayRuntime(params.get("dayOnDuration").getAsInt());
+        }
+
+        if (params.get("monthOnDuration") != null) {
+            parameters.setMonthRuntime(params.get("monthOnDuration").getAsInt());
+        }
+
         // Energy
         if (params.get("hundredDaysKwhData") != null) {
             String kwhData = params.get("hundredDaysKwhData").getAsString();

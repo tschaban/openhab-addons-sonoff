@@ -273,12 +273,29 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
         // Send Websocket Message
         if (cloudConnected) {
             logger.debug("Sending message via Cloud WebSocket");
+
+            // Special logging for consumption polling requests
+            if (message.getCommand().equals("consumption")) {
+                logger.info("========== CONSUMPTION POLLING REQUEST ==========");
+                logger.info("Device ID: {}", message.getDeviceid());
+                logger.info("Sequence: {}", message.getSequence());
+                logger.info("Command: {}", message.getCommand());
+            }
+
             String params = gson.toJson(message.getParams().getCommand());
             logger.debug("Command params JSON: {}", params);
             WebsocketRequest request = new WebsocketRequest(message.getSequence(), apiKey, message.getDeviceid(),
                     gson.fromJson(params, JsonObject.class));
             String fullRequest = gson.toJson(request);
-            logger.debug("Full WebSocket request JSON: {}", fullRequest);
+
+            // Log full consumption request
+            if (message.getCommand().equals("consumption")) {
+                logger.info("Full consumption request JSON: {}", fullRequest);
+                logger.info("=================================================");
+            } else {
+                logger.debug("Full WebSocket request JSON: {}", fullRequest);
+            }
+
             listener.sendWebsocketMessage(fullRequest);
             logger.debug("************* SEND MESSAGE END (CLOUD) *************");
             return;
@@ -296,7 +313,13 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
      * Processes and forwards incoming states to the appropriate device handler
      */
     private synchronized void processState(JsonObject device, Boolean encrypted) {
-        String deviceid = device.get("deviceid").getAsString();
+        JsonElement deviceidElement = device.get("deviceid");
+        if (deviceidElement == null || deviceidElement.isJsonNull()) {
+            logger.warn("Cannot process state - device object missing 'deviceid' field: {}", device);
+            return;
+        }
+
+        String deviceid = deviceidElement.getAsString();
         SonoffDeviceState state = listener.getState(deviceid);
         if (state == null) {
             logger.debug("The device {} doesnt exist, unable to set state", deviceid);
@@ -384,12 +407,44 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
 
                 // Consumption message
                 if (messageType.equals("consumption")) {
+                    logger.info("========== CONSUMPTION POLLING RESPONSE ==========");
+                    logger.info("Full response JSON: {}", message);
+
                     JsonObject device = gson.fromJson(response, JsonObject.class);
                     if (device != null) {
-                        JsonObject params = device.getAsJsonObject("config");
-                        device.add("params", params);
-                        processState(device, false);
+                        JsonElement deviceidElement = device.get("deviceid");
+                        String deviceid = deviceidElement != null && !deviceidElement.isJsonNull()
+                                ? deviceidElement.getAsString()
+                                : "unknown";
+                        logger.info("Device ID: {}", deviceid);
+
+                        // Safely get config field - may be null for some devices
+                        JsonElement configElement = device.get("config");
+                        logger.info("Config field present: {}, is null: {}", configElement != null,
+                                configElement != null ? configElement.isJsonNull() : "n/a");
+
+                        if (configElement != null && !configElement.isJsonNull()) {
+                            try {
+                                JsonObject params = configElement.getAsJsonObject();
+                                logger.info("Consumption config data: {}", params.toString());
+                                device.add("params", params);
+                                processState(device, false);
+                            } catch (Exception e) {
+                                logger.error("Failed to parse consumption config for device {}: {}", deviceid,
+                                        e.getMessage());
+                                logger.error("Config element type: {}, value: {}", configElement.getClass().getName(),
+                                        configElement);
+                            }
+                        } else {
+                            logger.warn(
+                                    "Consumption response for device {} has null/missing 'config' field - cannot process",
+                                    deviceid);
+                            logger.warn("Available fields in response: {}", device.keySet());
+                        }
+                    } else {
+                        logger.error("Failed to parse consumption response as JsonObject");
                     }
+                    logger.info("==================================================");
                     return;
                 }
 
@@ -403,12 +458,36 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
 
     @Override
     public void apiMessage(JsonObject thingResponse) {
-        JsonObject data = thingResponse.get("data").getAsJsonObject();
-        JsonArray thingList = data.get("thingList").getAsJsonArray();
+        JsonElement dataElement = thingResponse.get("data");
+        if (dataElement == null || dataElement.isJsonNull()) {
+            logger.warn("API response missing 'data' field");
+            return;
+        }
+
+        JsonObject data = dataElement.getAsJsonObject();
+        JsonElement thingListElement = data.get("thingList");
+        if (thingListElement == null || thingListElement.isJsonNull()) {
+            logger.warn("API response missing 'thingList' field");
+            return;
+        }
+
+        JsonArray thingList = thingListElement.getAsJsonArray();
         SonoffCacheProvider cacheProvider = new SonoffCacheProvider();
         for (int i = 0; i < thingList.size(); i++) {
-            JsonObject thing = thingList.get(i).getAsJsonObject();
-            JsonObject device = thing.get("itemData").getAsJsonObject();
+            JsonElement thingElement = thingList.get(i);
+            if (thingElement == null || thingElement.isJsonNull()) {
+                logger.warn("Skipping null thing at index {}", i);
+                continue;
+            }
+
+            JsonObject thing = thingElement.getAsJsonObject();
+            JsonElement itemDataElement = thing.get("itemData");
+            if (itemDataElement == null || itemDataElement.isJsonNull()) {
+                logger.warn("Thing at index {} missing 'itemData' field", i);
+                continue;
+            }
+
+            JsonObject device = itemDataElement.getAsJsonObject();
 
             // Auto-create cache file and add to in-memory map if it doesn't exist
             // This fixes cache path migration issues and ensures device is available immediately

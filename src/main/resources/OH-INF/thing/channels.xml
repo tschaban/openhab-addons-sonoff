@@ -341,4 +341,61 @@
 		<state min="0" max="100" step="1" pattern="%d %%" readOnly="false"/>
 	</channel-type>
 
+	<!-- Power Monitoring with Extended Energy Tracking (UUID 276) specific channels -->
+	<channel-type id="week-kwh">
+		<item-type unitHint="kWh">Number:Energy</item-type>
+		<label>Weekly Energy Consumption</label>
+		<description>Energy consumption for the current week</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="year-kwh">
+		<item-type unitHint="kWh">Number:Energy</item-type>
+		<label>Yearly Energy Consumption</label>
+		<description>Energy consumption for the current year</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="cost-day">
+		<item-type>Number:Currency</item-type>
+		<label>Daily Energy Cost</label>
+		<description>Energy cost for today</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="cost-week">
+		<item-type>Number:Currency</item-type>
+		<label>Weekly Energy Cost</label>
+		<description>Energy cost for the current week</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="cost-month">
+		<item-type>Number:Currency</item-type>
+		<label>Monthly Energy Cost</label>
+		<description>Energy cost for the current month</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="cost-year">
+		<item-type>Number:Currency</item-type>
+		<label>Yearly Energy Cost</label>
+		<description>Energy cost for the current year</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="day-runtime">
+		<item-type unitHint="h">Number:Time</item-type>
+		<label>Daily Runtime</label>
+		<description>Device runtime for today in hours</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="month-runtime">
+		<item-type unitHint="h">Number:Time</item-type>
+		<label>Monthly Runtime</label>
+		<description>Device runtime for the current month in hours</description>
+		<state pattern="%.2f %unit%" readOnly="true"/>
+	</channel-type>
+
 </thing:thing-descriptions>
