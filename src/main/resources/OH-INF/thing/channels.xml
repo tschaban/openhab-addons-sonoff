@@ -398,4 +398,52 @@
 		<state pattern="%.2f %unit%" readOnly="true"/>
 	</channel-type>
 
+	<!-- Air Quality Monitor (UUID 266) specific channels -->
+	<channel-type id="co2">
+		<item-type unitHint="ppm">Number:Dimensionless</item-type>
+		<label>CO2 Level</label>
+		<description>Carbon dioxide concentration in parts per million</description>
+		<state pattern="%.0f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="pm10">
+		<item-type>Number</item-type>
+		<label>PM10 Level</label>
+		<description>Particulate Matter 10 micrometers or less concentration</description>
+		<state pattern="%.0f μg/m3" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="pm2_5">
+		<item-type>Number</item-type>
+		<label>PM2.5 Level</label>
+		<description>Particulate Matter 2.5 micrometers or less concentration</description>
+		<state pattern="%.0f μg/m3" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="temperatureF">
+		<item-type unitHint="°F">Number:Temperature</item-type>
+		<label>Temperature (Fahrenheit)</label>
+		<description>Current temperature in Fahrenheit</description>
+		<state pattern="%.1f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="sensorLight">
+		<item-type>Switch</item-type>
+		<label>Display Light</label>
+		<description>Control display/indicator light on/off</description>
+	</channel-type>
+
+	<channel-type id="sensorLightBr">
+		<item-type>Dimmer</item-type>
+		<label>Display Brightness</label>
+		<description>Display/indicator light brightness (0-100%, values 0-9 mapped to device minimum 10%)</description>
+		<state min="0" max="100" step="1" pattern="%d %%" readOnly="false"/>
+	</channel-type>
+
+	<channel-type id="voiceAlarm">
+		<item-type>Switch</item-type>
+		<label>Voice Alarm</label>
+		<description>Enable or disable voice alarm notifications</description>
+	</channel-type>
+
 </thing:thing-descriptions>

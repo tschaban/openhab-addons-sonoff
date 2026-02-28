@@ -203,6 +203,9 @@ public class SonoffDeviceState {
         if (params.get("current") != null) {
             if (uiid.equals(5) || uiid.equals(32)) {
                 parameters.setCurrent(params.get("current").getAsString(), 1f, 3);
+            } else if (uiid.equals(276)) {
+                // UUID 276 (WS01) reports current in centiamps (0.01 A increments)
+                parameters.setCurrent(params.get("current").getAsString(), 0.01f, 3);
             } else {
                 parameters.setCurrent(params.get("current").getAsString(), 0.001f, 3);
             }
@@ -389,7 +392,9 @@ public class SonoffDeviceState {
                     parameters.setHumidity(p.getAsDouble());
                 }
             }
-        } else {
+        } else if (!uiid.equals(266)) {
+            // Temperature and humidity need /100 conversion for most devices
+            // UUID 266 (SAWF-08P) is excluded and handled separately below
             if (params.get("temperature") != null) {
                 parameters.setTemperature(Double.valueOf(params.get("temperature").getAsDouble() / 100));
             }
@@ -421,6 +426,46 @@ public class SonoffDeviceState {
 
             if (params.get("humidityAvg") != null) {
                 parameters.setHumidityAvg(Double.valueOf(params.get("humidityAvg").getAsDouble() / 100));
+            }
+        }
+
+        // Air Quality Monitor (UUID 266 - SAWF-08P)
+        if (uiid.equals(266)) {
+            // Temperature and humidity are provided as float values (no /100 conversion needed)
+            if (params.get("temperature") != null) {
+                parameters.setTemperature(params.get("temperature").getAsDouble());
+            }
+
+            if (params.get("humidity") != null) {
+                parameters.setHumidity(params.get("humidity").getAsDouble());
+            }
+
+            if (params.get("co2") != null) {
+                parameters.setCo2(params.get("co2").getAsInt());
+            }
+
+            if (params.get("pm10") != null) {
+                parameters.setPm10(params.get("pm10").getAsInt());
+            }
+
+            if (params.get("pm2_5") != null) {
+                parameters.setPm2_5(params.get("pm2_5").getAsInt());
+            }
+
+            if (params.get("temperatureF") != null) {
+                parameters.setTemperatureF(params.get("temperatureF").getAsDouble());
+            }
+
+            if (params.get("sensorLight") != null) {
+                parameters.setSensorLight(params.get("sensorLight").getAsString());
+            }
+
+            if (params.get("sensorLightBr") != null) {
+                parameters.setSensorLightBr(params.get("sensorLightBr").getAsInt());
+            }
+
+            if (params.get("voiceAlarm") != null) {
+                parameters.setVoiceAlarm(params.get("voiceAlarm").getAsString());
             }
         }
 
@@ -670,6 +715,10 @@ public class SonoffDeviceState {
 
     public String getDeviceKey() {
         return this.deviceKey;
+    }
+
+    public String getModel() {
+        return this.model;
     }
 
     public StringType getIpAddress() {

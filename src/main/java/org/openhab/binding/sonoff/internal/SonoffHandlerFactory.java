@@ -191,6 +191,8 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
                 return new SonoffSwitchWS01Handler(thing);
             case "265":
                 return new SonoffButtonHandler(thing);
+            case "266":
+                return new SonoffAirQualityMonitorHandler(thing);
             case "1770":
             case "7014": // SNZB-02P
             case "7038": // SNZB-02DR2

@@ -52,7 +52,7 @@ public class SonoffBindingConstants {
     public static final Set<Integer> LAN_IN = Collections
             .unmodifiableSet(Stream
                     .of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140, 160, 161, 162,
-                            173, 181, 190, 209, 210, 211, 212, 237, 256, 258, 260, 268, 275, 276)
+                            173, 181, 190, 209, 210, 211, 212, 237, 256, 258, 260, 266, 268, 275, 276)
                     .collect(Collectors.toSet()));
 
     /**
@@ -62,7 +62,7 @@ public class SonoffBindingConstants {
      */
     public static final Set<Integer> LAN_OUT = Collections
             .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126, 138, 140, 160, 161, 162,
-                    173, 209, 210, 211, 212, 237, 256, 258, 260, 268, 275, 276).collect(Collectors.toSet()));
+                    173, 209, 210, 211, 212, 237, 256, 258, 260, 266, 268, 275, 276).collect(Collectors.toSet()));
 
     // ========================================
     // BRIDGE AND ACCOUNT THING TYPES
@@ -199,6 +199,9 @@ public class SonoffBindingConstants {
 
     /** Virtual Button: NON-OTA-GL(265) */
     public static final ThingTypeUID THING_TYPE_265 = new ThingTypeUID(BINDING_ID, "265");
+
+    /** Air Quality Monitor: SAWF-08P (CO2/temperature/humidity sensor with Matter support) */
+    public static final ThingTypeUID THING_TYPE_266 = new ThingTypeUID(BINDING_ID, "266");
 
     // GSM/Cellular devices
     /** TODO: Analyze - GSM Socket models need detailed specification */
@@ -369,8 +372,8 @@ public class SonoffBindingConstants {
             THING_TYPE_82, THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126,
             THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162, THING_TYPE_173,
             THING_TYPE_181, THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212,
-            THING_TYPE_226, THING_TYPE_237, THING_TYPE_258, THING_TYPE_264, THING_TYPE_265, THING_TYPE_268,
-            THING_TYPE_275, THING_TYPE_276,
+            THING_TYPE_226, THING_TYPE_237, THING_TYPE_258, THING_TYPE_264, THING_TYPE_265, THING_TYPE_266,
+            THING_TYPE_268, THING_TYPE_275, THING_TYPE_276,
 
             // Zigbee bridges
             THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
@@ -409,8 +412,8 @@ public class SonoffBindingConstants {
             THING_TYPE_82, THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126,
             THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162, THING_TYPE_173,
             THING_TYPE_181, THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212,
-            THING_TYPE_226, THING_TYPE_237, THING_TYPE_258, THING_TYPE_264, THING_TYPE_265, THING_TYPE_268,
-            THING_TYPE_275, THING_TYPE_276,
+            THING_TYPE_226, THING_TYPE_237, THING_TYPE_258, THING_TYPE_264, THING_TYPE_265, THING_TYPE_266,
+            THING_TYPE_268, THING_TYPE_275, THING_TYPE_276,
 
             // Zigbee bridges
             THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
@@ -497,6 +500,7 @@ public class SonoffBindingConstants {
         deviceTypes.put(260, THING_TYPE_260);
         deviceTypes.put(264, THING_TYPE_264);
         deviceTypes.put(265, THING_TYPE_265);
+        deviceTypes.put(266, THING_TYPE_266);
         deviceTypes.put(268, THING_TYPE_268);
         deviceTypes.put(275, THING_TYPE_275);
         deviceTypes.put(276, THING_TYPE_276);
@@ -885,6 +889,7 @@ public class SonoffBindingConstants {
         handlerIds.add("190"); // POW Upgraded
         handlerIds.add("237"); // Gate
         handlerIds.add("258"); // Roller Shutter
+        handlerIds.add("266"); // Air Quality Monitor
         handlerIds.add("268"); // BASIC-1GS
         handlerIds.add("276"); // WS01 Socket
 

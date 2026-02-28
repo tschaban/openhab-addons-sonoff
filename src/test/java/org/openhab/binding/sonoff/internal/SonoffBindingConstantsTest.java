@@ -444,4 +444,19 @@ public class SonoffBindingConstantsTest {
         assertEquals(SonoffBindingConstants.THING_TYPE_276, deviceMap.get(276),
                 "Device map must contain entry for UUID 276");
     }
+
+    @Test
+    public void testWiFiDevice266() {
+        assertNotNull(SonoffBindingConstants.THING_TYPE_266, "THING_TYPE_266 constant should exist");
+
+        assertTrue(SonoffBindingConstants.SUPPORTED_THING_TYPE_UIDS.contains(SonoffBindingConstants.THING_TYPE_266),
+                "THING_TYPE_266 must be in SUPPORTED_THING_TYPE_UIDS");
+
+        assertTrue(SonoffBindingConstants.DISCOVERABLE_THING_TYPE_UIDS.contains(SonoffBindingConstants.THING_TYPE_266),
+                "THING_TYPE_266 must be in DISCOVERABLE_THING_TYPE_UIDS");
+
+        Map<Integer, ThingTypeUID> deviceMap = SonoffBindingConstants.createMap();
+        assertEquals(SonoffBindingConstants.THING_TYPE_266, deviceMap.get(266),
+                "Device map must contain entry for UUID 266");
+    }
 }

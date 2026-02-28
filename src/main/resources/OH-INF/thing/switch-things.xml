@@ -1367,17 +1367,18 @@
 				<description>DeviceId (can be found in the eWeLink app)</description>
 			</parameter>
 			<parameter name="local" type="boolean" required="true">
-				<label>Enable Local Communication</label>
+				<label>Electricity Data Polling</label>
 				<default>true</default>
 				<options>
 					<option value="true">Enabled</option>
 					<option value="false">Disabled</option>
 				</options>
-				<description>Enable local LAN communication with the device</description>
+				<description>Enable periodic polling of electrical measurements (power, voltage, current, energy). Only works in
+					cloud/mixed mode.</description>
 			</parameter>
 			<parameter name="localPoll" type="integer" min="10" max="86400" step="1" required="true">
-				<label>Local Polling Interval</label>
-				<description>Polling interval for local data updates (in seconds)</description>
+				<label>Electricity data polling interval</label>
+				<description>Polling interval (in seconds)</description>
 				<default>60</default>
 			</parameter>
 		</config-description>

@@ -425,6 +425,23 @@ class SonoffHandlerFactoryTest {
                 "Factory should support THING_TYPE_276");
     }
 
+    @Test
+    @DisplayName("Should create handler for WiFi device 266")
+    void testWiFiDevice266Handler() {
+        // Mock thing with correct type
+        when(mockThing.getThingTypeUID()).thenReturn(SonoffBindingConstants.THING_TYPE_266);
+
+        // Create handler
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify handler was created and is correct type
+        assertNotNull(handler, "Handler should be created for THING_TYPE_266");
+        assertEquals("SonoffAirQualityMonitorHandler", handler.getClass().getSimpleName(),
+                "Handler should be instance of SonoffAirQualityMonitorHandler");
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_266),
+                "Factory should support THING_TYPE_266");
+    }
+
     @ParameterizedTest
     @ValueSource(strings = { "1770", "7014" })
     @DisplayName("Should create SonoffZigbeeDeviceTemperatureHumiditySensorHandler for temperature sensor types")

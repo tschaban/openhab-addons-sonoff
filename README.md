@@ -91,9 +91,10 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **260** | [Sonoff CAM-B1P](https://s.smartnydom.pl/r/sonoff-b1p-itead?ref=openhab) | 🌐 Cloud | Security camera | |
 | **264** | Sonoff Virtual Switch | 🌐 Cloud | Model: NON-OTA-GL(264) | |
 | **265** | Sonoff Virtual 3xButtons | 🌐 Cloud | Model: NON-OTA-GL(265) | |
+| **266** | [Sonoff SAWF-08P](https://s.smartnydom.pl/r/sonoff-sawf-08p?ref=openhab) / [SAWF-07P](https://s.smartnydom.pl/r/sonoff-sawf-07p?ref=openhab) | 🔄 Mixed | Air Quality Monitor: SAWF-08P (CO2) or SAWF-07P (PM2.5/PM10), temperature, humidity sensor with Matter support over WiFi. Auto-detects model. | ⚠️ Testing needed |
 | **268** | [Sonoff BASIC-1GS](https://s.smartnydom.pl/r/sonoff-basic-1gs-itead-en?ref=openhab) | 🔄 Mixed | BASIC 5Gen single switch with Matter support | |
 | **275** | [Sonoff MINI-2GS](https://s.smartnydom.pl/r/sonoff-mini-2gs?ref=openhab) | 🔄 Mixed | Dual channel switch with Matter support | |
-| **276** | [Sonoff ORB WS01TPF-E](https://s.smartnydom.pl/r/sonoff-orb-ws01-itead?ref=openhab) | 🔄 Mixed | WiFi socket with Matter support and enhanced energy monitoring (power, voltage, current, daily/weekly/monthly/yearly kWh, cost tracking) | ⚠️ Testing needed |
+| **276** | [Sonoff ORB WS01TPF-E](https://s.smartnydom.pl/r/sonoff-orb-ws01-itead?ref=openhab) | 🔄 Mixed | WiFi socket with Matter support and enhanced energy monitoring (power, voltage, current, daily/weekly/monthly/yearly kWh, cost tracking). **Note:** Electrical data monitoring requires local and cloud connection (doesn't work in LAN or Cloud only mode yet) | |
 | **1770** | [Sonoff ZigBee SNZB-02](https://s.smartnydom.pl/r/sonoff-zigbee-sensors?ref=openhab) | 🌐 Cloud | Temperature monitoring, 1st version| |
 | **2026** | [Sonoff ZigBee Motion Sensor](https://s.smartnydom.pl/r/sonoff-zigbee-sensors?ref=openhab) | 🌐 Cloud | Motion detection, 1st version | |
 | **7000** | Sonoff [SNZB-01P](https://s.smartnydom.pl/r/sonoff-snzb-01p?ref=openhab) | 🌐 Cloud | Wireless ZigBee switch (single/double/long press) | |

@@ -21,7 +21,7 @@ import org.openhab.binding.sonoff.internal.communication.SonoffCommandMessage;
 import org.openhab.binding.sonoff.internal.config.DeviceConfig;
 import org.openhab.binding.sonoff.internal.dto.commands.MultiSwitch;
 import org.openhab.binding.sonoff.internal.dto.commands.SLed;
-import org.openhab.core.library.types.OnOffType;
+import org.openhab.binding.sonoff.internal.dto.commands.UiActive;
 import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
@@ -39,8 +39,9 @@ import org.slf4j.LoggerFactory;
 public class SonoffSwitchWS01Handler extends SonoffBaseDeviceHandler {
 
     private final Logger logger = LoggerFactory.getLogger(SonoffSwitchWS01Handler.class);
-    private @Nullable ScheduledFuture<?> localTask;
-    private OnOffType currentSledState = OnOffType.ON; // Track current sled state for polling
+    private @Nullable ScheduledFuture<?> sledOnlineTask;
+    private @Nullable ScheduledFuture<?> uiActiveTask;
+    private String currentSledOnline = "off";
 
     public SonoffSwitchWS01Handler(Thing thing) {
         super(thing);
@@ -54,24 +55,47 @@ public class SonoffSwitchWS01Handler extends SonoffBaseDeviceHandler {
         if (account != null) {
             String mode = account.getMode();
             Integer localPoll = config.localPoll;
-            Boolean local = config.local;
+            Boolean enableElectricityPolling = config.local;
 
-            // UUID 276 polling strategy: Send sled command with current state value
-            // Device responds with full state including power/energy data
-            // This avoids state changes while triggering device response
-            Runnable localPollData = () -> {
-                SLed sled = new SLed();
-                String sledState = currentSledState == OnOffType.ON ? "on" : "off";
-                sled.setSledOnline(sledState);
-                logger.debug("Polling UUID 276 - sending sled={} to trigger state update", sledState);
-                queueMessage(new SonoffCommandMessage("sledOnline", this.deviceid, true, sled));
-            };
+            // Start sledOnline task in cloud/mixed mode (electrical data only available via cloud)
+            if (!mode.equals("local") && enableElectricityPolling) {
+                // UUID 276 devices need sledOnline command to trigger electrical measurements
+                // Electrical data monitoring only works via cloud connection
+                // Sending sledOnline command forces the device to report fresh electrical data
+                Runnable sledOnlineData = () -> {
+                    if (this.cloud) {
+                        logger.debug(
+                                "Sending sledOnline command to {} with current state '{}' to trigger electrical data update",
+                                this.deviceid, currentSledOnline);
+                        SLed sled = new SLed();
+                        sled.setSledOnline(currentSledOnline); // Send current state to avoid toggling LED
+                        queueMessage(new SonoffCommandMessage("sledOnline", this.deviceid, true, sled));
+                    }
+                };
 
-            // Start local polling when local is enabled and mode allows it
-            if (local.equals(true) && !mode.equals("cloud")) {
-                logger.debug("Starting local polling task for UUID 276 - querying power data every {} seconds",
+                logger.debug("Starting sledOnline polling task for {} every {} seconds (cloud mode)", this.deviceid,
                         localPoll);
-                localTask = scheduler.scheduleWithFixedDelay(localPollData, 10, localPoll, TimeUnit.SECONDS);
+                sledOnlineTask = scheduler.scheduleWithFixedDelay(sledOnlineData, 10, localPoll, TimeUnit.SECONDS);
+
+                // Send uiActive command every 50 seconds to trigger UI being active (workaround)
+                // This simulates opening the device in the eWeLink app
+                Runnable uiActiveData = () -> {
+                    if (this.local) {
+                        logger.debug("Sending uiActive command to {} via LAN to trigger electrical data update",
+                                this.deviceid);
+                        UiActive uiActive = new UiActive();
+                        uiActive.setUiActive(60);
+                        queueMessage(new SonoffCommandMessage("uiActive", this.deviceid, true, uiActive));
+                    }
+                };
+
+                logger.debug("Starting uiActive polling task for {} every 50 seconds (LAN mode)", this.deviceid);
+                uiActiveTask = scheduler.scheduleWithFixedDelay(uiActiveData, 15, 50, TimeUnit.SECONDS);
+            } else if (mode.equals("local")) {
+                logger.info("UUID 276 device {} in local-only mode - electrical data monitoring not available",
+                        this.deviceid);
+            } else {
+                logger.info("UUID 276 device {} - electrical data polling disabled by configuration", this.deviceid);
             }
         }
     }
@@ -79,10 +103,15 @@ public class SonoffSwitchWS01Handler extends SonoffBaseDeviceHandler {
     @Override
     public void cancelTasks() {
         logger.debug("Stopping tasks for {}", this.deviceid);
-        final ScheduledFuture<?> localTask = this.localTask;
-        if (localTask != null) {
-            localTask.cancel(true);
-            this.localTask = null;
+        final ScheduledFuture<?> sledOnlineTask = this.sledOnlineTask;
+        if (sledOnlineTask != null) {
+            sledOnlineTask.cancel(true);
+            this.sledOnlineTask = null;
+        }
+        final ScheduledFuture<?> uiActiveTask = this.uiActiveTask;
+        if (uiActiveTask != null) {
+            uiActiveTask.cancel(true);
+            this.uiActiveTask = null;
         }
     }
 
@@ -107,10 +136,6 @@ public class SonoffSwitchWS01Handler extends SonoffBaseDeviceHandler {
                     SLed sled = new SLed();
                     sled.setSledOnline(command.toString().toLowerCase());
                     message = new SonoffCommandMessage("sledOnline", this.deviceid, false, sled);
-                    // Update tracked state
-                    if (command instanceof OnOffType) {
-                        this.currentSledState = (OnOffType) command;
-                    }
                     break;
             }
             if (message != null) {
@@ -123,6 +148,9 @@ public class SonoffSwitchWS01Handler extends SonoffBaseDeviceHandler {
 
     @Override
     public void updateDevice(SonoffDeviceState newDevice) {
+        logger.debug("updateDevice called for {}, device online: cloud={}, local={}", this.deviceid,
+                newDevice.getCloud(), newDevice.getLocal());
+
         // Switch
         updateState("switch", newDevice.getParameters().getSwitch0());
 
@@ -131,7 +159,6 @@ public class SonoffSwitchWS01Handler extends SonoffBaseDeviceHandler {
         updateState("voltage", newDevice.getParameters().getVoltage());
         updateState("current", newDevice.getParameters().getCurrent());
 
-        // Energy consumption
         updateState("dayKwh", newDevice.getParameters().getTodayKwh());
         updateState("weekKwh", newDevice.getParameters().getWeekKwh());
         updateState("monthKwh", newDevice.getParameters().getMonthKwh());
@@ -150,10 +177,9 @@ public class SonoffSwitchWS01Handler extends SonoffBaseDeviceHandler {
         // Device status
         updateState("rssi", newDevice.getParameters().getRssi());
         updateState("sled", newDevice.getParameters().getNetworkLED());
+        // Store current sledOnline state for polling
+        this.currentSledOnline = newDevice.getParameters().getNetworkLED().toString().toLowerCase();
         updateState("ipaddress", newDevice.getIpAddress());
-
-        // Track sled state for polling
-        this.currentSledState = newDevice.getParameters().getNetworkLED();
 
         // Connections
         this.cloud = newDevice.getCloud();

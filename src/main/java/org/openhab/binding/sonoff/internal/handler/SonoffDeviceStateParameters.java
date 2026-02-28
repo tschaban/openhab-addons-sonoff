@@ -90,6 +90,15 @@ public class SonoffDeviceStateParameters {
     private QuantityType<Dimensionless> humidityMax = new QuantityType<Dimensionless>(0.0, PERCENT);
     private QuantityType<Dimensionless> humidityMin = new QuantityType<Dimensionless>(0.0, PERCENT);
     private QuantityType<Dimensionless> humidityAvg = new QuantityType<Dimensionless>(0.0, PERCENT);
+    // Air Quality
+    private QuantityType<Dimensionless> co2 = new QuantityType<Dimensionless>(0.0, PARTS_PER_MILLION);
+    private QuantityType<Dimensionless> pm10 = new QuantityType<Dimensionless>(0.0, PARTS_PER_MILLION);
+    private QuantityType<Dimensionless> pm2_5 = new QuantityType<Dimensionless>(0.0, PARTS_PER_MILLION);
+    private QuantityType<Temperature> temperatureF = new QuantityType<Temperature>(0.0,
+            org.openhab.core.library.unit.ImperialUnits.FAHRENHEIT);
+    private OnOffType sensorLight = OnOffType.OFF;
+    private PercentType sensorLightBr = new PercentType(0);
+    private OnOffType voiceAlarm = OnOffType.OFF;
     // Actions
     private DateTimeType lastUpdate = new DateTimeType(System.currentTimeMillis() + "");
     private DateTimeType actionTime = new DateTimeType(System.currentTimeMillis() + "");
@@ -453,6 +462,65 @@ public class SonoffDeviceStateParameters {
 
     public void setHumidity(Double humidity) {
         this.humidity = new QuantityType<Dimensionless>(humidity, PERCENT);
+    }
+
+    public QuantityType<Dimensionless> getCo2() {
+        return this.co2;
+    }
+
+    public void setCo2(Integer co2) {
+        this.co2 = new QuantityType<Dimensionless>(co2, PARTS_PER_MILLION);
+    }
+
+    public QuantityType<Dimensionless> getPm10() {
+        return this.pm10;
+    }
+
+    public void setPm10(Integer pm10) {
+        this.pm10 = new QuantityType<Dimensionless>(pm10, PARTS_PER_MILLION);
+    }
+
+    public QuantityType<Dimensionless> getPm2_5() {
+        return this.pm2_5;
+    }
+
+    public void setPm2_5(Integer pm2_5) {
+        this.pm2_5 = new QuantityType<Dimensionless>(pm2_5, PARTS_PER_MILLION);
+    }
+
+    public QuantityType<Temperature> getTemperatureF() {
+        return this.temperatureF;
+    }
+
+    public void setTemperatureF(Double temperatureF) {
+        this.temperatureF = new QuantityType<Temperature>(temperatureF,
+                org.openhab.core.library.unit.ImperialUnits.FAHRENHEIT);
+    }
+
+    public OnOffType getSensorLight() {
+        return this.sensorLight;
+    }
+
+    public void setSensorLight(String sensorLight) {
+        // Device may return "true"/"false" or "on"/"off"
+        this.sensorLight = (sensorLight.equals("on") || sensorLight.equals("true")) ? OnOffType.ON : OnOffType.OFF;
+    }
+
+    public PercentType getSensorLightBr() {
+        return this.sensorLightBr;
+    }
+
+    public void setSensorLightBr(Integer sensorLightBr) {
+        this.sensorLightBr = new PercentType(sensorLightBr);
+    }
+
+    public OnOffType getVoiceAlarm() {
+        return this.voiceAlarm;
+    }
+
+    public void setVoiceAlarm(String voiceAlarm) {
+        // Device may return "true"/"false" or "on"/"off"
+        this.voiceAlarm = (voiceAlarm.equals("on") || voiceAlarm.equals("true")) ? OnOffType.ON : OnOffType.OFF;
     }
 
     public DateTimeType getLastUpdate() {

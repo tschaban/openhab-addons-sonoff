@@ -1,0 +1,114 @@
+{
+    "name": "SAWF-07P",
+    "deviceid": "10027cda62",
+    "apikey": "",
+    "extra": {
+        "model": "SN-ESP32D0-AQM-01",
+        "ui": "空气质量检测仪",
+        "uiid": 266,
+        "description": "PM颗粒物检测",
+        "modelInfo": "67da2c6e95a9f1d80ee9f5b8",
+        "brandId": "5c4c1aee3a7d24c7100be054",
+        "itCredential": "",
+        "mac": "d0:27:04:70:74:96",
+        "apmac": "d0:27:04:70:74:97",
+        "manufacturer": "深圳松诺技术有限公司",
+        "staMac": "1C:69:20:7E:E4:C8"
+    },
+    "brandName": "SONOFF",
+    "brandLogo": "https://eu-ota.coolkit.cc/logo/q62PevoglDNmwUJ9oPE7kRrpt1nL1CoA.png",
+    "showBrand": true,
+    "productModel": "SAWF-07P",
+    "tags": {
+        "city": {
+            "cityStr": "",
+            "latitude": "",
+            "longitude": ""
+        }
+    },
+    "devConfig": {},
+    "settings": {
+        "opsNotify": 0,
+        "opsHistory": 1,
+        "alarmNotify": 1,
+        "wxAlarmNotify": 0,
+        "wxOpsNotify": 0,
+        "wxDoorbellNotify": 0,
+        "appDoorbellNotify": 1
+    },
+    "devGroups": [],
+    "family": {
+        "familyid": "",
+        "index": -4,
+        "members": [],
+        "guests": []
+    },
+    "shareTo": [],
+    "devicekey": "",
+    "online": true,
+    "params": {
+        "bindInfos": {
+            "alexa": [
+                ""
+            ],
+            "gaction": [
+                ""
+            ]
+        },
+        "version": 8,
+        "TZ": "Europe/Warsaw",
+        "timers": [],
+        "subDevices": [],
+        "autoUpgrade": {
+            "enable": true,
+            "range": [
+                "02:00",
+                "04:00"
+            ]
+        },
+        "bssid": "D4:01:C3:F8:0D:47",
+        "fwVersion": "1.1.2",
+        "humCorrection": "-0.1",
+        "humidity": "22.0",
+        "pm10": 4,
+        "pm2_5": 4,
+        "rssi": -76,
+        "sensorLight": true,
+        "sensorLightBr": 40,
+        "ssid": "",
+        "staMac": "1C:69:20:7E:E4:C8",
+        "tempCorrection": "-1.0",
+        "tempUnit": 0,
+        "temperature": "19.3",
+        "temperatureF": "66.7",
+        "voiceAlarm": false,
+        "uiActive": 60,
+        "tempErrorReport": true,
+        "pairingMode": true,
+        "pairingModeTimeout": 600,
+        "humiErrorReport": true,
+        "pm2MidReport": true,
+        "pm2MinReport": true,
+        "humiThreshold": {
+            "max": "60",
+            "min": "40"
+        },
+        "pm2Threshold": {
+            "max": "15",
+            "min": "20"
+        },
+        "tempThreshold": {
+            "minF": "66.2",
+            "max": "27.0",
+            "maxF": "80.6",
+            "min": "19.0"
+        },
+        "only_device": {
+            "ota": "success"
+        }
+    },
+    "isSupportGroup": false,
+    "isSupportedOnMP": false,
+    "isSupportChannelSplit": false,
+    "deviceFeature": {}
+}
