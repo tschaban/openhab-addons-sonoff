@@ -49,9 +49,11 @@ public class SonoffBindingConstants {
      * TODO: Analyze why devices 15, 103, 104, 181, 190 are in LAN_IN but not LAN_OUT
      * NOTE: UUID 226 (Circuit Breaker) is cloud-only and does not support LAN communication
      */
-    public static final Set<Integer> LAN_IN = Collections.unmodifiableSet(
-            Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140, 160, 161, 162,
-                    173, 181, 190, 209, 210, 211, 212, 237, 256, 260, 268, 275).collect(Collectors.toSet()));
+    public static final Set<Integer> LAN_IN = Collections
+            .unmodifiableSet(Stream
+                    .of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140, 160, 161, 162,
+                            173, 181, 190, 209, 210, 211, 212, 237, 256, 258, 260, 266, 268, 275, 276)
+                    .collect(Collectors.toSet()));
 
     /**
      * Device types that support outbound LAN protocol communication.
@@ -60,7 +62,7 @@ public class SonoffBindingConstants {
      */
     public static final Set<Integer> LAN_OUT = Collections
             .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126, 138, 140, 160, 161, 162,
-                    173, 209, 210, 211, 212, 237, 256, 260, 268, 275).collect(Collectors.toSet()));
+                    173, 209, 210, 211, 212, 237, 256, 258, 260, 266, 268, 275, 276).collect(Collectors.toSet()));
 
     // ========================================
     // BRIDGE AND ACCOUNT THING TYPES
@@ -170,6 +172,9 @@ public class SonoffBindingConstants {
     /** Dual relay Mini-2GS: compact 2-channel switch */
     public static final ThingTypeUID THING_TYPE_275 = new ThingTypeUID(BINDING_ID, "275");
 
+    /** WiFi Socket with Matter and Energy Monitoring: WS01TPF-E (ORB wall socket with enhanced energy tracking) */
+    public static final ThingTypeUID THING_TYPE_276 = new ThingTypeUID(BINDING_ID, "276");
+
     // Specialized/Unknown devices
     /** TODO: Analyze - Unknown device type 78 needs identification */
     public static final ThingTypeUID THING_TYPE_78 = new ThingTypeUID(BINDING_ID, "78");
@@ -183,6 +188,9 @@ public class SonoffBindingConstants {
     /** Smart gateway: SG200 */
     public static final ThingTypeUID THING_TYPE_237 = new ThingTypeUID(BINDING_ID, "237");
 
+    /** Roller Shutter Motor: MINI-RBS (Smart roller shutter switch) */
+    public static final ThingTypeUID THING_TYPE_258 = new ThingTypeUID(BINDING_ID, "258");
+
     /** BASIC 5Gen: BASIC-1GS (5th generation basic switch with Matter support) */
     public static final ThingTypeUID THING_TYPE_268 = new ThingTypeUID(BINDING_ID, "268");
 
@@ -191,6 +199,9 @@ public class SonoffBindingConstants {
 
     /** Virtual Button: NON-OTA-GL(265) */
     public static final ThingTypeUID THING_TYPE_265 = new ThingTypeUID(BINDING_ID, "265");
+
+    /** Air Quality Monitor: SAWF-08P (CO2/temperature/humidity sensor with Matter support) */
+    public static final ThingTypeUID THING_TYPE_266 = new ThingTypeUID(BINDING_ID, "266");
 
     // GSM/Cellular devices
     /** TODO: Analyze - GSM Socket models need detailed specification */
@@ -361,7 +372,8 @@ public class SonoffBindingConstants {
             THING_TYPE_82, THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126,
             THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162, THING_TYPE_173,
             THING_TYPE_181, THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212,
-            THING_TYPE_226, THING_TYPE_237, THING_TYPE_264, THING_TYPE_265, THING_TYPE_268, THING_TYPE_275,
+            THING_TYPE_226, THING_TYPE_237, THING_TYPE_258, THING_TYPE_264, THING_TYPE_265, THING_TYPE_266,
+            THING_TYPE_268, THING_TYPE_275, THING_TYPE_276,
 
             // Zigbee bridges
             THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
@@ -400,7 +412,8 @@ public class SonoffBindingConstants {
             THING_TYPE_82, THING_TYPE_83, THING_TYPE_84, THING_TYPE_102, THING_TYPE_104, THING_TYPE_107, THING_TYPE_126,
             THING_TYPE_138, THING_TYPE_140, THING_TYPE_160, THING_TYPE_161, THING_TYPE_162, THING_TYPE_173,
             THING_TYPE_181, THING_TYPE_190, THING_TYPE_209, THING_TYPE_210, THING_TYPE_211, THING_TYPE_212,
-            THING_TYPE_226, THING_TYPE_237, THING_TYPE_264, THING_TYPE_265, THING_TYPE_268, THING_TYPE_275,
+            THING_TYPE_226, THING_TYPE_237, THING_TYPE_258, THING_TYPE_264, THING_TYPE_265, THING_TYPE_266,
+            THING_TYPE_268, THING_TYPE_275, THING_TYPE_276,
 
             // Zigbee bridges
             THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
@@ -483,11 +496,14 @@ public class SonoffBindingConstants {
         deviceTypes.put(243, THING_TYPE_243);
 
         deviceTypes.put(256, THING_TYPE_256);
+        deviceTypes.put(258, THING_TYPE_258);
         deviceTypes.put(260, THING_TYPE_260);
         deviceTypes.put(264, THING_TYPE_264);
         deviceTypes.put(265, THING_TYPE_265);
+        deviceTypes.put(266, THING_TYPE_266);
         deviceTypes.put(268, THING_TYPE_268);
         deviceTypes.put(275, THING_TYPE_275);
+        deviceTypes.put(276, THING_TYPE_276);
 
         return Collections.unmodifiableMap(deviceTypes);
     }
@@ -872,6 +888,10 @@ public class SonoffBindingConstants {
         handlerIds.add("138"); // Single Mini
         handlerIds.add("190"); // POW Upgraded
         handlerIds.add("237"); // Gate
+        handlerIds.add("258"); // Roller Shutter
+        handlerIds.add("266"); // Air Quality Monitor
+        handlerIds.add("268"); // BASIC-1GS
+        handlerIds.add("276"); // WS01 Socket
 
         // Zigbee device handlers
         handlerIds.add("1770"); // Temperature sensor

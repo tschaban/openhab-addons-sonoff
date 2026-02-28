@@ -1,0 +1,93 @@
+{
+    "name": "MINI-RBS",
+    "deviceid": "",
+    "apikey": "",
+    "extra": {
+        "model": "SN-ESP32D0R2-RBS-01",
+        "ui": "窗帘开关改装件",
+        "uiid": 258,
+        "description": "",
+        "modelInfo": "6617b7e9e8829e65407d9d50",
+        "brandId": "5c4c1aee3a7d24c7100be054",
+        "itCredential": "F15hzO2syZxHrI2b",
+        "mac": "d0:27:03:fe:a0:c8",
+        "apmac": "d0:27:03:fe:a0:c9",
+        "manufacturer": "深圳松诺技术有限公司",
+        "staMac": "C8:2E:18:36:10:58"
+    },
+    "brandName": "SONOFF",
+    "brandLogo": "https://eu-ota.coolkit.cc/logo/q62PevoglDNmwUJ9oPE7kRrpt1nL1CoA.png",
+    "showBrand": true,
+    "productModel": "MINI-RBS",
+    "tags": {
+        "m_2d42_ewel": "on",
+        "m_be65_ewel": "on"
+    },
+    "devConfig": {},
+    "settings": {
+        "opsNotify": 0,
+        "opsHistory": 1,
+        "alarmNotify": 1,
+        "wxAlarmNotify": 0,
+        "wxOpsNotify": 0,
+        "wxDoorbellNotify": 0,
+        "appDoorbellNotify": 1
+    },
+    "devGroups": [],
+    "family": {
+        "familyid": "",
+        "index": 12,
+        "members": [
+            ""
+        ]
+    },
+    "shareTo": [],
+    "devicekey": "",
+    "online": false,
+    "params": {
+        "bindInfos": {
+            "alexa": [
+                ""
+            ],
+            "gaction": [
+                ""
+            ]
+        },
+        "version": 8,
+        "timers": [],
+        "subDevices": [],
+        "autoUpgrade": {
+            "enable": false,
+            "range": [
+                "02:00",
+                "04:00"
+            ]
+        },
+        "bssid": "D4:01:C3:F8:0D:47",
+        "calibState": 1,
+        "fullCompTime": {
+            "enable": false,
+            "time": 0
+        },
+        "fwVersion": "1.0.1",
+        "motorDir": "forward",
+        "rssi": -73,
+        "setclose": 100,
+        "sledOnline": "on",
+        "ssid": "",
+        "staMac": "C8:2E:18:36:10:58",
+        "swMode": 3,
+        "switch": "pause",
+        "tzInfo": {
+            "tzName": "Europe/Warsaw",
+            "utcOffset": 60,
+            "dstOffset": 60,
+            "dstStartRule": "0 0 2 ? 1L 3 *",
+            "dstEndRule": "0 0 3 ? 1L 10 *"
+        }
+    },
+    "isSupportGroup": true,
+    "isSupportedOnMP": false,
+    "isSupportChannelSplit": false,
+    "deviceFeature": {}
+}

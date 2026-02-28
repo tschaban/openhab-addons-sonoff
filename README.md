@@ -85,13 +85,16 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **212** | [Sonoff T5-4C-86](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab) | 🔄 Mixed | Quad touch switch | ⚠️ Testing needed |
 | **226** | CK-BL602-W102SW18-01 | 🔄 Mixed | Advanced power monitoring | ⚠️ Testing needed  |
 | **237** | Sonoff SG200 | 🔄 Mixed | Smart gateway | Prototype device |
+| **258** | [Sonoff MINI-RBS](https://s.smartnydom.pl/r/sonoff-mini-rbs-itead?ref=openhab) | 🔄 Mixed | Smart roller shutter motor | |
 | **243** | [Sonoff ZBridge-U](https://s.smartnydom.pl/r/sonoff-zbbridge-u?ref=openhab) | 🌐 Cloud | Zigbee bridge USB | |
 | **256** | [Sonoff SlimCAM2](https://s.smartnydom.pl/r/sonoff-cam-pan-tilt-2-itead-eu?ref=openhab) | 🌐 Cloud | Security camera | |
 | **260** | [Sonoff CAM-B1P](https://s.smartnydom.pl/r/sonoff-b1p-itead?ref=openhab) | 🌐 Cloud | Security camera | |
 | **264** | Sonoff Virtual Switch | 🌐 Cloud | Model: NON-OTA-GL(264) | |
 | **265** | Sonoff Virtual 3xButtons | 🌐 Cloud | Model: NON-OTA-GL(265) | |
+| **266** | [Sonoff SAWF-08P](https://s.smartnydom.pl/r/sonoff-sawf-08p?ref=openhab) / [SAWF-07P](https://s.smartnydom.pl/r/sonoff-sawf-07p?ref=openhab) | 🔄 Mixed | Air Quality Monitor: SAWF-08P (CO2) or SAWF-07P (PM2.5/PM10), temperature, humidity sensor with Matter support over WiFi. Auto-detects model. | ⚠️ Testing needed |
 | **268** | [Sonoff BASIC-1GS](https://s.smartnydom.pl/r/sonoff-basic-1gs-itead-en?ref=openhab) | 🔄 Mixed | BASIC 5Gen single switch with Matter support | |
-| **273** | [Sonoff MINI-2GS](https://s.smartnydom.pl/r/sonoff-mini-2gs?ref=openhab) | 🔄 Mixed | Dual channel switch with Matter support | |
+| **275** | [Sonoff MINI-2GS](https://s.smartnydom.pl/r/sonoff-mini-2gs?ref=openhab) | 🔄 Mixed | Dual channel switch with Matter support | |
+| **276** | [Sonoff ORB WS01TPF-E](https://s.smartnydom.pl/r/sonoff-orb-ws01-itead?ref=openhab) | 🔄 Mixed | WiFi socket with Matter support and enhanced energy monitoring (power, voltage, current, daily/weekly/monthly/yearly kWh, cost tracking). **Note:** Electrical data monitoring requires local and cloud connection (doesn't work in LAN or Cloud only mode yet) | |
 | **1770** | [Sonoff ZigBee SNZB-02](https://s.smartnydom.pl/r/sonoff-zigbee-sensors?ref=openhab) | 🌐 Cloud | Temperature monitoring, 1st version| |
 | **2026** | [Sonoff ZigBee Motion Sensor](https://s.smartnydom.pl/r/sonoff-zigbee-sensors?ref=openhab) | 🌐 Cloud | Motion detection, 1st version | |
 | **7000** | Sonoff [SNZB-01P](https://s.smartnydom.pl/r/sonoff-snzb-01p?ref=openhab) | 🌐 Cloud | Wireless ZigBee switch (single/double/long press) | |
@@ -164,84 +167,6 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 - Polling Interval: Recommended 24 hours (86400 seconds) for consumption data
 
 > **💡 Performance Tip:** Consumption data polling is resource-intensive. Use longer intervals (24+ hours) for consumption statistics.
-
-## ⚙️ Configuration Examples
-
-### Bridge Configuration
-```
-Bridge sonoff:account:uniqueName "Sonoff Account" @ "myLocation" 
-[ email="account@example.com", password="myPassword", accessmode="mixed"] {
-    
-    // POW Device with consumption polling
-    32 PowR2 "PowR2" @ "thingLocation" 
-    [ deviceid="1000bd9fe9", local=false, localPoll=10, consumption=false, consumptionPoll=10]
-    
-    // USB Switch with local polling
-    77 USBSwitch "USB Switch" @ "thingLocation" 
-    [ deviceid="1000dc155b", local=false, localPoll=10 ]
-    
-    // RF Bridge with sensors and remotes
-    Bridge sonoff:28:uniqueName:RFBridge "RFBridge" @ "thingLocation" 
-    [ deviceid="1000e72cb8" ] { 
-        rfsensor DoorContact "Door Contact" @ "contactLocation" [ deviceid="0" ]
-        rfsensor WindowContact "Window Contact" @ "contactLocation" [ deviceid="1" ]
-        rfsensor PIRSensor "PIR Sensor" @ "sensorLocation" [ deviceid="2" ]
-        rfremote2 Remote1 "2 Button Remote" @ "wherever" [ deviceid="3" ]
-        rfremote4 Remote2 "4 Button Remote" @ "wherever" [ deviceid="5" ]
-    }
-    
-    // Zigbee Bridge with motion sensor
-    Bridge sonoff:66:benfleet:ZigbeeBridge "Zigbee Bridge" @ "bridgeLocation" 
-    [ deviceid="1000f60f3d"] {
-        zmotion MotionSensor "Motion Sensor" @ "sensorLocation" [ deviceid="a48000a933"]
-    }
-}
-```
-
-### Item Configuration Examples
-
-#### Main Device Items
-```
-// POW Device Channels
-Switch      Switch          "Switch"                    {channel="sonoff:32:uniqueName:PowR2:switch"}
-Number      Current         "Current"                   {channel="sonoff:32:uniqueName:PowR2:current"}
-Number      Voltage         "Voltage"                   {channel="sonoff:32:uniqueName:PowR2:voltage"}
-Number      Power           "Power"                     {channel="sonoff:32:uniqueName:PowR2:power"}
-Number      Today           "Energy Usage Today"        {channel="sonoff:32:uniqueName:PowR2:todayKwh"}
-Number      Yesterday       "Energy Usage Yesterday"    {channel="sonoff:32:uniqueName:PowR2:yesterdayKwh"}
-String      CloudConnected  "Cloud Connected"           {channel="sonoff:32:uniqueName:PowR2:cloudOnline"}
-String      LocalConnected  "LAN Connected"             {channel="sonoff:32:uniqueName:PowR2:localOnline"}
-Number      Rssi            "Signal Strength"           {channel="sonoff:32:uniqueName:PowR2:rssi"}
-```
-
-#### RF Sensor Items
-```
-DateTime    DoorOpened      "Door Opened"               {channel="sonoff:rfsensor:uniqueName:RFBridge:DoorContact:rf0External"}
-DateTime    WindowOpened    "Window Opened"             {channel="sonoff:rfsensor:uniqueName:RFBridge:WindowContact:rf0External"}
-DateTime    MotionDetected  "Motion Detected"           {channel="sonoff:rfsensor:uniqueName:RFBridge:PIRSensor:rf0External"}
-```
-
-#### RF Remote Items
-```
-Switch      Remote1Arm      "Arm Alarm"                 {channel="sonoff:rfremote2:uniqueName:RFBridge:Remote1:button0"}
-Switch      Remote1Disarm   "Disarm Alarm"              {channel="sonoff:rfremote2:uniqueName:RFBridge:Remote1:button1"}
-DateTime    Remote1External "Remote Triggered"          {channel="sonoff:rfremote2:uniqueName:RFBridge:Remote1:rf0External"}
-DateTime    Remote1Internal "OpenHAB Triggered"         {channel="sonoff:rfremote2:uniqueName:RFBridge:Remote1:rf0Internal"}
-```
-
-#### Zigbee Sensor Items
-```
-Switch      MotionDetected      "Motion Detected"       {channel="sonoff:zmotion:uniqueName:ZigbeeBridge:MotionSensor:motion"}
-Number      MotionSensorBattery "PIR Battery Level"     {channel="sonoff:zmotion:uniqueName:ZigbeeBridge:MotionSensor:battery"}
-DateTime    MotionActivated     "PIR Activated"         {channel="sonoff:zmotion:uniqueName:ZigbeeBridge:MotionSensor:trigTime"}
-```
-
-## 🔧 Development Documentation
-
-- **[Development Documentation](docs/development/README.md)** - Development guide and resources
-- **[Testing Documentation](docs/testing/README.md)** - Testing framework overview
-- **[Testing Framework](docs/development/testing-framework.md)** - Test execution and coverage
-- **[CI/CD Automation](docs/development/cicd-automation.md)** - Automated workflows
 
 ## 🐛 Bug Reports & Support
 

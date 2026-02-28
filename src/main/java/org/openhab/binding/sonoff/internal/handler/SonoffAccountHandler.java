@@ -190,12 +190,18 @@ public class SonoffAccountHandler extends BaseBridgeHandler
                 || (mode.equals("mixed") && (!lanConnected || !cloudConnected))) {
             status = ThingStatus.OFFLINE;
             commandManager.stopRunning();
+            logger.warn("Account bridge going OFFLINE - Mode: {}, LAN: {}, Cloud: {}", mode,
+                    lanConnected ? "UP" : "DOWN", cloudConnected ? "UP" : "DOWN");
         }
 
         if (mode.equals("mixed") && lanConnected && !cloudConnected) {
             detail = "Connected via LAN only";
+            logger.info("Account bridge ONLINE via LAN only (Cloud unavailable)");
         } else if (mode.equals("mixed") && !lanConnected && cloudConnected) {
             detail = "Connected via Cloud only";
+            logger.info("Account bridge ONLINE via Cloud only (LAN unavailable)");
+        } else if (status == ThingStatus.ONLINE && lanConnected && cloudConnected) {
+            logger.info("Account bridge ONLINE - Full connectivity (LAN + Cloud)");
         }
 
         if (detail != null) {
@@ -210,6 +216,34 @@ public class SonoffAccountHandler extends BaseBridgeHandler
 
     @Override
     public void isConnected(Boolean lanConnected, Boolean cloudConnected) {
+        boolean lanChanged = !this.lanConnected.equals(lanConnected);
+        boolean cloudChanged = !this.cloudConnected.equals(cloudConnected);
+
+        if (lanChanged || cloudChanged) {
+            logger.info("========== SONOFF ACCOUNT CONNECTION STATUS CHANGE ==========");
+            if (lanChanged) {
+                logger.info("LAN Connection: {} -> {}", this.lanConnected ? "CONNECTED" : "DISCONNECTED",
+                        lanConnected ? "CONNECTED" : "DISCONNECTED");
+                if (!lanConnected) {
+                    logger.warn("LAN connection LOST - devices won't respond to local commands");
+                } else {
+                    logger.info("LAN connection ESTABLISHED - local communication available");
+                }
+            }
+            if (cloudChanged) {
+                logger.info("Cloud Connection: {} -> {}", this.cloudConnected ? "CONNECTED" : "DISCONNECTED",
+                        cloudConnected ? "CONNECTED" : "DISCONNECTED");
+                if (!cloudConnected) {
+                    logger.warn("Cloud connection LOST - no cloud API access (consumption polling disabled)");
+                } else {
+                    logger.info("Cloud connection ESTABLISHED - full cloud API access available");
+                }
+            }
+            logger.info("Mode: {}, Final Status: LAN={}, Cloud={}", mode, lanConnected ? "UP" : "DOWN",
+                    cloudConnected ? "UP" : "DOWN");
+            logger.info("==============================================================");
+        }
+
         this.lanConnected = lanConnected;
         this.cloudConnected = cloudConnected;
         commandManager.isConnected(lanConnected, cloudConnected);
