@@ -1,214 +1,210 @@
-# sonoff Binding
-
-Allows Control/Updates of Ewelink based devices using the cloud and/or LAN.
-
-## Supported Things
-
-Currently known to support (non exhaustive):
-
-Mixed Mode - UUID1: S20, S26, Basic, Mini, Mini PciE Card
-
-Mixed Mode - UUID2: Unknown Models
-
-Mixed Mode - UUID3: Unknown Models
-
-Mixed Mode - UUID4: Unknown Models
-
-Mixed Mode - UUID5: POW
-
-Mixed Mode - UUID6: T11C, TX1C, G1
-
-Mixed Mode - UUID7: T12C, TX2C
-
-Mixed Mode - UUID8: T13C, TX3C
-
-Mixed Mode - UUID9: Unknown Models
-
-Mixed Mode - UUID15: TH10, TH16
-
-Cloud Only - UUID24: 1 Channel GSM Socket
-
-Cloud Only - UUID27: 1 Channel GSM Socket
-
-Mixed Mode - UUID28: RFBRIDGE (Only sensors currently supported, awaiting remote logs)
-
-Cloud Only - UUID29: 2 Channel GSM Socket
-
-Cloud Only - UUID30: 3 Channel GSM Socket
-
-Cloud Only - UUID31: 4 Channel GSM Socket
-
-Mixed Mode - UUID32: POWR2
-
-Mixed Mode - UUID77: MICRO USB
-
-Cloud Only - UUID81: 1 Channel GSM Socket
-
-Cloud Only - UUID82: 2 Channel GSM Socket
-
-Cloud Only - UUID83: 3 Channel GSM Socket
-
-Cloud Only - UUID84: 4 Channel GSM Socket
-
-Cloud Only - UUID66: Zigbee Bridge
-
-Cloud Only - UUID107: 1 Channel GSM Socket
-
-Cloud Only - UUID2026: Zigbee Motion Sensor
-
-## Setup
-
-Add an 'Account' thing and configure.
-
-email: your ewelink email address
-
-password: your ewelink password
-
-accessmode: your choice of mode for the binding (local,cloud,mixed)
-
-The account should now come online.  Run discovery to create the cache required for all devices, you can manually add as text files once this is complete.
-
-Should any devices not be supported please send @delid4ve the file that is generated for the deviceid you want added.
-
-* Please note there is a known bug within openhab if you are using text files.  If on changing a config parameter your devices do not come online then please remove the file file and re-add.  If this does not resaolve the issue you may have to remove and re-add the binding.
-
-## Discovery
-
-Once you have initialized the account, run discovery as normal.
-
-All devices support automatic discovery and this must be run even if using text based files in order to create a cache.
-
-For Sub devices, i.e sensors connected to an RF Bridge or Zigbee bridge, add the main device and then run discovery again to find any connected devices.
-
-## Local vs Cloud
-
-Not all devices support local mode such as the zigbee bridge.
-
-If local mode is supported and once initialized, the device can be blocked by your firewall to prevent external access.
-
-If you are in mixed mode, locally supported devices can be blocked at your firewall and will use local only mode
-
-POW/POWR2 in local mode: 
-
-In order to retreive energy data when operating in local only mode there are 2 seperate configuration parameters: (Not required when in LAN Development mode)
-
-Enable Local Polling: enable local polling of energy data
-
-Polling Interval for Local Only mode: interval in seconds betwen polls
-
-POW/POWR2 Consumption:
-
-In order to retreive consumption data (cloud only) there are 2 seperate configuration parameters:
-
-Enable consumption polling: on/off
-
-Polling interval for consumption data: interval in seconds to retreive the data
-
-
-Please bear in mind that polling for data is a burden on your system resources.  Data such as consumption realy only needs to be fetched every 24 hours (86400 seconds).
-
-## Bugs
-
-Please report any bugs on my github:
-
-https://github.com/delid4ve/openhab-sonoff/issues
-
-Please ensure you include the version you are using and any debug log information that is applicable.  Please also include the file that is created for the device under userdata/sonoff/deviceid.txt
-
-## Thing Configuration
-
-* POW / POWR2 Devices support consumption polling
-
-* Devices listed as Local or Mixed Mode support local polling
-
-```
-Bridge sonoff:account:uniqueName "Sonoff Account" @ "myLocation" 
-[ email="account@example.com", password="myPassword",accessmode="mixed"] {
-32      PowR2                               "PowR2"         @   "thingLocation"     [ deviceid="1000bd9fe9",local=false,localPoll=10,consumption=false,consumptionPoll=10] ]
-77      USBSwitch                           "USB Switch"    @   "thingLocation"     [ deviceid="1000dc155b",local=false,localPoll=10 ]	
-
-Bridge  sonoff:28:uniqueName:RFBridge       "RFBridge"      @   "thingLocation"     [ deviceid="1000e72cb8" ] { 
-
-    rfsensor	DoorContact       "Door Contact"		    @ "contactLocation"	[ deviceid="0" ]
-    rfsensor	WindowContact     "Window Contact"	        @ "contactLocation"	[ deviceid="1" ]
-    rfsensor	PIRSensor         "PIR Sensor"		        @ "sensorLocation"	[ deviceid="2" ]
-    rfremote2	Remote1           "2 Button Remote"		    @ "wherever"	    [ deviceid="3" ]
-    rfremote4	Remote2           "4 Button Remote"		    @ "wherever"	    [ deviceid="5" ]
-}
-
-Bridge  sonoff:66:benfleet:ZigbeeBridge     "Zigbee Bridge"	@ "bridgeLocation"	    [ deviceid="1000f60f3d"]	{
-
-	zmotion		MotionSensor	  "Motion Sensor"			@ "sensorLocation"	[ deviceid="a48000a933"]
-}
-
-}
-```
-
-## Item Configuration
-
-# Main Devices
-
-```
-
-Switch			Switch				        "Switch"				                {channel="sonoff:32:uniqueName:PowR2:switch"}
-Number			Current				        "Current"						        {channel="sonoff:32:uniqueName:PowR2:current"}
-Number			Voltage				        "Voltage"						        {channel="sonoff:32:uniqueName:PowR2:voltage"}
-Number			Power				        "Power"							        {channel="sonoff:32:uniqueName:PowR2:power"}
-Number			Today				        "Energy Usage Today"			        {channel="sonoff:32:uniqueName:PowR2:todayKwh"}
-Number			Yesterday			        "Energy Usage Yesterday"		        {channel="sonoff:32:uniqueName:PowR2:yesterdayKwh"}
-Number			Seven				        "Energy Usage Last Week"		        {channel="sonoff:32:uniqueName:PowR2:sevenKwh"}
-Number			Thirty				        "Energy Usage Last Month"		        {channel="sonoff:32:uniqueName:PowR2:thirtyKwh"}
-Number			Hundred				        "Energy Usage Last Hundred"		        {channel="sonoff:32:uniqueName:PowR2:hundredKwh"}
-String			CloudConnected		        "Cloud Connected"				        {channel="sonoff:32:uniqueName:PowR2:cloudOnline"}
-String			LocalConnected		        "LAN Connected"				            {channel="sonoff:32:uniqueName:PowR2:localOnline"}
-Number			Rssi				        "Signal Stength"				        {channel="sonoff:32:uniqueName:PowR2:rssi"}
-
-String			RFBridgeCloudConnected		"Cloud Connected"						{channel="sonoff:28:uniqueName:RFBridge:cloudOnline"}
-String			RFBridgeLANConnected		"LAN Connected"				    		{channel="sonoff:28:uniqueName:RFBridge:localOnline"}
-Number			RFBridgeRssi				"Signal Stength"						{channel="sonoff:28:uniqueName:RFBridge:rssi"}
-```
-
-# RF Sensors
-
-```
-DateTime		DoorOpened					"Door Opened"					        {channel="sonoff:rfsensor:uniqueName:RFBridge:DoorContact:rf0External"}
-DateTime		WindowOpened				"Front Door Opened"				        {channel="sonoff:rfsensor:uniqueName:RFBridge:WindowContact:rf0External"}
-DateTime		MotionDetected				"Motion Detected"				        {channel="sonoff:rfsensor:uniqueName:RFBridge:PIRSensor:rf0External"}
-```
-
-# RF Remotes
-
-```
-Switch  		Remote1Arm					"Arm alarm"					            {channel="sonoff:rfremote2:uniqueName:RFBridge:Remote1:button0"}
-Switch  		Remote1Disarm				"Disarm alarm"					        {channel="sonoff:rfremote2:uniqueName:RFBridge:Remote1:button1"}
-Switch  		Remote2Arm					"Arm alarm"					            {channel="sonoff:rfremote4:uniqueName:RFBridge:Remote2:button0"}
-Switch  		Remote2Disarm				"Disarm alarm"					        {channel="sonoff:rfremote4:uniqueName:RFBridge:Remote2:button1"}
-Switch  		Remote2PartArm				"Part Arm alarm"					    {channel="sonoff:rfremote4:uniqueName:RFBridge:Remote2:button2"}
-Switch  		Remote2SOS				    "SOS"					                {channel="sonoff:rfremote4:uniqueName:RFBridge:Remote2:button3"}
-
-DateTime		Remote1Button1External		"Arm Alarm Triggered By Remote"			{channel="sonoff:rfremote2:uniqueName:RFBridge:Remote1:rf0External"}
-DateTime		Remote1Button2External		"Disarm Alarm Triggered By Remote"      {channel="sonoff:rfremote2:uniqueName:RFBridge:Remote1:rf1External"}
-
-DateTime		Remote1Button1Internal		"Arm Alarm Triggered By Openhab"		{channel="sonoff:rfremote2:uniqueName:RFBridge:Remote1:rf0Internal"}
-DateTime		Remote1Button2Internal		"Disarm Alarm Triggered By Openhab"		{channel="sonoff:rfremote2:uniqueName:RFBridge:Remote1:rf1Internal"}
-```
-
-# Zigbee Sensor
-
-```
-Switch			MotionDetected		        "Motion Detected"						{channel="sonoff:zmotion:uniqueName:ZigbeeBridge:MotionSensor:motion"}
-Number			MotionSensorBattery	        "PIR Battery Level"						{channel="sonoff:zmotion:uniqueName:ZigbeeBridge:MotionSensor:battery"}
-DateTime		MotionActivated		        "PIR Activated"				 	        {channel="sonoff:zmotion:uniqueName:ZigbeeBridge:MotionSensor:trigTime"}
-```
-
-## Credits
-
-Huge thanks to the following, this would not be possible without you:
-
-https://github.com/skydiver
-
-https://github.com/bwp91
-
-https://github.com/AlexxIT
-
-https://github.com/RealZimboGuy
+# Sonoff Binding - Smart'nyDom Enhanced Edition
+
+[![GitHub Release](https://img.shields.io/github/v/release/tschaban/openhab-addons-sonoff)](https://github.com/tschaban/openhab-addons-sonoff/releases)
+[![GitHub Issues](https://img.shields.io/github/issues/tschaban/openhab-addons-sonoff)](https://github.com/tschaban/openhab-addons-sonoff/issues)
+[![GitHub Milestones](https://img.shields.io/github/milestones/closed/tschaban/openhab-addons-sonoff)](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)
+[![CI/CD Pipeline](https://github.com/tschaban/openhab-addons-sonoff/actions/workflows/ci.yml/badge.svg)](https://github.com/tschaban/openhab-addons-sonoff/actions/workflows/ci.yml)
+
+**Enhanced and maintained by [Smart'nyDom](https://github.com/tschaban)** | Based on the original work by [delid4ve](https://github.com/delid4ve/openhab-3.x-sonoff)
+
+This is an enhanced branch of the Sonoff binding for OpenHAB, featuring extended device support, improved functionality, with testing framework.
+
+## 📋 Quick Links
+
+- **📦 [Latest Release](https://github.com/tschaban/openhab-addons-sonoff/releases)** - Download the newest version
+- **🐛 [Report Issues](https://github.com/tschaban/openhab-addons-sonoff/issues)** - Bug reports and feature requests
+- **📈 [Changelog](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)** - All enhancements and fixes
+
+---
+
+## 📖 About This Binding
+
+The Sonoff binding allows control and monitoring of eWeLink-based devices using both cloud and local LAN connections. This enhanced version extends the original functionality with additional device support and improved reliability.
+
+### 🌐 Connection Modes
+- **Cloud Mode** - Connect through eWeLink cloud services
+- **Local Mode** - Direct LAN communication (where supported)
+- **Mixed Mode** - Automatic fallback between local and cloud
+
+### 🔌 Complete Device Support Matrix
+
+#### Legend
+**Connection Types:**
+- 🌐 **Cloud**: Cloud-only connection via eWeLink servers
+- 🔄 **Mixed**: Both local LAN and cloud connections supported
+
+**Testing Status:**
+- ⚠️ **Testing needed**:Limited testing (I don't have that device to test it) feedback welcome
+
+#### Device supported
+
+| UUID | Models | Connection | Features | Status |
+|------|--------|------------|----------|--------|
+| **1** | Sonoff S20, [S26](https://s.smartnydom.pl/r/sonoff-s26), [BasicR1](https://s.smartnydom.pl/r/sonoff-basic-r4), [BasicR2](https://s.smartnydom.pl/r/sonoff-basic-r4), Mini, Mini PCIe Card | 🔄 Mixed | Single relay switch | |
+| **2** | Sonoff DUALR2 | 🔄 Mixed | Dual relay switch | |
+| **3** | Unknown Models | 🔄 Mixed | Socket (3 channels) | |
+| **4** | [Sonoff 4CHPro R3](https://s.smartnydom.pl/r/sonoff-4chr3?ref=openhab) | 🔄 Mixed | Socket (4 channels) | |
+| **5** | [Sonoff POW](https://s.smartnydom.pl/r/sonoff-pow-r2-yt?ref=openhab) | 🔄 Mixed | Power monitoring switch | |
+| **6** | Sonoff [T11C](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab), [TX1C](https://s.smartnydom.pl/r/sonoff-tx-sd?ref=openhab), [G1](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab | 🔄 Mixed | Single touch switch | |
+| **7** | Sonoff [T12C](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab), [TX2C](https://s.smartnydom.pl/r/sonoff-tx-sd?ref=openhab) | 🔄 Mixed | Dual touch switch | |
+| **8** | Sonoff [T13C](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab), [TX3C](https://s.smartnydom.pl/r/sonoff-tx-sd?ref=openhab) | 🔄 Mixed | Triple touch switch | |
+| **9** | Unknown Models | 🔄 Mixed | Switch (4 channels) | |
+| **14** | [Sonoff BasicR1](https://s.smartnydom.pl/r/sonoff-basic-r4?ref=openhab) | 🔄 Mixed | Single relay switch | |
+| **15** | [Sonoff TH10, TH16, TH16R2](https://s.smartnydom.pl/r/sonoff-th-origin-sd?ref=openhab) | 🔄 Mixed | Temperature/humidity monitoring | |
+| **24** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
+| **27** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
+| **28** | RF-BRIDGE (RF3) | 🔄 Mixed | 433MHz RF bridge | |
+| **29** | GSM Socket | 🌐 Cloud | Dual channel GSM socket | |
+| **30** | GSM Socket | 🌐 Cloud | Triple channel GSM socket | |
+| **31** | GSM Socket | 🌐 Cloud | Quad channel GSM socket | |
+| **32** | [Sonoff POWR2, POWR316, POWR320D](https://s.smartnydom.pl/r/sonoff-pow-r2-yt?ref=openhab) | 🔄 Mixed | Advanced power monitoring | |
+| **59** | LED Controller | 🔄 Mixed | LED strip controller | |
+| **66** | [Sonoff ZigBee Bridge](https://s.smartnydom.pl/r/sonoff-zigbee-sensors?ref=openhab) | 🌐 Cloud | Zigbee bridge | |
+| **77** | Sonoff WiFi MICRO (USB) | 🔄 Mixed | Compact WiFi switch | |
+| **78** | Unknown | 🔄 Mixed | | |
+| **81** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
+| **82** | GSM Socket | 🌐 Cloud | Dual channel GSM socket | |
+| **83** | GSM Socket | 🌐 Cloud | Triple channel GSM socket | |
+| **84** | GSM Socket | 🌐 Cloud | Quad channel GSM socket | |
+| **102** | OPL-DMA, DW2 | 🔄 Mixed | Magnetic door/window sensor | |
+| **104** | B05 Bulb | 🔄 Mixed | Smart bulb | |
+| **107** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
+| **126** | [Sonoff DUAL R3](https://s.smartnydom.pl/r/sonoff-dual-r3?ref=openhab) | 🔄 Mixed | Dual relay + power monitoring | |
+| **138** | Sonoff [MINI-D](https://s.smartnydom.pl/r/sonoff-mini-d-itead?ref=openhab), [MINI-R4](	https://s.smartnydom.pl/r/sonoff-mini-extreme-r4?ref=openhab), [MINI-R4M](https://s.smartnydom.pl/r/sonoff-minir4-matter?ref=openhab) | 🔄 Mixed | Single relay | |
+| **140** | CK-BL602-4SW-HS (Bouffalo Lab BL602) | 🔄 Mixed | 3-way wall switch | |
+| **160** | [Sonoff M5-1C](https://s.smartnydom.pl/r/sonoff-switchman-m5?ref=openhab) | 🔄 Mixed | Single channel switch | ⚠️ Testing needed |
+| **161** | [Sonoff M5-2C](https://s.smartnydom.pl/r/sonoff-switchman-m5?ref=openhab) | 🔄 Mixed | Dual channel switch | ⚠️ Testing needed |
+| **162** | [Sonoff M5-3C](https://s.smartnydom.pl/r/sonoff-switchman-m5?ref=openhab) | 🔄 Mixed | Triple channel switch | ⚠️ Testing needed |
+| **168** | [Sonoff ZigBee ZBBridge-P](https://s.smartnydom.pl/r/sonoff-zb-bridge-pro?ref=openhab) | 🌐 Cloud | Zigbee bridge Pro | |
+| **173** | [Sonoff L3-5M-P](https://s.smartnydom.pl/r/sonoff-l3rgbic?ref=openhab) | 🔄 Mixed | RGBIC Light Strip with Music Sync | ⚠️ Testing needed |
+| **181** | [Sonoff THR320D, THR316D](https://s.smartnydom.pl/r/sonoff-th-elite-smart-temperature-and-humidity-monitoring-switch-yt?ref=openhab) | 🔄 Mixed | Single relay with Temperature/humidity sensor | |
+| **190** | [Sonoff S60TPF, S60TPG](https://s.smartnydom.pl/r/sonoff-s60tpf?ref=openhab) | 🔄 Mixed | Smart plug | |
+| **209** | [Sonoff T5-1C-86](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab) | 🔄 Mixed | Single touch switch | ⚠️ Testing needed |
+| **210** | [Sonoff T5-2C-86](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab) | 🔄 Mixed | Dual touch switch | ⚠️ Testing needed |
+| **211** | [Sonoff T5-3C-86](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab) | 🔄 Mixed | Triple touch switch | ⚠️ Testing needed |
+| **212** | [Sonoff T5-4C-86](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab) | 🔄 Mixed | Quad touch switch | ⚠️ Testing needed |
+| **226** | CK-BL602-W102SW18-01 | 🔄 Mixed | Advanced power monitoring | ⚠️ Testing needed  |
+| **237** | Sonoff SG200 | 🔄 Mixed | Smart gateway | Prototype device |
+| **258** | [Sonoff MINI-RBS](https://s.smartnydom.pl/r/sonoff-mini-rbs-itead?ref=openhab) | 🔄 Mixed | Smart roller shutter motor | |
+| **243** | [Sonoff ZBridge-U](https://s.smartnydom.pl/r/sonoff-zbbridge-u?ref=openhab) | 🌐 Cloud | Zigbee bridge USB | |
+| **256** | [Sonoff SlimCAM2](https://s.smartnydom.pl/r/sonoff-cam-pan-tilt-2-itead-eu?ref=openhab) | 🌐 Cloud | Security camera | |
+| **260** | [Sonoff CAM-B1P](https://s.smartnydom.pl/r/sonoff-b1p-itead?ref=openhab) | 🌐 Cloud | Security camera | |
+| **264** | Sonoff Virtual Switch | 🌐 Cloud | Model: NON-OTA-GL(264) | |
+| **265** | Sonoff Virtual 3xButtons | 🌐 Cloud | Model: NON-OTA-GL(265) | |
+| **266** | [Sonoff SAWF-08P](https://s.smartnydom.pl/r/sonoff-sawf-08p?ref=openhab) / [SAWF-07P](https://s.smartnydom.pl/r/sonoff-sawf-07p?ref=openhab) | 🔄 Mixed | Air Quality Monitor: SAWF-08P (CO2) or SAWF-07P (PM2.5/PM10), temperature, humidity sensor with Matter support over WiFi. Auto-detects model. | ⚠️ Testing needed |
+| **268** | [Sonoff BASIC-1GS](https://s.smartnydom.pl/r/sonoff-basic-1gs-itead-en?ref=openhab) | 🔄 Mixed | BASIC 5Gen single switch with Matter support | |
+| **275** | [Sonoff MINI-2GS](https://s.smartnydom.pl/r/sonoff-mini-2gs?ref=openhab) | 🔄 Mixed | Dual channel switch with Matter support | |
+| **276** | [Sonoff ORB WS01TPF-E](https://s.smartnydom.pl/r/sonoff-orb-ws01-itead?ref=openhab) | 🔄 Mixed | WiFi socket with Matter support and enhanced energy monitoring (power, voltage, current, daily/weekly/monthly/yearly kWh, cost tracking). **Note:** Electrical data monitoring requires local and cloud connection (doesn't work in LAN or Cloud only mode yet) | |
+| **1770** | [Sonoff ZigBee SNZB-02](https://s.smartnydom.pl/r/sonoff-zigbee-sensors?ref=openhab) | 🌐 Cloud | Temperature monitoring, 1st version| |
+| **2026** | [Sonoff ZigBee Motion Sensor](https://s.smartnydom.pl/r/sonoff-zigbee-sensors?ref=openhab) | 🌐 Cloud | Motion detection, 1st version | |
+| **7000** | Sonoff [SNZB-01P](https://s.smartnydom.pl/r/sonoff-snzb-01p?ref=openhab) | 🌐 Cloud | Wireless ZigBee switch (single/double/long press) | |
+| **7002** | Sonoff [SNZB-03P](https://s.smartnydom.pl/r/sonoff-snzb-03p?ref=openhab) | 🌐 Cloud | Motion sensor | |
+| **7003** | Sonoff [SNZB-04P](https://s.smartnydom.pl/r/sonoff-snzb-04p-itead?ref=openhab) [SNZB-04PR2](https://s.smartnydom.pl/r/sonoff-snzb-04pr2-itead?ref=openhab) | 🌐 Cloud | Door/window sensor | ⚠️ Testing needed |
+| **7010** | Sonoff [ZBMINIR2](https://s.smartnydom.pl/r/sonoff-zbminir2-itead?ref=openhab) | 🌐 Cloud | Zigbee single relay switch | |
+| **7014** | Sonoff ZigBee [SNZB-02P](https://s.smartnydom.pl/r/sonoff-snzb-02p?ref=openhab), [SNZB-02D](https://s.smartnydom.pl/r/sonoff-snzb-02d-sd?ref=openhab) | 🌐 Cloud | Temperature/humidity sensor | |
+| **7029** | Sonoff [MINI-ZB2GS-L](https://s.smartnydom.pl/r/sonoff-zb2gs-l?ref=openhab) | 🌐 Cloud | Zigbee dual channel switch with NO neutral wire (MINI Duo L 2-Gang) | |
+| **7038** | Sonoff [SNZB-02DR2](https://s.smartnydom.pl/r/sonoff-snzb-02dr2?ref=openhab) | 🌐 Cloud | Zigbee temperature and humidity sensor with 3.6" LCD display and statistics | |
+| **7040** | Sonoff [MINI-ZB2GS](https://s.smartnydom.pl/r/sonoff-zb2gs?ref=openhab) | 🌐 Cloud | Zigbee dual channel switch (MINI Duo 2-Gang) | ⚠️ Testing needed |
+| **ZCONTACT** | Generic Contact Sensor | 🌐 Cloud | Contact detection | |
+| **ZWATER** | Water Leak Sensor | 🌐 Cloud | Water leak detection | |
+| **ZSWITCH1** | Single Channel Switch | 🌐 Cloud | Single relay | |
+| **ZSWITCH2** | Dual Channel Switch | 🌐 Cloud | Dual relay | |
+| **ZSWITCH3** | Triple Channel Switch | 🌐 Cloud | Triple relay | |
+| **ZSWITCH4** | Quad Channel Switch | 🌐 Cloud | Quad relay | |
+| **ZLIGHT** | Dimmable Light | 🌐 Cloud | Dimmable white light | |
+| **RF1** | Single Button Remote | 🔄 Mixed | 1 button control | |
+| **RF2** | Dual Button Remote | 🔄 Mixed | 2 button control | |
+| **RF3** | Triple Button Remote | 🔄 Mixed | 3 button control | |
+| **RF4** | Quad Button Remote | 🔄 Mixed | 4 button control | |
+| **RF6** | RF Sensor | 🔄 Mixed | Motion/contact detection | |
+
+
+## 🛠️ Setup
+
+### Initial Configuration
+1. **Add Account Thing**
+   - Email: Your eWeLink email address
+   - Password: Your eWeLink password
+   - Access Mode: Choose your preferred mode (`local`, `cloud`, or `mixed`)
+
+2. **Run Discovery**
+   - The account should come online automatically
+   - Run discovery to create device cache
+   - Cache is required even when using text files
+
+3. **Add Devices**
+   - Use automatic discovery (recommended)
+   - Or manually add via text files after cache creation
+
+> **⚠️ Known Issue:** If using text files and devices don't come online after config changes, remove and re-add the file. In rare cases, you may need to remove and re-add the binding.
+
+## 🔍 Discovery
+
+- **Initial Discovery:** Run after account setup to create device cache
+- **Automatic Discovery:** All devices support automatic discovery
+- **Sub-devices:** For RF Bridge or Zigbee bridge sensors, add the main device first, then run discovery again
+
+## 🌍 Local vs Cloud Operation
+
+### Local Mode Benefits
+- **Faster response** - Direct LAN communication
+- **Privacy** - No external internet dependency
+- **Firewall friendly** - Block external access while maintaining functionality
+
+### Device Compatibility
+- **Local Supported:** Most switches, POW devices, RF Bridge
+- **Cloud Only:** Zigbee Bridge, GSM sockets, some sensors
+- **Mixed Mode:** Automatically uses local when available, falls back to cloud
+
+### POW/POWR2 Special Configuration
+
+**Local Mode Energy Data:**
+- Enable Local Polling: On/Off
+- Polling Interval: Seconds between polls (not required in LAN Development mode)
+
+**Cloud Mode Consumption Data:**
+- Enable Consumption Polling: On/Off
+- Polling Interval: Recommended 24 hours (86400 seconds) for consumption data
+
+> **💡 Performance Tip:** Consumption data polling is resource-intensive. Use longer intervals (24+ hours) for consumption statistics.
+
+## 🐛 Bug Reports & Support
+
+### For Smart'nyDom Enhanced Features
+- **Issues:** [GitHub Issues](https://github.com/tschaban/openhab-addons-sonoff/issues)
+- **Enhancements:** [Milestones](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)
+
+### For Original Binding Issues
+- **Original Repository:** [delid4ve/openhab-sonoff](https://github.com/delid4ve/openhab-sonoff/issues)
+
+### When Reporting Issues
+Please include:
+- **Version** you're using
+- **Debug log** information
+- **Device file** from `userdata/sonoff/deviceid.txt`
+- **Device model** and behavior description
+
+## 🙏 Acknowledgments
+
+### Original Development
+This binding is based on the excellent work by **[delid4ve](https://github.com/delid4ve/openhab-3.x-sonoff)** and the OpenHAB community. The original binding provided the foundation for all eWeLink device integration.
+
+### Community Contributors
+Special thanks to the community members who made this possible:
+- **[skydiver](https://github.com/skydiver)** - Core contributions
+- **[bwp91](https://github.com/bwp91)** - Protocol insights
+- **[AlexxIT](https://github.com/AlexxIT)** - Device support
+- **[RealZimboGuy](https://github.com/RealZimboGuy)** - Testing and feedback
+
+### Smart'nyDom Enhancements
+Enhanced and maintained by **[Smart'nyDom](https://github.com/tschaban)** with focus on:
+- Extended device support for newer SONOFF models
+- Improved testing framework and code quality
+- Enhanced development workflow and automation
+- Comprehensive documentation and examples
+
+---
+
+**📄 License:** This project maintains the same license as the original OpenHAB binding.
+
+**🔗 Links:** [Original Repository](https://github.com/delid4ve/openhab-3.x-sonoff) | [Enhanced Repository](https://github.com/tschaban/openhab-addons-sonoff)

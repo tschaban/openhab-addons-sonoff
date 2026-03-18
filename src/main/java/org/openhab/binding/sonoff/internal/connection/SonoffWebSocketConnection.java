@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -134,9 +134,11 @@ public class SonoffWebSocketConnection {
         if (message.contains("hbInterval")) {
             logger.debug("Login Response Received: {}", message);
             JsonObject object = gson.fromJson(message, JsonObject.class);
-            if (object.get("error").getAsInt() == 0) {
+            int errorCode = object.get("error").getAsNumber().intValue();
+            if (errorCode == 0) {
                 listener.webSocketLoggedIn(true);
             } else {
+                logger.warn("WebSocket login failed with error code: {}", errorCode);
                 listener.websocketConnected(false);
             }
             return;
@@ -159,8 +161,8 @@ public class SonoffWebSocketConnection {
 
     @OnWebSocketError
     public void onError(Throwable cause) {
-        logger.error("Websocket Error: " + cause.getMessage(), cause);
         String reason = cause.getMessage();
+        logger.error("Websocket Error: {}", reason);
         if (reason != null) {
             onClose(0, reason);
         } else {

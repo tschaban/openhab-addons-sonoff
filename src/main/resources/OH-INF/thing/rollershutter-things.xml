@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="sonoff"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<thing-type id="258">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF WiFi Roller Shutter Motor</label>
+		<description>Model: MINI-RBS (Smart Roller Shutter Switch)</description>
+		<channels>
+			<channel id="shutter0" typeId="roller-switch">
+				<label>Roller Control</label>
+				<description>Control roller shutter (pause, open, close, stop)</description>
+			</channel>
+			<channel id="position0" typeId="roller-position">
+				<label>Position</label>
+				<description>Roller shutter position (0-100)</description>
+			</channel>
+			<channel id="localOnline" typeId="localOnline"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="ipaddress" typeId="ipaddress"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+		</channels>
+
+		<properties>
+			<property name="vendor">SONOFF</property>
+			<property name="modelId">MINI-RBS</property>
+			<property name="url">https://s.smartnydom.pl/r/sonoff-mini-rbs-itead?ref=openhab</property>
+		</properties>
+
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID (can be found in the eWeLink app)</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+</thing:thing-descriptions>

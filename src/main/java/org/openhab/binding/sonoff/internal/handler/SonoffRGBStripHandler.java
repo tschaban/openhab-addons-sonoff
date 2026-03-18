@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -28,6 +28,7 @@ import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
 import org.openhab.core.types.*;
+import org.openhab.core.util.ColorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -109,17 +110,24 @@ public class SonoffRGBStripHandler extends SonoffBaseDeviceHandler {
                     break;
                 case "color":
                     if (command.toString().contains(",")) {
-                        HSBType hsb = new HSBType(command.toString());
-                        PercentType red = hsb.getRed();
-                        PercentType green = hsb.getGreen();
-                        PercentType blue = hsb.getBlue();
-                        int redr = (int) (red.doubleValue() * 255 / 100);
-                        int greenr = (int) (green.doubleValue() * 255 / 100);
-                        int bluer = (int) (blue.doubleValue() * 255 / 100);
+                        int[] rgbColor = ColorUtil.hsbToRgb((HSBType) command);
                         RGBLight rgb = new RGBLight();
-                        rgb.setColorB(bluer);
-                        rgb.setColorG(greenr);
-                        rgb.setColorR(redr);
+                        rgb.setColorR(rgbColor[0]);
+                        rgb.setColorG(rgbColor[1]);
+                        rgb.setColorB(rgbColor[2]);
+                        /*
+                         * HSBType hsb = new HSBType(command.toString());
+                         * PercentType red = hsb.getRed();
+                         * PercentType green = hsb.getGreen();
+                         * PercentType blue = hsb.getBlue();
+                         * int redr = (int) (red.doubleValue() * 255 / 100);
+                         * int greenr = (int) (green.doubleValue() * 255 / 100);
+                         * int bluer = (int) (blue.doubleValue() * 255 / 100);
+                         * RGBLight rgb = new RGBLight();
+                         * rgb.setColorB(bluer);
+                         * rgb.setColorG(greenr);
+                         * rgb.setColorR(redr);
+                         */
                         message = new SonoffCommandMessage("color", this.deviceid, false, rgb);
                         break;
                     }

@@ -8,10 +8,10 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>Color LED Controller</label>
-		<description>Color LED Controller</description>
+		<label>SONOFF Color LED</label>
+		<description>Models: SONOFF Color LED</description>
 		<channels>
-			<channel id="switch" typeId="switch"/>
+			<channel id="switch" typeId="power"/>
 			<channel id="color" typeId="color"/>
 			<channel id="brightness" typeId="brightness"/>
 			<channel id="mode" typeId="mode"/>
@@ -34,10 +34,10 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>RGB-CCT Bulb (B05)</label>
-		<description>RGB-CCT Bulb (B05)</description>
+		<label>SONOFF LED Bulb</label>
+		<description>Model: B02-BL/B05-BL</description>
 		<channels>
-			<channel id="switch" typeId="switch"/>
+			<channel id="switch" typeId="power"/>
 			<channel id="lightMode" typeId="lightMode"/>
 			<channel id="brightness" typeId="brightness"/>
 			<channel id="colorTemperature" typeId="colorTemperature"/>
@@ -46,6 +46,35 @@
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="ipaddress" typeId="ipaddress"/>
 		</channels>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="173">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF L3-5M-P RGBIC Light Strip</label>
+		<description>Model: L3-5M-P RGBIC Light Strip with Music Sync</description>
+		<channels>
+			<channel id="switch" typeId="power"/>
+			<channel id="color" typeId="color"/>
+			<channel id="brightness" typeId="brightness"/>
+			<channel id="mode" typeId="mode"/>
+			<channel id="sensitivity" typeId="sensitivity"/>
+			<channel id="speed" typeId="speed"/>
+			<channel id="musicSwitch" typeId="musicSwitch"/>
+			<channel id="sled" typeId="sled"/>
+			<channel id="localOnline" typeId="localOnline"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="ipaddress" typeId="ipaddress"/>
+			<channel id="rssi" typeId="rssi"/>
+		</channels>
+		<representation-property>deviceid</representation-property>
 		<config-description>
 			<parameter name="deviceid" type="text" required="true">
 				<label>Device ID</label>

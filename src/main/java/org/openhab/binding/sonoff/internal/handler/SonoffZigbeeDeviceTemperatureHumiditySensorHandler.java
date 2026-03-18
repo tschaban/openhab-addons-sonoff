@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -19,14 +19,15 @@ import org.openhab.core.thing.Thing;
 import org.openhab.core.types.*;
 
 /**
- * The {@link SonoffZigbeeDevice1770Handler} is responsible for updates and handling commands to/from Zigbee Devices
+ * The {@link SonoffZigbeeDeviceTemperatureHumiditySensorHandler} is responsible for updates and handling commands
+ * to/from Zigbee Devices
  *
  * @author David Murton - Initial contribution
  */
 @NonNullByDefault
-public class SonoffZigbeeDevice1770Handler extends SonoffBaseZigbeeHandler {
+public class SonoffZigbeeDeviceTemperatureHumiditySensorHandler extends SonoffBaseZigbeeHandler {
 
-    public SonoffZigbeeDevice1770Handler(Thing thing) {
+    public SonoffZigbeeDeviceTemperatureHumiditySensorHandler(Thing thing) {
         super(thing);
     }
 
@@ -36,11 +37,20 @@ public class SonoffZigbeeDevice1770Handler extends SonoffBaseZigbeeHandler {
 
     @Override
     public void updateDevice(SonoffDeviceState newDevice) {
-        // Motion
-        updateState("battery", newDevice.getParameters().getBattery());
+        // Battery and trigger time
+        updateState("battery", newDevice.getParameters().getBatteryLevel());
         updateState("trigTime", newDevice.getParameters().getTrigTime());
+        // Current temperature and humidity
         updateState("temperature", newDevice.getParameters().getTemperature());
         updateState("humidity", newDevice.getParameters().getHumidity());
+        // Temperature statistics (UUID 7038)
+        updateState("temperatureMax", newDevice.getParameters().getTemperatureMax());
+        updateState("temperatureMin", newDevice.getParameters().getTemperatureMin());
+        updateState("temperatureAvg", newDevice.getParameters().getTemperatureAvg());
+        // Humidity statistics (UUID 7038)
+        updateState("humidityMax", newDevice.getParameters().getHumidityMax());
+        updateState("humidityMin", newDevice.getParameters().getHumidityMin());
+        updateState("humidityAvg", newDevice.getParameters().getHumidityAvg());
         // Connections
         this.cloud = newDevice.getCloud();
         updateState("cloudOnline", this.cloud ? new StringType("Connected") : new StringType("Disconnected"));

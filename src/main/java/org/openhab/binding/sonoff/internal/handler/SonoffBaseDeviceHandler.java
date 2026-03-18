@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -32,7 +32,6 @@ import org.openhab.core.types.Command;
 import org.openhab.core.types.RefreshType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.HandlerBase;
 
 /**
  * The {@link HandlerBase} allows the handling of commands and updates to Devices
@@ -79,12 +78,15 @@ public abstract class SonoffBaseDeviceHandler extends BaseThingHandler implement
                         "This device has not been initilized, please run discovery");
                 return;
             } else {
-                if (!account.getMode().equals("cloud") && config.local == true) {
-                    // Check whether we are a local only device
+                // Check LAN capabilities if bridge is not in cloud-only mode
+                if (!account.getMode().equals("cloud")) {
+                    // Check whether device supports inbound LAN communication
                     if (SonoffBindingConstants.LAN_IN.contains(state.getUiid())) {
                         isLocalIn = true;
                     }
-                    if (SonoffBindingConstants.LAN_OUT.contains(state.getUiid())) {
+                    // Check whether device supports outbound LAN communication
+                    // Only enable if user hasn't explicitly disabled it via config.local
+                    if (SonoffBindingConstants.LAN_OUT.contains(state.getUiid()) && config.local != Boolean.FALSE) {
                         this.isLocalOut = true;
                     }
                 }
@@ -100,6 +102,9 @@ public abstract class SonoffBaseDeviceHandler extends BaseThingHandler implement
                 // Get initial connection statuses
                 checkBridge();
             }
+        } else {
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.BRIDGE_UNINITIALIZED, "Bridge handler not available");
+            return;
         }
     }
 
@@ -158,7 +163,13 @@ public abstract class SonoffBaseDeviceHandler extends BaseThingHandler implement
     }
 
     protected void setProperties(Map<String, String> properties) {
-        updateProperties(properties);
+        Map<String, String> updatedProperties = new HashMap<>(properties);
+
+        // Add LAN and Cloud control status
+        updatedProperties.put("LAN Controlled", isLocalOut ? "Yes" : "No");
+        updatedProperties.put("Cloud Controlled", "Yes");
+
+        updateProperties(updatedProperties);
     }
 
     @Override
@@ -224,10 +235,10 @@ public abstract class SonoffBaseDeviceHandler extends BaseThingHandler implement
                     status = ThingStatus.ONLINE;
                 } else {
                     if (!cloud && local) {
-                        detail = "Cloud Offline";
+                        detail = "Connected via LAN only";
                     }
                     if (!local && cloud) {
-                        detail = "LAN Offline";
+                        detail = "Connected via Cloud only";
                     }
                     if (!local && !cloud) {
                         status = ThingStatus.OFFLINE;
@@ -237,7 +248,7 @@ public abstract class SonoffBaseDeviceHandler extends BaseThingHandler implement
         }
 
         if (detail != null) {
-            updateStatus(status, ThingStatusDetail.COMMUNICATION_ERROR, detail);
+            updateStatus(status, ThingStatusDetail.NONE, detail);
         } else {
             updateStatus(status);
         }

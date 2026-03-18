@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -91,6 +91,7 @@ public class SonoffSwitchPOWHandler extends SonoffBaseDeviceHandler {
 
     @Override
     public void cancelTasks() {
+        logger.debug("Stopping tasks for {}", this.deviceid);
         final ScheduledFuture<?> localTask = this.localTask;
         if (localTask != null) {
             localTask.cancel(true);

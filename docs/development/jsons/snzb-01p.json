@@ -1,0 +1,67 @@
+# Single press
+
+{
+    "action": "update",
+    "deviceid": "deviceID here",
+    "apikey": "API Key here",
+    "userAgent": "device",
+    "d_seq": 29786,
+    "params": {
+        "trigTime": "1760254580000",
+        "key": 0
+    }
+}
+
+# Double press
+
+{
+    "action": "update",
+    "deviceid": "deviceID here",
+    "apikey": "API Key here",
+    "userAgent": "device",
+    "d_seq": 53875,
+    "params": {
+        "trigTime": "1760254921000",
+        "key": 1
+    }
+}
+
+# Long press
+{
+    "action": "update",
+    "deviceid": "deviceID here",
+    "apikey": "API Key here",
+    "userAgent": "device",
+    "d_seq": 51796,
+    "params": {
+        "trigTime": "1760255063000",
+        "key": 2
+    }
+}
+
+# RSSI update
+{
+    "action": "update",
+    "deviceid": "deviceID here",
+    "apikey": "API Key here",
+    "userAgent": "device",
+    "d_seq": 38389,
+    "params": {
+        "subDevRssi": -49
+    }
+}
+
+# RSSI setting update from app
+{
+    "action": "update",
+    "deviceid": "deviceID here",
+    "apikey": "API Key here",
+    "userAgent": "app",
+    "sequence": "1760254619026",
+    "params": {
+        "subDevRssiSetting": {
+            "active": 60,
+            "duration": 5
+        }
+    }
+}

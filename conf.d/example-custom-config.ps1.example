@@ -1,0 +1,20 @@
+# Custom Configuration Example
+# Copy this file and rename it (e.g., custom.ps1) to override default settings
+# Only define the variables you want to override
+
+# Example: Override for alternative development environment
+# Uncomment and modify the paths below:
+
+# JAR File Names
+#$sourceJAR = "org.openhab.binding.sonoff-5.0.3-SNAPSHOT.jar"
+#$targetJAR = "org.openhab.binding.sonoff-5.0.3-SNAPSHOT.jar"
+
+# Project Paths
+#$projectPath = "openhab-addons\bundles\org.openhab.binding.sonoff"
+
+# OpenHAB Deployment Paths
+#$openhabAddonsPath = "addons"
+
+# OpebHAB Logs file
+#$resetOpenhabLog = 0  # 1 = clear log, 0 = keep log
+#$logPath = "openhab.log"

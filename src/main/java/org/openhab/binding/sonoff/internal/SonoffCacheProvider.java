@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -48,30 +48,30 @@ public class SonoffCacheProvider {
     private final @Nullable Gson gson;
 
     public SonoffCacheProvider(Gson gson) {
-        this.saveFolderName = OpenHAB.getUserDataFolder() + "/" + SonoffBindingConstants.BINDING_ID;
-        final File saveFolder = new File(saveFolderName);
         this.gson = gson;
-
-        // Create path for serialization.
-        if (!saveFolder.exists()) {
-            logger.debug("Creating directory {}", saveFolderName);
-            saveFolder.mkdirs();
-        }
+        this.saveFolderName = createSaveFolder();
     }
 
     public SonoffCacheProvider() {
-        this.saveFolderName = OpenHAB.getUserDataFolder() + "/" + SonoffBindingConstants.BINDING_ID;
-        final File saveFolder = new File(saveFolderName);
         this.gson = null;
-
-        // Create path for serialization.
-        if (!saveFolder.exists()) {
-            logger.debug("Creating directory {}", saveFolderName);
-            saveFolder.mkdirs();
-        }
+        this.saveFolderName = createSaveFolder();
     }
 
     public void newFile(String deviceid, String thing) {
+        if (deviceid == null || thing == null) {
+            logger.warn("Cannot create file with null deviceid or content");
+            return;
+        }
+
+        File folder = new File(this.saveFolderName);
+        if (!folder.exists()) {
+            logger.debug("Folder {} does not exist. Creating folder.", this.saveFolderName);
+            if (folder.mkdirs()) {
+                logger.debug("Folder {} created successfully.", this.saveFolderName);
+            } else {
+                logger.error("Failed to create folder {}.", this.saveFolderName);
+            }
+        }
         File file = new File(this.saveFolderName, deviceid + ".txt");
         BufferedWriter writer = null;
         logger.debug("Device {}: writing to file {}", deviceid, file.getPath());
@@ -86,6 +86,7 @@ public class SonoffCacheProvider {
                 try {
                     writer.close();
                 } catch (IOException e) {
+                    // Exception ignored during close
                 }
             }
         }
@@ -112,6 +113,9 @@ public class SonoffCacheProvider {
     }
 
     public Boolean checkFile(String deviceid) {
+        if (deviceid == null) {
+            return false;
+        }
         File file = new File(this.saveFolderName, deviceid + ".txt");
         if (!file.exists()) {
             return false;
@@ -121,6 +125,9 @@ public class SonoffCacheProvider {
     }
 
     public String getFile(String filename) {
+        if (filename == null) {
+            return "";
+        }
         File file = new File(this.saveFolderName, filename);
         BufferedReader reader = null;
 
@@ -150,25 +157,65 @@ public class SonoffCacheProvider {
 
     public Map<String, SonoffDeviceState> getStates() {
         Map<String, SonoffDeviceState> deviceStates = new HashMap<String, SonoffDeviceState>();
+        if (gson == null) {
+            logger.warn("Gson is null, cannot parse device states");
+            return deviceStates;
+        }
+
         List<String> deviceList = getFiles();
         for (int i = 0; i < deviceList.size(); i++) {
-            JsonObject device = gson.fromJson(deviceList.get(i), JsonObject.class);
-            if (device != null) {
-                SonoffDeviceState state = new SonoffDeviceState(device);
-                deviceStates.put(state.getDeviceid(), state);
-                logger.debug("Added new state for device {}", state.getDeviceid());
+            try {
+                JsonObject device = gson.fromJson(deviceList.get(i), JsonObject.class);
+                if (device != null) {
+                    SonoffDeviceState state = new SonoffDeviceState(device);
+                    deviceStates.put(state.getDeviceid(), state);
+                    logger.debug("Added new state for device {}", state.getDeviceid());
+                }
+            } catch (Exception e) {
+                logger.warn("Failed to parse device state from JSON: {}", e.getMessage());
             }
         }
         return deviceStates;
     }
 
     public @Nullable SonoffDeviceState getState(String deviceid) {
-        String deviceJson = getFile(deviceid + ".txt");
-        JsonObject device = gson.fromJson(deviceJson, JsonObject.class);
-        if (device != null) {
-            return new SonoffDeviceState(device);
-        } else {
+        if (deviceid == null || gson == null) {
             return null;
         }
+
+        try {
+            String deviceJson = getFile(deviceid + ".txt");
+            if (deviceJson.isEmpty()) {
+                return null;
+            }
+
+            JsonObject device = gson.fromJson(deviceJson, JsonObject.class);
+            if (device != null) {
+                return new SonoffDeviceState(device);
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            logger.warn("Failed to get device state for {}: {}", deviceid, e.getMessage());
+            return null;
+        }
+    }
+
+    private static String createSaveFolder() {
+        String cacheRoot = OpenHAB.getUserDataFolder() + "/cache";
+        File cacheDir = new File(cacheRoot);
+        if (!cacheDir.exists()) {
+            logger.debug("Creating directory {}", cacheRoot);
+            cacheDir.mkdirs();
+        }
+
+        String bindingFolder = cacheRoot + "/" + SonoffBindingConstants.BINDING_ID;
+        File bindingDir = new File(bindingFolder);
+        if (!bindingDir.exists()) {
+            logger.debug("Creating directory {}", bindingFolder);
+            bindingDir.mkdirs();
+        }
+
+        return bindingFolder;
     }
 }

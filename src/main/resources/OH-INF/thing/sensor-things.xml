@@ -8,10 +8,10 @@
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
 		</supported-bridge-type-refs>
-		<label>Magnetic Switch</label>
-		<description>Magnetic Door Switch</description>
+		<label>SONOFF WiFi Sensor: Door and Window</label>
+		<description>Model: DW2</description>
 		<channels>
-			<channel id="switch" typeId="switch"/>
+			<channel id="switch" typeId="reed-switch"/>
 			<channel id="battery" typeId="battery"/>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="rssi" typeId="rssi"/>
@@ -22,6 +22,44 @@
 			<parameter name="deviceid" type="text" required="true">
 				<label>Device ID</label>
 				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="266">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Air Quality Monitor</label>
+		<description>Models: SAWF-08P (CO2) or SAWF-07P (PM2.5/PM10) with temperature, humidity sensors and Matter over WiFi</description>
+		<channels>
+			<channel id="co2" typeId="co2"/>
+			<channel id="pm10" typeId="pm10"/>
+			<channel id="pm2_5" typeId="pm2_5"/>
+			<channel id="temperature" typeId="temperature"/>
+			<channel id="temperatureF" typeId="temperatureF"/>
+			<channel id="humidity" typeId="humidity"/>
+			<channel id="sensorLight" typeId="sensorLight"/>
+			<channel id="sensorLightBr" typeId="sensorLightBr"/>
+			<channel id="voiceAlarm" typeId="voiceAlarm"/>
+			<channel id="localOnline" typeId="localOnline"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="ipaddress" typeId="ipaddress"/>
+			<channel id="rssi" typeId="rssi"/>
+		</channels>
+
+		<properties>
+			<property name="vendor">SONOFF</property>
+			<property name="modelId">SAWF-08P</property>
+			<property name="url">https://s.smartnydom.pl/r/sonoff-sawf-08p?ref=openhab</property>
+		</properties>
+
+		<representation-property>deviceid</representation-property>
+
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID (found in eWeLink app)</description>
 			</parameter>
 		</config-description>
 	</thing-type>

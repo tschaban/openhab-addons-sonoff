@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -52,6 +52,7 @@ public class SonoffConnectionManager
     }
 
     public void start(String appId, String appSecret, String email, String password, String mode) {
+        logger.debug("ConnectionManager Start for {} mode ", mode);
         this.mode = mode;
         api.setAppId(appId);
         api.setAppSecret(appSecret);
@@ -117,7 +118,7 @@ public class SonoffConnectionManager
         if (connected) {
             if (!webSocketConnected) {
                 String url = api.getWebsocketServer();
-                if (url != "") {
+                if (!url.equals("")) {
                     webSocket.setUrl(url);
                     webSocket.start();
                 }
@@ -207,7 +208,7 @@ public class SonoffConnectionManager
         if (!webSocketLoggedIn) {
             logger.debug("Unable to request cloud update as the connection is offline");
         } else {
-            if (deviceid != "") {
+            if (!deviceid.equals("")) {
                 api.getDevice(deviceid);
             } else {
                 api.getDevices();

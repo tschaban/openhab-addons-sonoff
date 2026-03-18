@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -19,14 +19,15 @@ import org.openhab.core.thing.Thing;
 import org.openhab.core.types.*;
 
 /**
- * The {@link SonoffZigbeeDevice2026Handler} is responsible for updates and handling commands to/from Zigbee Devices
+ * The {@link SonoffZigbeeDeviceMotionSensorHandler} is responsible for updates and handling commands to/from Zigbee
+ * Devices
  *
  * @author David Murton - Initial contribution
  */
 @NonNullByDefault
-public class SonoffZigbeeDevice2026Handler extends SonoffBaseZigbeeHandler {
+public class SonoffZigbeeDeviceMotionSensorHandler extends SonoffBaseZigbeeHandler {
 
-    public SonoffZigbeeDevice2026Handler(Thing thing) {
+    public SonoffZigbeeDeviceMotionSensorHandler(Thing thing) {
         super(thing);
     }
 
@@ -36,10 +37,22 @@ public class SonoffZigbeeDevice2026Handler extends SonoffBaseZigbeeHandler {
 
     @Override
     public void updateDevice(SonoffDeviceState newDevice) {
-        // Motion
-        updateState("motion", newDevice.getParameters().getMotion());
-        updateState("battery", newDevice.getParameters().getBattery());
+        // Motion - different channel types for different devices
+        // 2026 (old SNZB-03) uses Switch (OnOffType)
+        // 7002 (SNZB-03P) uses Contact (OpenClosedType)
+        if (newDevice.getUiid().equals(2026)) {
+            updateState("motion", newDevice.getParameters().getMotion());
+            updateState("battery", newDevice.getParameters().getBattery());
+        } else {
+            updateState("motion", newDevice.getParameters().getMotionContact());
+            updateState("battery", newDevice.getParameters().getBatteryLevel());
+            // RSSI and brightness state only available on newer devices (7002)
+            updateState("rssi", newDevice.getParameters().getRssi());
+            updateState("brightnessState", newDevice.getParameters().getBrightnessState());
+        }
+
         updateState("trigTime", newDevice.getParameters().getTrigTime());
+
         // Connections
         this.cloud = newDevice.getCloud();
         updateState("cloudOnline", this.cloud ? new StringType("Connected") : new StringType("Disconnected"));

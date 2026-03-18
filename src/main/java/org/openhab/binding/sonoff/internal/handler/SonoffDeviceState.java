@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.openhab.binding.sonoff.internal.SonoffBindingConstants;
 import org.openhab.core.library.types.StringType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,9 +31,13 @@ import com.google.gson.JsonPrimitive;
  *
  * @author David Murton - Initial contribution
  */
+
+// Purpose: Gets devices states from payload json and set channel states
+// params => payload parameters, parameters => Channels
+
 @NonNullByDefault
 public class SonoffDeviceState {
-    private final Logger logger = LoggerFactory.getLogger(SonoffAccountHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(SonoffDeviceState.class);
 
     // Main Parameters
     private final String deviceKey;
@@ -61,6 +66,10 @@ public class SonoffDeviceState {
         JsonElement firmware = device.getAsJsonObject("params").get("fwVersion");
         this.fw = firmware != null ? firmware.getAsString() : "Not Applicable";
         this.parameters = new SonoffDeviceStateParameters();
+        logger.info("-----------------------");
+        logger.info("Found: {}", this.name);
+        logger.info("Hardware: {}", this.brand + " Model: " + this.model + " FW: " + this.fw);
+        logger.info("uiid: {}", this.uiid + ", DeviceId: " + this.deviceid);
         updateState(device);
     }
 
@@ -78,7 +87,7 @@ public class SonoffDeviceState {
             }
         }
         setParameters(device.getAsJsonObject("params"));
-        if (uiid.equals(66) || uiid.equals(28)) {
+        if (SonoffBindingConstants.createZigbeeBridgeMap().containsKey(uiid) || uiid.equals(28)) {
             setSubDevices(device);
         }
         return this;
@@ -96,7 +105,12 @@ public class SonoffDeviceState {
 
         // Switches
         if (params.has("switch")) {
-            parameters.setSwitch0(params.get("switch").getAsString());
+            // UUID 226 uses boolean, others use string
+            if (uiid.equals(226)) {
+                parameters.setSwitch0(params.get("switch").getAsBoolean() ? "on" : "off");
+            } else {
+                parameters.setSwitch0(params.get("switch").getAsString());
+            }
         } else if (params.has("switches")) {
             JsonArray switches = params.getAsJsonArray("switches");
 
@@ -106,7 +120,11 @@ public class SonoffDeviceState {
                 if (switchObj.has("switch")) {
                     String switchState = switchObj.get("switch").getAsString();
 
-                    switch (i) {
+                    // Zigbee multi-switch devices use 'outlet' field to specify which channel
+                    // WiFi multi-switch devices rely on array index
+                    int outletIndex = switchObj.has("outlet") ? switchObj.get("outlet").getAsInt() : i;
+
+                    switch (outletIndex) {
                         case 0:
                             parameters.setSwitch0(switchState);
                             break;
@@ -120,27 +138,165 @@ public class SonoffDeviceState {
                             parameters.setSwitch3(switchState);
                             break;
                         default:
-                            logger.warn("Sonoff addon support only devices with at most 4 switches, ignoring switch: " + i);
+                            logger.warn(
+                                    "Sonoff addon support only devices with at most 4 switches, ignoring switch: {}",
+                                    outletIndex);
                     }
                 }
             }
         }
 
-        // Electric
+        // Contact
+        if (params.has("lock")) {
+            if (params.get("lock") != null) {
+                parameters.setContact0(params.get("lock").getAsInt());
+            }
+        }
+
+        // Tamper
+        if (params.has("split")) {
+            if (params.get("split") != null) {
+                parameters.setTamper(params.get("split").getAsInt());
+            }
+        }
+
+        // Doors
+
+        if (params.has("doorsensors")) {
+
+            JsonObject doors = params.getAsJsonObject("doorsensors");
+
+            if (doors.has("0")) { /* It set the doorSensor as well */
+                parameters.setDoor0(doors.get("0").getAsString());
+            }
+
+            if (doors.has("1")) {
+                parameters.setDoor1(doors.get("1").getAsString());
+            }
+
+            if (doors.has("2")) {
+                parameters.setDoor2(doors.get("2").getAsString());
+            }
+        }
+
+        // Electric or CAM2
         if (params.get("power") != null) {
-            parameters.setPower(params.get("power").getAsString());
+            if (uiid.equals(256) || uiid.equals(260)) { // Temporary workaround to be fixed for CAMs
+                parameters.setCamPower(params.get("power").getAsString());
+            } else {
+                if (uiid.equals(5) || uiid.equals(32)) {
+                    parameters.setPower(params.get("power").getAsString(), 1f, 2);
+                } else {
+                    parameters.setPower(params.get("power").getAsString(), 0.01f, 2);
+                }
+            }
         }
 
         if (params.get("voltage") != null) {
-            parameters.setVoltage(params.get("voltage").getAsString());
+            if (uiid.equals(5) || uiid.equals(32)) {
+                parameters.setVoltage(params.get("voltage").getAsString(), 1f, 1);
+            } else {
+                parameters.setVoltage(params.get("voltage").getAsString(), 0.01f, 1);
+            }
         }
 
         if (params.get("current") != null) {
-            parameters.setCurrent(params.get("current").getAsString());
+            if (uiid.equals(5) || uiid.equals(32)) {
+                parameters.setCurrent(params.get("current").getAsString(), 1f, 3);
+            } else if (uiid.equals(276)) {
+                // UUID 276 (WS01) reports current in centiamps (0.01 A increments)
+                parameters.setCurrent(params.get("current").getAsString(), 0.01f, 3);
+            } else {
+                parameters.setCurrent(params.get("current").getAsString(), 0.001f, 3);
+            }
+        }
+
+        // UUID 226 Circuit Breaker - phase_0_* fields
+        if (uiid.equals(226)) {
+            if (params.get("phase_0_p") != null) {
+                parameters.setPower(params.get("phase_0_p").getAsString(), 1f, 2);
+            }
+            if (params.get("phase_0_v") != null) {
+                parameters.setVoltage(params.get("phase_0_v").getAsString(), 1f, 2);
+            }
+            if (params.get("phase_0_c") != null) {
+                parameters.setCurrent(params.get("phase_0_c").getAsString(), 1f, 2);
+            }
+            if (params.get("totalPower") != null) {
+                parameters.setTotalPower(params.get("totalPower").getAsString(), 1f, 2);
+            }
+            if (params.get("availablePower") != null) {
+                parameters.setAvailablePower(params.get("availablePower").getAsString(), 1f, 2);
+            }
         }
 
         if (params.get("battery") != null) {
-            parameters.setBattery(params.get("battery").getAsDouble());
+            // Set battery parameter based on device UUID
+            if (uiid.equals(2026)) {
+                // Motion Sensor uses battery voltage
+                parameters.setBattery(params.get("battery").getAsDouble());
+            } else if (uiid.equals(1770) || uiid.equals(7002) || uiid.equals(7003) || uiid.equals(7014)) {
+                // Temperature/Humidity, Motion (SNZB-03P), and Door/Window sensors use battery level percentage
+                parameters.setBatteryLevel(params.get("battery").getAsDouble());
+            }
+        }
+
+        if (params.get("dayKwh") != null) {
+            if (uiid.equals(5) || uiid.equals(32)) {
+                parameters.setTodayKwh(params.get("dayKwh").getAsDouble(), 1f, 2);
+            } else {
+                parameters.setTodayKwh(params.get("dayKwh").getAsDouble(), 0.01f, 2);
+            }
+        }
+
+        if (params.get("monthKwh") != null) {
+            if (uiid.equals(5) || uiid.equals(32)) {
+                parameters.setMonthKwh(params.get("monthKwh").getAsDouble(), 1f, 2);
+            } else {
+                parameters.setMonthKwh(params.get("monthKwh").getAsDouble(), 0.01f, 2);
+            }
+        }
+
+        if (params.get("weekKwh") != null) {
+            if (uiid.equals(5) || uiid.equals(32)) {
+                parameters.setWeekKwh(params.get("weekKwh").getAsDouble(), 1f, 2);
+            } else {
+                parameters.setWeekKwh(params.get("weekKwh").getAsDouble(), 0.01f, 2);
+            }
+        }
+
+        if (params.get("yearKwh") != null) {
+            if (uiid.equals(5) || uiid.equals(32)) {
+                parameters.setYearKwh(params.get("yearKwh").getAsDouble(), 1f, 2);
+            } else {
+                parameters.setYearKwh(params.get("yearKwh").getAsDouble(), 0.01f, 2);
+            }
+        }
+
+        // Cost parameters (UUID 276) - divided by 100
+        if (params.get("costDay") != null) {
+            parameters.setCostDay(params.get("costDay").getAsDouble(), 0.01f, 2);
+        }
+
+        if (params.get("costWeek") != null) {
+            parameters.setCostWeek(params.get("costWeek").getAsDouble(), 0.01f, 2);
+        }
+
+        if (params.get("costMonth") != null) {
+            parameters.setCostMonth(params.get("costMonth").getAsDouble(), 0.01f, 2);
+        }
+
+        if (params.get("costYear") != null) {
+            parameters.setCostYear(params.get("costYear").getAsDouble(), 0.01f, 2);
+        }
+
+        // Runtime (UUID 276)
+        if (params.get("dayOnDuration") != null) {
+            parameters.setDayRuntime(params.get("dayOnDuration").getAsInt());
+        }
+
+        if (params.get("monthOnDuration") != null) {
+            parameters.setMonthRuntime(params.get("monthOnDuration").getAsInt());
         }
 
         // Energy
@@ -155,27 +311,48 @@ public class SonoffDeviceState {
                     total = total + Double.parseDouble(Integer.parseInt(hexValues[0], 16) + "."
                             + Integer.parseInt(hexValues[1], 16) + Integer.parseInt(hexValues[2], 16));
                     if (i == 0) {
-                        parameters.setTodayKwh(total);
+                        if (uiid.equals(5) || uiid.equals(32)) {
+                            parameters.setTodayKwh(total, 1f, 2);
+                        } else {
+                            parameters.setTodayKwh(total, 0.01f, 2);
+                        }
                     }
                     if (i == 1) {
                         double newtotal = Double.parseDouble(Integer.parseInt(hexValues[0], 16) + "."
                                 + Integer.parseInt(hexValues[1], 16) + Integer.parseInt(hexValues[2], 16));
-                        parameters.setYesterdayKwh(newtotal);
+
+                        if (uiid.equals(5) || uiid.equals(32)) {
+                            parameters.setYesterdayKwh(newtotal, 1f, 2);
+                        } else {
+                            parameters.setYesterdayKwh(newtotal, 0.01f, 2);
+                        }
                     }
                     if (i == 6) {
-                        parameters.setSevenKwh(total);
+                        if (uiid.equals(5) || uiid.equals(32)) {
+                            parameters.setSevenKwh(total, 1f, 2);
+                        } else {
+                            parameters.setSevenKwh(total, 0.01f, 2);
+                        }
                     }
                     if (i == 29) {
-                        parameters.setThirtyKwh(total);
+                        if (uiid.equals(5) || uiid.equals(32)) {
+                            parameters.setThirtyKwh(total, 1f, 2);
+                        } else {
+                            parameters.setThirtyKwh(total, 0.01f, 2);
+                        }
                     }
                     if (i == 99) {
-                        parameters.setHundredKwh(total);
+                        if (uiid.equals(5) || uiid.equals(32)) {
+                            parameters.setHundredKwh(total, 1f, 2);
+                        } else {
+                            parameters.setHundredKwh(total, 0.01f, 2);
+                        }
                     }
                 }
             }
         }
 
-        if (uiid.equals(15)) {
+        if (uiid.equals(15) || uiid.equals(181)) {
             // api returns a string always
             if (params.get("currentTemperature") != null) {
                 JsonPrimitive p = params.get("currentTemperature").getAsJsonPrimitive();
@@ -215,13 +392,80 @@ public class SonoffDeviceState {
                     parameters.setHumidity(p.getAsDouble());
                 }
             }
-        } else {
+        } else if (!uiid.equals(266)) {
+            // Temperature and humidity need /100 conversion for most devices
+            // UUID 266 (SAWF-08P) is excluded and handled separately below
             if (params.get("temperature") != null) {
-                parameters.setTemperature(Double.valueOf(params.get("temperature").getAsInt() / 100));
+                parameters.setTemperature(Double.valueOf(params.get("temperature").getAsDouble() / 100));
             }
 
             if (params.get("humidity") != null) {
-                parameters.setHumidity(Double.valueOf(params.get("humidity").getAsInt() / 100));
+                parameters.setHumidity(Double.valueOf(params.get("humidity").getAsDouble() / 100));
+            }
+
+            // Temperature/Humidity statistics (UUID 7038 - SNZB-02DR2)
+            if (params.get("temperatureMax") != null) {
+                parameters.setTemperatureMax(Double.valueOf(params.get("temperatureMax").getAsDouble() / 100));
+            }
+
+            if (params.get("temperatureMin") != null) {
+                parameters.setTemperatureMin(Double.valueOf(params.get("temperatureMin").getAsDouble() / 100));
+            }
+
+            if (params.get("temperatureAvg") != null) {
+                parameters.setTemperatureAvg(Double.valueOf(params.get("temperatureAvg").getAsDouble() / 100));
+            }
+
+            if (params.get("humidityMax") != null) {
+                parameters.setHumidityMax(Double.valueOf(params.get("humidityMax").getAsDouble() / 100));
+            }
+
+            if (params.get("humidityMin") != null) {
+                parameters.setHumidityMin(Double.valueOf(params.get("humidityMin").getAsDouble() / 100));
+            }
+
+            if (params.get("humidityAvg") != null) {
+                parameters.setHumidityAvg(Double.valueOf(params.get("humidityAvg").getAsDouble() / 100));
+            }
+        }
+
+        // Air Quality Monitor (UUID 266 - SAWF-08P)
+        if (uiid.equals(266)) {
+            // Temperature and humidity are provided as float values (no /100 conversion needed)
+            if (params.get("temperature") != null) {
+                parameters.setTemperature(params.get("temperature").getAsDouble());
+            }
+
+            if (params.get("humidity") != null) {
+                parameters.setHumidity(params.get("humidity").getAsDouble());
+            }
+
+            if (params.get("co2") != null) {
+                parameters.setCo2(params.get("co2").getAsInt());
+            }
+
+            if (params.get("pm10") != null) {
+                parameters.setPm10(params.get("pm10").getAsInt());
+            }
+
+            if (params.get("pm2_5") != null) {
+                parameters.setPm2_5(params.get("pm2_5").getAsInt());
+            }
+
+            if (params.get("temperatureF") != null) {
+                parameters.setTemperatureF(params.get("temperatureF").getAsDouble());
+            }
+
+            if (params.get("sensorLight") != null) {
+                parameters.setSensorLight(params.get("sensorLight").getAsString());
+            }
+
+            if (params.get("sensorLightBr") != null) {
+                parameters.setSensorLightBr(params.get("sensorLightBr").getAsInt());
+            }
+
+            if (params.get("voiceAlarm") != null) {
+                parameters.setVoiceAlarm(params.get("voiceAlarm").getAsString());
             }
         }
 
@@ -251,6 +495,15 @@ public class SonoffDeviceState {
 
         if (params.get("speed") != null) {
             parameters.setSpeed(params.get("speed").getAsInt());
+        }
+
+        // RGBIC (UUID 173) specific parameters
+        if (params.get("rhythmMode") != null) {
+            parameters.setRhythmMode(params.get("rhythmMode").getAsInt());
+        }
+
+        if (params.get("rhythmSensitive") != null) {
+            parameters.setRhythmSensitivity(params.get("rhythmSensitive").getAsInt());
         }
 
         if (params.get("colorR") != null && params.get("colorG") != null && params.get("colorB") != null) {
@@ -298,8 +551,17 @@ public class SonoffDeviceState {
             parameters.setNetworkLED(params.get("sledOnline").getAsString());
         }
 
-        if (params.get("rssi") != null) {
-            parameters.setRssi(params.get("rssi").getAsInt());
+        // For WiFi devices use rssi, for Zigbee subdevices use subDevRssi
+        // All Zigbee devices (non-bridge) use subDevRssi instead of rssi
+        // Check if device is in Zigbee map (excludes bridges 66, 168, 243)
+        if (SonoffBindingConstants.createZigbeeMap().containsKey(uiid)) {
+            if (params.get("subDevRssi") != null) {
+                parameters.setRssi(params.get("subDevRssi").getAsInt());
+            }
+        } else {
+            if (params.get("rssi") != null) {
+                parameters.setRssi(params.get("rssi").getAsInt());
+            }
         }
 
         if (params.get("zled") != null) {
@@ -384,6 +646,34 @@ public class SonoffDeviceState {
         if (params.get("motion") != null) {
             parameters.setMotion(params.get("motion").getAsInt());
         }
+
+        if (params.get("brState") != null) {
+            parameters.setBrightnessState(params.get("brState").getAsString());
+        }
+
+        // Button press events
+        if (params.get("key") != null && params.get("trigTime") != null) {
+            Integer key = params.get("key").getAsInt();
+            String trigTime = params.get("trigTime").getAsString();
+            parameters.setButtonPress(key, trigTime);
+        }
+
+        // Roller Shutter (UUID 258)
+        if (params.get("switch") != null && uiid.equals(258)) {
+            parameters.setRollerSwitch(params.get("switch").getAsString());
+        }
+
+        if (params.get("setclose") != null) {
+            parameters.setSetclose(params.get("setclose").getAsInt());
+        }
+
+        if (params.get("motorDir") != null) {
+            parameters.setMotorDir(params.get("motorDir").getAsString());
+        }
+
+        if (params.get("swMode") != null) {
+            parameters.setSwMode(params.get("swMode").getAsInt());
+        }
     }
 
     public Map<String, String> getProperties() {
@@ -427,6 +717,10 @@ public class SonoffDeviceState {
         return this.deviceKey;
     }
 
+    public String getModel() {
+        return this.model;
+    }
+
     public StringType getIpAddress() {
         return this.ipAddress;
     }
@@ -437,7 +731,7 @@ public class SonoffDeviceState {
 
     private void setSubDevices(JsonObject device) {
         JsonArray subDevices = null;
-        if (uiid.equals(66)) {
+        if (SonoffBindingConstants.createZigbeeBridgeMap().containsKey(uiid)) {
             if (device.getAsJsonObject("params").getAsJsonArray("subDevices") != null) {
                 subDevices = device.getAsJsonObject("params").getAsJsonArray("subDevices");
             }

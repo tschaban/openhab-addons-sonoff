@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2021 Contributors to the openHAB project
+ * Copyright (c) 2010-2024 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -26,11 +26,13 @@ public class DeviceConfig {
     public Integer consumptionPoll = 86400;
     public Integer localPoll = 60;
     public Boolean consumption = false;
-    public Boolean local = false;
+    public Boolean local = true;
+    public Integer buttonResetTimeout = 500;
 
     @Override
     public String toString() {
         return "[deviceid=" + deviceid + ", localPoll=" + localPoll + ", consumptionPoll=" + consumptionPoll
-                + ", local=" + local + ", consumption=" + consumption + "]";
+                + ", local=" + local + ", consumption=" + consumption + ", buttonResetTimeout=" + buttonResetTimeout
+                + "]";
     }
 }
