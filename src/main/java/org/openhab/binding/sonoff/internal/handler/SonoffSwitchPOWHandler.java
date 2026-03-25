@@ -25,7 +25,8 @@ import org.openhab.binding.sonoff.internal.dto.commands.SingleSwitch;
 import org.openhab.core.library.types.StringType;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.Thing;
-import org.openhab.core.types.*;
+import org.openhab.core.types.Command;
+import org.openhab.core.types.RefreshType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,15 +69,22 @@ public class SonoffSwitchPOWHandler extends SonoffBaseDeviceHandler {
                         TimeUnit.SECONDS);
             }
 
-            // Task to poll the lan if we are in local only mode or internet access is blocked (POW / POWR2)
+            // Task to poll the LAN at localPoll interval.
+            // Sends sledOnline with the current LED value so the device responds with all
+            // its params (power, voltage, current) without changing anything.
+            // Ported from SonoffLAN v3.11.0-rc.1 (https://github.com/AlexxIT/SonoffLAN/issues/1707)
             Runnable localPollData = () -> {
-                queueMessage(new SonoffCommandMessage("switch", this.deviceid, true, new SingleSwitch()));
-            };
-            if ((mode.equals("local") || (this.cloud.equals(false) && mode.equals("mixed")))) {
-                if (local) {
-                    logger.debug("Starting local task for {}", config.deviceid);
-                    localTask = scheduler.scheduleWithFixedDelay(localPollData, 10, localPoll, TimeUnit.SECONDS);
+                SonoffDeviceState state = account.getState(this.deviceid);
+                if (state != null) {
+                    String ledValue = state.getParameters().getNetworkLED().toString().toLowerCase();
+                    SLed sled = new SLed();
+                    sled.setSledOnline(ledValue);
+                    queueMessage(new SonoffCommandMessage("sledOnline", this.deviceid, true, sled));
                 }
+            };
+            if (local && (mode.equals("local") || mode.equals("mixed"))) {
+                logger.debug("Starting local task for {}", config.deviceid);
+                localTask = scheduler.scheduleWithFixedDelay(localPollData, 10, localPoll, TimeUnit.SECONDS);
             }
         }
     }
@@ -94,7 +102,6 @@ public class SonoffSwitchPOWHandler extends SonoffBaseDeviceHandler {
             consumptionTask.cancel(true);
             this.consumptionTask = null;
         }
-        // super.cancelTasks(); // Tschaban: This is not needed as we are not using the super class tasks
     }
 
     @Override
