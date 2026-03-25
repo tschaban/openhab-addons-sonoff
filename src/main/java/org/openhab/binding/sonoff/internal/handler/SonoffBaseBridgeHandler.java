@@ -31,7 +31,6 @@ import org.openhab.core.types.Command;
 import org.openhab.core.types.RefreshType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.HandlerBase;
 
 /**
  * The {@link HandlerBase} allows the handling of commands and updates to Devices
@@ -190,6 +189,7 @@ public abstract class SonoffBaseBridgeHandler extends BaseBridgeHandler implemen
 
     public synchronized void updateStatus() {
         ThingStatus status = ThingStatus.ONLINE;
+        ThingStatusDetail statusDetail = ThingStatusDetail.NONE;
         String detail = null;
         SonoffAccountHandler account = this.account;
         if (account != null) {
@@ -198,6 +198,7 @@ public abstract class SonoffBaseBridgeHandler extends BaseBridgeHandler implemen
             if (mode.equals("local")) {
                 if (!isLocalIn) {
                     status = ThingStatus.OFFLINE;
+                    statusDetail = ThingStatusDetail.COMMUNICATION_ERROR;
                     detail = "Local Mode Not supported by device";
                 } else {
                     if (!local) {
@@ -219,10 +220,10 @@ public abstract class SonoffBaseBridgeHandler extends BaseBridgeHandler implemen
                     status = ThingStatus.ONLINE;
                 } else {
                     if (!cloud && local) {
-                        detail = "Cloud Offline";
+                        detail = "Connected via LAN only";
                     }
                     if (!local && cloud) {
-                        detail = "LAN Offline";
+                        detail = "Connected via Cloud only";
                     }
                     if (!local && !cloud) {
                         status = ThingStatus.OFFLINE;
@@ -232,7 +233,7 @@ public abstract class SonoffBaseBridgeHandler extends BaseBridgeHandler implemen
         }
 
         if (detail != null) {
-            updateStatus(status, ThingStatusDetail.COMMUNICATION_ERROR, detail);
+            updateStatus(status, statusDetail, detail);
         } else {
             updateStatus(status);
         }

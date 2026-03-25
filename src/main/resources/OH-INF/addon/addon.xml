@@ -4,9 +4,9 @@
 	xsi:schemaLocation="https://openhab.org/schemas/addon/v1.0.0 https://openhab.org/schemas/addon-1.0.0.xsd">
 
 	<type>binding</type>
-	<name>Sonoff binding</name>
+	<name>Sonoff (eWeLink) Binding</name>
 	<description>
-		Sonoff binding maintained by SmartnyDom
+		Binding for Sonoff devices using the eWeLink cloud service as well as local LAN control where supported.
 	</description>
 	<connection>hybrid</connection>
 

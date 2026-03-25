@@ -47,7 +47,7 @@ import com.google.gson.JsonObject;
 /**
  * Unit tests for {@link SonoffDiscoveryService}
  *
- * @author Ona - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 class SonoffDiscoveryServiceTest {

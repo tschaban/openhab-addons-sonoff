@@ -41,7 +41,7 @@ import org.openhab.core.thing.binding.ThingHandler;
  * - createHandler method for all device types
  * - Error cases and edge conditions
  *
- * @author Test Author - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 class SonoffHandlerFactoryTest {
@@ -72,8 +72,15 @@ class SonoffHandlerFactoryTest {
         when(webSocketFactory.getCommonWebSocketClient()).thenReturn(webSocketClient);
         when(httpClientFactory.getCommonHttpClient()).thenReturn(httpClient);
 
+        // Mock BundleContext and Bundle
+        org.osgi.framework.BundleContext mockBundleContext = mock(org.osgi.framework.BundleContext.class);
+        org.osgi.framework.Bundle mockBundle = mock(org.osgi.framework.Bundle.class);
+        org.osgi.framework.Version mockVersion = new org.osgi.framework.Version("5.0.3.SNAPSHOT");
+        when(mockBundleContext.getBundle()).thenReturn(mockBundle);
+        when(mockBundle.getVersion()).thenReturn(mockVersion);
+
         // Create factory instance
-        factory = new SonoffHandlerFactory(webSocketFactory, httpClientFactory);
+        factory = new SonoffHandlerFactory(webSocketFactory, httpClientFactory, mockBundleContext);
     }
 
     @Test
@@ -105,10 +112,21 @@ class SonoffHandlerFactoryTest {
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_138));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_190));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_237));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_258));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_268));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_275));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_276));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_1770));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_2026));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7000));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7002));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7003));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7010));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7014));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7029));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7038));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7040));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_268));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_RF1));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_RF2));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_RF3));
@@ -161,7 +179,7 @@ class SonoffHandlerFactoryTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "2", "3", "4", "7", "8", "9", "29", "30", "31", "77", "78", "82", "83", "84", "126", "161",
-            "162", "210", "211", "212" })
+            "162", "210", "211", "212", "264", "268", "275" })
     @DisplayName("Should create SonoffSwitchMultiHandler for multi switch device types")
     void testCreateHandler_MultiSwitchDevices(String deviceId) {
         // Setup
@@ -250,6 +268,21 @@ class SonoffHandlerFactoryTest {
         // Verify
         assertNotNull(handler);
         assertEquals("SonoffSwitchPOWR2Handler", handler.getClass().getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Should create SonoffSwitchPOWR2Handler for CK-BL602 device type")
+    void testCreateHandler_CKBL602Device() {
+        // Setup
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", "226");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType);
+
+        // Execute
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify
+        assertNotNull(handler);
+        assertEquals("SonoffSwitchUUID226Handler", handler.getClass().getSimpleName());
     }
 
     @Test
@@ -358,6 +391,57 @@ class SonoffHandlerFactoryTest {
         assertEquals("SonoffGateHandler", handler.getClass().getSimpleName());
     }
 
+    @Test
+    @DisplayName("Should create handler for WiFi device 258")
+    void testWiFiDevice258Handler() {
+        // Mock thing with correct type
+        when(mockThing.getThingTypeUID()).thenReturn(SonoffBindingConstants.THING_TYPE_258);
+
+        // Create handler
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify handler was created and is correct type
+        assertNotNull(handler, "Handler should be created for THING_TYPE_258");
+        assertEquals("SonoffRollerShutterHandler", handler.getClass().getSimpleName(),
+                "Handler should be instance of SonoffRollerShutterHandler");
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_258),
+                "Factory should support THING_TYPE_258");
+    }
+
+    @Test
+    @DisplayName("Should create handler for WiFi device 276")
+    void testWiFiDevice276Handler() {
+        // Mock thing with correct type
+        when(mockThing.getThingTypeUID()).thenReturn(SonoffBindingConstants.THING_TYPE_276);
+
+        // Create handler
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify handler was created and is correct type
+        assertNotNull(handler, "Handler should be created for THING_TYPE_276");
+        assertEquals("SonoffSwitchWS01Handler", handler.getClass().getSimpleName(),
+                "Handler should be instance of SonoffSwitchWS01Handler");
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_276),
+                "Factory should support THING_TYPE_276");
+    }
+
+    @Test
+    @DisplayName("Should create handler for WiFi device 266")
+    void testWiFiDevice266Handler() {
+        // Mock thing with correct type
+        when(mockThing.getThingTypeUID()).thenReturn(SonoffBindingConstants.THING_TYPE_266);
+
+        // Create handler
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify handler was created and is correct type
+        assertNotNull(handler, "Handler should be created for THING_TYPE_266");
+        assertEquals("SonoffAirQualityMonitorHandler", handler.getClass().getSimpleName(),
+                "Handler should be instance of SonoffAirQualityMonitorHandler");
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_266),
+                "Factory should support THING_TYPE_266");
+    }
+
     @ParameterizedTest
     @ValueSource(strings = { "1770", "7014" })
     @DisplayName("Should create SonoffZigbeeDeviceTemperatureHumiditySensorHandler for temperature sensor types")
@@ -374,11 +458,12 @@ class SonoffHandlerFactoryTest {
         assertEquals("SonoffZigbeeDeviceTemperatureHumiditySensorHandler", handler.getClass().getSimpleName());
     }
 
-    @Test
-    @DisplayName("Should create SonoffZigbeeDeviceMotionSensorHandler for motion sensor type")
-    void testCreateHandler_MotionSensor() {
+    @ParameterizedTest
+    @ValueSource(strings = { "2026", "7002" })
+    @DisplayName("Should create SonoffZigbeeDeviceMotionSensorHandler for motion sensor types")
+    void testCreateHandler_MotionSensor(String deviceId) {
         // Setup
-        ThingTypeUID thingType = new ThingTypeUID("sonoff", "2026");
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", deviceId);
         when(mockThing.getThingTypeUID()).thenReturn(thingType);
 
         // Execute
@@ -387,6 +472,76 @@ class SonoffHandlerFactoryTest {
         // Verify
         assertNotNull(handler);
         assertEquals("SonoffZigbeeDeviceMotionSensorHandler", handler.getClass().getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Should create SonoffZigbeeButtonHandler for button device type")
+    void testCreateHandler_ButtonDevice() {
+        // Setup
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", "7000");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType);
+
+        // Execute
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify
+        assertNotNull(handler);
+        assertEquals("SonoffZigbeeButtonHandler", handler.getClass().getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Should create SonoffZigbeeSwitchSingleHandler for Zigbee switch device type")
+    void testCreateHandler_ZigbeeSwitchDevice() {
+        // Setup
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", "7010");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType);
+
+        // Execute
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify
+        assertNotNull(handler);
+        assertEquals("SonoffZigbeeSwitchSingleHandler", handler.getClass().getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Should create SonoffZigbeeSwitchMultiHandler for Zigbee multi-switch device types")
+    void testCreateHandler_ZigbeeMultiSwitchDevice() {
+        // Test UUID 7029 (MINI-ZB2GS-L)
+        ThingTypeUID thingType7029 = new ThingTypeUID("sonoff", "7029");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType7029);
+        ThingHandler handler7029 = factory.createHandler(mockThing);
+        assertNotNull(handler7029);
+        assertEquals("SonoffZigbeeSwitchMultiHandler", handler7029.getClass().getSimpleName());
+
+        // Test UUID 7038 (SNZB-02DR2)
+        ThingTypeUID thingType7038 = new ThingTypeUID("sonoff", "7038");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType7038);
+        ThingHandler handler7038 = factory.createHandler(mockThing);
+        assertNotNull(handler7038);
+        assertEquals("SonoffZigbeeDeviceTemperatureHumiditySensorHandler", handler7038.getClass().getSimpleName());
+
+        // Test UUID 7040 (MINI-ZB2GS)
+        ThingTypeUID thingType7040 = new ThingTypeUID("sonoff", "7040");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType7040);
+        ThingHandler handler7040 = factory.createHandler(mockThing);
+        assertNotNull(handler7040);
+        assertEquals("SonoffZigbeeSwitchMultiHandler", handler7040.getClass().getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Should create SonoffButtonHandler for WiFi button device type")
+    void testCreateHandler_WiFiButtonDevice() {
+        // Setup
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", "265");
+        when(mockThing.getThingTypeUID()).thenReturn(thingType);
+
+        // Execute
+        ThingHandler handler = factory.createHandler(mockThing);
+
+        // Verify
+        assertNotNull(handler);
+        assertEquals("SonoffButtonHandler", handler.getClass().getSimpleName());
     }
 
     @ParameterizedTest

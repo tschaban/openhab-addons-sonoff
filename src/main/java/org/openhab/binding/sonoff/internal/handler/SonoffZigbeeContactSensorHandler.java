@@ -22,7 +22,7 @@ import org.openhab.core.types.*;
  * The {@link SonoffZigbeeContactSensorHandler} allows the handling of commands and updates to Contact Sensor Type
  * Devices
  *
- * @author Tschaban-A - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @NonNullByDefault
 public class SonoffZigbeeContactSensorHandler extends SonoffBaseZigbeeHandler {
@@ -39,9 +39,11 @@ public class SonoffZigbeeContactSensorHandler extends SonoffBaseZigbeeHandler {
     public void updateDevice(SonoffDeviceState newDevice) {
         // Contact
         updateState("contact", newDevice.getParameters().getContact0());
+        // Tamper
+        updateState("tamper", newDevice.getParameters().getTamper());
         // Other
         updateState("rssi", newDevice.getParameters().getRssi());
-        updateState("battery", newDevice.getParameters().getBattery());
+        updateState("battery", newDevice.getParameters().getBatteryLevel());
         updateState("trigTime", newDevice.getParameters().getTrigTime());
 
         // Connections

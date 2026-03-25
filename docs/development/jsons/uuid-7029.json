@@ -1,0 +1,103 @@
+{
+    "name": "MINI-ZB2GS-L",
+    "deviceid": "",
+    "apikey": "",
+    "extra": {
+        "mac": "534343feffda9f447029",
+        "apmac": "00:00:00:00:00:00",
+        "model": "SN-MG22-ZB2GSL-01",
+        "description": "",
+        "modelInfo": "6837c12e62e6bc4eaf619d52",
+        "manufacturer": "深圳松诺技术有限公司",
+        "brandId": "5c4c1aee3a7d24c7100be054",
+        "uiid": 7029,
+        "ui": "Zigbee单零火双通道开关_支持OTA",
+        "reportProduct": "MINI-ZB2GS-L"
+    },
+    "brandName": "SONOFF",
+    "brandLogo": "https://eu-ota.coolkit.cc/logo/q62PevoglDNmwUJ9oPE7kRrpt1nL1CoA.png",
+    "showBrand": true,
+    "productModel": "MINI-ZB2GS-L",
+    "tags": {
+        "channelSplit": {
+            "0": {
+                "index": -18.2,
+                "roomId": ""
+            },
+            "1": {
+                "index": -18.1,
+                "roomId": ""
+            }
+        }
+    },
+    "devConfig": {},
+    "family": {
+        "familyid": "",
+        "index": -18,
+        "members": [
+            ""
+        ],
+        "guests": []
+    },
+    "shareTo": [],
+    "devicekey": "",
+    "online": true,
+    "params": {
+        "bindInfos": {
+            "alexa": [
+                ""
+            ],
+            "gaction": [
+                ""
+            ]
+        },
+        "subDevId": "534343feffda9f447029",
+        "parentid": "10020bb559",
+        "fwVersion": "1.0.4",
+        "relaySeparations": [
+            {
+                "enable": 0,
+                "outlet": 0
+            },
+            {
+                "enable": 0,
+                "outlet": 1
+            }
+        ],
+        "swModes": [
+            {
+                "swMode": 2,
+                "outlet": 0
+            },
+            {
+                "swMode": 2,
+                "outlet": 1
+            }
+        ],
+        "switches": [
+            {
+                "switch": "off",
+                "outlet": 0
+            },
+            {
+                "switch": "off",
+                "outlet": 1
+            }
+        ],
+        "subDevRssi": -81,
+        "subDeviceManufacturer": "SONOFF",
+        "sledOnline": "on"
+    },
+    "denyFeatures": [
+        "allOnOff",
+        "sled",
+        "temperature_control_precision",
+        "newVersionSubDeviceOta",
+        "newVersionSubDeviceOtaV2",
+        "newVersionSubDeviceOtaV3"
+    ],
+    "isSupportGroup": true,
+    "isSupportedOnMP": false,
+    "isSupportChannelSplit": false,
+    "deviceFeature": {}
+}

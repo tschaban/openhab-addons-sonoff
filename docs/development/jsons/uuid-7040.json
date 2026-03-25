@@ -1,0 +1,87 @@
+{
+    "name": "MINI-ZB2GS",
+    "deviceid": "",
+    "apikey": "",
+    "extra": {
+        "mac": "",
+        "apmac": "00:00:00:00:00:00",
+        "model": "SN-MG21-ZB2GS-01",
+        "description": "",
+        "modelInfo": "",
+        "manufacturer": "深圳松诺技术有限公司",
+        "brandId": "",
+        "uiid": 7040,
+        "ui": "ZigBee双通道改装件",
+        "reportProduct": "MINI-ZB2GS"
+    },
+    "brandName": "SONOFF",
+    "brandLogo": "https://eu-ota.coolkit.cc/logo/q62PevoglDNmwUJ9oPE7kRrpt1nL1CoA.png",
+    "showBrand": true,
+    "productModel": "MINI-ZB2GS",
+    "tags": {},
+    "devConfig": {},
+    "family": {
+        "familyid": "",
+        "index": -17,
+        "members": [
+            ""
+        ],
+        "guests": []
+    },
+    "shareTo": [],
+    "devicekey": "",
+    "online": true,
+    "params": {
+        "bindInfos": {
+            "alexa": [
+                ""
+            ],
+            "gaction": [
+                ""
+            ]
+        },
+        "subDevId": "",
+        "parentid": "",
+        "fwVersion": "1.0.4",
+        "switchModes": [
+            {
+                "swMode": 2,
+                "outlet": 0,
+                "enable": 0
+            },
+            {
+                "swMode": 2,
+                "outlet": 1,
+                "enable": 0
+            }
+        ],
+        "switches": [
+            {
+                "switch": "off",
+                "outlet": 0
+            },
+            {
+                "switch": "off",
+                "outlet": 1
+            }
+        ],
+        "sledOnline": "on",
+        "subDevRssi": -69,
+        "subDeviceManufacturer": "SONOFF",
+        "alarmReportError1": false,
+        "subDevRssiSetting": {
+            "active": 60,
+            "duration": 5
+        }
+    },
+    "denyFeatures": [
+        "temperature_control_precision",
+        "newVersionSubDeviceOta",
+        "newVersionSubDeviceOtaV2",
+        "newVersionSubDeviceOtaV3"
+    ],
+    "isSupportGroup": true,
+    "isSupportedOnMP": false,
+    "isSupportChannelSplit": false,
+    "deviceFeature": {}
+}

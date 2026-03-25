@@ -49,7 +49,7 @@ import com.google.gson.JsonSyntaxException;
  * - Error recovery scenarios
  * - Integration with real Gson
  *
- * @author Test Author - Initial contribution
+ * @author tschaban/SmartnyDom - Initial contribution
  */
 @ExtendWith(MockitoExtension.class)
 class SonoffCacheProviderIntegrationTest {

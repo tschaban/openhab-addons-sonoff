@@ -1,0 +1,157 @@
+{
+    "name": "MINI-2GS",
+    "deviceid": "",
+    "apikey": "",
+    "extra": {
+        "model": "SN-ESP32C3X-MINI2GS-01",
+        "ui": "双通道改装件",
+        "uiid": 275,
+        "description": "",
+        "modelInfo": "6870afba2e2e80200544f341",
+        "brandId": "5c4c1aee3a7d24c7100be054",
+        "itCredential": "",
+        "mac": "d0:27:04:7b:c3:60",
+        "apmac": "d0:27:04:7b:c3:61",
+        "manufacturer": "深圳松诺技术有限公司",
+        "staMac": "80:F1:B2:42:5B:50"
+    },
+    "brandName": "SONOFF",
+    "brandLogo": "https://eu-ota.coolkit.cc/logo/q62PevoglDNmwUJ9oPE7kRrpt1nL1CoA.png",
+    "showBrand": true,
+    "productModel": "MINI-2GS",
+    "tags": {
+        "m_2d42_ewel": "on"
+    },
+    "devConfig": {},
+    "settings": {
+        "opsNotify": 0,
+        "opsHistory": 1,
+        "alarmNotify": 1,
+        "wxAlarmNotify": 0,
+        "wxOpsNotify": 0,
+        "wxDoorbellNotify": 0,
+        "appDoorbellNotify": 1
+    },
+    "devGroups": [],
+    "family": {
+        "familyid": "",
+        "index": -3,
+        "members": [],
+        "guests": []
+    },
+    "shareTo": [],
+    "devicekey": "",
+    "online": true,
+    "params": {
+        "bindInfos": {
+            "alexa": [
+                ""
+            ],
+            "gaction": [
+                ""
+            ]
+        },
+        "version": 8,
+        "fabricList": [],
+        "switches": [
+            {
+                "outlet": 0,
+                "switch": "off"
+            },
+            {
+                "outlet": 1,
+                "switch": "off"
+            }
+        ],
+        "configure": [
+            {
+                "outlet": 0,
+                "enableDelay": 0,
+                "width": 55000,
+                "startup": "off"
+            },
+            {
+                "outlet": 1,
+                "enableDelay": 0,
+                "width": 49000,
+                "startup": "off"
+            }
+        ],
+        "TZ": "Europe/Warsaw",
+        "alarmReportError1": false,
+        "autoUpgrade": {
+            "enable": false,
+            "range": [
+                "02:00",
+                "04:00"
+            ]
+        },
+        "bssid": "",
+        "fwVersion": "1.0.0",
+        "pulses": [
+            {
+                "outlet": 0,
+                "pulse": "off",
+                "switch": "off",
+                "width": 500
+            },
+            {
+                "outlet": 1,
+                "pulse": "off",
+                "switch": "off",
+                "width": 500
+            }
+        ],
+        "rssi": -77,
+        "sledOnline": "on",
+        "ssid": "",
+        "staMac": "",
+        "switchModes": [
+            {
+                "swMode": 2,
+                "outlet": 0,
+                "enable": 0
+            },
+            {
+                "swMode": 2,
+                "outlet": 1,
+                "enable": 0
+            }
+        ],
+        "timerV2": {
+            "max": 20,
+            "enable": 8,
+            "batch": 3,
+            "revision": "0",
+            "timers": []
+        },
+        "timerV2Rev": "0"
+    },
+    "isSupportGroup": true,
+    "isSupportedOnMP": false,
+    "isSupportChannelSplit": false,
+    "deviceFeature": {}
+}
+
+
+{
+    "action": "update",
+    "deviceid": "",
+    "apikey": "",
+    "userAgent": "device",
+    "sequence": "1764347543262",
+    "d_seq": 7907326,
+    "params": {
+        "switches": [
+            {
+                "outlet": 0,
+                "switch": "off"
+            },
+            {
+                "outlet": 1,
+                "switch": "off"
+            }
+        ]
+    },
+    "seq": "1070203956"
+}

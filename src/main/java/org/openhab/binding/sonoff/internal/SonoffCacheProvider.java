@@ -48,27 +48,13 @@ public class SonoffCacheProvider {
     private final @Nullable Gson gson;
 
     public SonoffCacheProvider(Gson gson) {
-        this.saveFolderName = OpenHAB.getUserDataFolder() + "/" + SonoffBindingConstants.BINDING_ID;
-        final File saveFolder = new File(saveFolderName);
         this.gson = gson;
-
-        // Create path for serialization.
-        if (!saveFolder.exists()) {
-            logger.debug("Creating directory {}", saveFolderName);
-            saveFolder.mkdirs();
-        }
+        this.saveFolderName = createSaveFolder();
     }
 
     public SonoffCacheProvider() {
-        this.saveFolderName = OpenHAB.getUserDataFolder() + "/" + SonoffBindingConstants.BINDING_ID;
-        final File saveFolder = new File(saveFolderName);
         this.gson = null;
-
-        // Create path for serialization.
-        if (!saveFolder.exists()) {
-            logger.debug("Creating directory {}", saveFolderName);
-            saveFolder.mkdirs();
-        }
+        this.saveFolderName = createSaveFolder();
     }
 
     public void newFile(String deviceid, String thing) {
@@ -213,5 +199,23 @@ public class SonoffCacheProvider {
             logger.warn("Failed to get device state for {}: {}", deviceid, e.getMessage());
             return null;
         }
+    }
+
+    private static String createSaveFolder() {
+        String cacheRoot = OpenHAB.getUserDataFolder() + "/cache";
+        File cacheDir = new File(cacheRoot);
+        if (!cacheDir.exists()) {
+            logger.debug("Creating directory {}", cacheRoot);
+            cacheDir.mkdirs();
+        }
+
+        String bindingFolder = cacheRoot + "/" + SonoffBindingConstants.BINDING_ID;
+        File bindingDir = new File(bindingFolder);
+        if (!bindingDir.exists()) {
+            logger.debug("Creating directory {}", bindingFolder);
+            bindingDir.mkdirs();
+        }
+
+        return bindingFolder;
     }
 }

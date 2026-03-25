@@ -87,6 +87,7 @@
 				<label>Device ID</label>
 				<description>Device ID</description>
 			</parameter>
+
 		</config-description>
 	</thing-type>
 
@@ -110,6 +111,32 @@
 				<label>Device ID</label>
 				<description>Device ID</description>
 			</parameter>
+
+		</config-description>
+	</thing-type>
+
+	<thing-type id="7002">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="66"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Motion Sensor</label>
+		<description>Model: SNZB-03P</description>
+		<channels>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="motion" typeId="motion-contact"/>
+			<channel id="battery" typeId="battery-level"/>
+			<channel id="trigTime" typeId="trigTime"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="brightnessState" typeId="brightness-state"/>
+		</channels>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+
 		</config-description>
 	</thing-type>
 
@@ -120,12 +147,37 @@
 			<bridge-type-ref id="168"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Door and Window Sensor</label>
-		<description>Models: SNZB-04P</description>
+		<description>Models: SNZB-04P, SNZB-04PR2</description>
 		<channels>
 			<channel id="cloudOnline" typeId="cloudOnline"/>
 			<channel id="contact" typeId="contact"/>
+			<channel id="tamper" typeId="contact"/>
 			<channel id="battery" typeId="battery-level"/>
 			<channel id="trigTime" typeId="trigTime"/>
+			<channel id="rssi" typeId="rssi"/>
+		</channels>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+
+		</config-description>
+	</thing-type>
+
+
+	<thing-type id="7010">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="66"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Single Relay Switch</label>
+		<description>Model: ZBMINIR2</description>
+		<channels>
+			<channel id="switch" typeId="power"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="sled" typeId="sled"/>
 			<channel id="rssi" typeId="rssi"/>
 		</channels>
 		<config-description>
@@ -156,6 +208,159 @@
 			<parameter name="deviceid" type="text" required="true">
 				<label>Device ID</label>
 				<description>Device ID</description>
+			</parameter>
+
+		</config-description>
+	</thing-type>
+
+	<thing-type id="7029">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="66"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Dual Channel Switch (No Neutral Wire)</label>
+		<description>Model: MINI-ZB2GS-L (MINI Duo L 2-Gang Zigbee Smart Switch with No Neutral Wire)</description>
+		<channels>
+			<channel id="switch0" typeId="power">
+				<label>Switch 1</label>
+				<description>First switch channel</description>
+			</channel>
+			<channel id="switch1" typeId="power">
+				<label>Switch 2</label>
+				<description>Second switch channel</description>
+			</channel>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="sled" typeId="sled"/>
+			<channel id="rssi" typeId="rssi"/>
+		</channels>
+		<properties>
+			<property name="vendor">SONOFF</property>
+			<property name="modelId">MINI-ZB2GS-L</property>
+			<property name="Product url">https://s.smartnydom.pl/r/sonoff-zb2gs-l?ref=openhab</property>
+		</properties>
+		<representation-property>deviceid</representation-property>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="7038">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="66"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Temperature and Humidity Sensor with Display</label>
+		<description>Model: SNZB-02DR2 (Zigbee Bluetooth Temperature and Humidity Sensor with 3.6 LCD Display)</description>
+		<channels>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="trigTime" typeId="trigTime"/>
+			<channel id="temperature" typeId="temperature"/>
+			<channel id="humidity" typeId="humidity"/>
+			<channel id="temperatureMax" typeId="temperatureMax"/>
+			<channel id="temperatureMin" typeId="temperatureMin"/>
+			<channel id="temperatureAvg" typeId="temperatureAvg"/>
+			<channel id="humidityMax" typeId="humidityMax"/>
+			<channel id="humidityMin" typeId="humidityMin"/>
+			<channel id="humidityAvg" typeId="humidityAvg"/>
+		</channels>
+		<properties>
+			<property name="vendor">SONOFF</property>
+			<property name="modelId">SNZB-02DR2</property>
+			<property name="url">https://s.smartnydom.pl/r/sonoff-snzb-02dr2?ref=openhab</property>
+		</properties>
+		<representation-property>deviceid</representation-property>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="7040">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="66"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Dual Channel Switch</label>
+		<description>Model: MINI-ZB2GS (MINI Duo 2-Gang Zigbee Smart Switch)</description>
+		<channels>
+			<channel id="switch0" typeId="power">
+				<label>Switch 1</label>
+				<description>First switch channel</description>
+			</channel>
+			<channel id="switch1" typeId="power">
+				<label>Switch 2</label>
+				<description>Second switch channel</description>
+			</channel>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="sled" typeId="sled"/>
+			<channel id="rssi" typeId="rssi"/>
+		</channels>
+		<properties>
+			<property name="vendor">SONOFF</property>
+			<property name="modelId">MINI-ZB2GS</property>
+			<property name="Product url">https://s.smartnydom.pl/r/sonoff-zb2gs?ref=openhab</property>
+		</properties>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="7000">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="66"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="168"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF Zigbee Wireless Switch</label>
+		<description>Model: SNZB-01P</description>
+		<channels>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="button0" typeId="button-press">
+				<label>Single Press</label>
+				<description>Single button press event</description>
+			</channel>
+			<channel id="button0TrigTime" typeId="trigTime">
+				<label>Last triggered: Single Press</label>
+				<description>Last single press trigger time</description>
+			</channel>
+			<channel id="button1" typeId="button-press">
+				<label>Double Press</label>
+				<description>Double button press event</description>
+			</channel>
+			<channel id="button1TrigTime" typeId="trigTime">
+				<label>Last triggered: Double Press</label>
+				<description>Last double press trigger time</description>
+			</channel>
+			<channel id="button2" typeId="button-press">
+				<label>Long Press</label>
+				<description>Long button press event</description>
+			</channel>
+			<channel id="button2TrigTime" typeId="trigTime">
+				<label>Last triggered: Long Press</label>
+				<description>Last long press trigger time</description>
+			</channel>
+			<channel id="rssi" typeId="rssi"/>
+		</channels>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID</description>
+			</parameter>
+			<parameter name="buttonResetTimeout" type="integer" min="100" max="60000" unit="ms">
+				<label>How long (ms) keep button state pressed?</label>
+				<description>Time in milliseconds before button state resets to CLOSED: default=500</description>
+				<default>500</default>
 			</parameter>
 		</config-description>
 	</thing-type>
