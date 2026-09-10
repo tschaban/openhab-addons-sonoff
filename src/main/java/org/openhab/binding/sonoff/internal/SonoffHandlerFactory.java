@@ -175,6 +175,10 @@ public class SonoffHandlerFactory extends BaseThingHandlerFactory {
             case "168":
             case "243":
                 return new SonoffZigbeeBridgeHandler((Bridge) thing);
+            case "195":
+                return new SonoffNsPanelProHandler((Bridge) thing);
+            case "278":
+                return new SonoffNsPanelProRelayHandler((Bridge) thing);
             case "102":
                 return new SonoffMagneticSwitchHandler(thing);
             case "104":

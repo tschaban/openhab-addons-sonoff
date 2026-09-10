@@ -392,7 +392,7 @@ public class SonoffDeviceState {
                     parameters.setHumidity(p.getAsDouble());
                 }
             }
-        } else if (!uiid.equals(266)) {
+        } else if (!uiid.equals(266) && !uiid.equals(195) && !uiid.equals(278)) {
             // Temperature and humidity need /100 conversion for most devices
             // UUID 266 (SAWF-08P) is excluded and handled separately below
             if (params.get("temperature") != null) {
@@ -466,6 +466,89 @@ public class SonoffDeviceState {
 
             if (params.get("voiceAlarm") != null) {
                 parameters.setVoiceAlarm(params.get("voiceAlarm").getAsString());
+            }
+        }
+
+        // NSPanel Pro (UUID 195) - temperature is a direct float value, versions are strings
+        if (uiid.equals(195)) {
+            if (params.get("temperature") != null) {
+                parameters.setTemperature(params.get("temperature").getAsDouble());
+            }
+            if (params.get("fwVersion") != null) {
+                parameters.setFwVersion(params.get("fwVersion").getAsString());
+            }
+            if (params.get("sysVersion") != null) {
+                parameters.setSysVersion(params.get("sysVersion").getAsString());
+            }
+            if (params.get("zigbeeVersion") != null) {
+                parameters.setZigbeeVersion(params.get("zigbeeVersion").getAsString());
+            }
+            if (params.get("appVersion") != null) {
+                parameters.setAppVersion(params.get("appVersion").getAsString());
+            }
+        }
+
+        // NSPanel Pro with Relay (UUID 278) - temperature, versions, CPU info, storage info, outdoor air quality
+        if (uiid.equals(278)) {
+            if (params.get("temperature") != null) {
+                parameters.setTemperature(params.get("temperature").getAsDouble());
+            }
+            if (params.get("fwVersion") != null) {
+                parameters.setFwVersion(params.get("fwVersion").getAsString());
+            }
+            if (params.get("sysVersion") != null) {
+                parameters.setSysVersion(params.get("sysVersion").getAsString());
+            }
+            if (params.get("zigbeeVersion") != null) {
+                parameters.setZigbeeVersion(params.get("zigbeeVersion").getAsString());
+            }
+            if (params.get("appVersion") != null) {
+                parameters.setAppVersion(params.get("appVersion").getAsString());
+            }
+            if (params.get("cpuInfo") != null) {
+                JsonObject cpuInfo = params.getAsJsonObject("cpuInfo");
+                if (cpuInfo.get("temperature") != null) {
+                    parameters.setCpuTemperature(cpuInfo.get("temperature").getAsDouble());
+                }
+            }
+            if (params.get("storageInfo") != null) {
+                JsonObject storageInfo = params.getAsJsonObject("storageInfo");
+                if (storageInfo.get("total") != null) {
+                    parameters.setStorageTotal(storageInfo.get("total").getAsString());
+                }
+                if (storageInfo.get("free") != null) {
+                    parameters.setStorageFree(storageInfo.get("free").getAsString());
+                }
+                if (storageInfo.get("used") != null) {
+                    parameters.setStorageUsed(storageInfo.get("used").getAsString());
+                }
+            }
+            if (params.get("airQuality") != null) {
+                JsonObject aq = params.getAsJsonObject("airQuality");
+                if (aq.get("co") != null) {
+                    parameters.setAirQualityCo(aq.get("co").getAsDouble());
+                }
+                if (aq.get("no2") != null) {
+                    parameters.setAirQualityNo2(aq.get("no2").getAsDouble());
+                }
+                if (aq.get("o3") != null) {
+                    parameters.setAirQualityO3(aq.get("o3").getAsDouble());
+                }
+                if (aq.get("so2") != null) {
+                    parameters.setAirQualitySo2(aq.get("so2").getAsDouble());
+                }
+                if (aq.get("pm2_5") != null) {
+                    parameters.setPm2_5((int) Math.round(aq.get("pm2_5").getAsDouble()));
+                }
+                if (aq.get("pm10") != null) {
+                    parameters.setPm10((int) Math.round(aq.get("pm10").getAsDouble()));
+                }
+                if (aq.get("us-epa-index") != null) {
+                    parameters.setUsEpaIndex(aq.get("us-epa-index").getAsInt());
+                }
+                if (aq.get("gb-defra-index") != null) {
+                    parameters.setGbDefraIndex(aq.get("gb-defra-index").getAsInt());
+                }
             }
         }
 

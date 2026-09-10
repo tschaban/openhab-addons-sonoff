@@ -4,6 +4,117 @@
 	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
 	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
+	<bridge-type id="195">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF NSPanel Pro</label>
+		<description>Models: NSPanel86PB, NSPanel120B - Smart Home Control Panel with built-in ZigBee coordinator</description>
+		<channels>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="localOnline" typeId="localOnline"/>
+			<channel id="ipaddress" typeId="ipaddress"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="sled" typeId="sled"/>
+			<channel id="temperature" typeId="temperature"/>
+			<channel id="fwVersion" typeId="fwVersion"/>
+			<channel id="sysVersion" typeId="sysVersion"/>
+			<channel id="zigbeeVersion" typeId="zigbeeVersion"/>
+			<channel id="appVersion" typeId="appVersion"/>
+		</channels>
+		<properties>
+			<property name="vendor">SONOFF</property>
+			<property name="modelId">NSPanel86PB</property>
+			<property name="url">https://sonoff.tech/pl-pl/products/sonoff-nspanel-pro-smart-home-control-panel-86-type</property>
+		</properties>
+		<representation-property>deviceid</representation-property>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID (found in eWeLink app)</description>
+			</parameter>
+			<parameter name="local" type="boolean" required="false">
+				<label>Enable Local Communication</label>
+				<default>true</default>
+				<options>
+					<option value="true">Enabled</option>
+					<option value="false">Disabled</option>
+				</options>
+				<description>Enable local LAN communication</description>
+			</parameter>
+			<parameter name="localPoll" type="integer" min="10" max="86400" step="1" required="false">
+				<label>Local Polling Interval</label>
+				<description>Polling interval in seconds (default: 60)</description>
+				<default>60</default>
+			</parameter>
+		</config-description>
+	</bridge-type>
+
+	<bridge-type id="278">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="account"/>
+		</supported-bridge-type-refs>
+		<label>SONOFF NSPanel Pro Gen2 with Relay</label>
+		<description>Model: NSPanel86PB-Relay (SN-RK3326S-NSP86PR-01) - Smart Home Control Panel with dual relay and built-in
+			ZigBee coordinator, 86-type</description>
+		<channels>
+			<channel id="switch0" typeId="power">
+				<label>Relay 1</label>
+				<description>First relay switch</description>
+			</channel>
+			<channel id="switch1" typeId="power">
+				<label>Relay 2</label>
+				<description>Second relay switch</description>
+			</channel>
+			<channel id="temperature" typeId="temperature">
+				<label>Outdoor Temperature</label>
+				<description>Outdoor weather temperature from city weather service</description>
+			</channel>
+			<channel id="cpuTemperature" typeId="cpuTemperature"/>
+			<channel id="storageTotal" typeId="storageTotal"/>
+			<channel id="storageFree" typeId="storageFree"/>
+			<channel id="storageUsed" typeId="storageUsed"/>
+			<channel id="pm2_5" typeId="pm2_5"/>
+			<channel id="pm10" typeId="pm10"/>
+			<channel id="airQualityCo" typeId="airQualityCo"/>
+			<channel id="airQualityNo2" typeId="airQualityNo2"/>
+			<channel id="airQualityO3" typeId="airQualityO3"/>
+			<channel id="airQualitySo2" typeId="airQualitySo2"/>
+			<channel id="usEpaIndex" typeId="usEpaIndex"/>
+			<channel id="gbDefraIndex" typeId="gbDefraIndex"/>
+			<channel id="cloudOnline" typeId="cloudOnline"/>
+			<channel id="localOnline" typeId="localOnline"/>
+			<channel id="ipaddress" typeId="ipaddress"/>
+			<channel id="rssi" typeId="rssi"/>
+		</channels>
+		<properties>
+			<property name="vendor">SONOFF</property>
+			<property name="modelId">NSPanel86PB-Relay</property>
+			<property name="url">https://sonoff.tech/products/sonoff-nspanel-pro-gen2-dual-channel-relay-smart-home-control-panel-86-type</property>
+		</properties>
+		<representation-property>deviceid</representation-property>
+		<config-description>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID (found in eWeLink app)</description>
+			</parameter>
+			<parameter name="local" type="boolean" required="false">
+				<label>Enable Local Communication</label>
+				<default>true</default>
+				<options>
+					<option value="true">Enabled</option>
+					<option value="false">Disabled</option>
+				</options>
+				<description>Enable local LAN communication</description>
+			</parameter>
+			<parameter name="localPoll" type="integer" min="10" max="86400" step="1" required="false">
+				<label>Local Polling Interval</label>
+				<description>Polling interval in seconds (default: 60)</description>
+				<default>60</default>
+			</parameter>
+		</config-description>
+	</bridge-type>
+
 	<bridge-type id="66">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="account"/>
@@ -71,8 +182,10 @@
 	<thing-type id="2026">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
-			<bridge-type-ref id="243"/>
 			<bridge-type-ref id="168"/>
+			<bridge-type-ref id="195"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="278"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Motion Sensor</label>
 		<description>Models: First version</description>
@@ -94,8 +207,10 @@
 	<thing-type id="1770">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
-			<bridge-type-ref id="243"/>
 			<bridge-type-ref id="168"/>
+			<bridge-type-ref id="195"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="278"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Temperature and Humidity Sensor</label>
 		<description>Model: SNZB-02 (1st version)</description>
@@ -118,8 +233,10 @@
 	<thing-type id="7002">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
-			<bridge-type-ref id="243"/>
 			<bridge-type-ref id="168"/>
+			<bridge-type-ref id="195"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="278"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Motion Sensor</label>
 		<description>Model: SNZB-03P</description>
@@ -143,8 +260,10 @@
 	<thing-type id="7003">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
-			<bridge-type-ref id="243"/>
 			<bridge-type-ref id="168"/>
+			<bridge-type-ref id="195"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="278"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Door and Window Sensor</label>
 		<description>Models: SNZB-04P, SNZB-04PR2</description>
@@ -169,8 +288,10 @@
 	<thing-type id="7010">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
-			<bridge-type-ref id="243"/>
 			<bridge-type-ref id="168"/>
+			<bridge-type-ref id="195"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="278"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Single Relay Switch</label>
 		<description>Model: ZBMINIR2</description>
@@ -192,8 +313,10 @@
 	<thing-type id="7014">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
-			<bridge-type-ref id="243"/>
 			<bridge-type-ref id="168"/>
+			<bridge-type-ref id="195"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="278"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Temperature and Humidity Sensor</label>
 		<description>Models: SNZB-02P, SNZB-02D</description>
@@ -216,8 +339,10 @@
 	<thing-type id="7029">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
-			<bridge-type-ref id="243"/>
 			<bridge-type-ref id="168"/>
+			<bridge-type-ref id="195"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="278"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Dual Channel Switch (No Neutral Wire)</label>
 		<description>Model: MINI-ZB2GS-L (MINI Duo L 2-Gang Zigbee Smart Switch with No Neutral Wire)</description>
@@ -251,8 +376,10 @@
 	<thing-type id="7038">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
-			<bridge-type-ref id="243"/>
 			<bridge-type-ref id="168"/>
+			<bridge-type-ref id="195"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="278"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Temperature and Humidity Sensor with Display</label>
 		<description>Model: SNZB-02DR2 (Zigbee Bluetooth Temperature and Humidity Sensor with 3.6 LCD Display)</description>
@@ -285,8 +412,10 @@
 	<thing-type id="7040">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
-			<bridge-type-ref id="243"/>
 			<bridge-type-ref id="168"/>
+			<bridge-type-ref id="195"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="278"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Dual Channel Switch</label>
 		<description>Model: MINI-ZB2GS (MINI Duo 2-Gang Zigbee Smart Switch)</description>
@@ -319,8 +448,10 @@
 	<thing-type id="7000">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="66"/>
-			<bridge-type-ref id="243"/>
 			<bridge-type-ref id="168"/>
+			<bridge-type-ref id="195"/>
+			<bridge-type-ref id="243"/>
+			<bridge-type-ref id="278"/>
 		</supported-bridge-type-refs>
 		<label>SONOFF Zigbee Wireless Switch</label>
 		<description>Model: SNZB-01P</description>

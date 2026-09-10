@@ -116,6 +116,7 @@ class SonoffHandlerFactoryTest {
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_268));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_275));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_276));
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_278));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_1770));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_2026));
         assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_7000));
@@ -314,6 +315,42 @@ class SonoffHandlerFactoryTest {
         // Verify
         assertNotNull(handler);
         assertEquals("SonoffZigbeeBridgeHandler", handler.getClass().getSimpleName());
+    }
+
+    @Test
+    @DisplayName("Should create SonoffNsPanelProHandler for NSPanel Pro device type (UUID 195)")
+    void testCreateHandler_NsPanelPro() {
+        // Setup
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", "195");
+        when(mockBridge.getThingTypeUID()).thenReturn(thingType);
+
+        // Execute
+        ThingHandler handler = factory.createHandler(mockBridge);
+
+        // Verify
+        assertNotNull(handler, "Handler should be created for THING_TYPE_195");
+        assertEquals("SonoffNsPanelProHandler", handler.getClass().getSimpleName(),
+                "Handler should be instance of SonoffNsPanelProHandler");
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_195),
+                "Factory should support THING_TYPE_195");
+    }
+
+    @Test
+    @DisplayName("Should create SonoffNsPanelProRelayHandler for NSPanel Pro with Relay device type (UUID 278)")
+    void testCreateHandler_NsPanelProRelay() {
+        // Setup
+        ThingTypeUID thingType = new ThingTypeUID("sonoff", "278");
+        when(mockBridge.getThingTypeUID()).thenReturn(thingType);
+
+        // Execute
+        ThingHandler handler = factory.createHandler(mockBridge);
+
+        // Verify
+        assertNotNull(handler, "Handler should be created for THING_TYPE_278");
+        assertEquals("SonoffNsPanelProRelayHandler", handler.getClass().getSimpleName(),
+                "Handler should be instance of SonoffNsPanelProRelayHandler");
+        assertTrue(factory.supportsThingType(SonoffBindingConstants.THING_TYPE_278),
+                "Factory should support THING_TYPE_278");
     }
 
     @Test

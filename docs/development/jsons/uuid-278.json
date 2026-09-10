@@ -1,0 +1,362 @@
+{
+    "name": "NSPanel86PB-Relay",
+    "deviceid": "",
+    "apikey": "",
+    "extra": {
+        "model": "SN-RK3326S-NSP86PR-01",
+        "ui": "NSPanel86P-Relay",
+        "uiid": 278,
+        "description": "NSPanel Pro 带继电器版本，羌色",
+        "modelInfo": "695cd4a8772d38a7f49fec6f",
+        "brandId": "5c4c1aee3a7d24c7100be054",
+        "itCredential": "",
+        "mac": "d0:27:04:de:34:24",
+        "apmac": "d0:27:04:de:34:25",
+        "manufacturer": "深圳松诺技术有限公司"
+    },
+    "brandName": "SONOFF",
+    "brandLogo": "https://eu-ota.coolkit.cc/logo/q62PevoglDNmwUJ9oPE7kRrpt1nL1CoA.png",
+    "showBrand": true,
+    "productModel": "NSPanel86PB-Relay",
+    "tags": {
+        "m_2d42_ewel": "on",
+        "disable_timers": []
+    },
+    "devConfig": {},
+    "deviceConfigToApp": {
+        "forum": "https://forum.ewelink.cc/t/rolling-with-new-releases-nspanel-pro-firmware-updates/207466"
+    },
+    "settings": {
+        "opsNotify": 1,
+        "opsHistory": 1,
+        "alarmNotify": 1
+    },
+    "devGroups": [],
+    "family": {
+        "familyid": "",
+        "index": 28,
+        "members": [
+            ""
+        ],
+        "guests": [],
+        "roomid": ""
+    },
+    "shareTo": [],
+    "devicekey": "",
+    "online": true,
+    "params": {
+        "bindInfos": {
+            "alexa": [
+                ""
+            ],
+            "gaction": [
+                ""
+            ]
+        },
+        "rooted": false,
+        "version": 7,
+        "screenList1": [],
+        "screenList2": [],
+        "screenList3": [],
+        "appVersion": "4.4.3",
+        "fwVersion": "4.4.3",
+        "sysVersion": "4.4.3",
+        "zigbeeVersion": "1.0.0",
+        "isSupportSyncToHA": true,
+        "supportFeature": {
+            "isSupportRemoveMQTTInfo": true,
+            "isSupportEnableAccessibilityButton": true,
+            "isSupportHAToMatter": true,
+            "isSupportSyncToHA": true,
+            "isSupportSwitchZigbeeRoleSeamless": true,
+            "isSupportVideoSegment": true
+        },
+        "zigbeeNetworkRole": "Repeater",
+        "PREVTZ": 1,
+        "TZ": "Europe/Warsaw",
+        "supportMatterDeviceType": [
+            "14",
+            "266",
+            "259",
+            "269",
+            "268",
+            "257",
+            "256",
+            "770",
+            "21",
+            "775",
+            "263",
+            "262",
+            "15"
+        ],
+        "otaState": "idle",
+        "gatewayBindRelations": [],
+        "supportUIIDToMatter": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "11",
+            "14",
+            "15",
+            "32",
+            "34",
+            "36",
+            "44",
+            "59",
+            "77",
+            "103",
+            "104",
+            "126",
+            "133",
+            "135",
+            "136",
+            "137",
+            "138",
+            "139",
+            "140",
+            "141",
+            "151",
+            "154",
+            "160",
+            "161",
+            "162",
+            "165",
+            "173",
+            "181",
+            "182",
+            "190",
+            "191",
+            "209",
+            "210",
+            "211",
+            "212",
+            "278"
+        ],
+        "isSupportMatterBridge": true,
+        "showablePannels": [
+            "main",
+            "thingList",
+            "sceneList"
+        ],
+        "fabricList": [],
+        "relatedDevices": [],
+        "supportMatterSubDevices": [],
+        "securityType": 0,
+        "screenSortList": {
+            "screenList1": []
+        },
+        "multiChannelDevices": {},
+        "turboMode": true,
+        "configure": [
+            {
+                "outlet": 0,
+                "startup": "off"
+            },
+            {
+                "outlet": 1,
+                "startup": "off"
+            }
+        ],
+        "lock": 0,
+        "pulses": [
+            {
+                "outlet": 0,
+                "pulse": "off",
+                "width": 500
+            },
+            {
+                "outlet": 1,
+                "pulse": "off",
+                "width": 500
+            }
+        ],
+        "switches": [
+            {
+                "outlet": 0,
+                "switch": "off"
+            },
+            {
+                "outlet": 1,
+                "switch": "off"
+            }
+        ],
+        "cameraList": [],
+        "storageInfo": {
+            "total": "21.9 GB",
+            "free": "21.02 GB",
+            "used": "904.86 MB",
+            "/": "1.54 GB",
+            "/dev": "824 KB",
+            "/mnt": "0 B",
+            "/mnt/installer": "0 B",
+            "/mnt/androidwritable": "0 B",
+            "/metadata": "628 KB",
+            "/vendor": "373.81 MB",
+            "/odm": "56.35 MB",
+            "/product": "55.53 MB",
+            "/system_ext": "109.18 MB",
+            "/apex": "0 B",
+            "/apex/com.android.tethering": "1.54 GB",
+            "/apex/com.android.tzdata": "1.54 GB",
+            "/apex/com.android.runtime": "1.54 GB",
+            "/apex/com.android.mediaprovider": "1.54 GB",
+            "/apex/com.android.permission": "1.54 GB",
+            "/apex/com.android.media": "1.54 GB",
+            "/apex/com.android.neuralnetworks": "1.54 GB",
+            "/apex/com.android.os.statsd": "1.54 GB",
+            "/apex/com.android.sdkext": "1.54 GB",
+            "/apex/com.android.wifi": "1.54 GB",
+            "/apex/com.android.art": "1.54 GB",
+            "/apex/com.android.resolv": "1.54 GB",
+            "/apex/com.android.i18n": "1.54 GB",
+            "/apex/com.android.ipsec": "1.54 GB",
+            "/apex/com.android.media.swcodec": "1.54 GB",
+            "/apex/com.android.vndk.v30": "1.54 GB",
+            "/apex/com.android.conscrypt": "1.54 GB",
+            "/apex/com.android.adbd": "1.54 GB",
+            "/apex/com.android.extservices": "1.54 GB",
+            "/linkerconfig": "264 KB",
+            "/cache": "11.73 MB",
+            "/data": "1.02 GB",
+            "/data/user/0": "1.02 GB",
+            "/data_mirror": "0 B",
+            "/storage": "0 B",
+            "/storage/emulated": "1.02 GB",
+            "/storage/emulated/0/Android/data": "1.02 GB",
+            "/storage/emulated/0/Android/obb": "1.02 GB",
+            "/data/user/0/com.eWeLinkControlPanel/databases/nspanelpro_database-wal": "402.38 KB",
+            "/data/user/0/com.eWeLinkControlPanel/databases/nspanelpro_database": "180 KB",
+            "/data/user/0/com.eWeLinkControlPanel/databases/RKStorage": "12 KB",
+            "/data/user/0/com.eWeLinkControlPanel/databases/nspanelpro_database-shm": "32 KB",
+            "/data/user/0/com.eWeLinkControlPanel/databases/RKStorage-journal": "0 B",
+            "/data/user/0/com.eWeLinkControlPanel/databases": "626.38 KB",
+            "/data/user/0/com.eWeLinkControlPanel/files/androidx.appcompat.app.AppCompatDelegate.application_locales_record_file": "95 B",
+            "/data/user/0/com.eWeLinkControlPanel/files/logs/2026-05-10": "11.8 MB",
+            "/data/user/0/com.eWeLinkControlPanel/files/logs/2026-05-11": "406.58 KB",
+            "/data/user/0/com.eWeLinkControlPanel/files/logs/2026-05-11.bak.1": "20.01 MB",
+            "/data/user/0/com.eWeLinkControlPanel/files/logs/matter-bridge-app.log": "70.49 KB",
+            "/data/user/0/com.eWeLinkControlPanel/files/matter-bridge-app.zlog.conf": "158 B",
+            "/data/user/0/com.eWeLinkControlPanel/files/profileinstaller_profileWrittenFor_lastUpdateTime.dat": "8 B",
+            "/data/user/0/com.eWeLinkControlPanel/files/zigbee/zigbee-model-mapping.json": "2.2 KB",
+            "/data/user/0/com.eWeLinkControlPanel/files": "32.28 MB",
+            "/data/user/0/com.eWeLinkControlPanel/shared_prefs/chip.platform.matterbridge.KeyValueStore.xml": "689 B",
+            "/data/user/0/com.eWeLinkControlPanel/shared_prefs/chip.platform.KeyValueStore.xml": "1.59 KB",
+            "/data/user/0/com.eWeLinkControlPanel/shared_prefs/chip.platform.ConfigurationManager.xml": "153 B",
+            "/data/user/0/com.eWeLinkControlPanel/shared_prefs/chip_tool_config.device.ini": "886 B",
+            "/data/user/0/com.eWeLinkControlPanel/shared_prefs/chip.platform.matterbridge.ConfigurationManager.xml": "153 B",
+            "/data/user/0/com.eWeLinkControlPanel/shared_prefs/plain_config.xml": "9.04 KB",
+            "/data/user/0/com.eWeLinkControlPanel/shared_prefs": "12.46 KB",
+            "/storage/emulated/0/speech_cache": "2.88 MB",
+            "/storage/emulated/0/Music/.thumbnails/.database_uuid": "36 B",
+            "/storage/emulated/0/Music/.thumbnails/.nomedia": "0 B",
+            "/storage/emulated/0/ProximityOffset": "0 B",
+            "/storage/emulated/0/Pictures/.thumbnails/.database_uuid": "36 B",
+            "/storage/emulated/0/Pictures/.thumbnails/.nomedia": "0 B",
+            "/storage/emulated/0/record/encode.wav": "0 B",
+            "/storage/emulated/0/record/encode.pcm": "376 KB",
+            "/storage/emulated/0/test.pcm": "752 KB",
+            "/storage/emulated/0/Movies/.thumbnails/.database_uuid": "36 B",
+            "/storage/emulated/0/Movies/.thumbnails/.nomedia": "0 B",
+            "/storage/emulated/0": "3.98 MB"
+        },
+        "cpuInfo": {
+            "temperature": 41.1
+        },
+        "theme": "classic1",
+        "enableAccessibilityButton": true,
+        "timers": [],
+        "zyx_clear_timers": false,
+        "layout5": [
+            {
+                "type": "device",
+                "payload": {
+                    "id": "",
+                    "type": "device"
+                }
+            },
+            {
+                "type": "weather-time"
+            },
+            {
+                "type": "device",
+                "payload": {
+                    "id": "",
+                    "type": "device"
+                }
+            },
+            {
+                "type": "device",
+                "payload": {
+                    "id": "",
+                    "type": "device"
+                }
+            }
+        ],
+        "layout4": [
+            {
+                "type": "weather-time"
+            },
+            {
+                "type": "device",
+                "payload": {
+                    "id": "",
+                    "type": "device",
+                    "outlet": 0
+                }
+            },
+            {
+                "type": ""
+            },
+            {
+                "type": ""
+            }
+        ],
+        "matterPair": {
+            "state": "off",
+            "duration": 0
+        },
+        "syncSubDeviceToHA": [],
+        "isBlur": false,
+        "airQuality": {
+            "co": 136.85,
+            "no2": 3.55,
+            "o3": 96,
+            "so2": 2.45,
+            "pm2_5": 8.35,
+            "pm10": 10.35,
+            "us-epa-index": 1,
+            "gb-defra-index": 1
+        },
+        "cityId": "WA@52.2,21.017",
+        "dst": 1,
+        "dstChange": "2026-10-25T01:00:00.000Z",
+        "geo": "52.21667,21.03333",
+        "tempRange": "8.4,22.3",
+        "temperature": 14.8,
+        "timeZone": 1,
+        "timeZoneId": "Europe/Warsaw",
+        "weather": 18,
+        "switchZigbeeNetworkRole": "Repeater"
+    },
+    "denyFeatures": [
+        "webShortcut",
+        "webShortcutZoom",
+        "individualRelaySeparation",
+        "autoCompensationForNoOne",
+        "supportsManualExposeRelayToMatter"
+    ],
+    "isSupportGroup": false,
+    "isSupportedOnMP": false,
+    "isSupportChannelSplit": false,
+    "deviceFeature": {},
+    "matterInfoData": {
+        "matterFabricId": "",
+        "matterNodeId": ""
+    }
+}

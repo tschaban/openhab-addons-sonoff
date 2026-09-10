@@ -22,6 +22,7 @@ This is an enhanced branch of the Sonoff binding for OpenHAB, featuring extended
 The Sonoff binding allows control and monitoring of eWeLink-based devices using both cloud and local LAN connections. This enhanced version extends the original functionality with additional device support and improved reliability.
 
 ### 🌐 Connection Modes
+
 - **Cloud Mode** - Connect through eWeLink cloud services
 - **Local Mode** - Direct LAN communication (where supported)
 - **Mixed Mode** - Automatic fallback between local and cloud
@@ -29,11 +30,14 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 ### 🔌 Complete Device Support Matrix
 
 #### Legend
+
 **Connection Types:**
+
 - 🌐 **Cloud**: Cloud-only connection via eWeLink servers
 - 🔄 **Mixed**: Both local LAN and cloud connections supported
 
 **Testing Status:**
+
 - ⚠️ **Testing needed**:Limited testing (I don't have that device to test it) feedback welcome
 
 #### Device supported
@@ -45,7 +49,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **3** | Unknown Models | 🔄 Mixed | Socket (3 channels) | |
 | **4** | [Sonoff 4CHPro R3](https://s.smartnydom.pl/r/sonoff-4chr3?ref=openhab) | 🔄 Mixed | Socket (4 channels) | |
 | **5** | [Sonoff POW](https://s.smartnydom.pl/r/sonoff-pow-r2-yt?ref=openhab) | 🔄 Mixed | Power monitoring switch | |
-| **6** | Sonoff [T11C](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab), [TX1C](https://s.smartnydom.pl/r/sonoff-tx-sd?ref=openhab), [G1](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab | 🔄 Mixed | Single touch switch | |
+| **6** | Sonoff [T11C](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab), [TX1C](https://s.smartnydom.pl/r/sonoff-tx-sd?ref=openhab), [G1](<https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab> | 🔄 Mixed | Single touch switch | |
 | **7** | Sonoff [T12C](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab), [TX2C](https://s.smartnydom.pl/r/sonoff-tx-sd?ref=openhab) | 🔄 Mixed | Dual touch switch | |
 | **8** | Sonoff [T13C](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab), [TX3C](https://s.smartnydom.pl/r/sonoff-tx-sd?ref=openhab) | 🔄 Mixed | Triple touch switch | |
 | **9** | Unknown Models | 🔄 Mixed | Switch (4 channels) | |
@@ -70,7 +74,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **104** | B05 Bulb | 🔄 Mixed | Smart bulb | |
 | **107** | GSM Socket | 🌐 Cloud | Single channel GSM socket | |
 | **126** | [Sonoff DUAL R3](https://s.smartnydom.pl/r/sonoff-dual-r3?ref=openhab) | 🔄 Mixed | Dual relay + power monitoring | |
-| **138** | Sonoff [MINI-D](https://s.smartnydom.pl/r/sonoff-mini-d-itead?ref=openhab), [MINI-R4](	https://s.smartnydom.pl/r/sonoff-mini-extreme-r4?ref=openhab), [MINI-R4M](https://s.smartnydom.pl/r/sonoff-minir4-matter?ref=openhab) | 🔄 Mixed | Single relay | |
+| **138** | Sonoff [MINI-D](https://s.smartnydom.pl/r/sonoff-mini-d-itead?ref=openhab), [MINI-R4]( https://s.smartnydom.pl/r/sonoff-mini-extreme-r4?ref=openhab), [MINI-R4M](https://s.smartnydom.pl/r/sonoff-minir4-matter?ref=openhab) | 🔄 Mixed | Single relay | |
 | **140** | CK-BL602-4SW-HS (Bouffalo Lab BL602) | 🔄 Mixed | 3-way wall switch | |
 | **160** | [Sonoff M5-1C](https://s.smartnydom.pl/r/sonoff-switchman-m5?ref=openhab) | 🔄 Mixed | Single channel switch | ⚠️ Testing needed |
 | **161** | [Sonoff M5-2C](https://s.smartnydom.pl/r/sonoff-switchman-m5?ref=openhab) | 🔄 Mixed | Dual channel switch | ⚠️ Testing needed |
@@ -79,6 +83,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **173** | [Sonoff L3-5M-P](https://s.smartnydom.pl/r/sonoff-l3rgbic?ref=openhab) | 🔄 Mixed | RGBIC Light Strip with Music Sync | ⚠️ Testing needed |
 | **181** | [Sonoff THR320D, THR316D](https://s.smartnydom.pl/r/sonoff-th-elite-smart-temperature-and-humidity-monitoring-switch-yt?ref=openhab) | 🔄 Mixed | Single relay with Temperature/humidity sensor | |
 | **190** | [Sonoff S60TPF, S60TPG](https://s.smartnydom.pl/r/sonoff-s60tpf?ref=openhab) | 🔄 Mixed | Smart plug | |
+| **195** | [Sonoff NSPanel Pro](https://sonoff.tech/pl-pl/products/sonoff-nspanel-pro-smart-home-control-panel-86-type) | 🔄 Mixed | Smart Home Control Panel with built-in ZigBee coordinator (86-type and 120-type). Temperature sensor, firmware/version channels. | ⚠️ Testing needed |
 | **209** | [Sonoff T5-1C-86](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab) | 🔄 Mixed | Single touch switch | ⚠️ Testing needed |
 | **210** | [Sonoff T5-2C-86](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab) | 🔄 Mixed | Dual touch switch | ⚠️ Testing needed |
 | **211** | [Sonoff T5-3C-86](https://s.smartnydom.pl/r/sonoff-wall-switches?ref=openhab) | 🔄 Mixed | Triple touch switch | ⚠️ Testing needed |
@@ -95,6 +100,7 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **268** | [Sonoff BASIC-1GS](https://s.smartnydom.pl/r/sonoff-basic-1gs-itead-en?ref=openhab) | 🔄 Mixed | BASIC 5Gen single switch with Matter support | |
 | **275** | [Sonoff MINI-2GS](https://s.smartnydom.pl/r/sonoff-mini-2gs?ref=openhab) | 🔄 Mixed | Dual channel switch with Matter support | |
 | **276** | [Sonoff ORB WS01TPF-E](https://s.smartnydom.pl/r/sonoff-orb-ws01-itead?ref=openhab) | 🔄 Mixed | WiFi socket with Matter support and enhanced energy monitoring (power, voltage, current, daily/weekly/monthly/yearly kWh, cost tracking). **Note:** Electrical data monitoring requires local and cloud connection (doesn't work in LAN or Cloud only mode yet) | |
+| **278** | [Sonoff NSPanel86PB-Relay](https://s.smartnydom.pl/r/sonoff-nspanel-pro86-gen2-itead) | 🔄 Mixed | NSPanel Pro Gen2 with dual relay and built-in ZigBee coordinator (86-type). Dual relay switches, outdoor weather temperature, CPU temperature, storage info, outdoor air quality (PM2.5/PM10/CO/NO2/O3/SO2/AQI). Also acts as ZigBee bridge. | |
 | **1770** | [Sonoff ZigBee SNZB-02](https://s.smartnydom.pl/r/sonoff-zigbee-sensors?ref=openhab) | 🌐 Cloud | Temperature monitoring, 1st version| |
 | **2026** | [Sonoff ZigBee Motion Sensor](https://s.smartnydom.pl/r/sonoff-zigbee-sensors?ref=openhab) | 🌐 Cloud | Motion detection, 1st version | |
 | **7000** | Sonoff [SNZB-01P](https://s.smartnydom.pl/r/sonoff-snzb-01p?ref=openhab) | 🌐 Cloud | Wireless ZigBee switch (single/double/long press) | |
@@ -118,21 +124,21 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 | **RF4** | Quad Button Remote | 🔄 Mixed | 4 button control | |
 | **RF6** | RF Sensor | 🔄 Mixed | Motion/contact detection | |
 
-
 ## 🛠️ Setup
 
 ### Initial Configuration
+
 1. **Add Account Thing**
    - Email: Your eWeLink email address
    - Password: Your eWeLink password
    - Access Mode: Choose your preferred mode (`local`, `cloud`, or `mixed`)
 
-2. **Run Discovery**
+1. **Run Discovery**
    - The account should come online automatically
    - Run discovery to create device cache
    - Cache is required even when using text files
 
-3. **Add Devices**
+1. **Add Devices**
    - Use automatic discovery (recommended)
    - Or manually add via text files after cache creation
 
@@ -147,11 +153,13 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 ## 🌍 Local vs Cloud Operation
 
 ### Local Mode Benefits
+
 - **Faster response** - Direct LAN communication
 - **Privacy** - No external internet dependency
 - **Firewall friendly** - Block external access while maintaining functionality
 
 ### Device Compatibility
+
 - **Local Supported:** Most switches, POW devices, RF Bridge
 - **Cloud Only:** Zigbee Bridge, GSM sockets, some sensors
 - **Mixed Mode:** Automatically uses local when available, falls back to cloud
@@ -159,10 +167,12 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 ### POW/POWR2 Special Configuration
 
 **Local Mode Energy Data:**
+
 - Enable Local Polling: On/Off
 - Polling Interval: Seconds between polls (not required in LAN Development mode)
 
 **Cloud Mode Consumption Data:**
+
 - Enable Consumption Polling: On/Off
 - Polling Interval: Recommended 24 hours (86400 seconds) for consumption data
 
@@ -171,14 +181,18 @@ The Sonoff binding allows control and monitoring of eWeLink-based devices using 
 ## 🐛 Bug Reports & Support
 
 ### For Smart'nyDom Enhanced Features
+
 - **Issues:** [GitHub Issues](https://github.com/tschaban/openhab-addons-sonoff/issues)
 - **Enhancements:** [Milestones](https://github.com/tschaban/openhab-addons-sonoff/milestones?state=closed)
 
 ### For Original Binding Issues
+
 - **Original Repository:** [delid4ve/openhab-sonoff](https://github.com/delid4ve/openhab-sonoff/issues)
 
 ### When Reporting Issues
+
 Please include:
+
 - **Version** you're using
 - **Debug log** information
 - **Device file** from `userdata/sonoff/deviceid.txt`
@@ -187,17 +201,22 @@ Please include:
 ## 🙏 Acknowledgments
 
 ### Original Development
+
 This binding is based on the excellent work by **[delid4ve](https://github.com/delid4ve/openhab-3.x-sonoff)** and the OpenHAB community. The original binding provided the foundation for all eWeLink device integration.
 
 ### Community Contributors
+
 Special thanks to the community members who made this possible:
+
 - **[skydiver](https://github.com/skydiver)** - Core contributions
 - **[bwp91](https://github.com/bwp91)** - Protocol insights
 - **[AlexxIT](https://github.com/AlexxIT)** - Device support
 - **[RealZimboGuy](https://github.com/RealZimboGuy)** - Testing and feedback
 
 ### Smart'nyDom Enhancements
+
 Enhanced and maintained by **[Smart'nyDom](https://github.com/tschaban)** with focus on:
+
 - Extended device support for newer SONOFF models
 - Improved testing framework and code quality
 - Enhanced development workflow and automation
