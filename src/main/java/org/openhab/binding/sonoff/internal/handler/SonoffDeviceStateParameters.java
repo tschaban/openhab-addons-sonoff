@@ -166,6 +166,26 @@ public class SonoffDeviceStateParameters {
     private StringType motorDir = new StringType("forward"); // forward, reverse
     private DecimalType swMode = new DecimalType(0); // switch mode
 
+    // Version info (UUID 195 / UUID 278 - NSPanel Pro)
+    private StringType fwVersion = new StringType("N/A");
+    private StringType sysVersion = new StringType("N/A");
+    private StringType zigbeeVersion = new StringType("N/A");
+    private StringType appVersion = new StringType("N/A");
+
+    // NSPanel Pro with Relay (UUID 278) - CPU and storage info
+    private QuantityType<Temperature> cpuTemperature = new QuantityType<Temperature>(0.0, SIUnits.CELSIUS);
+    private StringType storageTotal = new StringType("N/A");
+    private StringType storageFree = new StringType("N/A");
+    private StringType storageUsed = new StringType("N/A");
+
+    // NSPanel Pro with Relay (UUID 278) - outdoor air quality from city weather service
+    private DecimalType airQualityCo = new DecimalType(0.0);
+    private DecimalType airQualityNo2 = new DecimalType(0.0);
+    private DecimalType airQualityO3 = new DecimalType(0.0);
+    private DecimalType airQualitySo2 = new DecimalType(0.0);
+    private DecimalType usEpaIndex = new DecimalType(0);
+    private DecimalType gbDefraIndex = new DecimalType(0);
+
     private double round(double value, int decimalPlaces) {
         double multiplier = Math.pow(10, decimalPlaces);
         return Math.round(value * multiplier) / multiplier;
@@ -967,5 +987,118 @@ public class SonoffDeviceStateParameters {
 
     public void setSwMode(Integer swMode) {
         this.swMode = new DecimalType(swMode);
+    }
+
+    // Version info (UUID 195 - NSPanel Pro) specific methods
+    public StringType getFwVersion() {
+        return this.fwVersion;
+    }
+
+    public void setFwVersion(String fwVersion) {
+        this.fwVersion = new StringType(fwVersion);
+    }
+
+    public StringType getSysVersion() {
+        return this.sysVersion;
+    }
+
+    public void setSysVersion(String sysVersion) {
+        this.sysVersion = new StringType(sysVersion);
+    }
+
+    public StringType getZigbeeVersion() {
+        return this.zigbeeVersion;
+    }
+
+    public void setZigbeeVersion(String zigbeeVersion) {
+        this.zigbeeVersion = new StringType(zigbeeVersion);
+    }
+
+    public StringType getAppVersion() {
+        return this.appVersion;
+    }
+
+    public void setAppVersion(String appVersion) {
+        this.appVersion = new StringType(appVersion);
+    }
+
+    public QuantityType<Temperature> getCpuTemperature() {
+        return this.cpuTemperature;
+    }
+
+    public void setCpuTemperature(double cpuTemperature) {
+        this.cpuTemperature = new QuantityType<Temperature>(cpuTemperature, SIUnits.CELSIUS);
+    }
+
+    public StringType getStorageTotal() {
+        return this.storageTotal;
+    }
+
+    public void setStorageTotal(String storageTotal) {
+        this.storageTotal = new StringType(storageTotal);
+    }
+
+    public StringType getStorageFree() {
+        return this.storageFree;
+    }
+
+    public void setStorageFree(String storageFree) {
+        this.storageFree = new StringType(storageFree);
+    }
+
+    public StringType getStorageUsed() {
+        return this.storageUsed;
+    }
+
+    public void setStorageUsed(String storageUsed) {
+        this.storageUsed = new StringType(storageUsed);
+    }
+
+    public DecimalType getAirQualityCo() {
+        return this.airQualityCo;
+    }
+
+    public void setAirQualityCo(double co) {
+        this.airQualityCo = new DecimalType(round(co, 2));
+    }
+
+    public DecimalType getAirQualityNo2() {
+        return this.airQualityNo2;
+    }
+
+    public void setAirQualityNo2(double no2) {
+        this.airQualityNo2 = new DecimalType(round(no2, 2));
+    }
+
+    public DecimalType getAirQualityO3() {
+        return this.airQualityO3;
+    }
+
+    public void setAirQualityO3(double o3) {
+        this.airQualityO3 = new DecimalType(round(o3, 2));
+    }
+
+    public DecimalType getAirQualitySo2() {
+        return this.airQualitySo2;
+    }
+
+    public void setAirQualitySo2(double so2) {
+        this.airQualitySo2 = new DecimalType(round(so2, 2));
+    }
+
+    public DecimalType getUsEpaIndex() {
+        return this.usEpaIndex;
+    }
+
+    public void setUsEpaIndex(int usEpaIndex) {
+        this.usEpaIndex = new DecimalType(usEpaIndex);
+    }
+
+    public DecimalType getGbDefraIndex() {
+        return this.gbDefraIndex;
+    }
+
+    public void setGbDefraIndex(int gbDefraIndex) {
+        this.gbDefraIndex = new DecimalType(gbDefraIndex);
     }
 }

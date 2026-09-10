@@ -446,4 +446,105 @@
 		<description>Enable or disable voice alarm notifications</description>
 	</channel-type>
 
+	<!-- NSPanel Pro with Relay (UUID 278) - CPU temperature, storage info, outdoor air quality -->
+	<channel-type id="cpuTemperature">
+		<item-type unitHint="°C">Number:Temperature</item-type>
+		<label>CPU Temperature</label>
+		<description>Device CPU temperature</description>
+		<state pattern="%.1f %unit%" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="storageTotal">
+		<item-type>String</item-type>
+		<label>Storage Total</label>
+		<description>Total device storage capacity</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="storageFree">
+		<item-type>String</item-type>
+		<label>Storage Free</label>
+		<description>Available free storage space</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="storageUsed">
+		<item-type>String</item-type>
+		<label>Storage Used</label>
+		<description>Used storage space</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="airQualityCo">
+		<item-type>Number</item-type>
+		<label>CO Level</label>
+		<description>Outdoor carbon monoxide concentration (µg/m³)</description>
+		<state pattern="%.2f µg/m³" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="airQualityNo2">
+		<item-type>Number</item-type>
+		<label>NO2 Level</label>
+		<description>Outdoor nitrogen dioxide concentration (µg/m³)</description>
+		<state pattern="%.2f µg/m³" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="airQualityO3">
+		<item-type>Number</item-type>
+		<label>O3 Level</label>
+		<description>Outdoor ozone concentration (µg/m³)</description>
+		<state pattern="%.2f µg/m³" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="airQualitySo2">
+		<item-type>Number</item-type>
+		<label>SO2 Level</label>
+		<description>Outdoor sulphur dioxide concentration (µg/m³)</description>
+		<state pattern="%.2f µg/m³" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="usEpaIndex">
+		<item-type>Number</item-type>
+		<label>US EPA AQI</label>
+		<description>US EPA Air Quality Index (1=Good, 2=Moderate, 3=Unhealthy for Sensitive Groups, 4=Unhealthy, 5=Very
+			Unhealthy, 6=Hazardous)</description>
+		<state pattern="%d" readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="gbDefraIndex">
+		<item-type>Number</item-type>
+		<label>UK DEFRA AQI</label>
+		<description>UK DEFRA Air Quality Index (1-10 scale)</description>
+		<state pattern="%d" readOnly="true"/>
+	</channel-type>
+
+	<!-- Version info channels (UUID 195 / UUID 278 - NSPanel Pro) -->
+	<channel-type id="fwVersion" advanced="true">
+		<item-type>String</item-type>
+		<label>Firmware Version</label>
+		<description>Device firmware version</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="sysVersion" advanced="true">
+		<item-type>String</item-type>
+		<label>System Version</label>
+		<description>Device system version</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="zigbeeVersion" advanced="true">
+		<item-type>String</item-type>
+		<label>ZigBee Version</label>
+		<description>ZigBee coordinator firmware version</description>
+		<state readOnly="true"/>
+	</channel-type>
+
+	<channel-type id="appVersion" advanced="true">
+		<item-type>String</item-type>
+		<label>App Version</label>
+		<description>Device application version</description>
+		<state readOnly="true"/>
+	</channel-type>
+
 </thing:thing-descriptions>

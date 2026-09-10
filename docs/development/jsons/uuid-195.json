@@ -1,0 +1,171 @@
+{
+    "name": "Panel",
+    "deviceid": "",
+    "apikey": "",
+    "extra": {
+        "uiid": 195,
+        "description": "",
+        "itCredential": "",
+        "brandId": "",
+        "apmac": "d0:27:03:4b:11:4d",
+        "mac": "d0:27:03:4b:11:4c",
+        "ui": "NSPanel Pro",
+        "modelInfo": "62284181e9996d416dcc77bc",
+        "model": "  ",
+        "manufacturer": "深圳松诺技术有限公司"
+    },
+    "brandName": "SONOFF",
+    "brandLogo": "https://eu-ota.coolkit.cc/logo/q62PevoglDNmwUJ9oPE7kRrpt1nL1CoA.png",
+    "showBrand": true,
+    "productModel": "NSPanel86PB",
+    "tags": {
+        "m_2d42_ewel": "on",
+        "m_be65_ewel": "on"
+    },
+    "devConfig": {},
+    "deviceConfigToApp": {
+        "forum": "https://forum.ewelink.cc/t/rolling-with-new-releases-nspanel-pro-firmware-updates/207466"
+    },
+    "settings": {
+        "opsNotify": 1,
+        "opsHistory": 1,
+        "alarmNotify": 1
+    },
+    "devGroups": [],
+    "family": {
+        "familyid": "",
+        "index": 26,
+        "members": [
+            "5"
+        ],
+        "roomid": ""
+    },
+    "shareTo": [],
+    "devicekey": "",
+    "online": false,
+    "params": {
+        "bindInfos": {
+            "alexa": [
+                ""
+            ],
+            "gaction": [
+                ""
+            ]
+        },
+        "rooted": true,
+        "cityId": "WA@52.25,21",
+        "dst": 1,
+        "dstChange": "2024-10-27T01:00:00.000Z",
+        "tempRange": "9.3,13.2",
+        "temperature": 12.1,
+        "timeZone": 1,
+        "weather": 6,
+        "version": 7,
+        "theme": "layout4",
+        "layout3": [
+            {
+                "type": "weather-time"
+            },
+            {
+                "type": "camera"
+            },
+            {
+                "type": "alarm"
+            }
+        ],
+        "screenList1": [
+            "100178e7fe",
+            "100208decf"
+        ],
+        "screenList2": [],
+        "screenList3": [],
+        "appVersion": "3.0.0",
+        "sysVersion": "3.0.0",
+        "fwVersion": "3.0.0",
+        "zigbeeVersion": "1.0.0",
+        "securityType": 0,
+        "subDevices": [],
+        "supportMatterDeviceType": [
+            "266",
+            "269",
+            "14",
+            "259",
+            "268"
+        ],
+        "zigbeeNetworkRole": "Coordinator",
+        "turboMode": true,
+        "humitureSourceDeviceid": "",
+        "showablePannels": [
+            "main",
+            "thingList",
+            "sceneList"
+        ],
+        "addSubDevState": "off",
+        "addDevTime": 180,
+        "isBlur": false,
+        "layout4": [
+            {
+                "type": "weather-time"
+            },
+            {
+                "type": "camera"
+            },
+            {
+                "type": ""
+            },
+            {
+                "type": "alarm"
+            }
+        ],
+        "layout2": [
+            {
+                "type": "weather-time"
+            },
+            {
+                "type": ""
+            }
+        ]
+    },
+    "denyFeatures": [
+        "zigbee_subDev_support_report_rssi",
+        "valveOpeningAndClosingDegree",
+        "isSupportSecurityDelay",
+        "nsproDisableOperationAction",
+        "nsproThemeMultDeviceAllSelect",
+        "nsproSecurityCode",
+        "nsproMessageBoardFontSize",
+        "remoteTemperatureSource",
+        "nsProSupportConfigTemperatureSource",
+        "nsProSupportEnergyGroupMultiple",
+        "newVersionSubDeviceOtaV2",
+        "webShortcut",
+        "sceneSecurityMode",
+        "value_open_ratio",
+        "supportRebootDevice",
+        "webShortcutZoom",
+        "temperature_control_precision",
+        "gatewayReboot",
+        "zigbeeChangeChannel",
+        "thresholdReportSetting",
+        "newVersionSubDeviceOtaV3",
+        "matterFabricSetting",
+        "nsproThermostatMaxRangeTempV2",
+        "autoCompensationForNoOne",
+        "screenList1SupportSort",
+        "supportAddCameraToDevice",
+        "isSupportCriticalAlert",
+        "nspSupportMultiCustomRingBell",
+        "nsproRelationDeviceSupportMultChannelSplit",
+        "thermostatSystem",
+        "isNspSupportDndMode",
+        "nsPanelCustomScreenSaver"
+    ],
+    "isSupportGroup": false,
+    "isSupportedOnMP": false,
+    "isSupportChannelSplit": false,
+    "deviceFeature": {},
+    "matterInfoData": {
+        "matterFabricId": "",
+        "matterNodeId": ""
+    }
+}

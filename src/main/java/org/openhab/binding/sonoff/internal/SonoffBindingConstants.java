@@ -49,11 +49,10 @@ public class SonoffBindingConstants {
      * TODO: Analyze why devices 15, 103, 104, 181, 190 are in LAN_IN but not LAN_OUT
      * NOTE: UUID 226 (Circuit Breaker) is cloud-only and does not support LAN communication
      */
-    public static final Set<Integer> LAN_IN = Collections
-            .unmodifiableSet(Stream
-                    .of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140, 160, 161, 162,
-                            173, 181, 190, 209, 210, 211, 212, 237, 256, 258, 260, 266, 268, 275, 276)
-                    .collect(Collectors.toSet()));
+    public static final Set<Integer> LAN_IN = Collections.unmodifiableSet(Stream
+            .of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15, 28, 32, 44, 77, 78, 103, 104, 126, 138, 140, 160, 161, 162, 173, 181,
+                    190, 195, 209, 210, 211, 212, 237, 256, 258, 260, 266, 268, 275, 276, 278)
+            .collect(Collectors.toSet()));
 
     /**
      * Device types that support outbound LAN protocol communication.
@@ -62,7 +61,7 @@ public class SonoffBindingConstants {
      */
     public static final Set<Integer> LAN_OUT = Collections
             .unmodifiableSet(Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 28, 32, 44, 77, 78, 126, 138, 140, 160, 161, 162,
-                    173, 209, 210, 211, 212, 237, 256, 258, 260, 266, 268, 275, 276).collect(Collectors.toSet()));
+                    173, 195, 209, 210, 211, 212, 237, 256, 258, 260, 266, 268, 275, 276).collect(Collectors.toSet()));
 
     // ========================================
     // BRIDGE AND ACCOUNT THING TYPES
@@ -221,6 +220,15 @@ public class SonoffBindingConstants {
     // ========================================
     // Bridge devices for Zigbee protocol conversion
 
+    /** NSPanel Pro: Smart Home Control Panel with built-in ZigBee coordinator (86-type and 120-type) */
+    public static final ThingTypeUID THING_TYPE_195 = new ThingTypeUID(BINDING_ID, "195");
+
+    /**
+     * NSPanel Pro Gen2 with dual relay: NSPanel86PB-Relay (Smart Home Control Panel with dual relay and ZigBee
+     * coordinator)
+     */
+    public static final ThingTypeUID THING_TYPE_278 = new ThingTypeUID(BINDING_ID, "278");
+
     /** Zigbee Bridge: ZB Bridge (original) */
     public static final ThingTypeUID THING_TYPE_66 = new ThingTypeUID(BINDING_ID, "66");
 
@@ -244,7 +252,9 @@ public class SonoffBindingConstants {
         Map<Integer, ThingTypeUID> zigbeeBridgeTypes = new HashMap<>();
         zigbeeBridgeTypes.put(66, THING_TYPE_66);
         zigbeeBridgeTypes.put(168, THING_TYPE_168);
+        zigbeeBridgeTypes.put(195, THING_TYPE_195);
         zigbeeBridgeTypes.put(243, THING_TYPE_243);
+        zigbeeBridgeTypes.put(278, THING_TYPE_278);
 
         return Collections.unmodifiableMap(zigbeeBridgeTypes);
     }
@@ -376,7 +386,7 @@ public class SonoffBindingConstants {
             THING_TYPE_268, THING_TYPE_275, THING_TYPE_276,
 
             // Zigbee bridges
-            THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
+            THING_TYPE_66, THING_TYPE_168, THING_TYPE_195, THING_TYPE_243, THING_TYPE_278,
 
             // 433MHz RF bridge
             THING_TYPE_28,
@@ -416,7 +426,7 @@ public class SonoffBindingConstants {
             THING_TYPE_268, THING_TYPE_275, THING_TYPE_276,
 
             // Zigbee bridges
-            THING_TYPE_66, THING_TYPE_168, THING_TYPE_243,
+            THING_TYPE_66, THING_TYPE_168, THING_TYPE_195, THING_TYPE_243, THING_TYPE_278,
 
             // 433MHz RF bridge
             THING_TYPE_28,
@@ -487,6 +497,7 @@ public class SonoffBindingConstants {
         deviceTypes.put(173, THING_TYPE_173);
         deviceTypes.put(181, THING_TYPE_181);
         deviceTypes.put(190, THING_TYPE_190);
+        deviceTypes.put(195, THING_TYPE_195);
         deviceTypes.put(209, THING_TYPE_209);
         deviceTypes.put(210, THING_TYPE_210);
         deviceTypes.put(211, THING_TYPE_211);
@@ -504,6 +515,7 @@ public class SonoffBindingConstants {
         deviceTypes.put(268, THING_TYPE_268);
         deviceTypes.put(275, THING_TYPE_275);
         deviceTypes.put(276, THING_TYPE_276);
+        deviceTypes.put(278, THING_TYPE_278);
 
         return Collections.unmodifiableMap(deviceTypes);
     }

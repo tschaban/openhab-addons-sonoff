@@ -7,8 +7,8 @@
 # 3. Custom configurations in conf.d/ take precedence over defaults here
 
 # JAR File Names
-$sourceJAR = "org.openhab.binding.sonoff-5.1.2-SNAPSHOT.jar"
-$targetJAR = "org.openhab.binding.sonoff-5.1.2-SNAPSHOT.jar"
+$sourceJAR = "org.openhab.binding.sonoff-5.2.2-SNAPSHOT.jar"
+$targetJAR = "org.openhab.binding.sonoff-5.2.2-SNAPSHOT.jar"
 
 # Project Paths
 $projectPath = "openhab-addons\bundles\org.openhab.binding.sonoff"
