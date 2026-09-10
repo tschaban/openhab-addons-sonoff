@@ -116,6 +116,7 @@ public class SonoffCommunicationManager implements Runnable, SonoffConnectionMan
             }
             if (message.getCommand().equals("devices") || message.getCommand().equals("device")) {
                 sendMessage(message);
+                return;
             }
             if (message.getCommand().equals("consumption") || message.getCommand().equals("uiActive")) {
                 messageTypes.put(message.getSequence(), message.getCommand());
